@@ -1,0 +1,6 @@
+name: AquaticCratesTesting
+version: '${project.version}'
+main: cz.larkyy.aquaticcratestesting.AquaticCratesTesting
+api-version: 1.18
+commands:
+  testcrates:
