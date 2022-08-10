@@ -16,7 +16,6 @@ public class MEProvider {
     public static Model create(Location location, String modelId) {
 
         Location loc = location.clone();
-        loc.setYaw(loc.getYaw()+180);
 
         Entity mob = loc.getWorld().spawnEntity(loc.clone().add(0,-3,0), EntityType.ARMOR_STAND);
         ArmorStand as = (ArmorStand) mob;

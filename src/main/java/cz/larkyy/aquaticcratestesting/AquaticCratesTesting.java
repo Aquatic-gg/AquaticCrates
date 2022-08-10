@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcratestesting;
 
 import cz.larkyy.aquaticcratestesting.commands.Commands;
 import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
+import cz.larkyy.aquaticcratestesting.crate.CrateListener;
 import cz.larkyy.aquaticcratestesting.player.PlayerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
         crateHandler.load();
 
         getCommand("testcrates").setExecutor(new Commands());
+        getServer().getPluginManager().registerEvents(new CrateListener(),this);
     }
 
     @Override

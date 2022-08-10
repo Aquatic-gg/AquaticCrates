@@ -44,16 +44,24 @@ public class Key {
     }
 
     public boolean isItemKey(ItemStack is) {
-        if (is == null) return false;
-        ItemMeta im = is.getItemMeta();
-        if (im == null) return false;
-
-        String id = im.getPersistentDataContainer().get(KEY,PersistentDataType.STRING);
-        if (id == null) return false;
-        else return id.equals(crate.getIdentifier());
+        Key key = get(is);
+        if (key == null) {
+            return false;
+        }
+        return key.getIdentifier().equals(getIdentifier());
     }
 
     public static Key get(String identifier) {
         return AquaticCratesAPI.getKey(identifier);
+    }
+
+    public static Key get(ItemStack is) {
+        if (is == null) return null;
+        ItemMeta im = is.getItemMeta();
+        if (im == null) return null;
+
+        String id = im.getPersistentDataContainer().get(KEY,PersistentDataType.STRING);
+        if (id == null) return null;
+        else return get(id);
     }
 }

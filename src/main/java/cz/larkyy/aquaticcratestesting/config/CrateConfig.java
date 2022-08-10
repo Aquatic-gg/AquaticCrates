@@ -6,7 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
-public class CrateConfig extends Config{
+public class CrateConfig extends Config {
 
     private final String identifier;
 

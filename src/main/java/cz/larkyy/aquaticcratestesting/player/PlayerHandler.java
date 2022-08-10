@@ -18,7 +18,9 @@ public class PlayerHandler {
     }
 
     public CratePlayer loadPlayer(Player player) {
-        return players.put(player,new CratePlayer(player));
+        CratePlayer cp = new CratePlayer(player);
+        players.put(player,cp);
+        return cp;
     }
 
     public void loadPlayers() {

@@ -2,7 +2,9 @@ package cz.larkyy.aquaticcratestesting.commands;
 
 import cz.larkyy.aquaticcratestesting.Animation;
 import cz.larkyy.aquaticcratestesting.PlayerEmote;
+import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.camera.Camera;
+import cz.larkyy.aquaticcratestesting.crate.Key;
 import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import cz.larkyy.aquaticcratestesting.model.IModel;
 import cz.larkyy.aquaticcratestesting.model.Model;
@@ -29,7 +31,10 @@ public class Commands implements CommandExecutor {
 
         switch (args[0].toLowerCase()) {
             case "key" -> {
-
+                KeyCommand.send(sender,args);
+            }
+            case "crate" -> {
+                CrateCommand.send(sender,args);
             }
             case "play" -> {
 

@@ -19,11 +19,14 @@ public class CratePlayer {
     }
 
     public int getKeys(String id) {
+        if (!virtualKeys.containsKey(id)) {
+            return 0;
+        }
         return virtualKeys.get(id);
     }
 
     public void addKeys(String id, int amount) {
-        int keys = virtualKeys.get(id);
+        int keys = getKeys(id);
         virtualKeys.put(id,keys+amount);
     }
 
