@@ -84,12 +84,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.ticxo.modelengine</groupId>
-            <artifactId>api</artifactId>
-            <version>R2.5.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
             <version>4.7.0</version>
@@ -101,6 +95,13 @@
             <version>R1.2.2</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/resources/PlayerAnimator-R1.2.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.ticxo.modelengine</groupId>
+            <artifactId>ModelEngine</artifactId>
+            <version>B3.0.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/Model-Engine-B3.0.0-Build-68dbf2a.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.github.LoneDev6</groupId>

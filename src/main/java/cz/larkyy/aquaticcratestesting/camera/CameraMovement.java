@@ -1,8 +1,6 @@
 package cz.larkyy.aquaticcratestesting.camera;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
