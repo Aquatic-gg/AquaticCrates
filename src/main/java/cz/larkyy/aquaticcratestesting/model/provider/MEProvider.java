@@ -4,6 +4,7 @@ import com.ticxo.modelengine.api.ModelEngineAPI;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
 import cz.larkyy.aquaticcratestesting.model.MEModel;
+import cz.larkyy.aquaticcratestesting.model.IModel;
 import cz.larkyy.aquaticcratestesting.model.Model;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;

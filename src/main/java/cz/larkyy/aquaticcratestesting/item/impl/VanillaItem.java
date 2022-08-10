@@ -1,5 +1,6 @@
-package cz.larkyy.aquaticcratestesting.item;
+package cz.larkyy.aquaticcratestesting.item.impl;
 
+import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

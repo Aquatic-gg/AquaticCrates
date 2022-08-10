@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcratestesting;
 
 import cz.larkyy.aquaticcratestesting.camera.Camera;
+import cz.larkyy.aquaticcratestesting.model.IModel;
 import cz.larkyy.aquaticcratestesting.task.Task;
 import cz.larkyy.aquaticcratestesting.task.TaskHandler;
 import org.bukkit.Location;
@@ -16,13 +17,13 @@ public class Animation extends BukkitRunnable {
     private final Player player;
     private final PlayerEmote playerEmote;
     private final ArmorStand emoteEntity;
-    private final Model model;
+    private final IModel model;
     private final Camera camera;
     private final Location previousLocation;
     private final TaskHandler taskHandler;
     private int i = 0;
 
-    private Animation(Model model, Camera camera, PlayerEmote playerEmote, List<Task> tasks, Player player) {
+    private Animation(IModel model, Camera camera, PlayerEmote playerEmote, List<Task> tasks, Player player) {
         this.model = model;
         this.camera = camera;
         this.player = player;
@@ -80,7 +81,7 @@ public class Animation extends BukkitRunnable {
         camera.detachPlayer(player);
         camera.despawn();
 
-        model.despawn();
+        model.remove();
 
         //Utils.playScreenEffect(player,5,15);
         player.setInvisible(false);
@@ -98,7 +99,7 @@ public class Animation extends BukkitRunnable {
         i++;
     }
 
-    public static Animation create(Model model, Camera camera, PlayerEmote playerEmote, List<Task> tasks, Player player) {
+    public static Animation create(IModel model, Camera camera, PlayerEmote playerEmote, List<Task> tasks, Player player) {
         Animation animation = new Animation(model,camera,playerEmote,tasks,player);
         animation.start();
         return animation;
@@ -116,7 +117,7 @@ public class Animation extends BukkitRunnable {
         return previousLocation;
     }
 
-    public Model getModel() {
+    public IModel getModel() {
         return model;
     }
 

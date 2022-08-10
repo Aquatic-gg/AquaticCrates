@@ -1,7 +1,10 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
-import java.util.HashMap;
-import java.util.Map;
+import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.config.CrateConfig;
+
+import java.io.File;
+import java.util.*;
 
 public class CrateHandler {
 
@@ -17,6 +20,20 @@ public class CrateHandler {
 
     public Crate getCrate(String identifier) {
         return getCrate(identifier);
+    }
+
+    public void load() {
+        loadCrates();
+    }
+
+    private void loadCrates() {
+        File cratesFolder = new File(AquaticCratesTesting.instance().getDataFolder(),"crates/");
+        cratesFolder.mkdirs();
+
+        for (File file : cratesFolder.listFiles()) {
+            Crate crate = new CrateConfig(AquaticCratesTesting.instance(),file).loadCrate();
+            crates.put(crate.getIdentifier(),crate);
+        }
     }
 
 }

@@ -1,5 +1,9 @@
 package cz.larkyy.aquaticcratestesting.item;
 
+import cz.larkyy.aquaticcratestesting.item.impl.IAItem;
+import cz.larkyy.aquaticcratestesting.item.impl.OraxenItem;
+import cz.larkyy.aquaticcratestesting.item.impl.VanillaItem;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -48,4 +52,23 @@ public abstract class CustomItem {
     }
 
     public abstract ItemStack getUnmodifiedItem();
+
+    public static CustomItem create(String namespace, String name, List<String> description) {
+        String[] strs = namespace.split(":");
+        if (strs.length == 1) {
+            return new VanillaItem(Material.valueOf(strs[0]),name,description);
+        }
+        String provider = strs[0].toLowerCase();
+        String identifier = namespace.substring(provider.length()+1);
+
+        switch (provider) {
+            case "itemsadder" -> {
+                return new IAItem(name,description,identifier);
+            }
+            case "oraxen" -> {
+                return new OraxenItem(name,description,identifier);
+            }
+        }
+        return null;
+    }
 }

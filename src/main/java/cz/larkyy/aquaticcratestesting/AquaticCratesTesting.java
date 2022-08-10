@@ -1,8 +1,7 @@
 package cz.larkyy.aquaticcratestesting;
 
+import cz.larkyy.aquaticcratestesting.commands.Commands;
 import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
-import cz.larkyy.aquaticcratestesting.item.CustomItem;
-import cz.larkyy.aquaticcratestesting.item.IAItem;
 import cz.larkyy.aquaticcratestesting.player.PlayerHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,11 +15,9 @@ public final class AquaticCratesTesting extends JavaPlugin {
     public void onEnable() {
         playerHandler = new PlayerHandler();
         crateHandler = new CrateHandler();
+        crateHandler.load();
 
         getCommand("testcrates").setExecutor(new Commands());
-
-        CustomItem item = new IAItem("id",null,null);
-
     }
 
     @Override

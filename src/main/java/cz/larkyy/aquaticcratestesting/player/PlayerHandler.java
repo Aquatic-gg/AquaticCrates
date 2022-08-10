@@ -4,7 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PlayerHandler {
@@ -21,6 +23,10 @@ public class PlayerHandler {
 
     public void loadPlayers() {
         Bukkit.getOnlinePlayers().forEach(this::loadPlayer);
+    }
+
+    public List<CratePlayer> getPlayers() {
+        return new ArrayList<>(players.values());
     }
 
     public CratePlayer getPlayer(Player player) {

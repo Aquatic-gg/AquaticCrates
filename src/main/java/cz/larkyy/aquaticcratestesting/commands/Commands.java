@@ -1,6 +1,11 @@
-package cz.larkyy.aquaticcratestesting;
+package cz.larkyy.aquaticcratestesting.commands;
 
+import cz.larkyy.aquaticcratestesting.Animation;
+import cz.larkyy.aquaticcratestesting.PlayerEmote;
 import cz.larkyy.aquaticcratestesting.camera.Camera;
+import cz.larkyy.aquaticcratestesting.item.CustomItem;
+import cz.larkyy.aquaticcratestesting.model.IModel;
+import cz.larkyy.aquaticcratestesting.model.Model;
 import cz.larkyy.aquaticcratestesting.task.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,6 +28,9 @@ public class Commands implements CommandExecutor {
         }
 
         switch (args[0].toLowerCase()) {
+            case "key" -> {
+
+            }
             case "play" -> {
 
                 if (!(sender instanceof Player player)) {
@@ -30,7 +38,7 @@ public class Commands implements CommandExecutor {
                 }
 
                 final Location modelLocation = new Location(Bukkit.getWorld("world"),951.5,73,710.5,180,0);
-                Model model = Model.spawn("crate5",modelLocation);
+                Model model = Model.create("modelengine:crate5",modelLocation);
 
                 final Location cameraLocation = new Location(Bukkit.getWorld("world"),951.5,73,707.5,0,14);
                 Camera camera = Camera.spawn(cameraLocation);
