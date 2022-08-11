@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcratestesting.player;
 
+import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class PlayerHandler {
 
@@ -17,14 +19,24 @@ public class PlayerHandler {
         this.players = new HashMap<>();
     }
 
-    public CratePlayer loadPlayer(Player player) {
-        CratePlayer cp = new CratePlayer(player);
-        players.put(player,cp);
-        return cp;
+    public void loadPlayer(Player player, Consumer<CratePlayer> callback) {
+        AquaticCratesTesting.getDatabaseManager().loadPlayer(player,callback);
+    }
+
+    public void savePlayer(CratePlayer player) {
+        AquaticCratesTesting.getDatabaseManager().savePlayer(player);
+    }
+
+    public void savePlayers(boolean async) {
+        AquaticCratesTesting.getDatabaseManager().savePlayers(async);
+    }
+
+    public void addPlayer(OfflinePlayer offlinePlayer, CratePlayer player) {
+        players.put(offlinePlayer,player);
     }
 
     public void loadPlayers() {
-        Bukkit.getOnlinePlayers().forEach(this::loadPlayer);
+        Bukkit.getOnlinePlayers().forEach(p -> loadPlayer(p, cp -> {}));
     }
 
     public List<CratePlayer> getPlayers() {
@@ -34,7 +46,8 @@ public class PlayerHandler {
     public CratePlayer getPlayer(Player player) {
         CratePlayer cp = players.get(player);
         if (cp == null) {
-            return loadPlayer(player);
+            cp = new CratePlayer(player);
+            players.put(player,cp);
         }
         return cp;
     }

@@ -1,11 +1,11 @@
 package cz.larkyy.aquaticcratestesting.api.events;
 
 import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.block.Action;
 import org.jetbrains.annotations.NotNull;
 
 public class CrateInteractEvent extends Event implements Cancellable {
@@ -13,11 +13,13 @@ public class CrateInteractEvent extends Event implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
     private final PlacedCrate placedCrate;
+    private final Action action;
     private boolean isCancelled;
 
-    public CrateInteractEvent(Player player, PlacedCrate placedCrate) {
+    public CrateInteractEvent(Player player, PlacedCrate placedCrate, Action action) {
         this.player =player;
         this.placedCrate = placedCrate;
+        this.action = action;
         isCancelled = false;
     }
 
@@ -40,7 +42,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
         isCancelled = cancel;
     }
 
-    public PlacedCrate getKey() {
+    public PlacedCrate getPlacedCrate() {
         return placedCrate;
     }
 
@@ -48,4 +50,7 @@ public class CrateInteractEvent extends Event implements Cancellable {
         return player;
     }
 
+    public Action getAction() {
+        return action;
+    }
 }

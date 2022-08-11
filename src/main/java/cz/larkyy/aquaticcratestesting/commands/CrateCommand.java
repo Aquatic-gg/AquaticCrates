@@ -4,9 +4,10 @@ import cz.larkyy.aquaticcratestesting.crate.Crate;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CrateCommand {
+public class CrateCommand implements ICommand {
 
-    public static void send(CommandSender sender, String[] args) {
+    @Override
+    public void run(CommandSender sender, String[] args) {
         if (args.length < 2) {
             return;
         }

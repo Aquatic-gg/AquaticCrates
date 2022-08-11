@@ -19,10 +19,11 @@ public class CratePlayer {
     }
 
     public int getKeys(String id) {
-        if (!virtualKeys.containsKey(id)) {
-            return 0;
-        }
-        return virtualKeys.get(id);
+        return virtualKeys.getOrDefault(id,0);
+    }
+
+    public Map<String, Integer> getVirtualKeys() {
+        return virtualKeys;
     }
 
     public void addKeys(String id, int amount) {
@@ -40,7 +41,18 @@ public class CratePlayer {
         if (takePhysicalKey(key)) {
             return true;
         } else return takeVirtualKey(key);
+    }
 
+    public void takeKeys(String id, int amount) {
+        if (!virtualKeys.containsKey(id)) {
+            return;
+        }
+        int i = virtualKeys.get(id);
+        i -= amount;
+        if (i < 0) {
+            i = 0;
+        }
+        virtualKeys.put(id,i);
     }
 
     private boolean takePhysicalKey(Key key) {
@@ -55,12 +67,16 @@ public class CratePlayer {
     }
 
     private boolean takeVirtualKey(Key key) {
-        int keys = virtualKeys.get(key.getIdentifier());
+        int keys = getKeys(key.getIdentifier());
         if (keys < 1) {
             return false;
         }
         virtualKeys.put(key.getIdentifier(),keys-1);
         return true;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public static CratePlayer get(Player player) {

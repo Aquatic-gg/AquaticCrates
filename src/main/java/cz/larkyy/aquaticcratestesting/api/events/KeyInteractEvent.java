@@ -6,20 +6,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.block.Action;
 import org.jetbrains.annotations.NotNull;
 
 public class KeyInteractEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
+    private final Action action;
     private final Key key;
     private final Location location;
     private boolean isCancelled;
 
-    public KeyInteractEvent(Player player, Key key, Location location) {
+    public KeyInteractEvent(Player player, Key key, Location location, Action action) {
         this.player =player;
         this.key = key;
         this.location = location;
+        this.action = action;
         isCancelled = false;
     }
 
@@ -52,5 +55,9 @@ public class KeyInteractEvent extends Event implements Cancellable {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Action getAction() {
+        return action;
     }
 }

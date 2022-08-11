@@ -1,13 +1,18 @@
 package cz.larkyy.aquaticcratestesting.commands;
 
 import cz.larkyy.aquaticcratestesting.crate.Crate;
+import cz.larkyy.aquaticcratestesting.crate.Key;
+import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class KeyCommand {
+import java.util.Map;
 
-    public static void send(CommandSender sender, String[] args) {
+public class KeyCommand implements ICommand {
+
+    @Override
+    public void run(CommandSender sender, String[] args) {
         if (args.length < 2) {
             return;
         }
@@ -70,7 +75,49 @@ public class KeyCommand {
                     }
                 }
             }
+            // aquaticcrates key take <identifier> <number> <player>
+            case "take" -> {
+                if (args.length < 5) {
+                    return;
+                }
+                Crate c = Crate.get(args[2]);
+                if (c == null) {
+                    sender.sendMessage("§cNo Key with this identifier has been found!");
+                    return;
+                }
+
+                int amount = 0;
+                try {
+                    amount = Integer.parseInt(args[3]);
+                } catch (NumberFormatException e) {
+                    sender.sendMessage("§cInvalid number format!");
+                }
+
+                Player target = Bukkit.getPlayer(args[4]);
+                if (target == null) {
+                    sender.sendMessage("§cInvalid player!");
+                    return;
+                }
+
+                CratePlayer.get(target).takeKeys(c.getIdentifier(),amount);
+                target.sendMessage("You have been taken "+amount+"x "+args[2]+" Key!");
+            }
+            case "bank" -> {
+                if (!(sender instanceof Player p)) {
+                    return;
+                }
+                CratePlayer cp = CratePlayer.get(p);
+                p.sendMessage("Your Virtual Keys:");
+                for (Map.Entry<String, Integer> entry : cp.getVirtualKeys().entrySet()) {
+                    String s = entry.getKey();
+                    Integer i = entry.getValue();
+                    Key k = Key.get(s);
+                    if (k == null) {
+                        continue;
+                    }
+                    p.sendMessage(s+" Key: "+i);
+                }
+            }
         }
     }
-
 }

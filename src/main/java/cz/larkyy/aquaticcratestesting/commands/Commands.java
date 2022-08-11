@@ -1,27 +1,22 @@
 package cz.larkyy.aquaticcratestesting.commands;
 
-import cz.larkyy.aquaticcratestesting.Animation;
-import cz.larkyy.aquaticcratestesting.PlayerEmote;
-import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
-import cz.larkyy.aquaticcratestesting.camera.Camera;
-import cz.larkyy.aquaticcratestesting.crate.Key;
-import cz.larkyy.aquaticcratestesting.item.CustomItem;
-import cz.larkyy.aquaticcratestesting.model.IModel;
-import cz.larkyy.aquaticcratestesting.model.Model;
-import cz.larkyy.aquaticcratestesting.task.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Commands implements CommandExecutor {
+
+    private final Map<String, ICommand> availableCommands = new HashMap<>(){
+        {
+            put("key",new KeyCommand());
+            put("crate",new CrateCommand());
+        }
+    };
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
@@ -29,6 +24,13 @@ public class Commands implements CommandExecutor {
             return false;
         }
 
+        ICommand cmd = availableCommands.get(args[0]);
+        if (cmd == null) {
+            return false;
+        }
+        cmd.run(sender,args);
+
+        /*
         switch (args[0].toLowerCase()) {
             case "key" -> {
                 KeyCommand.send(sender,args);
@@ -61,6 +63,7 @@ public class Commands implements CommandExecutor {
                 Animation.create(model,camera,playerEmote,tasks,player);
             }
         }
+         */
 
         return false;
     }

@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.model.Model;
+import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -23,4 +24,19 @@ public class PlacedCrate {
         return AquaticCratesAPI.getCrateHandler().getPlacedCrate(location);
     }
 
+    public Location getLocation() {
+        return location;
+    }
+
+    public Crate getCrate() {
+        return crate;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public boolean open(CratePlayer player, boolean instant) {
+        return crate.open(player,this,instant);
+    }
 }
