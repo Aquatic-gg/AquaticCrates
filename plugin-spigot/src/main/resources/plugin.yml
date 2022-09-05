@@ -1,6 +1,9 @@
-name: AquaticCratesTesting
+name: AquaticCrates
 version: '${project.version}'
 main: cz.larkyy.aquaticcratestesting.AquaticCratesTesting
 api-version: 1.16
 commands:
-  testcrates:
+  aquaticcrates:
+    aliases:
+      - acrates
+      - aquaticcrate

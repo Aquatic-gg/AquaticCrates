@@ -107,7 +107,7 @@ public class CrateListener implements Listener {
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             pc.open(CratePlayer.get(e.getPlayer()),p.isSneaking());
         } else if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if (p.isSneaking()) {
+            if (p.isSneaking() && p.hasPermission("aquaticcrates.break")) {
                 AquaticCratesAPI.getCrateHandler().removePlacedCrate(e.getLocation());
             } else {
                 pc.getCrate().openPreview(p);

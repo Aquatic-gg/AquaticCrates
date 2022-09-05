@@ -41,7 +41,7 @@ public class CrateHandler {
 
     public PlacedCrate spawnCrate(Location location, Crate crate) {
         PlacedCrate pc = new PlacedCrate(crate,location,crate.getModel());
-        Location loc = location.clone().toBlockLocation();
+        Location loc = location.clone().getBlock().getLocation();
         loc.setYaw(0);
         locations.put(loc,pc);
         return pc;

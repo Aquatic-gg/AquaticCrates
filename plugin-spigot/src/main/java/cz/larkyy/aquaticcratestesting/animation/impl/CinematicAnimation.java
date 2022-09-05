@@ -57,6 +57,7 @@ public class CinematicAnimation extends Animation {
 
     @Override
     public void start() {
+        setStarted(true);
         if (rewardItem != null) {
             rewardItem.despawn();
             rewardItem = null;

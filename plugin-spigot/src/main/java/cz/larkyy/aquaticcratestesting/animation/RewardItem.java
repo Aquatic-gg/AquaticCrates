@@ -156,14 +156,12 @@ public class RewardItem {
 
     private void spawnItem(Reward reward) {
         Location location = animation.getModel().getLocation().clone().add(0,1,0);
-        item = (Item) location.getWorld().spawnEntity(location,EntityType.DROPPED_ITEM, CreatureSpawnEvent.SpawnReason.CUSTOM, e -> {
-            Item i = (Item) e;
-            i.setItemStack(reward.getItem().getItem());
-            i.setCanMobPickup(false);
-            i.setCanPlayerPickup(false);
-            i.setGravity(gravity);
-            i.setVelocity(vector);
-        });
+        item = (Item) location.getWorld().spawnEntity(location,EntityType.DROPPED_ITEM);
+        item.setItemStack(reward.getItem().getItem());
+        item.setPickupDelay(Integer.MAX_VALUE);
+        item.setGravity(gravity);
+        item.setVelocity(vector);
+
         if (p != null) {
             List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
             players.remove(p);

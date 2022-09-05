@@ -61,4 +61,8 @@ public class ItemHandler {
             }
         }.runTaskAsynchronously(AquaticCratesTesting.instance());
     }
+
+    public Map<String, ItemStack> getItems() {
+        return database;
+    }
 }

@@ -14,7 +14,11 @@ public class CrateCommand implements ICommand {
         }
 
         switch (args[1].toLowerCase()) {
-            case "give": {
+            case "give" -> {
+                if (!sender.hasPermission("aquaticcrates.crate.give")) {
+                    return;
+                }
+
                 if (args.length == 2) {
                     return;
                 }

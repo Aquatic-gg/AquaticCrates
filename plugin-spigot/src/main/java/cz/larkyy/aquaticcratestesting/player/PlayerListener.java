@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public class PlayerListener implements Listener {
             v.getHologram().spawn(Arrays.asList(p));
         });
 
-        if (p.getPersistentDataContainer().has(Animation.KEY)) {
+        if (p.getPersistentDataContainer().has(Animation.KEY, PersistentDataType.INTEGER)) {
             p.setInvisible(false);
             p.setGameMode(GameMode.SURVIVAL);
 

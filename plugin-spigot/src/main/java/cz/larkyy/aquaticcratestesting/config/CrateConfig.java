@@ -209,6 +209,9 @@ public class CrateConfig extends Config {
     }
 
     private Location loadLocation(String path) {
+        if (!getConfiguration().contains(path)) {
+            return null;
+        }
         World w = Bukkit.getWorld(getConfiguration().getString(path+".world"));
         if (w == null) {
             return null;
@@ -225,21 +228,24 @@ public class CrateConfig extends Config {
 
     private List<Task> loadTasks() {
         List<Task> tasks = new ArrayList<>();
+        if (!getConfiguration().contains("animation.actions")) {
+            return tasks;
+        }
         getConfiguration().getConfigurationSection("animation.actions").getKeys(false).forEach(id -> {
             switch (getConfiguration().getString("animation.actions."+id+".type").toLowerCase()) {
-                case "spawnreward": {
+                case "spawnreward" -> {
                     tasks.add(new SpawnRewardTask(loadArguments("animation.actions." + id, SpawnRewardTask.ARGUMENTS)));
                 }
-                case "playsound": {
+                case "playsound" -> {
                     tasks.add(new PlaySoundTask(loadArguments("animation.actions."+id,PlaySoundTask.ARGUMENTS)));
                 }
-                case "movecamera": {
+                case "movecamera" -> {
                     tasks.add(new CameraMoveTask(loadArguments("animation.actions."+id,CameraMoveTask.ARGUMENTS)));
                 }
-                case "sendtitle": {
+                case "sendtitle" -> {
                     tasks.add(new SendTitleTask(loadArguments("animation.actions."+id,SendTitleTask.ARGUMENTS)));
                 }
-                case "teleportcamera": {
+                case "teleportcamera" -> {
                     tasks.add(new CameraTeleportTask(loadArguments("animation.actions."+id, CameraTeleportTask.ARGUMENTS)));
                 }
             }

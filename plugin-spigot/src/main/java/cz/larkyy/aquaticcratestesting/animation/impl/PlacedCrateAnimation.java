@@ -38,6 +38,7 @@ public class PlacedCrateAnimation extends Animation {
 
     @Override
     public void start() {
+        setStarted(true);
         getAnimationManager().showTitle(getAnimationManager().getOpeningTitle(),getPlayer());
         if (rewardItem != null) {
             rewardItem.despawn();

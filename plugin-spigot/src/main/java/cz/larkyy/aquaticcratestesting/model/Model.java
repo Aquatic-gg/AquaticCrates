@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcratestesting.model;
 
 import cz.larkyy.aquaticcratestesting.model.impl.EmptyModel;
+import cz.larkyy.aquaticcratestesting.model.impl.IAModel;
 import cz.larkyy.aquaticcratestesting.model.impl.MEModel;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,8 +18,11 @@ public abstract class Model implements IModel {
         String id = strs[1];
 
         switch (plugin) {
-            case "modelengine": {
+            case "modelengine" -> {
                 return MEModel.create(id,location,player);
+            }
+            case "itemsadder" -> {
+                return IAModel.create(id,location,player);
             }
         }
         return new EmptyModel(location);

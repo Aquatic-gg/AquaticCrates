@@ -17,7 +17,11 @@ public class ItemCommand implements ICommand {
 
         switch (args[1].toLowerCase()) {
             // item save <Identifier>
-            case "save": {
+            case "save" -> {
+                if (!sender.hasPermission("aquaticcrates.item.save")) {
+                    return;
+                }
+
                 if (!(sender instanceof Player)) {
                     return;
                 }
@@ -42,7 +46,11 @@ public class ItemCommand implements ICommand {
                 p.sendMessage("§aItem saved!");
             }
             // item give <Identifier> [amount] [player]
-            case "give": {
+            case "give" -> {
+                if (!sender.hasPermission("aquaticcrates.item.give")) {
+                    return;
+                }
+
                 if (args.length < 3) {
                     return;
                 }

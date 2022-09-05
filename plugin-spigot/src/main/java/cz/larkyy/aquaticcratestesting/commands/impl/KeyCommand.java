@@ -20,7 +20,11 @@ public class KeyCommand implements ICommand {
 
         switch (args[1].toLowerCase()) {
             // /aquaticcrates key give <identifier> [amount] [player] [virtual]
-            case "give": {
+            case "give" -> {
+                if (!sender.hasPermission("aquaticcrates.key.give")) {
+                    return;
+                }
+
                 if (args.length == 2) {
                     return;
                 }
@@ -32,11 +36,10 @@ public class KeyCommand implements ICommand {
                 }
 
                 if (args.length <= 4) {
-                    if (!(sender instanceof Player)) {
+                    if (!(sender instanceof Player p)) {
                         sender.sendMessage("§cYou must be a player to send this command!");
                         return;
                     }
-                    Player p = (Player) sender;
 
                     if (args.length == 3) {
                         c.giveKey(p, 1, false);
@@ -75,7 +78,11 @@ public class KeyCommand implements ICommand {
                 }
             }
             // aquaticcrates key giveall <identifier> [number] [virtual]
-            case "giveall": {
+            case "giveall" -> {
+                if (!sender.hasPermission("aquaticcrates.key.giveall")) {
+                    return;
+                }
+
                 if (args.length < 3) {
                     return;
                 }
@@ -105,7 +112,11 @@ public class KeyCommand implements ICommand {
 
             }
             // aquaticcrates key take <identifier> <number> <player>
-            case "take": {
+            case "take" -> {
+                if (!sender.hasPermission("aquaticcrates.key.take")) {
+                    return;
+                }
+
                 if (args.length < 5) {
                     return;
                 }
@@ -131,11 +142,14 @@ public class KeyCommand implements ICommand {
                 CratePlayer.get(target).takeKeys(c.getIdentifier(),amount);
                 target.sendMessage("You have been taken "+amount+"x "+args[2]+" Key!");
             }
-            case "bank": {
-                if (!(sender instanceof Player)) {
+            case "bank" -> {
+                if (!sender.hasPermission("aquaticcrates.key.bank")) {
                     return;
                 }
-                Player p = (Player) sender;
+
+                if (!(sender instanceof Player p)) {
+                    return;
+                }
 
                 CratePlayer cp = CratePlayer.get(p);
                 p.sendMessage("Your Virtual Keys:");

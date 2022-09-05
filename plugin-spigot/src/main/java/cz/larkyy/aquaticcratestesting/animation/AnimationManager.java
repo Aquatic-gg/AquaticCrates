@@ -158,6 +158,9 @@ public class AnimationManager {
         if (!isSkippable()) {
             return false;
         }
+        if (!animation.isStarted()) {
+            return false
+        }
         animation.reroll();
         return true;
     }

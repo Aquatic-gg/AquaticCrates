@@ -18,12 +18,14 @@ public abstract class Animation {
     private final Consumer<Animation> callback;
     private final AtomicReference<Reward> reward;
     private final AnimationManager animationManager;
+    private boolean started;
 
     public Animation(AnimationManager animationManager, Player player, AtomicReference<Reward> reward, Consumer<Animation> callback) {
         this.animationManager = animationManager;
         this.player = player;
         this.callback = callback;
         this.reward = reward;
+        started = false;
     }
 
     public abstract void begin();
@@ -58,5 +60,13 @@ public abstract class Animation {
     public abstract Model getModel();
     public AnimationManager getAnimationManager() {
         return animationManager;
+    }
+
+    public boolean isStarted() {
+        return started;
+    }
+
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }
