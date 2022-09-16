@@ -1,12 +1,12 @@
 package cz.larkyy.aquaticcratestesting;
 
-import com.ticxo.playeranimator.api.PlayerAnimator;
-import com.ticxo.playeranimator.api.model.player.PlayerModel;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class PlayerEmote {
 
+    /*
     private final String animation;
     private final String modelFile;
     private final String animationPackString;
@@ -23,4 +23,6 @@ public class PlayerEmote {
         PlayerModel model = new PlayerModel(entity,player);
         model.playAnimation(animationPackString+"."+modelFile+"."+animation);
     }
+
+     */
 }

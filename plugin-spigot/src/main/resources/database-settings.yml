@@ -1,0 +1,9 @@
+# global settings
+type: SQLite
+# mysql settings
+prefix: "ac_"
+ip: localhost
+port: 3306
+name: AquaticCratesDatabase
+user: root
+password: password

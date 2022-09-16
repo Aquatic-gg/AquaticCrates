@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcratestesting.commands.impl;
 
 import cz.larkyy.aquaticcratestesting.commands.ICommand;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
+import cz.larkyy.aquaticcratestesting.messages.Messages;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,6 +17,7 @@ public class CrateCommand implements ICommand {
         switch (args[1].toLowerCase()) {
             case "give" -> {
                 if (!sender.hasPermission("aquaticcrates.crate.give")) {
+                    Messages.NO_PERMISSION.send(sender);
                     return;
                 }
 
@@ -23,15 +25,14 @@ public class CrateCommand implements ICommand {
                     return;
                 }
 
-                if (!(sender instanceof Player)) {
-                    sender.sendMessage("§cThis command is for players only!");
+                if (!(sender instanceof Player p)) {
+                    Messages.ONLY_FOR_PLAYERS.send(sender);
                     return;
                 }
-                Player p = (Player) sender;
 
                 Crate crate = Crate.get(args[2]);
                 if (crate == null) {
-                    sender.sendMessage("§cNo crate with this identifier has been found!");
+                    Messages.INVALID_CRATE.send(sender);
                     return;
                 }
 

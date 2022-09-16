@@ -25,7 +25,14 @@ public class SQLiteDriver implements Driver {
 
         Connection connection = this.getConnection();
         Statement statement = connection.createStatement();
-        statement.execute(DatabaseManager.SQL_CREATE_TABLE);
+        statement.execute(
+                "CREATE TABLE IF NOT EXISTS aquaticcrates_keys (\n" +
+                        "    id integer primary key,\n" +
+                        "    UniqueID NVARCHAR(64) NOT NULL,\n" +
+                        "    Identifier NVARCHAR(64) NOT NULL,\n" +
+                        "    Amount INT NOT NULL\n" +
+                        ");"
+        );
 
         statement.close();
     }

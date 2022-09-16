@@ -27,7 +27,7 @@ public class MEModel extends Model {
     @Override
     public void playAnimation(String animation) {
         activeModel.getAnimationHandler().forceStopAllAnimations();
-        activeModel.getAnimationHandler().playAnimation(animation,0,0,1);
+        activeModel.getAnimationHandler().playAnimation(animation,0,0,1,true);
     }
 
     @Override

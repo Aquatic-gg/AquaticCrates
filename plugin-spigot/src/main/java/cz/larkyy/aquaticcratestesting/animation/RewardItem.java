@@ -4,6 +4,7 @@ import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.hologram.Hologram;
 import cz.larkyy.aquaticcratestesting.hologram.impl.AquaticHologram;
+import cz.larkyy.aquaticcratestesting.utils.RewardUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -129,7 +130,13 @@ public class RewardItem {
                     cancel();
                     return;
                 }
-                updateItem(animation.getAnimationManager().getCrate().getRandomReward(animation.getPlayer()));
+
+                Reward r = RewardUtils.getRandomReward(
+                        animation.getPlayer(),
+                        animation.getAnimationManager().getCrate().getRewards(),
+                        cachedReward
+                );
+                updateItem(r);
                 tick+=rumblingPeriod;
             }
         };

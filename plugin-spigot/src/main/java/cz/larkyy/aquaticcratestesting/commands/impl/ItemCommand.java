@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcratestesting.commands.impl;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.commands.ICommand;
+import cz.larkyy.aquaticcratestesting.messages.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -19,6 +20,7 @@ public class ItemCommand implements ICommand {
             // item save <Identifier>
             case "save" -> {
                 if (!sender.hasPermission("aquaticcrates.item.save")) {
+                    Messages.NO_PERMISSION.send(sender);
                     return;
                 }
 
@@ -34,20 +36,21 @@ public class ItemCommand implements ICommand {
                 String id = args[2];
                 ItemStack is = p.getInventory().getItemInMainHand();
                 if (is.getType() == Material.AIR) {
-                    p.sendMessage("§cYou must have an item in your hand!");
+                    Messages.MUST_HAVE_ITEM_IN_HAND.send(sender);
                     return;
                 }
                 if (AquaticCratesTesting.getItemHandler().getItem(id) != null) {
-                    p.sendMessage("§cThere's already saved an item with this identifier!");
+                    Messages.ITEM_UNKNOWN_IDENTIFIER.send(sender);
                     return;
                 }
 
                 AquaticCratesTesting.getItemHandler().addItem(id,is);
-                p.sendMessage("§aItem saved!");
+                Messages.ITEM_SAVED.send(sender);
             }
             // item give <Identifier> [amount] [player]
             case "give" -> {
                 if (!sender.hasPermission("aquaticcrates.item.give")) {
+                    Messages.NO_PERMISSION.send(sender);
                     return;
                 }
 
@@ -58,7 +61,7 @@ public class ItemCommand implements ICommand {
                 String id = args[2];
                 ItemStack is = AquaticCratesTesting.getItemHandler().getItem(id);
                 if (is == null) {
-                    sender.sendMessage("Unknown identifier!");
+                    Messages.ITEM_UNKNOWN_IDENTIFIER.send(sender);
                     return;
                 }
                 is.setAmount(1);
@@ -76,7 +79,7 @@ public class ItemCommand implements ICommand {
                 try {
                     amount = Integer.parseInt(args[3]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage("§cInvalid number format!");
+                    Messages.INVALID_NUMBER.send(sender);
                     return;
                 }
                 is.setAmount(amount);
@@ -91,7 +94,7 @@ public class ItemCommand implements ICommand {
                 else {
                     Player target = Bukkit.getPlayer(args[4]);
                     if (target == null) {
-                        sender.sendMessage("Unknown player");
+                        Messages.INVALID_PLAYER.send(sender);
                         return;
                     }
                     target.getInventory().addItem(is);

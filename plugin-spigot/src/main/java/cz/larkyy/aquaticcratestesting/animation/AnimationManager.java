@@ -7,6 +7,7 @@ import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
 import cz.larkyy.aquaticcratestesting.animation.impl.InstantAnimation;
 import cz.larkyy.aquaticcratestesting.animation.impl.PlacedCrateAnimation;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
+import cz.larkyy.aquaticcratestesting.messages.Messages;
 import org.bukkit.Location;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
@@ -57,13 +58,13 @@ public class AnimationManager {
 
     public void open(Player p, AtomicReference<Reward> reward, PlacedCrate pc, Consumer<Animation> callback) {
         switch (type) {
-            case INSTANT: {
+            case INSTANT -> {
                 new InstantAnimation(this,p,reward,callback);
             }
-            case PLACEDCRATE: {
+            case PLACEDCRATE -> {
                 animations.put(p,new PlacedCrateAnimation(this,p,reward,callback,pc));
             }
-            case CINEMATIC: {
+            case CINEMATIC -> {
                 animations.put(p,new CinematicAnimation(this,p,reward,callback));
             }
         }
@@ -89,9 +90,14 @@ public class AnimationManager {
         return crate;
     }
 
-    public boolean canBeOpened() {
+    public boolean canBeOpened(Player player) {
         if (type == Type.PLACEDCRATE) {
-            return animations.isEmpty();
+            if (animations.isEmpty()) {
+                Messages.OPEN_ALREADY_OPENING.send(player);
+                return false;
+            } else {
+                return true;
+            }
         }
         return true;
     }
@@ -159,7 +165,7 @@ public class AnimationManager {
             return false;
         }
         if (!animation.isStarted()) {
-            return false
+            return false;
         }
         animation.reroll();
         return true;

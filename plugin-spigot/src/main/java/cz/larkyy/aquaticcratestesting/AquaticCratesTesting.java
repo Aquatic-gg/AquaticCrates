@@ -6,6 +6,7 @@ import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
 import cz.larkyy.aquaticcratestesting.crate.CrateListener;
 import cz.larkyy.aquaticcratestesting.dabatase.DatabaseManager;
 import cz.larkyy.aquaticcratestesting.item.ItemHandler;
+import cz.larkyy.aquaticcratestesting.messages.MessageHandler;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerListener;
@@ -26,6 +27,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
     private static CrateHandler crateHandler;
     private static DatabaseManager databaseManager;
     private static NMSHandler nmsHandler;
+    private static MessageHandler messageHandler;
 
     private static ItemHandler itemHandler;
 
@@ -34,12 +36,9 @@ public final class AquaticCratesTesting extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading the plugin..."));
         itemHandler = new ItemHandler();
         crateHandler = new CrateHandler();
-        try {
-            databaseManager = new DatabaseManager();
-        } catch (SQLException | IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
         playerHandler = new PlayerHandler();
+        databaseManager = new DatabaseManager();
+        messageHandler = new MessageHandler();
 
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7NMS Version&f!"));
         String version = "null";
@@ -74,23 +73,25 @@ public final class AquaticCratesTesting extends JavaPlugin {
     }
 
     public void load() {
+        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Database&f!"));
+        try {
+            databaseManager.setup();
+        } catch (SQLException | IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Item Database&f!"));
         itemHandler.load();
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Crates&f!"));
         crateHandler.load();
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Players&f!"));
         playerHandler.loadPlayers();
+        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Messages!"));
+        messageHandler.load();
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fPlugin &aLoaded&f!"));
     }
 
     public void unload() {
         crateHandler.unloadCrates();
-    }
-
-    @Override
-    public void onDisable() {
-        unload();
-
         playerHandler.savePlayers(false);
         Bukkit.getWorlds().forEach(world -> {
             world.getEntities().forEach(entity -> {
@@ -100,6 +101,16 @@ public final class AquaticCratesTesting extends JavaPlugin {
                 }
             });
         });
+    }
+
+    public void reload() {
+        unload();
+        load();
+    }
+
+    @Override
+    public void onDisable() {
+        unload();
     }
 
     public static PlayerHandler getPlayerHandler() {
@@ -123,5 +134,9 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
     public static ItemHandler getItemHandler() {
         return itemHandler;
+    }
+
+    public static MessageHandler getMessageHandler() {
+        return messageHandler;
     }
 }

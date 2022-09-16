@@ -1,11 +1,14 @@
 package cz.larkyy.aquaticcratestesting.dabatase;
 
+import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
+import cz.larkyy.aquaticcratestesting.config.Config;
 import cz.larkyy.aquaticcratestesting.dabatase.drivers.Driver;
 import cz.larkyy.aquaticcratestesting.dabatase.drivers.MySQLDriver;
 import cz.larkyy.aquaticcratestesting.dabatase.drivers.SQLiteDriver;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -17,13 +20,8 @@ import java.util.function.Consumer;
 
 public class DatabaseManager {
 
-    public static final String SQL_CREATE_TABLE =
-            "CREATE TABLE IF NOT EXISTS aquaticcrates_keys (\n" +
-            "    id integer primary key,\n" +
-            "    UniqueID NVARCHAR(64) NOT NULL,\n" +
-            "    Identifier NVARCHAR(64) NOT NULL,\n" +
-            "    Amount INT NOT NULL\n" +
-            ");";
+    private final Config config = new Config(AquaticCratesTesting.instance(),"database-settings.yml");
+
     private final Map<String,Driver> availableDrivers = new HashMap<>(){
         {
             put("sqlite",new SQLiteDriver());
@@ -32,8 +30,12 @@ public class DatabaseManager {
     };
     private final Driver driver;
 
-    public DatabaseManager() throws SQLException, IOException, ClassNotFoundException {
-        driver = availableDrivers.get("sqlite");
+    public DatabaseManager() {
+        config.load();
+        driver = availableDrivers.get(config.getConfiguration().getString("type","sqlite").toLowerCase());
+    }
+
+    public void setup() throws SQLException, IOException, ClassNotFoundException {
         driver.setup();
     }
 
@@ -78,6 +80,10 @@ public class DatabaseManager {
 
     public void savePlayers(boolean async) {
         driver.savePlayers(async);
+    }
+
+    public FileConfiguration getCfg() {
+        return config.getConfiguration();
     }
 
 }

@@ -1,13 +1,13 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.animation.Animation;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.item.CustomItem;
+import cz.larkyy.aquaticcratestesting.messages.Messages;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import cz.larkyy.aquaticcratestesting.utils.RewardUtils;
 import org.bukkit.Bukkit;
@@ -36,6 +36,7 @@ public class Crate {
     private final AtomicReference<AnimationManager> animationManager;
     private final List<String> hologram;
     private final double hologramYOffset;
+    private final String permission;
 
     public Crate(String identifier, CustomItem key, String model,
                  List<Reward> rewards, boolean requiresCrateToOpen,
@@ -43,7 +44,7 @@ public class Crate {
                  AtomicReference<RerollManager> rerollManager,
                  AtomicReference<AnimationManager> animationManager,
                  List<String> hologram,
-                 double hologramYOffset) {
+                 double hologramYOffset, String permission) {
         this.identifier = identifier;
         this.key = new Key(key,this);
         this.model = model;
@@ -54,6 +55,7 @@ public class Crate {
         this.animationManager = animationManager;
         this.hologram = hologram;
         this.hologramYOffset = hologramYOffset;
+        this.permission = permission;
     }
 
     public void openPreview(Player p) {
@@ -117,8 +119,12 @@ public class Crate {
             return false;
         }
 
-        if (!animationManager.get().canBeOpened()) {
-            player.getPlayer().sendMessage("Someone is already opening this crate!");
+        if (permission != null && !player.getPlayer().hasPermission(permission)) {
+            Messages.CRATE_NO_PERMISSION.send(player.getPlayer());
+            return false;
+        }
+
+        if (!animationManager.get().canBeOpened(player.getPlayer())) {
             return false;
         }
         if (takeKey && !player.takeKey(key)) {
@@ -156,7 +162,11 @@ public class Crate {
     }
 
     public Reward getRandomReward(Player p) {
-        return RewardUtils.getRandomReward(p,rewards);
+        return RewardUtils.getRandomReward(p,rewards,null);
+    }
+
+    public List<Reward> getRewards() {
+        return rewards;
     }
 
     public PlacedCrate spawn(Location location) {

@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcratestesting.commands.impl;
 import cz.larkyy.aquaticcratestesting.commands.ICommand;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.Key;
+import cz.larkyy.aquaticcratestesting.messages.Messages;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -22,6 +23,7 @@ public class KeyCommand implements ICommand {
             // /aquaticcrates key give <identifier> [amount] [player] [virtual]
             case "give" -> {
                 if (!sender.hasPermission("aquaticcrates.key.give")) {
+                    Messages.NO_PERMISSION.send(sender);
                     return;
                 }
 
@@ -31,33 +33,51 @@ public class KeyCommand implements ICommand {
 
                 Crate c = Crate.get(args[2]);
                 if (c == null) {
-                    sender.sendMessage("§cNo Key with this identifier has been found!");
+                    Messages.KEY_UNKNOWN_IDENTIFIER.send(sender);
                     return;
                 }
 
                 if (args.length <= 4) {
                     if (!(sender instanceof Player p)) {
-                        sender.sendMessage("§cYou must be a player to send this command!");
+                        Messages.ONLY_FOR_PLAYERS.send(sender);
                         return;
                     }
 
                     if (args.length == 3) {
                         c.giveKey(p, 1, false);
+                        Messages.KEY_GIVE_SENDER
+                                .replace("%crate%",c.getIdentifier())
+                                .replace("%amount%","1")
+                                .replace("%player%",p.getName())
+                                .send(sender);
+                        Messages.KEY_GIVE_RECEIVER
+                                .replace("%crate%",c.getIdentifier())
+                                .replace("%amount%","1")
+                                .send(p);
                         return;
                     }
 
                     try {
                         int amount = Integer.parseInt(args[3]);
                         c.giveKey(p,amount,false);
+                        Messages.KEY_GIVE_SENDER
+                                .replace("%crate%",c.getIdentifier())
+                                .replace("%amount%",amount+"")
+                                .replace("%player%",p.getName())
+                                .send(sender);
+                        Messages.KEY_GIVE_RECEIVER
+                                .replace("%crate%",c.getIdentifier())
+                                .replace("%amount%",amount+"")
+                                .send(p);
                     } catch (NumberFormatException e) {
-                        sender.sendMessage("§cInvalid number format!");
+                        Messages.INVALID_NUMBER.send(sender);
                     }
                     return;
                 }
 
                 Player target = Bukkit.getPlayer(args[4]);
                 if (target == null) {
-                    sender.sendMessage("§cInvalid player!");
+                    Messages.INVALID_PLAYER.send(sender);
                     return;
                 }
 
@@ -65,21 +85,53 @@ public class KeyCommand implements ICommand {
                 try {
                     amount = Integer.parseInt(args[3]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage("§cInvalid number format!");
+                    Messages.INVALID_NUMBER.send(sender);
                     return;
                 }
 
                 if (args.length == 5) {
                     c.giveKey(target,amount,false);
+                    Messages.KEY_GIVE_SENDER
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%",amount+"")
+                            .replace("%player%",target.getName())
+                            .send(sender);
+                    Messages.KEY_GIVE_RECEIVER
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%",amount+"")
+                            .send(target);
                 }
 
                 if (args.length == 6) {
-                    c.giveKey(target,amount, args[5].equalsIgnoreCase("virtual"));
+                    if (args[5].equalsIgnoreCase("virtual")) {
+                        c.giveKey(target,amount, true);
+                        Messages.KEY_GIVE_SENDER_VIRTUAL
+                                .replace("%crate%",c.getIdentifier())
+                                .replace("%amount%",amount+"")
+                                .replace("%player%",target.getName())
+                                .send(sender);
+                        Messages.KEY_GIVE_RECEIVER_VIRTUAL
+                                .replace("%crate%",c.getIdentifier())
+                                .replace("%amount%",amount+"")
+                                .send(target);
+                    } else {
+                        c.giveKey(target,amount, false);
+                        Messages.KEY_GIVE_SENDER
+                                .replace("%crate%",c.getIdentifier())
+                                .replace("%amount%",amount+"")
+                                .replace("%player%",target.getName())
+                                .send(sender);
+                        Messages.KEY_GIVE_RECEIVER
+                                .replace("%crate%",c.getIdentifier())
+                                .replace("%amount%",amount+"")
+                                .send(target);
+                    }
                 }
             }
             // aquaticcrates key giveall <identifier> [number] [virtual]
             case "giveall" -> {
                 if (!sender.hasPermission("aquaticcrates.key.giveall")) {
+                    Messages.NO_PERMISSION.send(sender);
                     return;
                 }
 
@@ -88,32 +140,73 @@ public class KeyCommand implements ICommand {
                 }
                 Crate c = Crate.get(args[2]);
                 if (c == null) {
-                    sender.sendMessage("§cNo Key with this identifier has been found!");
+                    Messages.KEY_UNKNOWN_IDENTIFIER.send(sender);
                     return;
                 }
 
                 if (args.length == 3) {
                     c.giveKeyAll(1,false);
+                    Messages.KEY_GIVE_SENDER
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%","1")
+                            .replace("%player%","ALL")
+                            .send(sender);
+                    Messages.KEY_GIVE_RECEIVER
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%","1")
+                            .broadcast();
                     return;
                 }
                 int amount = 0;
                 try {
                     amount = Integer.parseInt(args[3]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage("§cInvalid number format!");
+                    Messages.INVALID_NUMBER.send(sender);
                 }
 
                 if (args.length == 4) {
                     c.giveKeyAll(amount,false);
+                    Messages.KEY_GIVE_SENDER
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%",amount+"")
+                            .replace("%player%","ALL")
+                            .send(sender);
+                    Messages.KEY_GIVE_RECEIVER
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%",amount+"")
+                            .broadcast();
                     return;
                 }
 
-                c.giveKeyAll(amount, args[4].equalsIgnoreCase("virtual"));
+                if (args[4].equalsIgnoreCase("virtual")) {
+                    c.giveKeyAll(amount, true);
+                    Messages.KEY_GIVE_SENDER_VIRTUAL
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%",amount+"")
+                            .replace("%player%","ALL")
+                            .send(sender);
+                    Messages.KEY_GIVE_RECEIVER_VIRTUAL
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%",amount+"")
+                            .broadcast();
+                } else {
+                    c.giveKeyAll(amount, false);
+                    Messages.KEY_GIVE_SENDER
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%",amount+"")
+                            .replace("%player%","ALL")
+                            .send(sender);
+                    Messages.KEY_GIVE_RECEIVER
+                            .replace("%crate%",c.getIdentifier())
+                            .replace("%amount%",amount+"")
+                            .broadcast();
+                }
 
             }
             // aquaticcrates key take <identifier> <number> <player>
             case "take" -> {
                 if (!sender.hasPermission("aquaticcrates.key.take")) {
+                    Messages.NO_PERMISSION.send(sender);
                     return;
                 }
 
@@ -122,7 +215,7 @@ public class KeyCommand implements ICommand {
                 }
                 Crate c = Crate.get(args[2]);
                 if (c == null) {
-                    sender.sendMessage("§cNo Key with this identifier has been found!");
+                    Messages.INVALID_CRATE.send(sender);
                     return;
                 }
 
@@ -130,20 +223,29 @@ public class KeyCommand implements ICommand {
                 try {
                     amount = Integer.parseInt(args[3]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage("§cInvalid number format!");
+                    Messages.INVALID_NUMBER.send(sender);
                 }
 
                 Player target = Bukkit.getPlayer(args[4]);
                 if (target == null) {
-                    sender.sendMessage("§cInvalid player!");
+                    Messages.INVALID_PLAYER.send(sender);
                     return;
                 }
 
                 CratePlayer.get(target).takeKeys(c.getIdentifier(),amount);
-                target.sendMessage("You have been taken "+amount+"x "+args[2]+" Key!");
+                Messages.KEY_TAKE_SENDER
+                        .replace("%crate%",c.getIdentifier())
+                        .replace("%amount%","1")
+                        .replace("%player%","ALL")
+                        .send(sender);
+                Messages.KEY_TAKE_RECEIVER
+                        .replace("%crate%",c.getIdentifier())
+                        .replace("%amount%",amount+"")
+                        .send(target);
             }
             case "bank" -> {
                 if (!sender.hasPermission("aquaticcrates.key.bank")) {
+                    Messages.NO_PERMISSION.send(sender);
                     return;
                 }
 

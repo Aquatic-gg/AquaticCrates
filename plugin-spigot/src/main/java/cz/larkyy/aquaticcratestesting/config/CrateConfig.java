@@ -50,7 +50,8 @@ public class CrateConfig extends Config {
                 rerollManagerAtomicReference,
                 animationAtomicReference,
                 loadHologram("hologram"),
-                getConfiguration().getDouble("hologram-y-offset",0)
+                getConfiguration().getDouble("hologram-y-offset",0),
+                getConfiguration().getString("open-permission")
         );
         loadPreviewGUI(c,previewGUIAtomicReference);
         loadRerollManager(c,rerollManagerAtomicReference);
@@ -186,7 +187,8 @@ public class CrateConfig extends Config {
         AnimationManager.Type type = AnimationManager.Type.valueOf(getConfiguration().getString("animation.type","INSTANT").toUpperCase());
         atomicReference.set(new AnimationManager(
                 c,
-                type,loadTasks(),
+                type,
+                loadTasks(),
                 getConfiguration().getInt("animation.length",0),
                 loadAnimationTitle("animation.title"),
                 loadAnimationTitle("reroll.title"),

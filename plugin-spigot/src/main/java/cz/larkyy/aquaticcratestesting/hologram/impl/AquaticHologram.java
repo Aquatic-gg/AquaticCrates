@@ -112,6 +112,11 @@ public class AquaticHologram extends Hologram {
 
     @Override
     public void update() {
+        if (getLines() == null || getLines().isEmpty()) {
+            nmsHandler().despawnEntity(ids, visitors);
+            ids.clear();
+            return;
+        }
         if (ids.size() > getLines().size()) {
             int remove = ids.size() - getLines().size();
             List<Integer> idsToRemove = new ArrayList<>();
@@ -119,6 +124,8 @@ public class AquaticHologram extends Hologram {
                 idsToRemove.add(ids.get(ids.size() - 1 - i));
             }
             nmsHandler().despawnEntity(idsToRemove, visitors);
+            ids.removeAll(idsToRemove);
+
         }
 
         int lineNumber = 0;
@@ -138,7 +145,7 @@ public class AquaticHologram extends Hologram {
                     e.setCustomName(Colors.format(line));
                 });
             } else {
-                spawnLine(l2,line);
+                ids.add(spawnLine(l2,line));
             }
             lineNumber++;
         }

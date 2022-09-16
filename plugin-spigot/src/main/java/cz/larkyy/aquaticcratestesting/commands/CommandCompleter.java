@@ -22,7 +22,7 @@ public class CommandCompleter implements TabCompleter {
         }
 
         if (args.length <= 1) {
-            return Arrays.asList("key","crate","item");
+            return Arrays.asList("key","crate","item","reload");
         }
         else if (args[0].equalsIgnoreCase("key")) {
             if (args.length == 2) {

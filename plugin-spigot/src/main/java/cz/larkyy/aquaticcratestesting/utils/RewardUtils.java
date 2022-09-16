@@ -8,8 +8,14 @@ import java.util.List;
 
 public class RewardUtils {
 
-    public static Reward getRandomReward(Player player, List<Reward> rewards) {
+    public static Reward getRandomReward(Player player, List<Reward> rewards, Reward excludedReward) {
         List<Reward> rs = getPossibleRewards(player,rewards);
+        if (excludedReward != null) {
+            rs.remove(excludedReward);
+            if (rs.isEmpty()) {
+                return excludedReward;
+            }
+        }
 
         if (rs.isEmpty()) {
             return null;
