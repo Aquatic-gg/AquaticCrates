@@ -22,7 +22,5 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Install dependencies
-      run: mvn install
     - name: Build with Maven
       run: mvn clean package
