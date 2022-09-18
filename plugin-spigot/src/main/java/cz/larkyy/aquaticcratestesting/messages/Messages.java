@@ -47,7 +47,8 @@ public enum Messages {
     KEY_GIVE_RECEIVER("key-given-receiver","&fYou have been given &f%amount%x %crate% Key!"),
     KEY_GIVE_RECEIVER_VIRTUAL("key-given-receiver-virtual","&fYou have been given &f%amount%x&f Virtual %crate% Key!"),
     KEY_TAKE_SENDER("key-taken-sender","&fYou have taken %amount%x Virtual %crate% Key from %player%!"),
-    KEY_TAKE_RECEIVER("key-taken-receiver","&fYou have been taken %amount%x Virtual %crate% Key!");
+    KEY_TAKE_RECEIVER("key-taken-receiver","&fYou have been taken %amount%x Virtual %crate% Key!"),
+    DO_NOT_HAVE_KEY("dont-have-key","&cYou do not have the key to open the crate!");
     private final String path;
     private final Object defVal;
 
