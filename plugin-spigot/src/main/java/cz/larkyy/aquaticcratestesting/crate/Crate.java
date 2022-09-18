@@ -85,8 +85,6 @@ public class Crate {
         if (virtual) {
             CratePlayer cp = CratePlayer.get(player);
             cp.addKeys(identifier,amount);
-            player.sendMessage("You have been given "+amount+"x "+identifier+" Key");
-            player.sendMessage("Now have: "+cp.getKeys(identifier));
         }
         else key.give(Collections.singletonList(player), amount);
     }
