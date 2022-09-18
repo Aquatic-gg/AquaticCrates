@@ -65,7 +65,7 @@ public abstract class CustomItem {
     public static CustomItem create(String namespace, String name, List<String> description,int amount, int modeldata) {
         String[] strs = namespace.split(":");
         if (strs.length == 1) {
-            return new VanillaItem(Material.valueOf(strs[0]),name,description,amount,modeldata);
+            return new VanillaItem(Material.valueOf(strs[0].toUpperCase()),name,description,amount,modeldata);
         }
         String provider = strs[0].toLowerCase();
         String identifier = namespace.substring(provider.length()+1);

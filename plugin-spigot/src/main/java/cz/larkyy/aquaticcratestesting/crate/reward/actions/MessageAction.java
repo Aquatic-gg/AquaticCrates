@@ -13,6 +13,6 @@ public class MessageAction extends RewardAction {
 
     @Override
     public void run(Player player) {
-        player.sendMessage(message);
+        player.sendMessage(message.replace("%player%",player.getName()));
     }
 }

@@ -129,9 +129,15 @@ public class CrateConfig extends Config {
             return;
         }
 
+        String title;
+        if (getConfiguration().contains("preview.title")) {
+            title = Colors.format(getConfiguration().getString("preview.title"));
+        } else {
+            title = crate.getIdentifier()+" Preview";
+        }
         Menu.Builder builder =Menu.builder(AquaticCratesTesting.instance())
                 .size(54)
-                .title(crate.getIdentifier()+" Preview");
+                .title(title);
 
         if (getConfiguration().contains("preview.items")) {
             for (String str : getConfiguration().getConfigurationSection("preview.items").getKeys(false)) {
