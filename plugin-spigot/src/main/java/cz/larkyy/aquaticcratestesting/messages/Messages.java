@@ -45,7 +45,7 @@ public enum Messages {
     KEY_GIVE_SENDER("key-given-sender","&f%amount%x %crate% Key has been given to %player%!"),
     KEY_GIVE_SENDER_VIRTUAL("key-given-sender-virtual","&f%amount%x Virtual %crate% Key has been given to %player%!"),
     KEY_GIVE_RECEIVER("key-given-receiver","&fYou have been given &f%amount%x %crate% Key!"),
-    KEY_GIVE_RECEIVER_VIRTUAL("key-given-receiver","&fYou have been given &f%amount%x&f Virtual %crate% Key!"),
+    KEY_GIVE_RECEIVER_VIRTUAL("key-given-receiver-virtual","&fYou have been given &f%amount%x&f Virtual %crate% Key!"),
     KEY_TAKE_SENDER("key-taken-sender","&fYou have taken %amount%x Virtual %crate% Key from %player%!"),
     KEY_TAKE_RECEIVER("key-taken-receiver","&fYou have been taken %amount%x Virtual %crate% Key!");
     private final String path;
