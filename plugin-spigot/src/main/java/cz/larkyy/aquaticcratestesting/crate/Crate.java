@@ -126,7 +126,7 @@ public class Crate {
             return false;
         }
         if (takeKey && !player.takeKey(key)) {
-            player.getPlayer().sendMessage("You do not have the key!");
+            Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
             return false;
         }
         AtomicReference<Reward> reward = new AtomicReference<>(getRandomReward(player.getPlayer()));
