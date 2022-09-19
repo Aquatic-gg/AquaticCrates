@@ -42,7 +42,7 @@ public class MEModel extends Model {
 
     @Override
     public void show(Player player) {
-
+        modeledEntity.showToPlayer(player);
     }
 
     @Override

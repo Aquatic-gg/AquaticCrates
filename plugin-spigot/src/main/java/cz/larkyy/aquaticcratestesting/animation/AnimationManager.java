@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcratestesting.animation;
 
 import cz.larkyy.aquaticcratestesting.animation.impl.CinematicAnimation;
+import cz.larkyy.aquaticcratestesting.animation.impl.PlacedCratePersonalisedAnimation;
 import cz.larkyy.aquaticcratestesting.animation.task.Task;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
@@ -37,6 +38,7 @@ public class AnimationManager {
     public enum Type {
         INSTANT,
         PLACEDCRATE,
+        PLACEDCRATE_PERSONALISED,
         CINEMATIC
     }
 
@@ -66,6 +68,9 @@ public class AnimationManager {
             }
             case CINEMATIC -> {
                 animations.put(p,new CinematicAnimation(this,p,reward,callback));
+            }
+            case PLACEDCRATE_PERSONALISED -> {
+                animations.put(p,new PlacedCratePersonalisedAnimation(this,p,reward,callback,pc));
             }
         }
     }
