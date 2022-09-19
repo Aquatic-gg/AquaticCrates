@@ -8,6 +8,7 @@ import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.model.Model;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -37,6 +38,7 @@ public class PlacedCratePersonalisedAnimation extends Animation {
 
     @Override
     public void begin() {
+        getPlayer().getPersistentDataContainer().set(KEY, PersistentDataType.INTEGER,1);
         start();
     }
 
@@ -92,7 +94,10 @@ public class PlacedCratePersonalisedAnimation extends Animation {
         if (model != null) {
             model.remove();
         }
-        placedCrate.getModel().show(getPlayer());
+        if (placedCrate != null) {
+            placedCrate.getModel().show(getPlayer());
+        }
+        getPlayer().getPersistentDataContainer().remove(KEY);
     }
 
     @Override
