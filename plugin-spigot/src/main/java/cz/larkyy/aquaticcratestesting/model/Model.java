@@ -15,7 +15,7 @@ public abstract class Model implements IModel {
 
         String[] strs = namespace.split(":");
         String plugin = strs[0].toLowerCase();
-        String id = strs[1];
+        String id = namespace.substring(plugin.length()+1);
 
         switch (plugin) {
             case "modelengine" -> {

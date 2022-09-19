@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcratestesting.model.impl;
 import cz.larkyy.aquaticcratestesting.model.Model;
 import dev.lone.itemsadder.api.CustomEntity;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -51,10 +52,11 @@ public class IAModel extends Model {
 
     public static Model create(String id, Location location, Player player) {
         CustomEntity entity;
+        Bukkit.broadcastMessage("Spawning IA Entity: "+id);
         if (player == null) {
-             entity = CustomEntity.spawn(id,location);
+             entity = CustomEntity.spawn(id,location,true,false,true);
         } else {
-            entity = CustomEntity.spawn(id,location, Arrays.asList(player),true,le -> {});
+            entity = CustomEntity.spawn(id,location, Arrays.asList(player),true,false,true,le -> {});
         }
         return new IAModel(entity);
     }
