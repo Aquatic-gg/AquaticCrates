@@ -52,7 +52,6 @@ public class IAModel extends Model {
 
     public static Model create(String id, Location location, Player player) {
         CustomEntity entity;
-        Bukkit.broadcastMessage("Spawning IA Entity: "+id);
         if (player == null) {
              entity = CustomEntity.spawn(id,location,true,false,true);
         } else {
