@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcratestesting.crate.reward.actions;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import xyz.larkyy.colorutils.Colors;
 
 public class CommandAction extends RewardAction {
 
@@ -16,7 +17,7 @@ public class CommandAction extends RewardAction {
     public void run(Player player) {
         Bukkit.dispatchCommand(
                 Bukkit.getConsoleSender(),
-                args.replace("%player%", player.getName())
+                Colors.format(args.replace("%player%", player.getName()))
         );
     }
 }

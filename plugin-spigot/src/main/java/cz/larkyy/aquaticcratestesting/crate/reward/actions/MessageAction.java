@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcratestesting.crate.reward.actions;
 
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
 import org.bukkit.entity.Player;
+import xyz.larkyy.colorutils.Colors;
 
 public class MessageAction extends RewardAction {
 
@@ -13,6 +14,6 @@ public class MessageAction extends RewardAction {
 
     @Override
     public void run(Player player) {
-        player.sendMessage(message.replace("%player%",player.getName()));
+        player.sendMessage(Colors.format(message.replace("%player%",player.getName())));
     }
 }
