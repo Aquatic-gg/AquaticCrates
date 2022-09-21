@@ -4,6 +4,8 @@ import cz.larkyy.aquaticcratestesting.commands.impl.CrateCommand;
 import cz.larkyy.aquaticcratestesting.commands.impl.ItemCommand;
 import cz.larkyy.aquaticcratestesting.commands.impl.KeyCommand;
 import cz.larkyy.aquaticcratestesting.commands.impl.ReloadCommand;
+import cz.larkyy.aquaticcratestesting.crate.Crate;
+import cz.larkyy.aquaticcratestesting.editor.Editor;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,6 +32,11 @@ public class Commands implements CommandExecutor {
         if (args.length < 1) {
             Messages.HELP.send(sender);
             return false;
+        }
+
+        if (args.length > 1 && args[0].equalsIgnoreCase("editor")) {
+            new Editor(Crate.get(args[1])).run();
+            return true;
         }
 
         ICommand cmd = availableCommands.get(args[0]);

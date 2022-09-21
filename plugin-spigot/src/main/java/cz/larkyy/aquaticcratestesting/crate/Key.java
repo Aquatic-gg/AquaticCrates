@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
+import cz.larkyy.aquaticcratestesting.editor.annotations.EditorInstance;
 import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ public class Key {
     private static final NamespacedKey KEY
             = new NamespacedKey(AquaticCratesTesting.getPlugin(AquaticCratesTesting.class),"KeyIdentifier");
 
+    @EditorInstance
     private final CustomItem item;
     private final Crate crate;
 

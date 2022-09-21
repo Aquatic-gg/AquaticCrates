@@ -6,6 +6,9 @@ import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
+import cz.larkyy.aquaticcratestesting.editor.Editor;
+import cz.larkyy.aquaticcratestesting.editor.annotations.EditorField;
+import cz.larkyy.aquaticcratestesting.editor.annotations.EditorInstance;
 import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
@@ -27,9 +30,13 @@ public class Crate {
     private static final NamespacedKey KEY = new NamespacedKey(AquaticCratesTesting.instance(),"CrateIdentifier");
 
     private final String identifier;
+    @EditorInstance
     private final Key key;
+    @EditorField(id = "model",page = Editor.Page.MAIN,slot = 0)
     private final String model;
+    @EditorField(id = "rewards",page = Editor.Page.REWARDS,slot = 0)
     private final List<Reward> rewards;
+    @EditorField(id = "requires crate to open",page = Editor.Page.KEY,slot = 0)
     private final boolean requiresCrateToOpen;
     private final AtomicReference<PreviewGUI> previewGUI;
     private final AtomicReference<RerollManager> rerollManager;
