@@ -27,12 +27,18 @@ public class Message {
     }
 
     public void send(CommandSender sender) {
+        if (values.size() == 1 && values.get(0).isEmpty()) {
+            return;
+        }
         values.forEach(v -> {
             sender.sendMessage(Colors.format(v));
         });
     }
 
     public void broadcast() {
+        if (values.size() == 1 && values.get(0).isEmpty()) {
+            return;
+        }
         values.forEach(v -> {
             Bukkit.broadcastMessage(Colors.format(v));
         });
