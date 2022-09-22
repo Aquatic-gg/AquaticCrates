@@ -1,13 +1,11 @@
 package cz.larkyy.aquaticcratestesting.editor.item.impl;
 
-import cz.larkyy.aquaticcratestesting.editor.NewEditor;
+import cz.larkyy.aquaticcratestesting.editor.Editor;
 import cz.larkyy.aquaticcratestesting.editor.item.EditorItem;
-import cz.larkyy.aquaticcratestesting.editor.menus.NewEditorMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import xyz.larkyy.menulib.MenuItem;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 
 public class CategoryItem implements EditorItem {
@@ -25,11 +23,11 @@ public class CategoryItem implements EditorItem {
         this.title = title;
     }
 
-    public MenuItem build(NewEditor editor) {
+    public MenuItem build(Editor editor) {
         itemBuilder.action(e -> {
             if (e.isLeftClick()) {
                 Bukkit.broadcastMessage("Clicked on a category of: "+clazz.getName());
-                new NewEditor(editor, editor.getPlayer(), clazz,classInstance,title).open(editor.getPlayer());
+                new Editor(editor, editor.getPlayer(), clazz,classInstance,title).open(editor.getPlayer());
             }
         });
         return itemBuilder.build();

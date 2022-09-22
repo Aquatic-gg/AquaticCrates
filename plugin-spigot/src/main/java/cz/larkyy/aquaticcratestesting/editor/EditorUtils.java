@@ -69,8 +69,6 @@ public class EditorUtils {
                 instance,
                 f,
                 is,
-                a.page(),
-                a.type(),
                 a.slot()
                 );
     }

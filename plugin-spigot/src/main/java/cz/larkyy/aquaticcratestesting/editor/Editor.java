@@ -1,80 +1,145 @@
 package cz.larkyy.aquaticcratestesting.editor;
 
-import cz.larkyy.aquaticcratestesting.crate.Crate;
-import cz.larkyy.aquaticcratestesting.editor.datatype.DataType;
-import cz.larkyy.aquaticcratestesting.editor.datatype.impl.IntDataType;
-import cz.larkyy.aquaticcratestesting.editor.datatype.impl.ObjectListDataType;
-import cz.larkyy.aquaticcratestesting.editor.datatype.impl.StringDataType;
-import cz.larkyy.aquaticcratestesting.editor.datatype.impl.StringListDataType;
+import cz.larkyy.aquaticcratestesting.editor.annotations.EditorCategory;
+import cz.larkyy.aquaticcratestesting.editor.annotations.EditorField;
+import cz.larkyy.aquaticcratestesting.editor.annotations.EditorInstance;
+import cz.larkyy.aquaticcratestesting.editor.item.EditorItem;
+import cz.larkyy.aquaticcratestesting.editor.item.impl.CategoryItem;
+import cz.larkyy.aquaticcratestesting.editor.item.impl.OptionItem;
 import cz.larkyy.aquaticcratestesting.editor.menus.EditorMenu;
-import cz.larkyy.aquaticcratestesting.editor.menus.impl.BasicEditorMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Editor {
+    private final Editor previousEditor;
+    private final Player p;
+    private final Class<?> clazz;
+    private final Object classInstance;
 
-    public static final List<Page> CATEGORIES = new ArrayList<>(Arrays.asList(
-            Page.MAIN,
-            Page.KEY,
-            Page.REWARD,
-            Page.REWARDS
-    ));
+    private final EditorMenu editorMenu;
 
-    public enum Page {
-        MAIN(new BasicEditorMenu("Crates Editor")),
-        KEY(new BasicEditorMenu("Key Editor")),
-        REWARDS(new BasicEditorMenu("Rewards Editor")),
-        REWARD(new BasicEditorMenu("Reward Editor"));
-
-        private final EditorMenu menu;
-
-        Page(EditorMenu menu) {
-            this.menu = menu;
-        }
-
-        public EditorMenu menu() {
-            return menu;
-        }
+    public Editor(Editor previousEditor, Player p, Class<?> editingClass, Object classInstance, String title) {
+        this.previousEditor = previousEditor;
+        this.p = p;
+        this.classInstance = classInstance;
+        this.clazz = editingClass;
+        this.editorMenu = new EditorMenu(title,this);
     }
 
-    public enum FieldType {
-        STRING(new StringDataType()),
-        INT(new IntDataType()),
-        STRING_LIST(new StringListDataType()),
-        OBJECT_LIST(new ObjectListDataType());
-
-        private final DataType dataType;
-        FieldType(DataType dataType) {
-            this.dataType = dataType;
+    public void open(Player p) {
+        for (EditorItem i : getClassItems()) {
+            editorMenu.addItem(i.build(this));
         }
 
-        public DataType get() {
-            return dataType;
-        }
+        p.openInventory(editorMenu.build().getInventory());
     }
 
-    private final Crate crate;
-
-    public Editor(Crate crate) {
-        this.crate = crate;
+    public Player getPlayer() {
+        return p;
     }
 
-    public void build(Player p) {
-        List<EditorItem> items = EditorUtils.getItems(crate);
+    public Editor getPreviousEditor() {
+        return previousEditor;
+    }
 
-        Map<Page,EditorMenu> editorMenus = new HashMap<>();
-        for (Page page : CATEGORIES) {
-            editorMenus.put(page,page.menu);
-        }
-        for (EditorItem item : items) {
-            Bukkit.broadcastMessage("Loading item for "+item.page().toString());
-            Bukkit.broadcastMessage("  ID: "+item.getId());
-            Bukkit.broadcastMessage("  Slot: "+item.getSlots().get(0));
-            editorMenus.get(item.page()).addEditorItem(item);
-        }
+    private List<EditorItem> getClassItems() {
+        List<EditorItem> items = new ArrayList<>();
+        for (Field f : clazz.getDeclaredFields()) {
 
-        editorMenus.get(Page.MAIN).open(p);
+            if (f.isAnnotationPresent(EditorField.class)) {
+                f.setAccessible(true);
+
+                EditorField a = f.getAnnotation(EditorField.class);
+                EditorItem i = getItem(classInstance,a,f);
+                Bukkit.broadcastMessage("Found Option Item: "+f.getName());
+                items.add(i);
+            }
+            if (f.isAnnotationPresent(EditorInstance.class)) {
+                f.setAccessible(true);
+                try {
+                    Object o = f.get(classInstance);
+                    Class<?> superClass = o.getClass().getSuperclass();
+                    if (superClass != null) {
+                        EditorItem i = findCategoryField(superClass,o);
+                        if (i != null) {
+                            items.add(i);
+                        }
+                    }
+                    EditorItem i = findCategoryField(o.getClass(),o);
+                    if (i != null) {
+                        items.add(i);
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (f.isAnnotationPresent(EditorCategory.class)) {
+                f.setAccessible(true);
+
+                try {
+                    Class<?> fieldClazz = f.get(classInstance).getClass();
+
+                    EditorCategory a = f.getAnnotation(EditorCategory.class);
+                    EditorItem i = getCategoryItem(f.get(classInstance),a,fieldClazz);
+                    items.add(i);
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return items;
+    }
+
+    private EditorItem findCategoryField(Class<?> clazz, Object classInstance) {
+        for (Field f : clazz.getDeclaredFields()) {
+            if (f.isAnnotationPresent(EditorCategory.class)) {
+                f.setAccessible(true);
+
+                EditorCategory a = f.getAnnotation(EditorCategory.class);
+                try {
+                    return getCategoryItem(classInstance,a,f.get(classInstance).getClass());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return null;
+    }
+
+    private EditorItem getCategoryItem(Object instance, EditorCategory a, Class<?> clazz) {
+        ItemStack is = new ItemStack(a.material());
+        ItemMeta im = is.getItemMeta();
+        im.setDisplayName(a.displayName());
+        is.setItemMeta(im);
+
+        return new CategoryItem(
+                a.id(),
+                instance,
+                clazz,
+                is,
+                a.slot(),
+                a.title()
+        );
+    }
+
+    private EditorItem getItem(Object instance, EditorField a, Field f) {
+        ItemStack is = new ItemStack(a.material());
+        ItemMeta im = is.getItemMeta();
+        im.setDisplayName(a.displayName());
+        is.setItemMeta(im);
+
+        return new OptionItem(
+                a.id(),
+                instance,
+                f,
+                is,
+                a.slot()
+        );
     }
 }

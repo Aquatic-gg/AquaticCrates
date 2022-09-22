@@ -1,11 +1,8 @@
 package cz.larkyy.aquaticcratestesting.editor.item.impl;
 
 import cz.larkyy.aquaticcratestesting.editor.Editor;
-import cz.larkyy.aquaticcratestesting.editor.NewEditor;
 import cz.larkyy.aquaticcratestesting.editor.item.EditorItem;
-import cz.larkyy.aquaticcratestesting.editor.menus.NewEditorMenu;
 import org.bukkit.Bukkit;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import xyz.larkyy.menulib.MenuItem;
 
@@ -17,13 +14,11 @@ public class OptionItem implements EditorItem {
     private final MenuItem.Builder itemBuilder;
     private final Object classInstance;
     private final Field f;
-    private final Editor.FieldType type;
 
-    public OptionItem(String id, Object classInstance, Field f, ItemStack is, Editor.FieldType type, int slot) {
+    public OptionItem(String id, Object classInstance, Field f, ItemStack is, int slot) {
         itemBuilder = MenuItem.builder(id,is)
                 .slots(Arrays.asList(slot));
         this.classInstance = classInstance;
-        this.type = type;
         this.f = f;
     }
 
@@ -36,7 +31,7 @@ public class OptionItem implements EditorItem {
         }
     }
 
-    public MenuItem build(NewEditor editor) {
+    public MenuItem build(Editor editor) {
         itemBuilder.action(e -> {
            if (e.isLeftClick()) {
                Bukkit.broadcastMessage("Clicked on a setting of: "+f.getName());
