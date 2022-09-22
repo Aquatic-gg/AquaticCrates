@@ -9,7 +9,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,20 +23,10 @@ public class EditorUtils {
         List<EditorItem> items = new ArrayList<>();
         for (Field f : clazz.getDeclaredFields()) {
 
-            /*
-            ParameterizedType genericType = (ParameterizedType) f.getGenericType();
-            Class<?> genericClass = (Class<?>) genericType.getActualTypeArguments()[0];
-            if (genericClass != null) {
-                Bukkit.broadcastMessage(genericClass.getName());
-            }
-
-             */
-
             if (f.isAnnotationPresent(EditorField.class)) {
                 f.setAccessible(true);
                 try {
                     if (f.get(instance) instanceof Collection<?>) {
-                        //Type type = f.getGenericType();
                         ParameterizedType genericType = (ParameterizedType) f.getGenericType();
                         Class<?> genericClass = (Class<?>) genericType.getActualTypeArguments()[0];
                         if (genericClass != null) {

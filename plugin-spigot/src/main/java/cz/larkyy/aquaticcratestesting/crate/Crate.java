@@ -7,6 +7,7 @@ import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.editor.Editor;
+import cz.larkyy.aquaticcratestesting.editor.annotations.EditorCategory;
 import cz.larkyy.aquaticcratestesting.editor.annotations.EditorField;
 import cz.larkyy.aquaticcratestesting.editor.annotations.EditorInstance;
 import cz.larkyy.aquaticcratestesting.item.CustomItem;
@@ -30,14 +31,13 @@ public class Crate {
     private static final NamespacedKey KEY = new NamespacedKey(AquaticCratesTesting.instance(),"CrateIdentifier");
 
     private final String identifier;
-    @EditorInstance
+    @EditorCategory(id = "key",page = Editor.Page.REWARDS,slot = 9, displayName = "&bKey", title = "Key Editor")
     private final Key key;
-    @EditorField(id = "model",page = Editor.Page.MAIN,slot = 0)
+    @EditorField(id = "model",page = Editor.Page.MAIN,slot = 10, displayName = "&bModel")
     private final String model;
-    @EditorField(id = "rewards",page = Editor.Page.REWARDS,slot = 0)
+    @EditorCategory(id = "rewards",page = Editor.Page.REWARDS,slot = 11, displayName = "&bRewards", title = "Reward Editor")
     private final List<Reward> rewards;
-    @EditorField(id = "requires crate to open",page = Editor.Page.KEY,slot = 0)
-    private final boolean requiresCrateToOpen;
+
     private final AtomicReference<PreviewGUI> previewGUI;
     private final AtomicReference<RerollManager> rerollManager;
     private final AtomicReference<AnimationManager> animationManager;
@@ -53,10 +53,9 @@ public class Crate {
                  List<String> hologram,
                  double hologramYOffset, String permission) {
         this.identifier = identifier;
-        this.key = new Key(key,this);
+        this.key = new Key(key,this,requiresCrateToOpen);
         this.model = model;
         this.rewards = rewards;
-        this.requiresCrateToOpen = requiresCrateToOpen;
         this.previewGUI = previewGUI;
         this.rerollManager = rerollManager;
         this.animationManager = animationManager;
@@ -180,10 +179,6 @@ public class Crate {
 
     public String getModel() {
         return model;
-    }
-
-    public boolean requiresCrateToOpen() {
-        return requiresCrateToOpen;
     }
 
     public List<Reward> getPossibleRewards(Player p) {

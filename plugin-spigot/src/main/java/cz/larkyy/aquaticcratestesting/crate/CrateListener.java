@@ -119,7 +119,7 @@ public class CrateListener implements Listener {
     public void onKeyInteract(KeyInteractEvent e) {
         Key key = e.getKey();
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (key.getCrate().requiresCrateToOpen()) {
+            if (key.requiresCrateToOpen()) {
                 return;
             }
             key.getCrate().open(CratePlayer.get(e.getPlayer()),null,e.getPlayer().isSneaking());

@@ -125,7 +125,6 @@ public class AquaticHologram extends Hologram {
             }
             nmsHandler().despawnEntity(idsToRemove, visitors);
             ids.removeAll(idsToRemove);
-
         }
 
         int lineNumber = 0;

@@ -2,6 +2,9 @@ package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
+import cz.larkyy.aquaticcratestesting.editor.Editor;
+import cz.larkyy.aquaticcratestesting.editor.annotations.EditorCategory;
+import cz.larkyy.aquaticcratestesting.editor.annotations.EditorField;
 import cz.larkyy.aquaticcratestesting.editor.annotations.EditorInstance;
 import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import org.bukkit.NamespacedKey;
@@ -17,13 +20,17 @@ public class Key {
     private static final NamespacedKey KEY
             = new NamespacedKey(AquaticCratesTesting.getPlugin(AquaticCratesTesting.class),"KeyIdentifier");
 
-    @EditorInstance
+    @EditorCategory(id = "item",page = Editor.Page.REWARDS,slot = 10, displayName = "&bItem", title = "Item Editor")
     private final CustomItem item;
     private final Crate crate;
 
-    public Key(CustomItem item, Crate crate) {
+    @EditorField(id = "requires crate to open",page = Editor.Page.KEY,slot = 9, displayName = "&bRequires Crate to open")
+    private final boolean requiresCrateToOpen;
+
+    public Key(CustomItem item, Crate crate, boolean requiresCrateToOpen) {
         this.item = item;
         this.crate = crate;
+        this.requiresCrateToOpen = requiresCrateToOpen;
     }
 
     public Crate getCrate() {
@@ -65,5 +72,9 @@ public class Key {
         String id = im.getPersistentDataContainer().get(KEY,PersistentDataType.STRING);
         if (id == null) return null;
         else return get(id);
+    }
+
+    public boolean requiresCrateToOpen() {
+        return requiresCrateToOpen;
     }
 }
