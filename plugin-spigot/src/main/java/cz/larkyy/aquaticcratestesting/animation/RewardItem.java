@@ -73,9 +73,19 @@ public class RewardItem {
         Location loc = item.getLocation().clone().add(0,reward.getHologramYOffset(),0);
         hologram = new AquaticHologram(loc, reward.getHologram());
         if (p == null) {
-            hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()));
+            hologram.spawn(
+                    new ArrayList<>(Bukkit.getOnlinePlayers()),
+                    list -> {
+                        list.replaceAll(s ->
+                                s.replace("%reward-name%",reward.getItem().getItem().getItemMeta().getDisplayName()));
+                    });
         } else {
-            hologram.spawn(Arrays.asList(p));
+            hologram.spawn(
+                    Arrays.asList(p),
+                    list -> {
+                        list.replaceAll(s ->
+                                s.replace("%reward-name%",reward.getItem().getItem().getItemMeta().getDisplayName()));
+                    });
         }
     }
 
@@ -92,7 +102,10 @@ public class RewardItem {
         Location loc = item.getLocation().clone().add(0,reward.getHologramYOffset(),0);
         hologram.setLocation(loc);
         hologram.setLines(reward.getHologram());
-        hologram.update();
+        hologram.update(list -> {
+            list.replaceAll(s ->
+                    s.replace("%reward-name%",reward.getItem().getItem().getItemMeta().getDisplayName()));
+        });
         /*
         if (p == null) {
             hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()));

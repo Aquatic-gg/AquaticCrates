@@ -22,7 +22,7 @@ public class PlacedCrate {
         this.location = location;
         this.crate = crate;
         this.hologram = new AquaticHologram(location.clone().add(0,crate.getHologramYOffset(),0),crate.getHologram());
-        hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()));
+        hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()), list -> {});
         this.model = Model.create(model,location,null);
         location.getBlock().setType(Material.BARRIER);
     }

@@ -21,7 +21,7 @@ public class PlayerListener implements Listener {
         Player p = e.getPlayer();
         AquaticCratesTesting.getPlayerHandler().loadPlayer(p,player -> {});
         AquaticCratesTesting.getCrateHandler().getLocations().values().forEach(v -> {
-            v.getHologram().spawn(Arrays.asList(p));
+            v.getHologram().spawn(Arrays.asList(p), list -> {});
         });
 
         if (p.getPersistentDataContainer().has(Animation.KEY, PersistentDataType.INTEGER)) {

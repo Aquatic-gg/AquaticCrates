@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class EmptyHologram extends Hologram {
     public EmptyHologram(Location location, List<String> lines) {
@@ -27,7 +28,7 @@ public class EmptyHologram extends Hologram {
     }
 
     @Override
-    public void spawn(List<Player> visitors) {
+    public void spawn(List<Player> visitors, Consumer<List<String>> consumer) {
 
     }
 
@@ -42,7 +43,7 @@ public class EmptyHologram extends Hologram {
     }
 
     @Override
-    public void update() {
+    public void update(Consumer<List<String>> consumer) {
 
     }
 }

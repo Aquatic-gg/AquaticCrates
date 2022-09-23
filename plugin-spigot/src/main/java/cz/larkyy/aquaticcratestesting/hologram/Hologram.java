@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class Hologram {
 
@@ -21,12 +22,12 @@ public abstract class Hologram {
 
     public abstract void despawn();
 
-    public abstract void spawn(List<Player> visitors);
+    public abstract void spawn(List<Player> visitors, Consumer<List<String>> consumer);
 
     public abstract void hide();
     public abstract void show();
 
-    public abstract void update();
+    public abstract void update(Consumer<List<String>> consumer);
 
 
     public Location getLocation() {

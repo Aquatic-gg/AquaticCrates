@@ -13,6 +13,7 @@ import xyz.larkyy.colorutils.Colors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class AquaticHologram extends Hologram {
 
@@ -68,18 +69,21 @@ public class AquaticHologram extends Hologram {
     }
 
     @Override
-    public void spawn(List<Player> visitors) {
+    public void spawn(List<Player> visitors, Consumer<List<String>> consumer) {
 
         if (hidden) {
             addAllVisitors(visitors);
             return;
         }
 
+        List<String> lines = new ArrayList<>(getLines());
+        consumer.accept(lines);
+
         despawn();
         addAllVisitors(visitors);
 
-        int i = getLines().size();
-        for (String line : getLines()) {
+        int i = lines.size();
+        for (String line : lines) {
             ids.add(spawnLine(getLocation().clone().add(0,0.25*i,0),line));
             i--;
         }
@@ -107,18 +111,21 @@ public class AquaticHologram extends Hologram {
             return;
         }
         hidden = false;
-        spawn(visitors);
+        spawn(visitors, list -> {});
     }
 
     @Override
-    public void update() {
+    public void update(Consumer<List<String>> consumer) {
         if (getLines() == null || getLines().isEmpty()) {
             nmsHandler().despawnEntity(ids, visitors);
             ids.clear();
             return;
         }
-        if (ids.size() > getLines().size()) {
-            int remove = ids.size() - getLines().size();
+        List<String> lines = new ArrayList<>(getLines());
+        consumer.accept(lines);
+
+        if (ids.size() > lines.size()) {
+            int remove = ids.size() - lines.size();
             List<Integer> idsToRemove = new ArrayList<>();
             for (int i = 0; i < remove; i++) {
                 idsToRemove.add(ids.get(ids.size() - 1 - i));
@@ -128,8 +135,8 @@ public class AquaticHologram extends Hologram {
         }
 
         int lineNumber = 0;
-        for (String line : getLines()) {
-            Location l2 = getLocation().clone().add(0, 0.25 * (getLines().size() - lineNumber), 0);
+        for (String line : lines) {
+            Location l2 = getLocation().clone().add(0, 0.25 * (lines.size() - lineNumber), 0);
             if (lineNumber < ids.size()) {
                 int id = ids.get(lineNumber);
                 Entity entity = nmsHandler().getEntity(id);
