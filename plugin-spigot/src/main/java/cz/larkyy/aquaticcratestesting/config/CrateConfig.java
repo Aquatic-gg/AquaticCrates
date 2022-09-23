@@ -200,7 +200,8 @@ public class CrateConfig extends Config {
                 loadAnimationTitle("reroll.title"),
                 loadLocation("animation.model-location"),
                 loadLocation("animation.camera-location"),
-                getConfiguration().getBoolean("animation.skippable",false)
+                getConfiguration().getBoolean("animation.skippable",false),
+                getConfiguration().getBoolean("animation.use-pumpkin-helmet",false)
                         ));
     }
 

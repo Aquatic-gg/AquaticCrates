@@ -33,7 +33,9 @@ public class AnimationManager {
     private final Location cameraLocation;
     private final Map<Player,Animation> animations;
     private final boolean skippable;
+    private final boolean setPumpkinHelmet;
     private final Map<Player, List<BossBar>> bossBars;
+
 
     public enum Type {
         INSTANT,
@@ -43,7 +45,7 @@ public class AnimationManager {
     }
 
     public AnimationManager(Crate crate, Type type, List<Task> tasks, int length, AnimationTitle openingTitle, AnimationTitle rerollingTitle,
-                            Location modelLocation, Location cameraLocation, boolean skippable) {
+                            Location modelLocation, Location cameraLocation, boolean skippable, boolean setPumpkinHelmet) {
         this.crate = crate;
         this.type = type;
         this.tasks = tasks;
@@ -54,6 +56,7 @@ public class AnimationManager {
         this.modelLocation = modelLocation;
         this.cameraLocation = cameraLocation;
         this.skippable = skippable;
+        this.setPumpkinHelmet = setPumpkinHelmet;
 
         bossBars = new HashMap<>();
     }
@@ -85,6 +88,10 @@ public class AnimationManager {
 
     public boolean shouldStopAnimation(int i) {
         return (i >= length);
+    }
+
+    public boolean setPumpkinHelmet() {
+        return setPumpkinHelmet;
     }
 
     public void removeAnimation(Player player) {

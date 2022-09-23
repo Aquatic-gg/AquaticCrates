@@ -32,6 +32,14 @@ public class EditorItem extends MenuItem {
         }
     }
 
+    public Object get() {
+        try {
+            return f.get(classInstance);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public String field() {
         return f.getName();
     }

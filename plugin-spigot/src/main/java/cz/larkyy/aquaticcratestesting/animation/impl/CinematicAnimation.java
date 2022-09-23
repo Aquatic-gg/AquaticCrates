@@ -8,7 +8,9 @@ import cz.larkyy.aquaticcratestesting.camera.Camera;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.model.Model;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -23,10 +25,12 @@ public class CinematicAnimation extends Animation {
     private int i;
     private BukkitRunnable runnable;
     private RewardItem rewardItem = null;
+    private final ItemStack helmet;
 
     public CinematicAnimation(AnimationManager animationManager, Player player, AtomicReference<Reward> reward, Consumer<Animation> callback) {
         super(animationManager, player, reward, callback);
 
+        helmet = player.getInventory().getHelmet();
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -58,6 +62,9 @@ public class CinematicAnimation extends Animation {
     @Override
     public void start() {
         setStarted(true);
+        if (getAnimationManager().setPumpkinHelmet()) {
+            getPlayer().getInventory().setHelmet(new ItemStack(Material.CARVED_PUMPKIN));
+        }
         if (rewardItem != null) {
             rewardItem.despawn();
             rewardItem = null;
@@ -116,6 +123,9 @@ public class CinematicAnimation extends Animation {
         model.remove();
         //Bukkit.broadcastMessage("Detaching & removing");
         camera.despawn();
+        if (getAnimationManager().setPumpkinHelmet()) {
+            getPlayer().getInventory().setHelmet(helmet);
+        }
         getPlayer().setInvisible(false);
         getPlayer().getPersistentDataContainer().remove(KEY);
     }

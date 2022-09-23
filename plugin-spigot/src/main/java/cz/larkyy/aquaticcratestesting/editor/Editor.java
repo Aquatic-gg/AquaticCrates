@@ -13,7 +13,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Editor {
@@ -81,6 +83,22 @@ public class Editor {
             }
             if (f.isAnnotationPresent(EditorCategory.class)) {
                 f.setAccessible(true);
+
+                try {
+                    Object o = f.get(classInstance);
+                    if (o instanceof Collection<?>) {
+                        ParameterizedType genericType = (ParameterizedType) f.getGenericType();
+                        Class<?> genericClass = (Class<?>) genericType.getActualTypeArguments()[0];
+                        if (genericClass != null) {
+                            Bukkit.broadcastMessage(genericClass.getName());
+                        }
+
+                        Collection<?> collection = (Collection<?>) o;
+
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
 
                 try {
                     Class<?> fieldClazz = f.get(classInstance).getClass();

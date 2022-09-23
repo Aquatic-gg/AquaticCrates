@@ -1,6 +1,8 @@
 package cz.larkyy.aquaticcratestesting.editor.item.impl;
 
 import cz.larkyy.aquaticcratestesting.editor.Editor;
+import cz.larkyy.aquaticcratestesting.editor.datatype.DataType;
+import cz.larkyy.aquaticcratestesting.editor.datatype.impl.IntDataType;
 import cz.larkyy.aquaticcratestesting.editor.item.EditorItem;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
@@ -13,9 +15,11 @@ public class OptionItem implements EditorItem {
 
     private final MenuItem.Builder itemBuilder;
     private final Object classInstance;
+    private final DataType dataType;
     private final Field f;
 
     public OptionItem(String id, Object classInstance, Field f, ItemStack is, int slot) {
+        dataType = new IntDataType();
         itemBuilder = MenuItem.builder(id,is)
                 .slots(Arrays.asList(slot));
         this.classInstance = classInstance;
@@ -34,7 +38,7 @@ public class OptionItem implements EditorItem {
     public MenuItem build(Editor editor) {
         itemBuilder.action(e -> {
            if (e.isLeftClick()) {
-               Bukkit.broadcastMessage("Clicked on a setting of: "+f.getName());
+               dataType.input(editor.getPlayer());
            }
         });
 

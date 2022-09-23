@@ -3,7 +3,9 @@ package cz.larkyy.aquaticcratestesting.editor.menus;
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.editor.Editor;
 import cz.larkyy.aquaticcratestesting.item.impl.VanillaItem;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import xyz.larkyy.colorutils.Colors;
 import xyz.larkyy.menulib.Menu;
 import xyz.larkyy.menulib.MenuItem;
@@ -66,6 +68,13 @@ public class EditorMenu {
     }
 
     public void addItem(MenuItem menuItem) {
+        MenuItem.builder("testItem", new ItemStack(Material.STONE))
+                        .action(e -> {
+                            if (e.isLeftClick()) {
+
+                            }
+                        });
+
         menuBuilder.addItem(menuItem);
     }
 

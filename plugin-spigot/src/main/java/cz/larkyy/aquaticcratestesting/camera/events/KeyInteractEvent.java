@@ -1,6 +1,6 @@
-package cz.larkyy.aquaticcratestesting.api.events;
+package cz.larkyy.aquaticcratestesting.camera.events;
 
-import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
+import cz.larkyy.aquaticcratestesting.crate.Key;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -9,20 +9,20 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.block.Action;
 import org.jetbrains.annotations.NotNull;
 
-public class CrateInteractEvent extends Event implements Cancellable {
+public class KeyInteractEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player player;
-    private final PlacedCrate placedCrate;
     private final Action action;
+    private final Key key;
     private final Location location;
     private boolean isCancelled;
 
-    public CrateInteractEvent(Player player, PlacedCrate placedCrate, Action action, Location location) {
+    public KeyInteractEvent(Player player, Key key, Location location, Action action) {
         this.player =player;
-        this.placedCrate = placedCrate;
-        this.action = action;
+        this.key = key;
         this.location = location;
+        this.action = action;
         isCancelled = false;
     }
 
@@ -45,8 +45,12 @@ public class CrateInteractEvent extends Event implements Cancellable {
         isCancelled = cancel;
     }
 
-    public PlacedCrate getPlacedCrate() {
-        return placedCrate;
+    public Key getKey() {
+        return key;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 
     public Player getPlayer() {
@@ -55,9 +59,5 @@ public class CrateInteractEvent extends Event implements Cancellable {
 
     public Action getAction() {
         return action;
-    }
-
-    public Location getLocation() {
-        return location;
     }
 }

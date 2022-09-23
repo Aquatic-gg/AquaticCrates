@@ -2,9 +2,8 @@ package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
-import cz.larkyy.aquaticcratestesting.api.events.CrateInteractEvent;
-import cz.larkyy.aquaticcratestesting.api.events.KeyInteractEvent;
-import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
+import cz.larkyy.aquaticcratestesting.camera.events.CrateInteractEvent;
+import cz.larkyy.aquaticcratestesting.camera.events.KeyInteractEvent;
 import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
@@ -18,9 +17,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CrateListener implements Listener {
 
