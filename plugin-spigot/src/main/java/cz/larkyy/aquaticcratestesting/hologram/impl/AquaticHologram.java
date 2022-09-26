@@ -158,7 +158,6 @@ public class AquaticHologram extends Hologram {
     }
 
     private int spawnLine(Location location, String text) {
-
         return nmsHandler().spawnEntity(
                 location,
                 e -> {

@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcratestesting.animation.impl;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.animation.Animation;
+import cz.larkyy.aquaticcratestesting.animation.AnimationEmote;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.animation.RewardItem;
 import cz.larkyy.aquaticcratestesting.camera.Camera;
@@ -26,11 +27,13 @@ public class CinematicAnimation extends Animation {
     private BukkitRunnable runnable;
     private RewardItem rewardItem = null;
     private final ItemStack helmet;
+    private final AnimationEmote emote;
 
-    public CinematicAnimation(AnimationManager animationManager, Player player, AtomicReference<Reward> reward, Consumer<Animation> callback) {
+    public CinematicAnimation(AnimationManager animationManager, Player player, AtomicReference<Reward> reward, AnimationEmote emote, Consumer<Animation> callback) {
         super(animationManager, player, reward, callback);
 
         helmet = player.getInventory().getHelmet();
+        this.emote = emote;
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -62,6 +65,7 @@ public class CinematicAnimation extends Animation {
     @Override
     public void start() {
         setStarted(true);
+        emote.play(getPlayer());
         if (getAnimationManager().setPumpkinHelmet()) {
             getPlayer().getInventory().setHelmet(new ItemStack(Material.CARVED_PUMPKIN));
         }
@@ -110,6 +114,7 @@ public class CinematicAnimation extends Animation {
 
     @Override
     public void end() {
+        emote.despawn(getPlayer());
         if (runnable != null && !runnable.isCancelled()) {
             runnable.cancel();
             runnable = null;

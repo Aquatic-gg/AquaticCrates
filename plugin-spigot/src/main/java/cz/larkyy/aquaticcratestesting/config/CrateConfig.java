@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcratestesting.config;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.animation.AnimationEmote;
 import cz.larkyy.aquaticcratestesting.animation.AnimationTitle;
 import cz.larkyy.aquaticcratestesting.animation.task.impl.*;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
@@ -201,8 +202,19 @@ public class CrateConfig extends Config {
                 loadLocation("animation.model-location"),
                 loadLocation("animation.camera-location"),
                 getConfiguration().getBoolean("animation.skippable",false),
-                getConfiguration().getBoolean("animation.use-pumpkin-helmet",false)
+                getConfiguration().getBoolean("animation.use-pumpkin-helmet",false),
+                loadAnimationEmote()
                         ));
+    }
+
+    private AnimationEmote loadAnimationEmote() {
+        String path = "animation.player-model";
+        if (!getConfiguration().contains(path)) {
+            return new AnimationEmote(null,null);
+        }
+        String emote = getConfiguration().getString(path+".emote",null);
+        Location location = loadLocation(path);
+        return new AnimationEmote(location,emote);
     }
 
     private AnimationTitle loadAnimationTitle(String path) {
