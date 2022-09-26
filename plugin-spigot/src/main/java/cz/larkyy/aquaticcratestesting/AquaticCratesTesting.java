@@ -13,6 +13,7 @@ import cz.larkyy.aquaticcratestesting.player.PlayerListener;
 import cz.larkyy.nms.impl.v1_16_R3;
 import cz.larkyy.nms.impl.v1_18_R2;
 import cz.larkyy.nms.impl.v1_19_R2;
+import hooks.PAPIHook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -63,6 +64,12 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new CrateListener(),this);
         getServer().getPluginManager().registerEvents(new PlayerListener(),this);
+
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+
+            Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7PlaceholderAPI Hook&f!"));
+            new PAPIHook().register();
+        }
 
         new BukkitRunnable() {
             @Override
