@@ -104,7 +104,7 @@ public class AnimationManager {
 
     public boolean canBeOpened(Player player) {
         if (type == Type.PLACEDCRATE) {
-            if (animations.isEmpty()) {
+            if (!animations.isEmpty()) {
                 Messages.OPEN_ALREADY_OPENING.send(player);
                 return false;
             } else {

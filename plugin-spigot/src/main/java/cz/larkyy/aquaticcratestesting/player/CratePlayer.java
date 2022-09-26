@@ -79,6 +79,10 @@ public class CratePlayer {
         return player;
     }
 
+    public boolean isInAnimation() {
+        return AquaticCratesAPI.getPlayerHandler().isInAnimation(player);
+    }
+
     public static CratePlayer get(Player player) {
         return AquaticCratesAPI.getPlayer(player);
     }

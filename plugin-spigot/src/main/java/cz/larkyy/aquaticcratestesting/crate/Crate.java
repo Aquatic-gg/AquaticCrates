@@ -117,7 +117,7 @@ public class Crate {
     }
 
     public boolean open(CratePlayer player, PlacedCrate pc, boolean instant, boolean takeKey) {
-        if (animationManager.get().isInAnimation(player.getPlayer())) {
+        if (AquaticCratesAPI.getCrateHandler().isInAnimation(player.getPlayer())) {
             return false;
         }
 

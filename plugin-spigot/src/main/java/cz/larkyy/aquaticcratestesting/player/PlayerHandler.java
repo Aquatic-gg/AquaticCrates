@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcratestesting.player;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -70,4 +71,7 @@ public class PlayerHandler {
         rerollPlayers.remove(p);
     }
 
+    public boolean isInAnimation(Player p) {
+        return AquaticCratesAPI.getCrateHandler().isInAnimation(p);
+    }
 }
