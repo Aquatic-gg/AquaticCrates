@@ -32,6 +32,7 @@ public class CrateHandler {
             return;
         }
         pc.destroy();
+        saveCrates();
     }
 
 
