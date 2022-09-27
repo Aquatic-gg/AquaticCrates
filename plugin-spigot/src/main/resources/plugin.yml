@@ -2,6 +2,9 @@ name: AquaticCrates
 version: '${project.version}'
 main: cz.larkyy.aquaticcratestesting.AquaticCratesTesting
 api-version: 1.16
+softdepend:
+  - PlaceholderAPI
+  - PlayerEmotes
 commands:
   aquaticcrates:
     aliases:

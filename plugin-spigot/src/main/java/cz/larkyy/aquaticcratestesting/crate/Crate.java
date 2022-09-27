@@ -62,7 +62,7 @@ public class Crate {
         this.permission = permission;
     }
 
-    public void openPreview(Player p) {
+    public void openPreview(Player p, PlacedCrate pc) {
         if (AquaticCratesTesting.getCrateHandler().isInAnimation(p)) {
             return;
         }
@@ -70,7 +70,7 @@ public class Crate {
         if (gui == null) {
             return;
         }
-        gui.open(p,0);
+        gui.open(p,0, pc);
     }
 
     public PreviewGUI getPreviewGUI() {

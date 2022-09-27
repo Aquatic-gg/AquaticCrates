@@ -1,15 +1,9 @@
 package cz.larkyy.aquaticcratestesting.animation;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.playeremotes.spigotplugin.AquaticPlayerModel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
-import xyz.larkyy.colorutils.Colors;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,9 +32,7 @@ public class AnimationEmote {
     }
 
     public void play(Player p) {
-        Bukkit.broadcastMessage("Playing");
         if (animation == null) {
-            Bukkit.broadcastMessage("Animation is null");
             return;
         }
 
@@ -49,7 +41,6 @@ public class AnimationEmote {
         }
 
         if (location == null) {
-            Bukkit.broadcastMessage("Location is null");
             return;
         }
 
@@ -66,9 +57,4 @@ public class AnimationEmote {
         model.getBase().remove();
         model.despawn();
     }
-
-    private NMSHandler nmsHandler() {
-        return AquaticCratesTesting.getNmsHandler();
-    }
-
 }

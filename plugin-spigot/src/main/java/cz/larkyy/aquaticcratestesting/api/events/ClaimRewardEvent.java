@@ -1,4 +1,4 @@
-package cz.larkyy.aquaticcratestesting.camera.events;
+package cz.larkyy.aquaticcratestesting.api.events;
 
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;

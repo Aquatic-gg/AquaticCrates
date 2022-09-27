@@ -2,8 +2,8 @@ package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
-import cz.larkyy.aquaticcratestesting.camera.events.CrateInteractEvent;
-import cz.larkyy.aquaticcratestesting.camera.events.KeyInteractEvent;
+import cz.larkyy.aquaticcratestesting.api.events.CrateInteractEvent;
+import cz.larkyy.aquaticcratestesting.api.events.KeyInteractEvent;
 import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
@@ -106,7 +106,7 @@ public class CrateListener implements Listener {
             if (p.isSneaking() && p.hasPermission("aquaticcrates.break")) {
                 AquaticCratesAPI.getCrateHandler().removePlacedCrate(e.getLocation());
             } else {
-                pc.getCrate().openPreview(p);
+                pc.getCrate().openPreview(p,pc);
             }
         }
     }
@@ -120,7 +120,7 @@ public class CrateListener implements Listener {
             }
             key.getCrate().open(CratePlayer.get(e.getPlayer()),null,e.getPlayer().isSneaking());
         } else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            key.getCrate().openPreview(e.getPlayer());
+            key.getCrate().openPreview(e.getPlayer(),null);
         }
     }
 }

@@ -1,7 +1,10 @@
 package cz.larkyy.aquaticcratestesting.crate.inventories;
 
 import cz.larkyy.aquaticcratestesting.crate.Crate;
+import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
+import cz.larkyy.aquaticcratestesting.player.CratePlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import xyz.larkyy.menulib.Menu;
 import xyz.larkyy.menulib.MenuItem;
@@ -23,7 +26,7 @@ public class PreviewGUI {
         this.openableByKey = openableByKey;
     }
 
-    public void open(Player p, int page) {
+    public void open(Player p, int page, PlacedCrate pc) {
         Menu.Builder builder = mb.clone();
         loadRewardItems(p,builder,page);
         Menu m = builder.build();
@@ -31,18 +34,24 @@ public class PreviewGUI {
         MenuItem mi;
         mi = m.getItem("next-page");
         if (mi != null) {
-            mi.addAction(e -> openNextPage(p,page));
+            mi.addAction(e -> openNextPage(p,page,pc));
         }
         mi = m.getItem("prev-page");
         if (mi != null) {
-            mi.addAction(e -> openPrevPage(p,page));
+            mi.addAction(e -> openPrevPage(p,page,pc));
+        }
+        mi = m.getItem("open-button");
+        if (mi != null) {
+            mi.addAction(e -> {
+                crate.open(CratePlayer.get(p),pc,false);
+            });
         }
         p.openInventory(m.getInventory());
     }
 
-    public void openNextPage(Player p, int page) {
+    public void openNextPage(Player p, int page, PlacedCrate pc) {
         if (hasNextPage(p,page)) {
-            open(p,page+1);
+            open(p,page+1, pc);
         }
     }
 
@@ -51,9 +60,9 @@ public class PreviewGUI {
         return (page < list.size()/rewardSlots.size());
     }
 
-    public void openPrevPage(Player p, int page) {
+    public void openPrevPage(Player p, int page, PlacedCrate pc) {
         if (hasPreviousPage(page)) {
-            open(p,page-1);
+            open(p,page-1, pc);
         }
     }
 
