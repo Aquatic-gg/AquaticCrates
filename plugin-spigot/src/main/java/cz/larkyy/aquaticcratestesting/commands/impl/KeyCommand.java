@@ -235,8 +235,8 @@ public class KeyCommand implements ICommand {
                 CratePlayer.get(target).takeKeys(c.getIdentifier(),amount);
                 Messages.KEY_TAKE_SENDER
                         .replace("%crate%",c.getDisplayName())
-                        .replace("%amount%","1")
-                        .replace("%player%","ALL")
+                        .replace("%amount%",amount+"")
+                        .replace("%player%",target.getName())
                         .send(sender);
                 Messages.KEY_TAKE_RECEIVER
                         .replace("%crate%",c.getDisplayName())
