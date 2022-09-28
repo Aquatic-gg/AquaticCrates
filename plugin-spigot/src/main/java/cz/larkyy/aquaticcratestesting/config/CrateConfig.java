@@ -137,7 +137,7 @@ public class CrateConfig extends Config {
             title = crate.getIdentifier()+" Preview";
         }
         Menu.Builder builder =Menu.builder(AquaticCratesTesting.instance())
-                .size(54)
+                .size(getConfiguration().getInt("preview.size",54))
                 .title(title);
 
         if (getConfiguration().contains("preview.items")) {

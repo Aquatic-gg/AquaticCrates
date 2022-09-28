@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcratestesting.animation;
 
 import cz.larkyy.playeremotes.spigotplugin.AquaticPlayerModel;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import java.util.HashMap;
