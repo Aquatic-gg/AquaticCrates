@@ -254,7 +254,7 @@ public class KeyCommand implements ICommand {
                 }
 
                 CratePlayer cp = CratePlayer.get(p);
-                p.sendMessage("Your Virtual Keys:");
+                Messages.KEY_BANK_TITLE.send(p);
                 for (Map.Entry<String, Integer> entry : cp.getVirtualKeys().entrySet()) {
                     String s = entry.getKey();
                     Integer i = entry.getValue();
@@ -262,7 +262,10 @@ public class KeyCommand implements ICommand {
                     if (k == null) {
                         continue;
                     }
-                    p.sendMessage(s+" Key: "+i);
+                    Messages.KEY_BANK_FORMAT
+                            .replace("%crate%",s)
+                            .replace("%amount%",i+"")
+                            .send(p);
                 }
             }
         }

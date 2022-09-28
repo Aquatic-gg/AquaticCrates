@@ -14,6 +14,8 @@ help:
   - "&3Util Commands"
   - " &3| &7/acrates reload"
   - "&f "
+key-bank-title: "&3Your Virtual Keys:"
+key-bank-format: "&7- &f%crate%&7: &b%amount%"
 only-for-players: "&cThis command is only for players!"
 plugin-reloaded: "&3[AquaticCrates] &fPlugin has been &breloaded&f!"
 no-permission: "&cYou don't have permissions to do that!"
