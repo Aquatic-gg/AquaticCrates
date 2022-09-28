@@ -43,6 +43,7 @@ public class CrateConfig extends Config {
 
         Crate c = new Crate(
                 identifier,
+                Colors.format(getConfiguration().getString("display-name",identifier)),
                 loadKey(),
                 getConfiguration().getString("model"),
                 loadRewards(),
@@ -134,7 +135,7 @@ public class CrateConfig extends Config {
         if (getConfiguration().contains("preview.title")) {
             title = Colors.format(getConfiguration().getString("preview.title"));
         } else {
-            title = crate.getIdentifier()+" Preview";
+            title = crate.getDisplayName()+"§8 Preview";
         }
         Menu.Builder builder =Menu.builder(AquaticCratesTesting.instance())
                 .size(getConfiguration().getInt("preview.size",54))

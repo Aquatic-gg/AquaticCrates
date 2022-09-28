@@ -46,12 +46,12 @@ public class KeyCommand implements ICommand {
                     if (args.length == 3) {
                         c.giveKey(p, 1, false);
                         Messages.KEY_GIVE_SENDER
-                                .replace("%crate%",c.getIdentifier())
+                                .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%","1")
                                 .replace("%player%",p.getName())
                                 .send(sender);
                         Messages.KEY_GIVE_RECEIVER
-                                .replace("%crate%",c.getIdentifier())
+                                .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%","1")
                                 .send(p);
                         return;
@@ -61,12 +61,12 @@ public class KeyCommand implements ICommand {
                         int amount = Integer.parseInt(args[3]);
                         c.giveKey(p,amount,false);
                         Messages.KEY_GIVE_SENDER
-                                .replace("%crate%",c.getIdentifier())
+                                .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
                                 .replace("%player%",p.getName())
                                 .send(sender);
                         Messages.KEY_GIVE_RECEIVER
-                                .replace("%crate%",c.getIdentifier())
+                                .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
                                 .send(p);
                     } catch (NumberFormatException e) {
@@ -92,12 +92,12 @@ public class KeyCommand implements ICommand {
                 if (args.length == 5) {
                     c.giveKey(target,amount,false);
                     Messages.KEY_GIVE_SENDER
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .replace("%player%",target.getName())
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .send(target);
                 }
@@ -106,23 +106,23 @@ public class KeyCommand implements ICommand {
                     if (args[5].equalsIgnoreCase("virtual")) {
                         c.giveKey(target,amount, true);
                         Messages.KEY_GIVE_SENDER_VIRTUAL
-                                .replace("%crate%",c.getIdentifier())
+                                .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
                                 .replace("%player%",target.getName())
                                 .send(sender);
                         Messages.KEY_GIVE_RECEIVER_VIRTUAL
-                                .replace("%crate%",c.getIdentifier())
+                                .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
                                 .send(target);
                     } else {
                         c.giveKey(target,amount, false);
                         Messages.KEY_GIVE_SENDER
-                                .replace("%crate%",c.getIdentifier())
+                                .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
                                 .replace("%player%",target.getName())
                                 .send(sender);
                         Messages.KEY_GIVE_RECEIVER
-                                .replace("%crate%",c.getIdentifier())
+                                .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
                                 .send(target);
                     }
@@ -147,12 +147,12 @@ public class KeyCommand implements ICommand {
                 if (args.length == 3) {
                     c.giveKeyAll(1,false);
                     Messages.KEY_GIVE_SENDER
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%","1")
                             .replace("%player%","ALL")
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%","1")
                             .broadcast();
                     return;
@@ -167,12 +167,12 @@ public class KeyCommand implements ICommand {
                 if (args.length == 4) {
                     c.giveKeyAll(amount,false);
                     Messages.KEY_GIVE_SENDER
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .replace("%player%","ALL")
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .broadcast();
                     return;
@@ -181,23 +181,23 @@ public class KeyCommand implements ICommand {
                 if (args[4].equalsIgnoreCase("virtual")) {
                     c.giveKeyAll(amount, true);
                     Messages.KEY_GIVE_SENDER_VIRTUAL
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .replace("%player%","ALL")
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER_VIRTUAL
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .broadcast();
                 } else {
                     c.giveKeyAll(amount, false);
                     Messages.KEY_GIVE_SENDER
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .replace("%player%","ALL")
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER
-                            .replace("%crate%",c.getIdentifier())
+                            .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .broadcast();
                 }
@@ -234,12 +234,12 @@ public class KeyCommand implements ICommand {
 
                 CratePlayer.get(target).takeKeys(c.getIdentifier(),amount);
                 Messages.KEY_TAKE_SENDER
-                        .replace("%crate%",c.getIdentifier())
+                        .replace("%crate%",c.getDisplayName())
                         .replace("%amount%","1")
                         .replace("%player%","ALL")
                         .send(sender);
                 Messages.KEY_TAKE_RECEIVER
-                        .replace("%crate%",c.getIdentifier())
+                        .replace("%crate%",c.getDisplayName())
                         .replace("%amount%",amount+"")
                         .send(target);
             }
@@ -263,7 +263,7 @@ public class KeyCommand implements ICommand {
                         continue;
                     }
                     Messages.KEY_BANK_FORMAT
-                            .replace("%crate%",s)
+                            .replace("%crate%",k.getDisplayName())
                             .replace("%amount%",i+"")
                             .send(p);
                 }

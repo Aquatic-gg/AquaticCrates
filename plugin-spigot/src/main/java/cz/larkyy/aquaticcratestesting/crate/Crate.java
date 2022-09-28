@@ -29,6 +29,7 @@ public class Crate {
     private static final NamespacedKey KEY = new NamespacedKey(AquaticCratesTesting.instance(),"CrateIdentifier");
 
     private final String identifier;
+    private final String displayName;
     @EditorCategory(id = "key",slot = 9, displayName = "&bKey", title = "Key Editor")
     private final Key key;
     @EditorField(id = "model",slot = 10, displayName = "&bModel")
@@ -43,7 +44,7 @@ public class Crate {
     private final double hologramYOffset;
     private final String permission;
 
-    public Crate(String identifier, CustomItem key, String model,
+    public Crate(String identifier, String displayName, CustomItem key, String model,
                  List<Reward> rewards, boolean requiresCrateToOpen,
                  AtomicReference<PreviewGUI> previewGUI,
                  AtomicReference<RerollManager> rerollManager,
@@ -51,6 +52,7 @@ public class Crate {
                  List<String> hologram,
                  double hologramYOffset, String permission) {
         this.identifier = identifier;
+        this.displayName = displayName;
         this.key = new Key(key,this,requiresCrateToOpen);
         this.model = model;
         this.rewards = rewards;
@@ -75,6 +77,10 @@ public class Crate {
 
     public PreviewGUI getPreviewGUI() {
         return previewGUI.get();
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public String getIdentifier() {

@@ -39,6 +39,10 @@ public class Key {
         return crate.getIdentifier();
     }
 
+    public String getDisplayName() {
+        return crate.getDisplayName();
+    }
+
     public void give(List<Player> players, int amount) {
         ItemStack is = item.getItem();
         is.setAmount(amount);
