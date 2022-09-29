@@ -3,12 +3,14 @@ package cz.larkyy.aquaticcratestesting.player;
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.animation.Animation;
 import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;

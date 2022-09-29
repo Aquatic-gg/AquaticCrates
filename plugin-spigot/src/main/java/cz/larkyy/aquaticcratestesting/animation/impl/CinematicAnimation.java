@@ -58,8 +58,10 @@ public class CinematicAnimation extends Animation {
         getPlayer().getPersistentDataContainer().set(KEY, PersistentDataType.INTEGER,1);
 
         getPlayer().setInvisible(true);
-        camera.attachPlayer();
-        start();
+        camera.attachPlayer(() -> {
+            model.show(getPlayer());
+            start();
+        });
     }
 
     @Override

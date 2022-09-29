@@ -2,17 +2,20 @@ package cz.larkyy.aquaticcratestesting.camera;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 
 public class Camera {
 
-    private final int id;
+    private int id;
     private final Player player;
     private Location prevLocation;
     private GameMode prevMode;
@@ -63,15 +66,28 @@ public class Camera {
         cameraMovement.start();
     }
 
-    public void attachPlayer() {
+    public void attachPlayer(Runnable runnable) {
 
         prevLocation = player.getPlayer().getLocation();
         prevMode = player.getGameMode();
+        int delay = 0;
+        if (!player.getLocation().getWorld().equals(location().getWorld())) {
+            delay = 5;
+        }
         player.teleport(location().clone().add(0,2,0));
-        player.setGameMode(GameMode.SPECTATOR);
-        nmsHandler().setPlayerInfo("UPDATE_GAME_MODE", player.getPlayer(),"CREATIVE");
-        nmsHandler().changeGamemode(player, GameMode.SPECTATOR);
-        nmsHandler().setCamera(id,player);
+        Bukkit.broadcastMessage(player.getLocation().getY()+"");
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                id = spawnEntity(location());
+                player.setGameMode(GameMode.SPECTATOR);
+                nmsHandler().setPlayerInfo("UPDATE_GAME_MODE", player.getPlayer(),"CREATIVE");
+                nmsHandler().changeGamemode(player, GameMode.SPECTATOR);
+                nmsHandler().setCamera(id,player);
+                Bukkit.broadcastMessage(player.getLocation().getY()+"");
+                runnable.run();
+            }
+        }.runTaskLater(AquaticCratesTesting.instance(),delay);
     }
 
     public void detachPlayer() {
