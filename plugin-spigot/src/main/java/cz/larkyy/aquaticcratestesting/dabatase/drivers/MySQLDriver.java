@@ -133,8 +133,6 @@ public class MySQLDriver implements Driver {
                     for (Map.Entry<String, Integer> entry : player.getVirtualKeys().entrySet()) {
                         String id = entry.getKey();
                         Integer i = entry.getValue();
-
-                        Bukkit.broadcastMessage("Storing player "+ p.getName());
                         try (PreparedStatement ps = connection.prepareStatement(
                                 "SELECT id FROM "+keysTableName+" WHERE UniqueID = ? AND Identifier = ?"
                         )) {
@@ -166,8 +164,6 @@ public class MySQLDriver implements Driver {
                         } catch (SQLException e) {
                             throw new RuntimeException(e);
                         }
-
-                        Bukkit.broadcastMessage("Stored player "+ p.getName());
                     }
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
