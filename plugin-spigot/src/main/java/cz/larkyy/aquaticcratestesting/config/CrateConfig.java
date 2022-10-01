@@ -146,10 +146,12 @@ public class CrateConfig extends Config {
                 builder.addItem(loadMenuItem(str,"preview.items."+str));
             }
         }
+        List<String> rewardLore = getConfiguration().getStringList("preview.reward-lore");
 
         atomicReference.set(new PreviewGUI(crate,
                 builder,
                 getConfiguration().getIntegerList("preview.reward-slots"),
+                rewardLore,
                 getConfiguration().getBoolean("preview.openable-by-key",false)
                 )
         );

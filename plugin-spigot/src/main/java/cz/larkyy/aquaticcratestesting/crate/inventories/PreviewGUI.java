@@ -6,9 +6,13 @@ import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import xyz.larkyy.colorutils.Colors;
 import xyz.larkyy.menulib.Menu;
 import xyz.larkyy.menulib.MenuItem;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,13 +21,15 @@ public class PreviewGUI {
     private final Crate crate;
     private final List<Integer> rewardSlots;
     private final Menu.Builder mb;
+    private final List<String> rewardLore;
     private final boolean openableByKey;
 
-    public PreviewGUI(Crate crate, Menu.Builder mb, List<Integer> rewardSlots, boolean openableByKey) {
+    public PreviewGUI(Crate crate, Menu.Builder mb, List<Integer> rewardSlots, List<String> rewardLore, boolean openableByKey) {
         this.crate = crate;
         this.rewardSlots = rewardSlots;
         this.mb = mb;
         this.openableByKey = openableByKey;
+        this.rewardLore = rewardLore;
     }
 
     public void open(Player p, int page, PlacedCrate pc) {
@@ -83,12 +89,21 @@ public class PreviewGUI {
                 return;
             }
             Reward r = rewards.get(i);
-            mb.addItem(MenuItem.builder("reward-"+r.getIdentifier(),r.getItem().getItem())
+            ItemStack is = r.getItem().getItem();
+            ItemMeta im = is.getItemMeta();
+            List<String> lore = new ArrayList<>(im.getLore());
+            lore.addAll(Colors.format(rewardLore));
+            lore.replaceAll(s ->
+                    s.replace("%chance%",r.getChance()+"")
+            );
+            im.setLore(lore);
+            is.setItemMeta(im);
+
+            mb.addItem(MenuItem.builder("reward-"+r.getIdentifier(),is)
                     .slots(Arrays.asList(slot))
                     .build()
             );
             i++;
         }
     }
-
 }
