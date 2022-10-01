@@ -57,5 +57,6 @@ public class AnimationEmote {
         }
         model.getBase().remove();
         model.despawn();
+        emotes.remove(p);
     }
 }
