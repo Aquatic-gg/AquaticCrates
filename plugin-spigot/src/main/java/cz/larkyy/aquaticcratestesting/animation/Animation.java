@@ -15,7 +15,7 @@ public abstract class Animation {
     public static final NamespacedKey KEY = new NamespacedKey(AquaticCratesTesting.instance(),"inAnimation");
 
     private final Player player;
-    private final Consumer<Animation> callback;
+    private Consumer<Animation> callback;
     private final AtomicReference<Reward> reward;
     private final AnimationManager animationManager;
     private boolean started;
@@ -44,6 +44,10 @@ public abstract class Animation {
 
     public Consumer<Animation> getCallback() {
         return callback;
+    }
+
+    public void setCallback(Consumer<Animation> callback) {
+        this.callback = callback;
     }
 
     public AtomicReference<Reward> getReward() {

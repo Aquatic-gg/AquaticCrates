@@ -42,9 +42,11 @@ public class AnimationEmote {
         if (location == null) {
             return;
         }
-
-        AquaticPlayerModel model = new AquaticPlayerModel(spawnAs(),p);
-        emotes.put(p,model);
+        AquaticPlayerModel model = emotes.get(p);
+        if (model == null) {
+            model = new AquaticPlayerModel(spawnAs(),p);
+            emotes.put(p,model);
+        }
         model.playAnimation(animation);
     }
 
