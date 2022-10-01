@@ -47,6 +47,10 @@ public class PlayerHandler {
         players.remove(p);
     }
 
+    public void unloadPlayers() {
+        players.clear();
+    }
+
     public List<CratePlayer> getPlayers() {
         return new ArrayList<>(players.values());
     }

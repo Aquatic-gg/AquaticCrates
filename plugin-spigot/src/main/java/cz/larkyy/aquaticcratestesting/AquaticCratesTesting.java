@@ -108,6 +108,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
                 }
             });
         });
+        playerHandler.unloadPlayers();
     }
 
     public void reload() {
