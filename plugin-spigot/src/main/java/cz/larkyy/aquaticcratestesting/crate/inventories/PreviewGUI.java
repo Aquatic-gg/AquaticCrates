@@ -91,7 +91,10 @@ public class PreviewGUI {
             Reward r = rewards.get(i);
             ItemStack is = r.getItem().getItem();
             ItemMeta im = is.getItemMeta();
-            List<String> lore = new ArrayList<>(im.getLore());
+            List<String> lore = new ArrayList<>();
+            if (im.getLore() != null) {
+                lore.addAll(im.getLore());
+            }
             lore.addAll(Colors.format(rewardLore));
             lore.replaceAll(s ->
                     s.replace("%chance%",r.getChance()+"")
