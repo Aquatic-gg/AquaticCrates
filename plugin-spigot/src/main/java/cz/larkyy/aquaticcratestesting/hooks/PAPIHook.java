@@ -1,4 +1,4 @@
-package hooks;
+package cz.larkyy.aquaticcratestesting.hooks;
 
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;

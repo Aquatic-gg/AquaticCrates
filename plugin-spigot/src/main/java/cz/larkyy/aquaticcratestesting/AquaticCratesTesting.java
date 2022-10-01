@@ -13,7 +13,7 @@ import cz.larkyy.aquaticcratestesting.player.PlayerListener;
 import cz.larkyy.nms.impl.v1_16_R3;
 import cz.larkyy.nms.impl.v1_18_R2;
 import cz.larkyy.nms.impl.v1_19_R2;
-import hooks.PAPIHook;
+import cz.larkyy.aquaticcratestesting.hooks.PAPIHook;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
