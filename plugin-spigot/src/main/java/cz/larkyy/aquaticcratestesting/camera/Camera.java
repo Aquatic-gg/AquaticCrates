@@ -75,7 +75,6 @@ public class Camera {
             delay = 5;
         }
         player.teleport(location().clone().add(0,2,0));
-        Bukkit.broadcastMessage(player.getLocation().getY()+"");
         new BukkitRunnable() {
             @Override
             public void run() {
