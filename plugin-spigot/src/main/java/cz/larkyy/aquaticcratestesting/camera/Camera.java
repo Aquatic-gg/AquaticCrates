@@ -84,7 +84,6 @@ public class Camera {
                 nmsHandler().setPlayerInfo("UPDATE_GAME_MODE", player.getPlayer(),"CREATIVE");
                 nmsHandler().changeGamemode(player, GameMode.SPECTATOR);
                 nmsHandler().setCamera(id,player);
-                Bukkit.broadcastMessage(player.getLocation().getY()+"");
                 runnable.run();
             }
         }.runTaskLater(AquaticCratesTesting.instance(),delay);
