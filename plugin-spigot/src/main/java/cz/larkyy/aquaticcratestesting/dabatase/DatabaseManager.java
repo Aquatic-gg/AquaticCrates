@@ -48,7 +48,6 @@ public class DatabaseManager {
                     String id = rs.getString("Identifier");
                     int amount = rs.getInt("Amount");
                     cp.addKeys(id,amount);
-                    Bukkit.broadcastMessage("Adding "+id+": "+amount);
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
