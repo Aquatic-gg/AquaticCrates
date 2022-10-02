@@ -12,6 +12,7 @@ import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerListener;
 import cz.larkyy.nms.impl.v1_16_R3;
+import cz.larkyy.nms.impl.v1_17_r1;
 import cz.larkyy.nms.impl.v1_18_R2;
 import cz.larkyy.nms.impl.v1_19_R2;
 import cz.larkyy.aquaticcratestesting.hooks.PAPIHook;
@@ -48,6 +49,10 @@ public final class AquaticCratesTesting extends JavaPlugin {
             case "1.16.5-R0.1-SNAPSHOT" -> {
                 nmsHandler = new v1_16_R3();
                 version = "v1_16_R3";
+            }
+            case "1.17.1-R0.1-SNAPSHOT" -> {
+                nmsHandler = new v1_17_r1();
+                version = "v1_17_R1";
             }
             case "1.18.2-R0.1-SNAPSHOT" -> {
                 nmsHandler = new v1_18_R2();
