@@ -6,6 +6,10 @@ author: LARKYY
 softdepend:
   - PlaceholderAPI
   - PlayerEmotes
+  - ItemsAdder
+  - ModelEngine
+  - MythicMobs
+  - HeadDatabase
 commands:
   aquaticcrates:
     aliases:
