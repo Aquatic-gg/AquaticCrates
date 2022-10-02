@@ -1,10 +1,9 @@
 package cz.larkyy.aquaticcratestesting.dabatase.drivers;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
-import io.lumine.mythic.bukkit.utils.storage.sql.hikari.HikariConfig;
-import io.lumine.mythic.bukkit.utils.storage.sql.hikari.HikariDataSource;
-import org.apache.commons.logging.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -13,7 +12,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.sql.*;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.logging.Logger;
 
 public class MySQLDriver implements Driver {
 
