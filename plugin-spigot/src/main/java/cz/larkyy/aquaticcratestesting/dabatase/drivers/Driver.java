@@ -16,7 +16,7 @@ public interface Driver {
 
     void loadPlayers(Consumer<ResultSet> callback);
 
-    void savePlayer(CratePlayer player);
+    void savePlayer(CratePlayer player, boolean async);
 
     void savePlayers(boolean async);
 

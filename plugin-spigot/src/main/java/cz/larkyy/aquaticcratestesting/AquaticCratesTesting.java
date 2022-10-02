@@ -71,22 +71,23 @@ public final class AquaticCratesTesting extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7PlaceholderAPI Hook&f!"));
             new PAPIHook().register();
         }
-
         new LoaderManager(
-                () -> {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
+                () -> new BukkitRunnable() {
+                    boolean loaded = false;
+                    @Override
+                    public void run() {
+                        if (loaded) {
                             unload();
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    load();
-                                }
-                            }.runTaskLater(instance(),1);
                         }
-                    }.runTask(this);
-                }
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                load();
+                                loaded = true;
+                            }
+                        }.runTaskLater(instance(),1);
+                    }
+                }.runTask(this)
         );
     }
 

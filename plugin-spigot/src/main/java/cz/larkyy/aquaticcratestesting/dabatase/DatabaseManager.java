@@ -73,7 +73,7 @@ public class DatabaseManager {
     }
 
     public void savePlayer(CratePlayer cratePlayer) {
-        driver.savePlayer(cratePlayer);
+        driver.savePlayer(cratePlayer,true);
     }
 
     public void savePlayers(boolean async) {

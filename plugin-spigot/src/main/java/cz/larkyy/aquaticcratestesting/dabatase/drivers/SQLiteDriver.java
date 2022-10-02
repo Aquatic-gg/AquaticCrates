@@ -76,8 +76,8 @@ public class SQLiteDriver implements Driver {
     }
 
     @Override
-    public void savePlayer(CratePlayer player) {
-        new BukkitRunnable() {
+    public void savePlayer(CratePlayer player, boolean async) {
+        BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 try(Connection connection = getConnection()) {
@@ -118,7 +118,12 @@ public class SQLiteDriver implements Driver {
                     throw new RuntimeException(e);
                 }
             }
-        }.runTaskAsynchronously(AquaticCratesTesting.instance());
+        };
+        if (async) {
+            runnable.runTaskAsynchronously(AquaticCratesTesting.instance());
+        } else {
+            runnable.run();
+        }
     }
 
     @Override

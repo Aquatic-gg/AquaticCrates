@@ -122,9 +122,9 @@ public class MySQLDriver implements Driver {
     }
 
     @Override
-    public void savePlayer(CratePlayer player) {
+    public void savePlayer(CratePlayer player, boolean async) {
         Player p = player.getPlayer();
-        new BukkitRunnable() {
+        BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 try(Connection connection = getConnection()) {
@@ -134,7 +134,7 @@ public class MySQLDriver implements Driver {
                         try (PreparedStatement ps = connection.prepareStatement(
                                 "SELECT id FROM "+keysTableName+" WHERE UniqueID = ? AND Identifier = ?"
                         )) {
-                            ps.setString(1,player.getPlayer().getUniqueId().toString());
+                            ps.setString(1,p.getUniqueId().toString());
                             ps.setString(2,id);
 
                             ResultSet rs = ps.executeQuery();
@@ -143,7 +143,7 @@ public class MySQLDriver implements Driver {
                                         "UPDATE "+keysTableName+" SET Amount = ? WHERE UniqueID = ? AND Identifier = ?"
                                 )) {
                                     ps2.setInt(1,i);
-                                    ps2.setString(2,player.getPlayer().getUniqueId().toString());
+                                    ps2.setString(2,p.getUniqueId().toString());
                                     ps2.setString(3,id);
 
                                     ps2.execute();
@@ -152,7 +152,7 @@ public class MySQLDriver implements Driver {
                                 try(PreparedStatement ps2 = connection.prepareStatement(
                                         "REPLACE INTO "+keysTableName+" (UniqueID, Identifier, Amount) VALUES (?, ?, ?);"
                                 )) {
-                                    ps2.setString(1,player.getPlayer().getUniqueId().toString());
+                                    ps2.setString(1,p.getUniqueId().toString());
                                     ps2.setString(2,id);
                                     ps2.setInt(3,i);
 
@@ -167,7 +167,13 @@ public class MySQLDriver implements Driver {
                     throw new RuntimeException(e);
                 }
             }
-        }.runTaskAsynchronously(AquaticCratesTesting.instance());
+        };
+
+        if (async) {
+            runnable.runTaskAsynchronously(AquaticCratesTesting.instance());
+        } else {
+            runnable.run();
+        }
     }
 
     @Override
@@ -177,7 +183,7 @@ public class MySQLDriver implements Driver {
             public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     CratePlayer cp = CratePlayer.get(p);
-                    savePlayer(cp);
+                    savePlayer(cp,async);
                 }
             }
         };
