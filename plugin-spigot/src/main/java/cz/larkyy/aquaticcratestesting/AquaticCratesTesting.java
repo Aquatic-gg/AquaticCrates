@@ -74,13 +74,18 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
         new LoaderManager(
                 () -> {
-                    unload();
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            load();
+                            unload();
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    load();
+                                }
+                            }.runTaskLater(instance(),1);
                         }
-                    }.runTaskLater(this,1);
+                    }.runTask(this);
                 }
         );
     }
