@@ -6,6 +6,7 @@ import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
 import cz.larkyy.aquaticcratestesting.crate.CrateListener;
 import cz.larkyy.aquaticcratestesting.dabatase.DatabaseManager;
 import cz.larkyy.aquaticcratestesting.item.ItemHandler;
+import cz.larkyy.aquaticcratestesting.loader.LoaderManager;
 import cz.larkyy.aquaticcratestesting.messages.MessageHandler;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerHandler;
@@ -71,12 +72,17 @@ public final class AquaticCratesTesting extends JavaPlugin {
             new PAPIHook().register();
         }
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                load();
-            }
-        }.runTaskLater(this,5);
+        new LoaderManager(
+                () -> {
+                    unload();
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            load();
+                        }
+                    }.runTaskLater(this,1);
+                }
+        );
     }
 
     public void load() {
