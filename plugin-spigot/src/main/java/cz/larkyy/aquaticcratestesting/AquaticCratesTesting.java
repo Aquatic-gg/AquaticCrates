@@ -12,7 +12,7 @@ import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerListener;
 import cz.larkyy.nms.impl.v1_16_R3;
-import cz.larkyy.nms.impl.v1_17_r1;
+import cz.larkyy.nms.impl.v1_17_R1;
 import cz.larkyy.nms.impl.v1_18_R2;
 import cz.larkyy.nms.impl.v1_19_R2;
 import cz.larkyy.aquaticcratestesting.hooks.PAPIHook;
@@ -34,6 +34,8 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
     private static ItemHandler itemHandler;
 
+    public static boolean loaded = false;
+
     @Override
     public void onEnable() {
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading the plugin..."));
@@ -51,7 +53,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
                 version = "v1_16_R3";
             }
             case "1.17.1-R0.1-SNAPSHOT" -> {
-                nmsHandler = new v1_17_r1();
+                nmsHandler = new v1_17_R1();
                 version = "v1_17_R1";
             }
             case "1.18.2-R0.1-SNAPSHOT" -> {
@@ -78,7 +80,6 @@ public final class AquaticCratesTesting extends JavaPlugin {
         }
         new LoaderManager(
                 () -> new BukkitRunnable() {
-                    boolean loaded = false;
                     @Override
                     public void run() {
                         if (loaded) {

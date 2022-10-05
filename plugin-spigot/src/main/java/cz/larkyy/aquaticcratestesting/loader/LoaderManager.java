@@ -20,13 +20,17 @@ public class LoaderManager {
             loaders.add(new ItemsAdderLoader(
                     this::tryLoad
             ));
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"iareload");
+            if (AquaticCratesTesting.loaded) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "iareload");
+            }
         }
         if (getPlugin("ModelEngine") != null) {
             loaders.add(new ModelEngineLoader(
                     this::tryLoad
             ));
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"meg reload");
+            if (AquaticCratesTesting.loaded) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "meg reload");
+            }
         }
     }
 
