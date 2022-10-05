@@ -33,6 +33,7 @@ public class RewardItem {
 
     private Hologram hologram;
     private Reward cachedReward;
+    private Vector offset;
     private Item item;
 
     private final Player p;
@@ -44,7 +45,8 @@ public class RewardItem {
             int rumblingPeriod,
             int aliveLength,
             Vector vector,
-            boolean gravity
+            boolean gravity,
+            Vector offset
     ) {
         this.p = p;
         this.rumblingLength = rumblingLength;
@@ -175,7 +177,7 @@ public class RewardItem {
     }
 
     private void spawnItem(Reward reward) {
-        Location location = animation.getModel().getLocation().clone().add(0,1,0);
+        Location location = animation.getModel().getLocation().clone().add(0,1,0).add(offset);
         item = (Item) location.getWorld().spawnEntity(location,EntityType.DROPPED_ITEM);
         item.setItemStack(reward.getItem().getItem());
         item.setPickupDelay(Integer.MAX_VALUE);

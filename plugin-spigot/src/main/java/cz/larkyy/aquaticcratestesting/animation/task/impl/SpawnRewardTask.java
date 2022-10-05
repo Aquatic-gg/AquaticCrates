@@ -19,6 +19,7 @@ public class SpawnRewardTask extends Task {
         ARGUMENTS.add(new TaskArgument("velocity","0;0;0",false));
         ARGUMENTS.add(new TaskArgument("rumblingLength",0,false));
         ARGUMENTS.add(new TaskArgument("rumblingPeriod",4,false));
+        ARGUMENTS.add(new TaskArgument("offset","0;0;0",true));
     }
 
     public SpawnRewardTask(Map<String,Object> arguments) {
@@ -32,7 +33,8 @@ public class SpawnRewardTask extends Task {
                 (Integer) getArg("rumblingPeriod"),
                 (Integer) getArg("length"),
                 readVector(getArg("velocity").toString()),
-                Boolean.parseBoolean(getArg("gravity").toString())
+                Boolean.parseBoolean(getArg("gravity").toString()),
+                readVector(getArg("offset").toString())
         );
     }
 

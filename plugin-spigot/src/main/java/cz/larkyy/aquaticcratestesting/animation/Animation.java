@@ -59,7 +59,8 @@ public abstract class Animation {
             int rumblingPeriod,
             int aliveLength,
             Vector vector,
-            boolean gravity
+            boolean gravity,
+            Vector offset
     );
     public abstract Model getModel();
     public AnimationManager getAnimationManager() {

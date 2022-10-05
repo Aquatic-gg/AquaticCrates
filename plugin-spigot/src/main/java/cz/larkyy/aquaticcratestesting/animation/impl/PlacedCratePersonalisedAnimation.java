@@ -101,11 +101,11 @@ public class PlacedCratePersonalisedAnimation extends Animation {
     }
 
     @Override
-    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity) {
+    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity, Vector offset) {
         if (rewardItem != null) {
             rewardItem.despawn();
         }
-        rewardItem = new RewardItem(getPlayer(),this,rumblingLength, rumblingPeriod,aliveLength,vector,gravity);
+        rewardItem = new RewardItem(getPlayer(),this,rumblingLength, rumblingPeriod,aliveLength,vector,gravity,offset);
         rewardItem.spawn();
     }
 
