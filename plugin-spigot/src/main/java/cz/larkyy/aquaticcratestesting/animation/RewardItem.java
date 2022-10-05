@@ -33,7 +33,7 @@ public class RewardItem {
 
     private Hologram hologram;
     private Reward cachedReward;
-    private Vector offset;
+    private final Vector offset;
     private Item item;
 
     private final Player p;
@@ -56,6 +56,7 @@ public class RewardItem {
         this.vector = vector;
         this.gravity = gravity;
         this.cachedReward = null;
+        this.offset = offset;
     }
 
     public void spawn() {
