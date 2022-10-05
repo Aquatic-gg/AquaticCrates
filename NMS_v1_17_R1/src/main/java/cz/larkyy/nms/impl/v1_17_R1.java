@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
 
-public final class v1_17_r1 implements NMSHandler {
+public final class v1_17_R1 implements NMSHandler {
     private final Map<Integer, net.minecraft.world.entity.Entity> entities = new HashMap<>();
 
     public int spawnEntity(Location l, Consumer<org.bukkit.entity.Entity> factory, List<Player> players, String type) {
