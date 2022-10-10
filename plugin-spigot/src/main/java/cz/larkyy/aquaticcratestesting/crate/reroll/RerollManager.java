@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcratestesting.crate.reroll;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.reroll.impl.InteractionReroll;
+import cz.larkyy.aquaticcratestesting.crate.reroll.impl.MenuReroll;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import org.bukkit.entity.Player;
 
@@ -19,7 +20,8 @@ public class RerollManager {
     private final Type type;
 
     public enum Type {
-        INTERACTION
+        INTERACTION,
+        GUI
     }
 
     public RerollManager(Crate crate, Map<String,Integer> groups, Type type) {
@@ -59,7 +61,14 @@ public class RerollManager {
         Reroll rp = Reroll.get(p);
         if (rp == null) {
             switch (type) {
-                default: rp = new InteractionReroll(this, p, reward, claimConsumer, rerollConsumer);
+                case GUI -> {
+                    MenuReroll reroll = new MenuReroll(this,p,reward,claimConsumer,rerollConsumer);
+                    rp = reroll;
+                    reroll.open();
+                }
+                default -> {
+                    rp = new InteractionReroll(this, p, reward, claimConsumer, rerollConsumer);
+                }
             }
             AquaticCratesAPI.getPlayerHandler().addRerollPlayer(rp);
         }

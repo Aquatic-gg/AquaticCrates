@@ -4,7 +4,10 @@ import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
+import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
+import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
+import cz.larkyy.aquaticcratestesting.crate.reroll.impl.MenuReroll;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.editor.annotations.EditorCategory;
 import cz.larkyy.aquaticcratestesting.editor.annotations.EditorField;
@@ -38,6 +41,7 @@ public class Crate {
     private final List<Reward> rewards;
 
     private final AtomicReference<PreviewGUI> previewGUI;
+    private final AtomicReference<RerollGUI> rerollGUI;
     private final AtomicReference<RerollManager> rerollManager;
     private final AtomicReference<AnimationManager> animationManager;
     private final List<String> hologram;
@@ -47,6 +51,7 @@ public class Crate {
     public Crate(String identifier, String displayName, CustomItem key, String model,
                  List<Reward> rewards, boolean requiresCrateToOpen,
                  AtomicReference<PreviewGUI> previewGUI,
+                 AtomicReference<RerollGUI> rerollGUI,
                  AtomicReference<RerollManager> rerollManager,
                  AtomicReference<AnimationManager> animationManager,
                  List<String> hologram,
@@ -57,6 +62,7 @@ public class Crate {
         this.model = model;
         this.rewards = rewards;
         this.previewGUI = previewGUI;
+        this.rerollGUI = rerollGUI;
         this.rerollManager = rerollManager;
         this.animationManager = animationManager;
         this.hologram = hologram;
@@ -73,6 +79,14 @@ public class Crate {
             return;
         }
         gui.open(p,0, pc);
+    }
+
+    public void openRerollGUI(MenuReroll reroll) {
+        RerollGUI gui = rerollGUI.get();
+        if (gui == null) {
+            return;
+        }
+        gui.open(reroll);
     }
 
     public PreviewGUI getPreviewGUI() {

@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.animation.task.Task;
 import cz.larkyy.aquaticcratestesting.animation.task.TaskArgument;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
+import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
@@ -38,6 +39,7 @@ public class CrateConfig extends Config {
 
     public Crate loadCrate() {
         AtomicReference<PreviewGUI> previewGUIAtomicReference = new AtomicReference<>(null);
+        AtomicReference<RerollGUI> rerollGUIAtomicReference = new AtomicReference<>(null);
         AtomicReference<RerollManager> rerollManagerAtomicReference = new AtomicReference<>(null);
         AtomicReference<AnimationManager> animationAtomicReference = new AtomicReference<>(null);
 
@@ -49,6 +51,7 @@ public class CrateConfig extends Config {
                 loadRewards(),
                 getConfiguration().getBoolean("key.requires-crate-to-open",true),
                 previewGUIAtomicReference,
+                rerollGUIAtomicReference,
                 rerollManagerAtomicReference,
                 animationAtomicReference,
                 loadHologram("hologram"),
@@ -56,6 +59,7 @@ public class CrateConfig extends Config {
                 getConfiguration().getString("open-permission")
         );
         loadPreviewGUI(c,previewGUIAtomicReference);
+        loadRerollGUI(c,rerollGUIAtomicReference);
         loadRerollManager(c,rerollManagerAtomicReference);
         loadAnimationManager(c,animationAtomicReference);
         return c;
@@ -149,10 +153,41 @@ public class CrateConfig extends Config {
         List<String> rewardLore = getConfiguration().getStringList("preview.reward-lore");
 
         atomicReference.set(new PreviewGUI(crate,
-                builder,
-                getConfiguration().getIntegerList("preview.reward-slots"),
-                rewardLore,
-                getConfiguration().getBoolean("preview.openable-by-key",false)
+                        builder,
+                        getConfiguration().getIntegerList("preview.reward-slots"),
+                        rewardLore,
+                        getConfiguration().getBoolean("preview.openable-by-key",false)
+                )
+        );
+    }
+    private void loadRerollGUI(Crate crate,AtomicReference<RerollGUI> atomicReference) {
+        if ((!getConfiguration().contains("reroll") || !getConfiguration().getBoolean("reroll.enabled",true))
+                || !getConfiguration().getString("reroll.type","Interaction").equalsIgnoreCase("gui")) {
+            return;
+        }
+
+        String path = "reroll.gui.";
+
+        String title;
+        if (getConfiguration().contains(path+"title")) {
+            title = Colors.format(getConfiguration().getString(path+"title"));
+        } else {
+            title = crate.getDisplayName()+"§8 Reroll";
+        }
+        Menu.Builder builder =Menu.builder(AquaticCratesTesting.instance())
+                .size(getConfiguration().getInt(path+"size",27))
+                .title(title);
+
+        if (getConfiguration().contains(path+"items")) {
+            for (String str : getConfiguration().getConfigurationSection(path+"items").getKeys(false)) {
+                builder.addItem(loadMenuItem(str,path+"items."+str));
+            }
+        }
+        int rewardSlot = getConfiguration().getInt(path+"reward-slot",13);
+
+        atomicReference.set(new RerollGUI(
+                        builder,
+                        rewardSlot
                 )
         );
     }

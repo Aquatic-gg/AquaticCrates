@@ -65,6 +65,10 @@ public abstract class Reroll {
         return rerollManager;
     }
 
+    public Reward getReward() {
+        return reward.get();
+    }
+
     public static Reroll get(Player p) {
         return AquaticCratesAPI.getPlayerHandler().getRerollPlayer(p);
     }
