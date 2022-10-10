@@ -1,9 +1,6 @@
 package cz.larkyy.aquaticcratestesting.crate.inventories;
 
-import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reroll.impl.MenuReroll;
-import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
-import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.entity.Player;
 import xyz.larkyy.menulib.Menu;
 import xyz.larkyy.menulib.MenuItem;
@@ -30,15 +27,15 @@ public class RerollGUI {
         mi = m.getItem("reroll");
         if (mi != null) {
             mi.addAction(e -> {
+                menuReroll.getRerollManager().reroll(menuReroll.getPlayer());
                 p.closeInventory();
-                menuReroll.reroll();
             });
         }
         mi = m.getItem("claim");
         if (mi != null) {
             mi.addAction(e -> {
+                menuReroll.getRerollManager().claim(menuReroll.getPlayer());
                 p.closeInventory();
-                menuReroll.claim();
             });
         }
         p.openInventory(m.getInventory());

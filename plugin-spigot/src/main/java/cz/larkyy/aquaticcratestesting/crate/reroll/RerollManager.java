@@ -62,9 +62,7 @@ public class RerollManager {
         if (rp == null) {
             switch (type) {
                 case GUI -> {
-                    MenuReroll reroll = new MenuReroll(this,p,reward,claimConsumer,rerollConsumer);
-                    rp = reroll;
-                    reroll.open();
+                    rp = new MenuReroll(this,p,reward,claimConsumer,rerollConsumer);
                 }
                 default -> {
                     rp = new InteractionReroll(this, p, reward, claimConsumer, rerollConsumer);
@@ -75,6 +73,7 @@ public class RerollManager {
 
         if (rp.getReroll() < getPlayerLimit(p)) {
             rp.setRerolling(true);
+            rp.open();
             return true;
         }
         claimConsumer.accept(reward.get());

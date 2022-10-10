@@ -34,6 +34,7 @@ public abstract class Reroll {
 
     public abstract void activate(Event e);
 
+    public abstract void open();
     public void reroll() {
         reroll++;
         rerolling = false;
@@ -42,6 +43,7 @@ public abstract class Reroll {
     }
 
     public void claim() {
+        rerolling = false;
         claimConsumer.accept(reward.get());
     }
 

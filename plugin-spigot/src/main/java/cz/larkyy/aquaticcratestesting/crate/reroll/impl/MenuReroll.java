@@ -5,6 +5,7 @@ import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -15,12 +16,17 @@ public class MenuReroll extends Reroll {
         super(rerollManager, player, reward, claimConsumer, rerollConsumer);
     }
 
+    @Override
     public void open() {
         getRerollManager().getCrate().openRerollGUI(this);
     }
 
     @Override
-    public void activate(Event e) {
-
+    public void activate(Event event) {
+        if (event instanceof InventoryCloseEvent) {
+            if (isRerolling()) {
+                getRerollManager().claim(getPlayer());
+            }
+        }
     }
 }

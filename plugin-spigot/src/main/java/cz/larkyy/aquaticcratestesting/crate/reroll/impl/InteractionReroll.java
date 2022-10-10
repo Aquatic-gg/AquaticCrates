@@ -31,4 +31,9 @@ public class InteractionReroll extends Reroll {
             }
         }
     }
+
+    @Override
+    public void open() {
+
+    }
 }

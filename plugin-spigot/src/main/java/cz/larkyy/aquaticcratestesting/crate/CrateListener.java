@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -29,6 +30,20 @@ public class CrateListener implements Listener {
         Player p = e.getPlayer();
         e.setCancelled(true);
         Bukkit.getPluginManager().callEvent(new CrateInteractEvent(p,pc,Action.LEFT_CLICK_BLOCK,e.getBlock().getLocation()));
+    }
+
+    @EventHandler
+    public void onInvClose(InventoryCloseEvent e) {
+        if (!(e.getPlayer() instanceof Player p)) {
+            return;
+        }
+
+        Reroll rp = Reroll.get(p);
+        if (rp != null) {
+            if (rp.isRerolling()) {
+                rp.activate(e);
+            }
+        }
     }
 
     @EventHandler
