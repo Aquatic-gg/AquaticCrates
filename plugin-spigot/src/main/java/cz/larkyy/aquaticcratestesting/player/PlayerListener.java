@@ -8,6 +8,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -34,6 +35,16 @@ public class PlayerListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onWorldChange(PlayerChangedWorldEvent e) {
+        Player p = e.getPlayer();
+        AquaticCratesTesting.getCrateHandler().getLocations().values().forEach(v -> {
+            if (v.getLocation().getWorld().equals(e.getPlayer().getWorld())) {
+                v.getHologram().spawn(Arrays.asList(p), list -> {
+                });
+            }
+        });
+    }
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         AquaticCratesTesting.getPlayerHandler().savePlayer(CratePlayer.get(e.getPlayer()));
