@@ -5,6 +5,8 @@ import org.bukkit.entity.Player;
 import xyz.larkyy.menulib.Menu;
 import xyz.larkyy.menulib.MenuItem;
 
+import java.util.Arrays;
+
 public class RerollGUI {
 
     private final Menu.Builder mb;
@@ -19,7 +21,13 @@ public class RerollGUI {
         Player p = menuReroll.getPlayer();
 
         Menu.Builder builder = mb.clone();
-        builder.addItem(MenuItem.builder("reward",menuReroll.getReward().getItem().getItem()).build());
+        builder.addItem(
+                MenuItem.builder(
+                        "reward",
+                        menuReroll.getReward().getItem().getItem()
+                )
+                        .slots(Arrays.asList(rewardSlot))
+                        .build());
 
         Menu m = builder.build();
 

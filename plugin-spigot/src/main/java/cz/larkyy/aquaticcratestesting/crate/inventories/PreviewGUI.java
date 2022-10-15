@@ -49,6 +49,7 @@ public class PreviewGUI {
         mi = m.getItem("open-button");
         if (mi != null) {
             mi.addAction(e -> {
+                p.closeInventory();
                 crate.open(CratePlayer.get(p),pc,false);
             });
         }
