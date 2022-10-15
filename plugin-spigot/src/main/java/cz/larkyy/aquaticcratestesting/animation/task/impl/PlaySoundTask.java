@@ -16,6 +16,7 @@ public class PlaySoundTask extends Task {
         ARGUMENTS.add(new TaskArgument("delay",0,false));
         ARGUMENTS.add(new TaskArgument("sound","minecraft:block.note_block.bell",true));
         ARGUMENTS.add(new TaskArgument("pitch",1d,false));
+        ARGUMENTS.add(new TaskArgument("volume",100f,false));
     }
 
     public PlaySoundTask(Map<String, Object> arguments) {
@@ -27,7 +28,7 @@ public class PlaySoundTask extends Task {
         animation.getPlayer().playSound(
                 animation.getPlayer().getLocation(),
                 getArg("sound").toString().toLowerCase(),
-                100f,
+                Float.parseFloat(getArg("volume").toString()),
                 Float.parseFloat(getArg("pitch").toString())
         );
     }
