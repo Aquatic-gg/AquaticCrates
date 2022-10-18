@@ -19,7 +19,7 @@ public class SpawnRewardTask extends Task {
         ARGUMENTS.add(new TaskArgument("velocity","0;0;0",false));
         ARGUMENTS.add(new TaskArgument("rumblingLength",0,false));
         ARGUMENTS.add(new TaskArgument("rumblingPeriod",4,false));
-        ARGUMENTS.add(new TaskArgument("offset","0;0;0",true));
+        ARGUMENTS.add(new TaskArgument("offset","0;0;0",false));
     }
 
     public SpawnRewardTask(Map<String,Object> arguments) {
