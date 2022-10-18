@@ -70,18 +70,7 @@ public class CrateConfig extends Config {
     }
 
     private CustomItem loadItem(String path) {
-        List<String> lore = null;
-        if (getConfiguration().contains(path+".lore")) {
-            lore = getConfiguration().getStringList(path+".lore");
-        }
-
-        return CustomItem.create(
-                getConfiguration().getString(path+".material","STONE"),
-                getConfiguration().getString(path+".display-name"),
-                lore,
-                getConfiguration().getInt(path+".amount",1),
-                getConfiguration().getInt(path+".model-data")
-                );
+        return CustomItem.loadFromYaml(getConfiguration(),path);
     }
 
     private List<Reward> loadRewards() {
