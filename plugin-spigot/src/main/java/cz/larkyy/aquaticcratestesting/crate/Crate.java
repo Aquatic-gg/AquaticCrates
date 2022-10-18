@@ -5,12 +5,9 @@ import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
-import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reroll.impl.MenuReroll;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
-import cz.larkyy.aquaticcratestesting.editor.annotations.EditorCategory;
-import cz.larkyy.aquaticcratestesting.editor.annotations.EditorField;
 import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
@@ -33,11 +30,8 @@ public class Crate {
 
     private final String identifier;
     private final String displayName;
-    @EditorCategory(id = "key",slot = 9, displayName = "&bKey", title = "Key Editor")
     private final Key key;
-    @EditorField(id = "model",slot = 10, displayName = "&bModel")
     private final String model;
-    @EditorCategory(id = "rewards",slot = 11, displayName = "&bRewards", title = "Reward Editor")
     private final List<Reward> rewards;
 
     private final AtomicReference<PreviewGUI> previewGUI;

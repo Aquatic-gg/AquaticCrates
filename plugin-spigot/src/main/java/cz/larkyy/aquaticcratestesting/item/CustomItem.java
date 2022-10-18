@@ -1,6 +1,5 @@
 package cz.larkyy.aquaticcratestesting.item;
 
-import cz.larkyy.aquaticcratestesting.editor.annotations.EditorField;
 import cz.larkyy.aquaticcratestesting.item.impl.*;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,14 +11,9 @@ import java.util.List;
 
 public abstract class CustomItem {
 
-
-    @EditorField(id = "item-name",slot = 0)
     private final String name;
-    @EditorField(id = "item-lore",slot = 0)
     private final List<String> description;
-    @EditorField(id = "item-amount",slot = 0)
     private final int amount;
-    @EditorField(id = "model-data",slot = 0)
     private final int modeldata;
 
     public CustomItem(String name, List<String> description, int amount, int modeldata) {

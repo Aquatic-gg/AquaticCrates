@@ -1,6 +1,5 @@
 package cz.larkyy.aquaticcratestesting.crate.reward;
 
-import cz.larkyy.aquaticcratestesting.editor.annotations.EditorField;
 import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import org.bukkit.entity.Player;
 
@@ -11,7 +10,6 @@ public class Reward {
     private final String identifier;
     private final CustomItem item;
     private final List<RewardAction> actions;
-    @EditorField(id = "chance",slot = 0)
     private final double chance;
     private final boolean giveItem;
     private final String permission;

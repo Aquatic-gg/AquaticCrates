@@ -2,8 +2,6 @@ package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
-import cz.larkyy.aquaticcratestesting.editor.annotations.EditorCategory;
-import cz.larkyy.aquaticcratestesting.editor.annotations.EditorField;
 import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -18,11 +16,9 @@ public class Key {
     private static final NamespacedKey KEY
             = new NamespacedKey(AquaticCratesTesting.getPlugin(AquaticCratesTesting.class),"KeyIdentifier");
 
-    @EditorCategory(id = "item",slot = 10, displayName = "&bItem", title = "Item Editor")
     private final CustomItem item;
     private final Crate crate;
 
-    @EditorField(id = "requires crate to open",slot = 9, displayName = "&bRequires Crate to open")
     private final boolean requiresCrateToOpen;
 
     public Key(CustomItem item, Crate crate, boolean requiresCrateToOpen) {

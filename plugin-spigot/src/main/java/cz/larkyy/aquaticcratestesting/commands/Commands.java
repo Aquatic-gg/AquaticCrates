@@ -4,13 +4,10 @@ import cz.larkyy.aquaticcratestesting.commands.impl.CrateCommand;
 import cz.larkyy.aquaticcratestesting.commands.impl.ItemCommand;
 import cz.larkyy.aquaticcratestesting.commands.impl.KeyCommand;
 import cz.larkyy.aquaticcratestesting.commands.impl.ReloadCommand;
-import cz.larkyy.aquaticcratestesting.crate.Crate;
-import cz.larkyy.aquaticcratestesting.editor.Editor;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -35,6 +32,7 @@ public class Commands implements CommandExecutor {
             return false;
         }
 
+        /*
         if (args.length > 1 && args[0].equalsIgnoreCase("editor")) {
             new Editor(
                     null,
@@ -45,6 +43,8 @@ public class Commands implements CommandExecutor {
             ).open((Player) sender);
             return true;
         }
+         */
+
 
         ICommand cmd = availableCommands.get(args[0]);
         if (cmd == null) {
