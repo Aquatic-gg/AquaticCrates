@@ -1,7 +1,7 @@
 package cz.larkyy.aquaticcratestesting.crate.reward;
 
-import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import org.bukkit.entity.Player;
+import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.List;
 

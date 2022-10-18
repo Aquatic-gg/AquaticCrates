@@ -8,7 +8,6 @@ import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reroll.impl.MenuReroll;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
-import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import cz.larkyy.aquaticcratestesting.utils.RewardUtils;
@@ -20,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;

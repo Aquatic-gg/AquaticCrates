@@ -5,6 +5,7 @@ import cz.larkyy.aquaticcratestesting.config.Config;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +20,7 @@ public class ItemHandler {
     }
 
     public void load() {
+        CustomItem.getCustomItemHandler().addItemFactory("aquatic",new AquaticItemFactory());
         database.clear();
         databaseCfg.load();
         loadItems();

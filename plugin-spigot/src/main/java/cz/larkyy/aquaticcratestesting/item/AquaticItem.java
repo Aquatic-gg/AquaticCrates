@@ -1,8 +1,8 @@
-package cz.larkyy.aquaticcratestesting.item.impl;
+package cz.larkyy.aquaticcratestesting.item;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import org.bukkit.inventory.ItemStack;
+import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.List;
 

@@ -64,11 +64,15 @@
                             <relocations>
                                 <relocation>
                                     <pattern>xyz.larkyy.menulib</pattern>
-                                    <shadedPattern>cz.larkyy.shaded.menulib</shadedPattern>
+                                    <shadedPattern>cz.larkyy.aquaticcratestesting.shaded.menulib</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>xyz.larkyy.itemlibrary</pattern>
+                                    <shadedPattern>cz.larkyy.aquaticcratestesting.shaded.itemlibrary</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>xyz.larkyy.colorutils</pattern>
-                                    <shadedPattern>cz.larkyy.shaded.colorutils</shadedPattern>
+                                    <shadedPattern>cz.larkyy.aquaticcratestesting.shaded.colorutils</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -177,6 +181,11 @@
             <groupId>xyz.larkyy</groupId>
             <artifactId>ColorUtils</artifactId>
             <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>xyz.larkyy</groupId>
+            <artifactId>ItemLibrary</artifactId>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.github.oraxen</groupId>

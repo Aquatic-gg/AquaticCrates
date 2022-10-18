@@ -13,7 +13,6 @@ import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
-import cz.larkyy.aquaticcratestesting.item.CustomItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -21,6 +20,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.larkyy.colorutils.Colors;
+import xyz.larkyy.itemlibrary.CustomItem;
 import xyz.larkyy.menulib.Menu;
 import xyz.larkyy.menulib.MenuItem;
 
