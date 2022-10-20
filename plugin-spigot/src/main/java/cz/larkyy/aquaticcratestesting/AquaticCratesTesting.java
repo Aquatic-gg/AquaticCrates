@@ -78,6 +78,12 @@ public final class AquaticCratesTesting extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7PlaceholderAPI Hook&f!"));
             new PAPIHook().register();
         }
+        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Database&f!"));
+        try {
+            databaseManager.setup();
+        } catch (SQLException | IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         new LoaderManager(
                 () -> new BukkitRunnable() {
                     @Override
@@ -98,12 +104,6 @@ public final class AquaticCratesTesting extends JavaPlugin {
     }
 
     public void load() {
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Database&f!"));
-        try {
-            databaseManager.setup();
-        } catch (SQLException | IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Item Database&f!"));
         itemHandler.load();
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Crates&f!"));

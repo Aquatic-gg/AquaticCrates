@@ -47,6 +47,7 @@ public class AnimationEmote {
             model = new AquaticPlayerModel(spawnAs(),p);
             emotes.put(p,model);
         }
+        model.setViewer(p);
         model.playAnimation(animation);
     }
 

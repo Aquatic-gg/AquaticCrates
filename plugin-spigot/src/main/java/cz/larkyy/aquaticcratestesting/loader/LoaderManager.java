@@ -25,11 +25,18 @@ public class LoaderManager {
             }
         }
         if (getPlugin("ModelEngine") != null) {
-            loaders.add(new ModelEngineLoader(
-                    this::tryLoad
-            ));
-            if (AquaticCratesTesting.loaded) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "meg reload");
+            try {
+                Class.forName("com.ticxo.modelengine.api.events.ModelRegistrationEvent");
+
+                loaders.add(new ModelEngineLoader(
+                        this::tryLoad
+                ));
+                if (AquaticCratesTesting.loaded) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "meg reload");
+                }
+            } catch (ClassNotFoundException ignored) {
+                Bukkit.getConsoleSender().sendMessage("[AquaticCrates] Using an old version of ModelEngine! Use at least v3.0.0!");
+
             }
         }
     }
