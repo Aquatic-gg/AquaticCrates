@@ -159,8 +159,6 @@ public class v1_19_R2 implements NMSHandler {
         }
         final var packet = new ClientboundSetCameraPacket(entity);
         sendPacket(Arrays.asList(player),packet);
-
-        final var packet2 = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.UPDATE_GAME_MODE,new ArrayList<>());
     }
 
     @Override

@@ -72,6 +72,11 @@ public class Crate {
         if (gui == null) {
             return;
         }
+        if (pc == null) {
+            if (!gui.isOpenableByKey()) {
+                return;
+            }
+        }
         gui.open(p,0, pc);
     }
 

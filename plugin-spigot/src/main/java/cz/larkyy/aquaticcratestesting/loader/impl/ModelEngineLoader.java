@@ -5,7 +5,6 @@ import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.loader.Loader;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 
 public class ModelEngineLoader extends Loader implements Listener {
 
@@ -21,8 +20,5 @@ public class ModelEngineLoader extends Loader implements Listener {
             setLoaded(true);
             getRunnable().run();
         }
-    }
-
-    public void onInvOpen(InventoryOpenEvent e) {
     }
 }

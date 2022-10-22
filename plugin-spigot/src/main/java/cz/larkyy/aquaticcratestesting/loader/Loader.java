@@ -1,7 +1,5 @@
 package cz.larkyy.aquaticcratestesting.loader;
 
-import java.util.function.Consumer;
-
 public abstract class Loader {
 
     private final Runnable runnable;
