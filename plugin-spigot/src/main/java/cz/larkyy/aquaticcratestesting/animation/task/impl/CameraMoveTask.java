@@ -4,6 +4,7 @@ import cz.larkyy.aquaticcratestesting.animation.Animation;
 import cz.larkyy.aquaticcratestesting.animation.impl.CinematicAnimation;
 import cz.larkyy.aquaticcratestesting.animation.task.Task;
 import cz.larkyy.aquaticcratestesting.animation.task.TaskArgument;
+import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -27,8 +28,7 @@ public class CameraMoveTask extends Task {
 
     @Override
     public void run(Animation animation) {
-        if (animation instanceof CinematicAnimation) {
-            CinematicAnimation a = (CinematicAnimation) animation;
+        if (animation instanceof CinematicAnimation a) {
             a.moveCamera(
                     readVector(getArg("offset").toString()),
                     (int)getArg("duration"),

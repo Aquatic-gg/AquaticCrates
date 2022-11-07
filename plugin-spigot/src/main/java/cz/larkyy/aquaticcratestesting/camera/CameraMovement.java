@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcratestesting.camera;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -14,6 +13,9 @@ public class CameraMovement {
     private final int duration;
     private final Camera camera;
     private BukkitRunnable runnable;
+    private final float yawOffset;
+    private final float pitchOffset;
+    private final Vector offset;
     private int i = 0;
 
     public CameraMovement(Camera camera, Location destinationLocation, int duration) {
@@ -22,22 +24,23 @@ public class CameraMovement {
         this.duration = duration;
 
         this.previousLocation = camera.location().clone();
+        offset = destinationLocation.toVector().subtract(previousLocation.toVector());
+        offset.multiply((double) (1d/duration));
+
+        yawOffset = (destinationLocation.getYaw() - previousLocation.getYaw()) / duration;
+        pitchOffset = (destinationLocation.getPitch() - previousLocation.getPitch()) / duration;
     }
 
     public Location getLocation(int tick) {
 
-        Vector v1 = destinationLocation.toVector().subtract(previousLocation.toVector());
-        v1.multiply((double) (1d/duration));
+        Vector v1 = offset.clone();
         v1.multiply(tick);
 
         Location location = previousLocation.clone().add(v1);
 
-        float yaw = destinationLocation.getYaw() - previousLocation.getYaw();
-        float pitch = destinationLocation.getPitch() - previousLocation.getPitch();
-
-        yaw /= duration;
+        float yaw = yawOffset;
+        float pitch = pitchOffset;
         yaw *= tick;
-        pitch /= duration;
         pitch *= tick;
 
         location.setYaw(previousLocation.getYaw()+yaw);
@@ -59,12 +62,11 @@ public class CameraMovement {
                 if (i > duration) {
                     cancel();
                 }
-
                 move(i);
                 i++;
             }
         };
-        runnable.runTaskTimer(AquaticCratesTesting.getPlugin(AquaticCratesTesting.class),0,1);
+        runnable.runTaskTimerAsynchronously(AquaticCratesTesting.getPlugin(AquaticCratesTesting.class),0,1);
     }
 
     public void stop() {

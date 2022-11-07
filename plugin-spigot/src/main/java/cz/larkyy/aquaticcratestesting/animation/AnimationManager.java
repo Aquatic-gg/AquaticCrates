@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcratestesting.animation.impl.InstantAnimation;
 import cz.larkyy.aquaticcratestesting.animation.impl.PlacedCrateAnimation;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
