@@ -79,7 +79,6 @@ public class MEModel extends Model {
             as.setInvisible(true);
             as.setCustomName("aquaticcrates");
             as.setMarker(true);
-            as.setPersistent(false);
             as.teleport(loc);
 
             modeledEntity = ModelEngineAPI.createModeledEntity(as);
