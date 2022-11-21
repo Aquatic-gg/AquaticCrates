@@ -57,11 +57,20 @@ public class CinematicAnimation extends Animation {
     public void begin() {
         getPlayer().getPersistentDataContainer().set(KEY, PersistentDataType.INTEGER,1);
 
-        getPlayer().setInvisible(true);
-        camera.attachPlayer(() -> {
-            model.show(getPlayer());
-            start();
-        });
+        var title = getAnimationManager().getPreOpenTitle();
+        if (title != null) {
+            title.show(getPlayer());
+        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                getPlayer().setInvisible(true);
+                camera.attachPlayer(() -> {
+                    model.show(getPlayer());
+                    start();
+                });
+            }
+        }.runTaskLater(AquaticCratesTesting.instance(), getAnimationManager().getStartDelay());
     }
 
     @Override

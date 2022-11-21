@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcratestesting.animation;
 
 import cz.larkyy.aquaticcratestesting.animation.impl.CinematicAnimation;
 import cz.larkyy.aquaticcratestesting.animation.impl.PlacedCratePersonalisedAnimation;
+import cz.larkyy.aquaticcratestesting.animation.task.PreOpenTitle;
 import cz.larkyy.aquaticcratestesting.animation.task.Task;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
@@ -28,6 +29,8 @@ public class AnimationManager {
 
     private final List<Task> tasks;
     private final int length;
+    private final int startDelay;
+    private final PreOpenTitle preOpenTitle;
     private final AnimationTitle openingTitle;
     private final AnimationTitle rerollingTitle;
     private final Location modelLocation;
@@ -47,7 +50,8 @@ public class AnimationManager {
     }
 
     public AnimationManager(Crate crate, Type type, List<Task> tasks, int length, AnimationTitle openingTitle, AnimationTitle rerollingTitle,
-                            Location modelLocation, Location cameraLocation, boolean skippable, boolean setPumpkinHelmet, AnimationEmote emote) {
+                            Location modelLocation, Location cameraLocation, boolean skippable, boolean setPumpkinHelmet, AnimationEmote emote,
+                            int startDelay, PreOpenTitle preOpenTitle) {
         this.crate = crate;
         this.type = type;
         this.tasks = tasks;
@@ -60,6 +64,8 @@ public class AnimationManager {
         this.skippable = skippable;
         this.setPumpkinHelmet = setPumpkinHelmet;
         this.emote = emote;
+        this.preOpenTitle = preOpenTitle;
+        this.startDelay = startDelay;
 
         bossBars = new HashMap<>();
     }
@@ -169,6 +175,14 @@ public class AnimationManager {
 
     public boolean isInAnimation(Player p) {
         return animations.containsKey(p);
+    }
+
+    public int getStartDelay() {
+        return startDelay;
+    }
+
+    public PreOpenTitle getPreOpenTitle() {
+        return preOpenTitle;
     }
 
     public boolean skipAnimation(Player p) {

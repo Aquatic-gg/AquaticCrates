@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcratestesting.config;
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.animation.AnimationEmote;
 import cz.larkyy.aquaticcratestesting.animation.AnimationTitle;
+import cz.larkyy.aquaticcratestesting.animation.task.PreOpenTitle;
 import cz.larkyy.aquaticcratestesting.animation.task.impl.*;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
@@ -230,8 +231,24 @@ public class CrateConfig extends Config {
                 loadLocation("animation.camera-location"),
                 getConfiguration().getBoolean("animation.skippable",false),
                 getConfiguration().getBoolean("animation.use-pumpkin-helmet",false),
-                loadAnimationEmote()
+                loadAnimationEmote(),
+                getConfiguration().getInt("animation.pre-open.length",0),
+                loadPreOpenTitle()
                         ));
+    }
+
+    private PreOpenTitle loadPreOpenTitle() {
+        if (!getConfiguration().contains("animation.pre-open.title")) {
+            return null;
+        }
+        String path = "animation.pre-open.title";
+        String title = getConfiguration().getString(path+".title","");
+        String subTitle = getConfiguration().getString(path+".subtitle","");
+        int in = getConfiguration().getInt(path+".in",0);
+        int stay = getConfiguration().getInt(path+".in",10);
+        int out = getConfiguration().getInt(path+".in",0);
+
+        return new PreOpenTitle(in,out,stay,title,subTitle);
     }
 
     private AnimationEmote loadAnimationEmote() {
