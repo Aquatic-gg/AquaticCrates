@@ -3,6 +3,8 @@ package cz.larkyy.aquaticcratestesting.commands.impl;
 import cz.larkyy.aquaticcratestesting.commands.ICommand;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
+import cz.larkyy.aquaticcratestesting.player.CratePlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,6 +39,30 @@ public class CrateCommand implements ICommand {
                 }
 
                 crate.giveCrate(p);
+            }
+            case "open" -> {
+                if (!sender.hasPermission("aquaticcrates.crate.give")) {
+                    Messages.NO_PERMISSION.send(sender);
+                    return;
+                }
+
+                if (args.length < 4) {
+                    return;
+                }
+
+                Crate crate = Crate.get(args[2]);
+                if (crate == null) {
+                    Messages.INVALID_CRATE.send(sender);
+                    return;
+                }
+
+                Player player = Bukkit.getPlayer(args[3]);
+                if (player == null) {
+                    Messages.INVALID_PLAYER.send(sender);
+                    return;
+                }
+
+                crate.open(CratePlayer.get(player), null, player.isSneaking());
             }
         }
     }
