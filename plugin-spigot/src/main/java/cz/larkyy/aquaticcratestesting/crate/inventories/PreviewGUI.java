@@ -4,6 +4,7 @@ import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -53,6 +54,23 @@ public class PreviewGUI {
                 crate.open(CratePlayer.get(p),pc,false);
             });
         }
+        for (ItemStack is : m.getInventory().getContents()) {
+            if (is == null) {
+                continue;
+            }
+            if (is.getItemMeta() == null) {
+                continue;
+            }
+
+            if (is.getItemMeta().getLore() == null) {
+                continue;
+            }
+
+            ItemMeta im = is.getItemMeta();
+            im.setLore(PlaceholderAPI.setPlaceholders(p.getPlayer(),im.getLore()));
+            is.setItemMeta(im);
+        }
+
         p.openInventory(m.getInventory());
     }
 

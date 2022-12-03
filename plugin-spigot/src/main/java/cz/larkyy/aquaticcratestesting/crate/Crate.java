@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import xyz.larkyy.itemlibrary.CustomItem;
+import xyz.larkyy.menulib.Menu;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -158,8 +159,9 @@ public class Crate {
             player.getPlayer().sendMessage("No available reward has been found! Contact an Admin!");
             return true;
         }
-
         if (instant) {
+            var e = new ClaimRewardEvent(player.getPlayer(),reward.get(),this);
+            Bukkit.getServer().getPluginManager().callEvent(e);
             reward.get().give(player.getPlayer());
         } else {
             animationManager.get().open(player.getPlayer(), reward, pc, a-> {

@@ -155,9 +155,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.MrLarkyy</groupId>
+            <groupId>xyz.larkyy</groupId>
             <artifactId>MenuLib</artifactId>
-            <version>-SNAPSHOT</version>
+            <version>1.0.13</version>
         </dependency>
         <dependency>
             <groupId>com.github.LoneDev6</groupId>
