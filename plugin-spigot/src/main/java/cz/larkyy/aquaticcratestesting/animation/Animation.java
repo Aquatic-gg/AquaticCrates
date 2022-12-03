@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcratestesting.animation;
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.model.Model;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -27,6 +28,8 @@ public abstract class Animation {
         this.callback = callback;
         this.reward = reward;
         started = false;
+        Bukkit.broadcastMessage("Adding to animation!");
+        getAnimationManager().addAnimation(getPlayer(),this);
     }
 
     public abstract void begin();

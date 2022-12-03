@@ -137,6 +137,7 @@ public class Crate {
 
     public boolean open(CratePlayer player, PlacedCrate pc, boolean instant, boolean takeKey) {
         if (AquaticCratesAPI.getCrateHandler().isInAnimation(player.getPlayer())) {
+            Bukkit.broadcastMessage("Player is still in an animation!");
             return false;
         }
 
@@ -166,10 +167,11 @@ public class Crate {
                         r -> {
                             animationManager.get().hideTitle(player.getPlayer());
                             r.give(player.getPlayer());
+                            Bukkit.broadcastMessage("Removing from animation!");
                             animationManager.get().removeAnimation(player.getPlayer());
                             a.end();
                         },
-                        r-> {
+                        r -> {
                             animationManager.get().hideTitle(player.getPlayer());
                             reward.set(getRandomReward(player.getPlayer()));
                             a.start();

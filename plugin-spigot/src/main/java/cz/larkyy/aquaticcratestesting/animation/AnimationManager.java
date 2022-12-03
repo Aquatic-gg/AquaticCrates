@@ -77,7 +77,7 @@ public class AnimationManager {
                 new InstantAnimation(this,p,reward,callback);
             }
             case PLACEDCRATE -> {
-                animations.put(p,new PlacedCrateAnimation(this,p,reward,callback,pc));
+                new PlacedCrateAnimation(this,p,reward,callback,pc);
             }
             case CINEMATIC -> {
                 animations.put(p,new CinematicAnimation(this,p,reward,emote,callback));
@@ -106,6 +106,9 @@ public class AnimationManager {
 
     public void removeAnimation(Player player) {
         animations.remove(player);
+    }
+    public void addAnimation(Player player,Animation animation) {
+        animations.put(player, animation);
     }
 
     public Crate getCrate() {
