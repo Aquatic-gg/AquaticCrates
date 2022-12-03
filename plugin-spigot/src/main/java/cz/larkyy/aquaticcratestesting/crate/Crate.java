@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcratestesting.crate;
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
+import cz.larkyy.aquaticcratestesting.api.events.ClaimRewardEvent;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
@@ -165,6 +166,8 @@ public class Crate {
                 if (rerollManager.get().setRerolling(player.getPlayer(), reward,
                         r -> {
                             animationManager.get().hideTitle(player.getPlayer());
+                            var e = new ClaimRewardEvent(player.getPlayer(),r,this);
+                            Bukkit.getServer().getPluginManager().callEvent(e);
                             r.give(player.getPlayer());
                             animationManager.get().removeAnimation(player.getPlayer());
                             a.end();

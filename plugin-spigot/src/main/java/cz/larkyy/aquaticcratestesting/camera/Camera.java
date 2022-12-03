@@ -100,7 +100,14 @@ public class Camera {
             cameraMovement.stop();
         }
         detachPlayer();
-        nmsHandler().despawnEntity(Arrays.asList(id),Arrays.asList(player));
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.broadcastMessage("Despawning camera: "+id);
+                nmsHandler().despawnEntity(Arrays.asList(id),Arrays.asList(player));
+            }
+        }.runTaskLaterAsynchronously(AquaticCratesTesting.instance(),1);
     }
 
     private NMSHandler nmsHandler() {

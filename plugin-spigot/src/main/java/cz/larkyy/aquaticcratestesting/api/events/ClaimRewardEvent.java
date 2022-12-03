@@ -1,13 +1,10 @@
 package cz.larkyy.aquaticcratestesting.api.events;
 
 import cz.larkyy.aquaticcratestesting.crate.Crate;
-import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.block.Action;
 import org.jetbrains.annotations.NotNull;
 
 public class ClaimRewardEvent extends Event {
