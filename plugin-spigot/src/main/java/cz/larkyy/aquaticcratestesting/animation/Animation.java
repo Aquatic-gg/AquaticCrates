@@ -28,7 +28,6 @@ public abstract class Animation {
         this.callback = callback;
         this.reward = reward;
         started = false;
-        Bukkit.broadcastMessage("Adding to animation!");
         getAnimationManager().addAnimation(getPlayer(),this);
     }
 
