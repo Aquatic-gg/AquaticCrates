@@ -150,6 +150,7 @@ public class Crate {
         if (!animationManager.get().canBeOpened(player.getPlayer())) {
             return false;
         }
+
         if (takeKey && !player.takeKey(key)) {
             Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
             return false;

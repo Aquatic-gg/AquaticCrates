@@ -80,10 +80,10 @@ public class AnimationManager {
                 new PlacedCrateAnimation(this,p,reward,callback,pc);
             }
             case CINEMATIC -> {
-                animations.put(p,new CinematicAnimation(this,p,reward,emote,callback));
+                new CinematicAnimation(this,p,reward,emote,callback);
             }
             case PLACEDCRATE_PERSONALISED -> {
-                animations.put(p,new PlacedCratePersonalisedAnimation(this,p,reward,callback,pc));
+                new PlacedCratePersonalisedAnimation(this,p,reward,callback,pc);
             }
         }
     }

@@ -112,7 +112,10 @@ public class CrateHandler {
 
     public boolean isInAnimation(Player p) {
         for (Crate c : crates.values()) {
-            if (c.getAnimationManager().get().isInAnimation(p)) return true;
+            if (c.getAnimationManager().get().isInAnimation(p)) {
+                Bukkit.broadcastMessage("Player is in an animation of crate: "+c.getIdentifier());
+                return true;
+            }
         }
         return false;
     }

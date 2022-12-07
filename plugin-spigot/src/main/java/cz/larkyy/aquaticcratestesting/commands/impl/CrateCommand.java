@@ -62,7 +62,7 @@ public class CrateCommand implements ICommand {
                     return;
                 }
 
-                crate.open(CratePlayer.get(player), null, true);
+                crate.open(CratePlayer.get(player), null, player.isSneaking());
             }
         }
     }
