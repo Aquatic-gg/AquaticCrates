@@ -315,7 +315,7 @@ public class CrateConfig extends Config {
                     tasks.add(new CameraTeleportTask(loadArguments("animation.actions."+id, CameraTeleportTask.ARGUMENTS)));
                 }
                 case "spawnparticle" -> {
-                    tasks.add(new SpawnParticleTask(loadArguments("animation.actions."+id, CameraTeleportTask.ARGUMENTS)));
+                    tasks.add(new SpawnParticleTask(loadArguments("animation.actions."+id, SpawnParticleTask.ARGUMENTS)));
                 }
             }
         });

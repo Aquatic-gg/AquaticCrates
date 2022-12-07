@@ -19,7 +19,7 @@ public class SpawnParticleTask extends Task {
         ARGUMENTS.add(new TaskArgument("offsetX",0,false));
         ARGUMENTS.add(new TaskArgument("offsetY",0,false));
         ARGUMENTS.add(new TaskArgument("offsetZ",0,false));
-        ARGUMENTS.add(new TaskArgument("particle","0;0;0",false));
+        ARGUMENTS.add(new TaskArgument("particle","VILLAGER_ANGRY",true));
         ARGUMENTS.add(new TaskArgument("count",1,false));
     }
 
