@@ -57,7 +57,8 @@ public class CrateConfig extends Config {
                 animationAtomicReference,
                 loadHologram("hologram"),
                 getConfiguration().getDouble("hologram-y-offset",0),
-                getConfiguration().getString("open-permission")
+                getConfiguration().getString("open-permission"),
+                getConfiguration().getBoolean("instant-open-while-sneaking",true)
         );
         loadPreviewGUI(c,previewGUIAtomicReference);
         loadRerollGUI(c,rerollGUIAtomicReference);

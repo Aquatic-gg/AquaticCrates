@@ -43,6 +43,7 @@ public class Crate {
     private final List<String> hologram;
     private final double hologramYOffset;
     private final String permission;
+    private final boolean instantWhileSneaking;
 
     public Crate(String identifier, String displayName, CustomItem key, String model,
                  List<Reward> rewards, boolean requiresCrateToOpen,
@@ -51,7 +52,7 @@ public class Crate {
                  AtomicReference<RerollManager> rerollManager,
                  AtomicReference<AnimationManager> animationManager,
                  List<String> hologram,
-                 double hologramYOffset, String permission) {
+                 double hologramYOffset, String permission, boolean instantWhileSneaking) {
         this.identifier = identifier;
         this.displayName = displayName;
         this.key = new Key(key,this,requiresCrateToOpen);
@@ -64,6 +65,7 @@ public class Crate {
         this.hologram = hologram;
         this.hologramYOffset = hologramYOffset;
         this.permission = permission;
+        this.instantWhileSneaking = instantWhileSneaking;
     }
 
     public void openPreview(Player p, PlacedCrate pc) {
@@ -160,7 +162,7 @@ public class Crate {
             player.getPlayer().sendMessage("No available reward has been found! Contact an Admin!");
             return true;
         }
-        if (instant) {
+        if (instant && instantWhileSneaking) {
             var e = new ClaimRewardEvent(player.getPlayer(),reward.get(),this);
             Bukkit.getServer().getPluginManager().callEvent(e);
             reward.get().give(player.getPlayer());
