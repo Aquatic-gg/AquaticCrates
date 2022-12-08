@@ -19,7 +19,8 @@ public class SQLiteDriver implements Driver {
     private Connection activeConnection;
 
     @Override
-    public void setup() throws IOException, SQLException {
+    public void setup() throws IOException, SQLException, ClassNotFoundException {
+        Class.forName("org.sqlite.JDBC");
         AquaticCratesTesting.instance().getDataFolder().mkdirs();
         databaseFile.createNewFile();
 
