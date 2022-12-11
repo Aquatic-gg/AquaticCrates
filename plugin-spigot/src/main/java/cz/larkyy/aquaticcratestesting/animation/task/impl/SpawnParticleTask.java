@@ -33,9 +33,9 @@ public class SpawnParticleTask extends Task {
                 Particle.valueOf(getArg("particle").toString()),
                 animation.getModel().getLocation().add(readVector(getArg("offset").toString())),
                 Integer.parseInt(getArg("count").toString()),
-                Integer.parseInt(getArg("offsetX").toString()),
-                Integer.parseInt(getArg("offsetY").toString()),
-                Integer.parseInt(getArg("offsetZ").toString())
+                Double.parseDouble(getArg("offsetX").toString()),
+                Double.parseDouble(getArg("offsetY").toString()),
+                Double.parseDouble(getArg("offsetZ").toString())
         );
     }
 
