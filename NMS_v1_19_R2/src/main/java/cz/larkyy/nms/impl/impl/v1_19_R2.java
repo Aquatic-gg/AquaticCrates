@@ -1,7 +1,8 @@
-package cz.larkyy.nms.impl;
+package cz.larkyy.nms.impl.impl;
 
 import com.mojang.datafixers.util.Pair;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;
@@ -15,10 +16,9 @@ import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntArrayList;
-import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_17_R1.util.CraftVector;
+import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R1.util.CraftVector;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
 
-public final class v1_17_R1 implements NMSHandler {
+public class v1_19_R2 implements NMSHandler {
     private final Map<Integer, net.minecraft.world.entity.Entity> entities = new HashMap<>();
 
     public int spawnEntity(Location l, Consumer<org.bukkit.entity.Entity> factory, List<Player> players, String type) {
@@ -159,8 +159,6 @@ public final class v1_17_R1 implements NMSHandler {
         }
         final var packet = new ClientboundSetCameraPacket(entity);
         sendPacket(Arrays.asList(player),packet);
-
-        final var packet2 = new ClientboundPlayerInfoPacket(ClientboundPlayerInfoPacket.Action.UPDATE_GAME_MODE,new ArrayList<>());
     }
 
     @Override
@@ -186,7 +184,9 @@ public final class v1_17_R1 implements NMSHandler {
                     playerHandle.getGameProfile(),
                     playerHandle.latency,
                     GameType.valueOf(gameMode.toUpperCase()),
-                    playerHandle.listName)
+                    playerHandle.listName,
+                    null
+                    )
             );
 
             packetsField.set(packet,list);

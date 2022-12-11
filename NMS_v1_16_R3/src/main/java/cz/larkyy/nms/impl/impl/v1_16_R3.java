@@ -1,4 +1,4 @@
-package cz.larkyy.nms.impl;
+package cz.larkyy.nms.impl.impl;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;

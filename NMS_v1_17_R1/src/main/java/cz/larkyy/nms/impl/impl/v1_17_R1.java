@@ -1,21 +1,24 @@
-package cz.larkyy.nms.impl;
+package cz.larkyy.nms.impl.impl;
 
 import com.mojang.datafixers.util.Pair;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_18_R2.util.CraftVector;
+import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.ints.IntArrayList;
+import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_17_R1.util.CraftVector;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -23,8 +26,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class v1_18_R2 implements NMSHandler {
-    private final Map<Integer, Entity> entities = new HashMap<>();
+public final class v1_17_R1 implements NMSHandler {
+    private final Map<Integer, net.minecraft.world.entity.Entity> entities = new HashMap<>();
 
     public int spawnEntity(Location l, Consumer<org.bukkit.entity.Entity> factory, List<Player> players, String type) {
         final var entityOpt = EntityType.byString(type.toLowerCase());
@@ -56,7 +59,7 @@ public class v1_18_R2 implements NMSHandler {
         sendPacket(players,packetData);
 
         if (entity instanceof LivingEntity livingEntity) {
-            List<Pair<EquipmentSlot, net.minecraft.world.item.ItemStack>> list = new ArrayList<>();
+            List<Pair<EquipmentSlot, ItemStack>> list = new ArrayList<>();
             for (EquipmentSlot value : EquipmentSlot.values()) {
                 list.add(Pair.of(value,livingEntity.getItemBySlot(value)));
             }
@@ -76,7 +79,7 @@ public class v1_18_R2 implements NMSHandler {
 
     @Override
     public void updateEntity(int id, Consumer<org.bukkit.entity.Entity> factory) {
-        Entity entity = entities.get(id);
+        net.minecraft.world.entity.Entity entity = entities.get(id);
 
         if (factory != null) {
             factory.accept(entity.getBukkitEntity());
@@ -97,7 +100,7 @@ public class v1_18_R2 implements NMSHandler {
 
     @Override
     public void throwEntity(int id, Vector vector) {
-        Entity entity = entities.get(id);
+        net.minecraft.world.entity.Entity entity = entities.get(id);
         entity.getBukkitEntity().setVelocity(vector);
         final var packet = new ClientboundSetEntityMotionPacket(id,new Vec3(vector.getX(),vector.getY(),vector.getZ()));
         sendPacket(new ArrayList<>(Bukkit.getOnlinePlayers()),packet);
@@ -148,7 +151,7 @@ public class v1_18_R2 implements NMSHandler {
 
     @Override
     public void setCamera(int id, Player player) {
-        final Entity entity;
+        final net.minecraft.world.entity.Entity entity;
         if (entities.containsKey(id)) {
             entity = entities.get(id);
         } else {
