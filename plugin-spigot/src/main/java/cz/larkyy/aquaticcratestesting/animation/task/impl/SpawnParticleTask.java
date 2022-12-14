@@ -29,13 +29,14 @@ public class SpawnParticleTask extends Task {
 
     @Override
     public void run(Animation animation) {
-        animation.getModel().getLocation().getWorld().spawnParticle(
+        animation.getPlayer().spawnParticle(
                 Particle.valueOf(getArg("particle").toString()),
                 animation.getModel().getLocation().add(readVector(getArg("offset").toString())),
                 Integer.parseInt(getArg("count").toString()),
                 Double.parseDouble(getArg("offsetX").toString()),
                 Double.parseDouble(getArg("offsetY").toString()),
-                Double.parseDouble(getArg("offsetZ").toString())
+                Double.parseDouble(getArg("offsetZ").toString()),
+                1
         );
     }
 
