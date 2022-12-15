@@ -246,8 +246,8 @@ public class CrateConfig extends Config {
         String title = getConfiguration().getString(path+".title","");
         String subTitle = getConfiguration().getString(path+".subtitle","");
         int in = getConfiguration().getInt(path+".in",0);
-        int stay = getConfiguration().getInt(path+".in",10);
-        int out = getConfiguration().getInt(path+".in",0);
+        int stay = getConfiguration().getInt(path+".stay",10);
+        int out = getConfiguration().getInt(path+".out",0);
 
         return new PreOpenTitle(in,out,stay,title,subTitle);
     }
