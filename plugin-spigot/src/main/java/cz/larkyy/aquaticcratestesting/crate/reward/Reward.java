@@ -9,6 +9,7 @@ public class Reward {
 
     private final String identifier;
     private final CustomItem item;
+    private final CustomItem previewItem;
     private final List<RewardAction> actions;
     private final double chance;
     private final boolean giveItem;
@@ -16,7 +17,7 @@ public class Reward {
     private final List<String> hologram;
     private final double hologramYOffset;
 
-    public Reward(String identifier, CustomItem item, double chance, List<RewardAction> actions, String permission, boolean giveItem, List<String> hologram, double hologramYOffset) {
+    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<RewardAction> actions, String permission, boolean giveItem, List<String> hologram, double hologramYOffset) {
         this.identifier = identifier;
         this.item = item;
         this.chance = chance;
@@ -25,6 +26,7 @@ public class Reward {
         this.permission = permission;
         this.hologram = hologram;
         this.hologramYOffset = hologramYOffset;
+        this.previewItem = previewItem;
     }
 
     public void give(Player player) {
@@ -48,6 +50,10 @@ public class Reward {
 
     public CustomItem getItem() {
         return item;
+    }
+
+    public CustomItem getPreviewItem() {
+        return previewItem == null ? item : previewItem;
     }
 
     public double getChance() {

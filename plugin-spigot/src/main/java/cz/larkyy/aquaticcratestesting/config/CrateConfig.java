@@ -89,12 +89,14 @@ public class CrateConfig extends Config {
     private Reward loadReward(String id) {
         final String path = "rewards."+id;
         CustomItem item = loadItem(path+".item");
+        CustomItem previewItem = loadItem(path+".preview-item");
         double chance = getConfiguration().getDouble(path+".chance");
         String permission = getConfiguration().getString(path+".permission");
         boolean giveItem = getConfiguration().getBoolean(path+".give-item",false);
         return new Reward(
                 id,
                 item,
+                previewItem,
                 chance,
                 loadRewardActions(path+".actions"),
                 permission,

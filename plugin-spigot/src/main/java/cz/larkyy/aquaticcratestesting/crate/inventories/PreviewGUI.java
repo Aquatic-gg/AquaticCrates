@@ -108,7 +108,7 @@ public class PreviewGUI {
                 return;
             }
             Reward r = rewards.get(i);
-            ItemStack is = r.getItem().getItem();
+            ItemStack is = r.getPreviewItem().getItem();
             ItemMeta im = is.getItemMeta();
             List<String> lore = new ArrayList<>();
             if (im.getLore() != null) {
