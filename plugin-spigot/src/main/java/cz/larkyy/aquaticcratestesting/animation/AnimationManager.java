@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcratestesting.animation;
 
 import cz.larkyy.aquaticcratestesting.animation.impl.CinematicAnimation;
 import cz.larkyy.aquaticcratestesting.animation.impl.PlacedCratePersonalisedAnimation;
+import cz.larkyy.aquaticcratestesting.animation.task.ConfiguredTask;
 import cz.larkyy.aquaticcratestesting.animation.task.PreOpenTitle;
 import cz.larkyy.aquaticcratestesting.animation.task.Task;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
@@ -28,7 +29,7 @@ public class AnimationManager {
     private final Crate crate;
     private final Type type;
 
-    private final List<Task> tasks;
+    private final List<ConfiguredTask> tasks;
     private final int length;
     private final int startDelay;
     private final PreOpenTitle preOpenTitle;
@@ -50,7 +51,7 @@ public class AnimationManager {
         CINEMATIC
     }
 
-    public AnimationManager(Crate crate, Type type, List<Task> tasks, int length, AnimationTitle openingTitle, AnimationTitle rerollingTitle,
+    public AnimationManager(Crate crate, Type type, List<ConfiguredTask> tasks, int length, AnimationTitle openingTitle, AnimationTitle rerollingTitle,
                             Location modelLocation, Location cameraLocation, boolean skippable, boolean setPumpkinHelmet, AnimationEmote emote,
                             int startDelay, PreOpenTitle preOpenTitle) {
         this.crate = crate;

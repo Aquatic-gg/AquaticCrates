@@ -22,20 +22,21 @@ public class CameraMoveTask extends Task {
         ARGUMENTS.add(new TaskArgument("rotate-head-pitch",0,false));
     }
 
-    public CameraMoveTask(Map<String, Object> arguments) {
-        super(arguments);
+    @Override
+    public void run(Animation animation, Map<String,Object> arguments) {
+        if (animation instanceof CinematicAnimation a) {
+            a.moveCamera(
+                    readVector(arguments.get("offset").toString()),
+                    (int)arguments.get("duration"),
+                    Float.parseFloat(arguments.get("rotate-head-yaw").toString()),
+                    Float.parseFloat(arguments.get("rotate-head-pitch").toString())
+            );
+        }
     }
 
     @Override
-    public void run(Animation animation) {
-        if (animation instanceof CinematicAnimation a) {
-            a.moveCamera(
-                    readVector(getArg("offset").toString()),
-                    (int)getArg("duration"),
-                    Float.parseFloat(getArg("rotate-head-yaw").toString()),
-                    Float.parseFloat(getArg("rotate-head-pitch").toString())
-            );
-        }
+    public List<TaskArgument> getArgs() {
+        return ARGUMENTS;
     }
 
     private Vector readVector(String str) {

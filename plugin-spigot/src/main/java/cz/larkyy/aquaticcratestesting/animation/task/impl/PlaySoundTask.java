@@ -22,25 +22,26 @@ public class PlaySoundTask extends Task {
         ARGUMENTS.add(new TaskArgument("offset","0;0;0",false));
     }
 
-    public PlaySoundTask(Map<String, Object> arguments) {
-        super(arguments);
-    }
-
     @Override
-    public void run(Animation animation) {
+    public void run(Animation animation, Map<String,Object> arguments) {
         Location location;
         if (animation.getModel() == null) {
             location = animation.getPlayer().getLocation();
         } else {
-            location = animation.getModel().getLocation().clone().add(readVector(getArg("offset").toString()));
+            location = animation.getModel().getLocation().clone().add(readVector(arguments.get("offset").toString()));
         }
 
         animation.getPlayer().playSound(
                 location,
-                getArg("sound").toString().toLowerCase(),
-                Float.parseFloat(getArg("volume").toString()),
-                Float.parseFloat(getArg("pitch").toString())
+                arguments.get("sound").toString().toLowerCase(),
+                Float.parseFloat(arguments.get("volume").toString()),
+                Float.parseFloat(arguments.get("pitch").toString())
         );
+    }
+
+    @Override
+    public List<TaskArgument> getArgs() {
+        return ARGUMENTS;
     }
 
     private Vector readVector(String str) {

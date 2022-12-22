@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcratestesting;
 
+import cz.larkyy.aquaticcratestesting.animation.task.Tasks;
 import cz.larkyy.aquaticcratestesting.commands.CommandCompleter;
 import cz.larkyy.aquaticcratestesting.commands.Commands;
 import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
@@ -28,6 +29,7 @@ import java.sql.SQLException;
 public final class AquaticCratesTesting extends JavaPlugin {
 
     private static PlayerHandler playerHandler;
+    private static Tasks tasks;
     private static CrateHandler crateHandler;
     private static DatabaseManager databaseManager;
     private static NMSHandler nmsHandler;
@@ -40,6 +42,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
     @Override
     public void onEnable() {
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading the plugin..."));
+        tasks = new Tasks();
         itemHandler = new ItemHandler();
         crateHandler = new CrateHandler();
         playerHandler = new PlayerHandler();
@@ -169,5 +172,9 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
     public static MessageHandler getMessageHandler() {
         return messageHandler;
+    }
+
+    public static Tasks getTasks() {
+        return tasks;
     }
 }

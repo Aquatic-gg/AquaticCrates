@@ -3,12 +3,10 @@ package cz.larkyy.aquaticcratestesting.config;
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.animation.AnimationEmote;
 import cz.larkyy.aquaticcratestesting.animation.AnimationTitle;
-import cz.larkyy.aquaticcratestesting.animation.task.PreOpenTitle;
+import cz.larkyy.aquaticcratestesting.animation.task.*;
 import cz.larkyy.aquaticcratestesting.animation.task.impl.*;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
-import cz.larkyy.aquaticcratestesting.animation.task.Task;
-import cz.larkyy.aquaticcratestesting.animation.task.TaskArgument;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
@@ -294,31 +292,16 @@ public class CrateConfig extends Config {
         return new Location(w,x,y,z,yaw,pitch);
     }
 
-    private List<Task> loadTasks() {
-        List<Task> tasks = new ArrayList<>();
+    private List<ConfiguredTask> loadTasks() {
+        List<ConfiguredTask> tasks = new ArrayList<>();
         if (!getConfiguration().contains("animation.actions")) {
             return tasks;
         }
         getConfiguration().getConfigurationSection("animation.actions").getKeys(false).forEach(id -> {
-            switch (getConfiguration().getString("animation.actions."+id+".type").toLowerCase()) {
-                case "spawnreward" -> {
-                    tasks.add(new SpawnRewardTask(loadArguments("animation.actions." + id, SpawnRewardTask.ARGUMENTS)));
-                }
-                case "playsound" -> {
-                    tasks.add(new PlaySoundTask(loadArguments("animation.actions."+id,PlaySoundTask.ARGUMENTS)));
-                }
-                case "movecamera" -> {
-                    tasks.add(new CameraMoveTask(loadArguments("animation.actions."+id,CameraMoveTask.ARGUMENTS)));
-                }
-                case "sendtitle" -> {
-                    tasks.add(new SendTitleTask(loadArguments("animation.actions."+id,SendTitleTask.ARGUMENTS)));
-                }
-                case "teleportcamera" -> {
-                    tasks.add(new CameraTeleportTask(loadArguments("animation.actions."+id, CameraTeleportTask.ARGUMENTS)));
-                }
-                case "spawnparticle" -> {
-                    tasks.add(new SpawnParticleTask(loadArguments("animation.actions."+id, SpawnParticleTask.ARGUMENTS)));
-                }
+            String actionId = getConfiguration().getString("animation.actions."+id+".type").toLowerCase();
+            var task = Tasks.inst().getTask(actionId);
+            if (task != null) {
+                tasks.add(new ConfiguredTask(task,loadArguments("animation.actions." + id, task.getArgs())));
             }
         });
         return tasks;

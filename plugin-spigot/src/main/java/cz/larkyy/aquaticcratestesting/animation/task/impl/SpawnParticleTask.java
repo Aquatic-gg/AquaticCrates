@@ -23,21 +23,22 @@ public class SpawnParticleTask extends Task {
         ARGUMENTS.add(new TaskArgument("count",1,false));
     }
 
-    public SpawnParticleTask(Map<String, Object> arguments) {
-        super(arguments);
+    @Override
+    public void run(Animation animation, Map<String,Object> arguments) {
+        animation.getPlayer().spawnParticle(
+                Particle.valueOf(arguments.get("particle").toString()),
+                animation.getModel().getLocation().clone().add(readVector(arguments.get("offset").toString())),
+                Integer.parseInt(arguments.get("count").toString()),
+                Double.parseDouble(arguments.get("offsetX").toString()),
+                Double.parseDouble(arguments.get("offsetY").toString()),
+                Double.parseDouble(arguments.get("offsetZ").toString()),
+                1
+        );
     }
 
     @Override
-    public void run(Animation animation) {
-        animation.getPlayer().spawnParticle(
-                Particle.valueOf(getArg("particle").toString()),
-                animation.getModel().getLocation().add(readVector(getArg("offset").toString())),
-                Integer.parseInt(getArg("count").toString()),
-                Double.parseDouble(getArg("offsetX").toString()),
-                Double.parseDouble(getArg("offsetY").toString()),
-                Double.parseDouble(getArg("offsetZ").toString()),
-                1
-        );
+    public List<TaskArgument> getArgs() {
+        return ARGUMENTS;
     }
 
     private Vector readVector(String str) {

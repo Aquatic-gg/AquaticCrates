@@ -21,18 +21,19 @@ public class SendTitleTask extends Task {
         ARGUMENTS.add(new TaskArgument("subtitle","",false));
     }
 
-    public SendTitleTask(Map<String, Object> arguments) {
-        super(arguments);
+    @Override
+    public void run(Animation animation, Map<String,Object> arguments) {
+        animation.getPlayer().sendTitle(
+                Colors.format(arguments.get("title").toString()),
+                Colors.format(arguments.get("subtitle").toString()),
+                (int)arguments.get("in"),
+                (int)arguments.get("stay"),
+                (int)arguments.get("out")
+                );
     }
 
     @Override
-    public void run(Animation animation) {
-        animation.getPlayer().sendTitle(
-                Colors.format(getArg("title").toString()),
-                Colors.format(getArg("subtitle").toString()),
-                (int)getArg("in"),
-                (int)getArg("stay"),
-                (int)getArg("out")
-                );
+    public List<TaskArgument> getArgs() {
+        return ARGUMENTS;
     }
 }

@@ -22,20 +22,21 @@ public class SpawnRewardTask extends Task {
         ARGUMENTS.add(new TaskArgument("offset","0;0;0",false));
     }
 
-    public SpawnRewardTask(Map<String,Object> arguments) {
-        super(arguments);
+    @Override
+    public void run(Animation animation, Map<String,Object> arguments) {
+        animation.spawnReward(
+                (Integer) arguments.get("rumblingLength"),
+                (Integer) arguments.get("rumblingPeriod"),
+                (Integer) arguments.get("length"),
+                readVector(arguments.get("velocity").toString()),
+                Boolean.parseBoolean(arguments.get("gravity").toString()),
+                readVector(arguments.get("offset").toString())
+        );
     }
 
     @Override
-    public void run(Animation animation) {
-        animation.spawnReward(
-                (Integer) getArg("rumblingLength"),
-                (Integer) getArg("rumblingPeriod"),
-                (Integer) getArg("length"),
-                readVector(getArg("velocity").toString()),
-                Boolean.parseBoolean(getArg("gravity").toString()),
-                readVector(getArg("offset").toString())
-        );
+    public List<TaskArgument> getArgs() {
+        return ARGUMENTS;
     }
 
     private Vector readVector(String str) {

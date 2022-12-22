@@ -20,20 +20,20 @@ public class CameraTeleportTask extends Task {
         ARGUMENTS.add(new TaskArgument("yaw",0,true));
     }
 
-    public CameraTeleportTask(Map<String, Object> arguments) {
-        super(arguments);
+    @Override
+    public void run(Animation animation, Map<String,Object> arguments) {
+        if (animation instanceof CinematicAnimation a) {
+            a.teleportCamera(
+                    readVector(arguments.get("offset").toString()),
+                    Float.parseFloat(arguments.get("yaw").toString()),
+                    Float.parseFloat(arguments.get("pitch").toString())
+            );
+        }
     }
 
     @Override
-    public void run(Animation animation) {
-        if (animation instanceof CinematicAnimation) {
-            CinematicAnimation a = (CinematicAnimation) animation;
-            a.teleportCamera(
-                    readVector(getArg("offset").toString()),
-                    Float.parseFloat(getArg("yaw").toString()),
-                    Float.parseFloat(getArg("pitch").toString())
-            );
-        }
+    public List<TaskArgument> getArgs() {
+        return ARGUMENTS;
     }
 
     private Vector readVector(String str) {
