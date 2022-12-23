@@ -4,6 +4,7 @@ import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.hologram.Hologram;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.utils.Utils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
@@ -18,7 +19,7 @@ import java.util.function.Consumer;
 public class AquaticHologram extends Hologram {
 
     private final List<Integer> ids;
-    private List<Player> visitors;
+    private final List<Player> visitors;
     private boolean hidden;
 
     public AquaticHologram(Location location, List<String> lines) {
@@ -136,6 +137,8 @@ public class AquaticHologram extends Hologram {
 
         int lineNumber = 0;
         for (String line : lines) {
+            final String formattedLine = visitors.isEmpty() ? line : PlaceholderAPI.setPlaceholders(visitors.get(0),line);
+
             Location l2 = getLocation().clone().add(0, 0.25 * (lines.size() - lineNumber), 0);
             if (lineNumber < ids.size()) {
                 int id = ids.get(lineNumber);
@@ -148,34 +151,27 @@ public class AquaticHologram extends Hologram {
                     nmsHandler().teleportEntity(id, l2);
                 }
                 nmsHandler().updateEntity(id, e -> {
-                    e.setCustomName(Colors.format(line));
+                    e.setCustomName(Colors.format(formattedLine));
                 });
             } else {
-                ids.add(spawnLine(l2,line));
+                ids.add(spawnLine(l2,formattedLine));
             }
             lineNumber++;
         }
     }
 
     private int spawnLine(Location location, String text) {
+        final String formattedLine = visitors.isEmpty() ? text : PlaceholderAPI.setPlaceholders(visitors.get(0),text);
+
         return nmsHandler().spawnEntity(
                 location,
                 e -> {
                     AreaEffectCloud aec = (AreaEffectCloud) e;
                     aec.setRadius(0f);
-                    e.setCustomName(Colors.format(text));
+                    e.setCustomName(Colors.format(formattedLine));
                     e.setCustomNameVisible(true);
                     e.setGravity(false);
                     e.setPersistent(false);
-                    /*ArmorStand as = (ArmorStand) e;
-                    as.setPersistent(false);
-                    as.setGravity(false);
-                    as.setCollidable(false);
-                    as.setInvisible(true);
-                    as.setCustomNameVisible(true);
-                    as.setCustomName(Colors.format(text));
-
-                     */
                 },
                 visitors,
                 "area_effect_cloud"
