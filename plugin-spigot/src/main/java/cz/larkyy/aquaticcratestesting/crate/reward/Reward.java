@@ -10,14 +10,14 @@ public class Reward {
     private final String identifier;
     private final CustomItem item;
     private final CustomItem previewItem;
-    private final List<RewardAction> actions;
+    private final List<ConfiguredRewardAction> actions;
     private final double chance;
     private final boolean giveItem;
     private final String permission;
     private final List<String> hologram;
     private final double hologramYOffset;
 
-    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<RewardAction> actions, String permission, boolean giveItem, List<String> hologram, double hologramYOffset) {
+    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredRewardAction> actions, String permission, boolean giveItem, List<String> hologram, double hologramYOffset) {
         this.identifier = identifier;
         this.item = item;
         this.chance = chance;

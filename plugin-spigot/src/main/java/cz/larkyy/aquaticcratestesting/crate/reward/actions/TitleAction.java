@@ -3,24 +3,45 @@ package cz.larkyy.aquaticcratestesting.crate.reward.actions;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TitleAction extends RewardAction {
 
-    private final String title;
-    private final String subtitle;
-    private final int in;
-    private final int stay;
-    private final int out;
 
-    public TitleAction(String title, String subtitle, int in, int stay, int out) {
-        this.title = title;
-        this.subtitle = subtitle;
-        this.in = in;
-        this.out = out;
-        this.stay = stay;
+    @Override
+    public void run(Player player, Map<String,Object> arguments) {
+        player.sendTitle(
+                arguments.get("title").toString(),
+                arguments.get("subtitle").toString(),
+                (int)arguments.get("in"),
+                (int)arguments.get("stay"),
+                (int)arguments.get("out"));
     }
 
     @Override
-    public void run(Player player) {
-        player.sendTitle(title,subtitle,in,stay,out);
+    public Map<String, Object> readArguments(String string) {
+        String[] arguments = string.split("-\\|\\|-");
+        String[] lines = arguments[0].split("\\n");
+
+        int in = 10;
+        int stay = 40;
+        int out = 10;
+
+        if (arguments.length > 1) {
+            String[] titleValues = arguments[1].split(";");
+            in = Integer.parseInt(titleValues[0]);
+            stay = Integer.parseInt(titleValues[1]);
+            out = Integer.parseInt(titleValues[2]);
+        }
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("title", lines[0]);
+        map.put("subtitle",(lines.length == 1 ? "" : lines[1]));
+        map.put("in",in);
+        map.put("stay",stay);
+        map.put("out",out);
+
+        return map;
     }
 }

@@ -1,23 +1,30 @@
 package cz.larkyy.aquaticcratestesting.crate.reward.actions;
 
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import xyz.larkyy.colorutils.Colors;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CommandAction extends RewardAction {
 
-    private final String args;
-
-    public CommandAction(String args) {
-        this.args = args;
+    @Override
+    public void run(Player player, Map<String, Object> arguments) {
+        Bukkit.dispatchCommand(
+                Bukkit.getConsoleSender(),
+                PlaceholderAPI.setPlaceholders(player,arguments.get("message").toString().replace("%player%", player.getName()))
+        );
     }
 
     @Override
-    public void run(Player player) {
-        Bukkit.dispatchCommand(
-                Bukkit.getConsoleSender(),
-                Colors.format(args.replace("%player%", player.getName()))
-        );
+    public Map<String, Object> readArguments(String string) {
+        return new HashMap<>() {
+            {
+                put("message",Colors.format(string));
+            }
+        };
     }
 }

@@ -10,8 +10,11 @@ import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
+import cz.larkyy.aquaticcratestesting.crate.reward.ConfiguredRewardAction;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
+import cz.larkyy.aquaticcratestesting.crate.reward.RewardActions;
+import cz.larkyy.aquaticcratestesting.crate.reward.actions.MessageAction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -104,12 +107,16 @@ public class CrateConfig extends Config {
         );
     }
 
-    private List<RewardAction> loadRewardActions(String path) {
-        List<RewardAction> list = new ArrayList<>();
+    private List<ConfiguredRewardAction> loadRewardActions(String path) {
+        List<ConfiguredRewardAction> list = new ArrayList<>();
         for (String aStr : getConfiguration().getStringList(path)) {
-            RewardAction a = RewardAction.get(aStr);
-            if (a == null) continue;
-            list.add(a);
+            for (String k : RewardActions.inst().getActionTypes().keySet()) {
+                if (aStr.startsWith("[" + k + "]")) {
+                    String args = aStr.substring(k.length() + 2).trim();
+                    list.add(new ConfiguredRewardAction(RewardActions.inst().getAction(k), args));
+                    break;
+                }
+            }
         }
         return list;
     }
