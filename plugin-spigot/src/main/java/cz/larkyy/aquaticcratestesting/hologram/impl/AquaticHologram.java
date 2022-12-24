@@ -145,7 +145,6 @@ public class AquaticHologram extends Hologram {
                 Entity entity = nmsHandler().getEntity(id);
                 Location l1 = entity.getLocation();
 
-                //Bukkit.broadcastMessage("Previous Y: "+l1.getY()+" New Y: "+l2.getY());
                 if (!l1.getWorld().equals(l2.getWorld()) || !Utils.isVectorSame(l1.toVector(), l2.toVector())
                 ) {
                     nmsHandler().teleportEntity(id, l2);

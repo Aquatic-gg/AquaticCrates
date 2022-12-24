@@ -41,7 +41,7 @@ public class CrateCommand implements ICommand {
                 crate.giveCrate(p);
             }
             case "open" -> {
-                if (!sender.hasPermission("aquaticcrates.crate.give")) {
+                if (!sender.hasPermission("aquaticcrates.crate.open")) {
                     Messages.NO_PERMISSION.send(sender);
                     return;
                 }
