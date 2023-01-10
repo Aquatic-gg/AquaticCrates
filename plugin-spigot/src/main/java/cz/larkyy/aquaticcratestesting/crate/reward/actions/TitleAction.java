@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcratestesting.crate.reward.actions;
 
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -12,8 +13,8 @@ public class TitleAction extends RewardAction {
     @Override
     public void run(Player player, Map<String,Object> arguments) {
         player.sendTitle(
-                arguments.get("title").toString(),
-                arguments.get("subtitle").toString(),
+                PlaceholderAPI.setPlaceholders(player, arguments.get("title").toString()),
+                PlaceholderAPI.setPlaceholders(player,arguments.get("subtitle").toString()),
                 (int)arguments.get("in"),
                 (int)arguments.get("stay"),
                 (int)arguments.get("out"));
