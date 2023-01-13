@@ -210,6 +210,10 @@ public class Crate {
         return RewardUtils.getPossibleRewards(p,rewards);
     }
 
+    public RerollManager getRerollManager() {
+        return rerollManager.get();
+    }
+
     public static Crate get(String identifier) {
         return AquaticCratesAPI.getCrate(identifier);
     }

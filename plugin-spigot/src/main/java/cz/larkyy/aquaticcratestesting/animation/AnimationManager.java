@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
 import cz.larkyy.aquaticcratestesting.animation.impl.InstantAnimation;
 import cz.larkyy.aquaticcratestesting.animation.impl.PlacedCrateAnimation;
+import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import org.bukkit.Bukkit;
@@ -131,6 +132,14 @@ public class AnimationManager {
 
     public List<BossBar> showTitle(AnimationTitle title, Player p) {
         List<BossBar> list = title.create();
+        for (var item : list) {
+            var rp = Reroll.get(p);
+            if (rp == null) {
+                continue;
+            }
+            item.setTitle(item.getTitle().replace("%rerolls-available%",
+                    (crate.getRerollManager().getPlayerLimit(p) - rp.getReroll())+""));
+        }
 
         if (bossBars.containsKey(p)) {
             hideTitle(p);
