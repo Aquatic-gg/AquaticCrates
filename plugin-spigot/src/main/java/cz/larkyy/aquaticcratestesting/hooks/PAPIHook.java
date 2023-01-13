@@ -41,6 +41,19 @@ public class PAPIHook extends PlaceholderExpansion {
             CratePlayer cp = CratePlayer.get(p);
             return cp.isInAnimation()+"";
         }
+        String[] args = params.split("_");
+        switch (args[0].toLowerCase()) {
+            case "keys" -> {
+                if (!player.isOnline()) {
+                    return null;
+                }
+                if (args.length < 2) {
+                    return null;
+                }
+                CratePlayer cp = CratePlayer.get(player.getPlayer());
+                return cp.getKeys(args[1])+"";
+            }
+        }
 
         return null;
     }
