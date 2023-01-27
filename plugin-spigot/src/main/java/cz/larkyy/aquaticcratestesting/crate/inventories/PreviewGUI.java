@@ -54,6 +54,12 @@ public class PreviewGUI {
                 crate.open(CratePlayer.get(p),pc,false);
             });
         }
+        mi = m.getItem("close-button");
+        if (mi != null) {
+            mi.addAction(e -> {
+                p.closeInventory();
+            });
+        }
         for (ItemStack is : m.getInventory().getContents()) {
             if (is == null) {
                 continue;
