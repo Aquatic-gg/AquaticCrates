@@ -1,8 +1,11 @@
 package cz.larkyy.aquaticcratestesting.crate.reward;
 
+import cz.larkyy.aquaticcratestesting.placeholders.Placeholder;
+import cz.larkyy.aquaticcratestesting.placeholders.Placeholders;
 import org.bukkit.entity.Player;
 import xyz.larkyy.itemlibrary.CustomItem;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Reward {
@@ -33,7 +36,12 @@ public class Reward {
         if (giveItem) {
             item.giveItem(player);
         }
-        actions.forEach(a -> a.run(player));
+        Placeholders placeholders = new Placeholders(
+                new Placeholder("%player%",player.getName()),
+                new Placeholder("%reward%",getPreviewItem().getItem().getItemMeta().getDisplayName()),
+                new Placeholder("%chance%",chance+"")
+        );
+        actions.forEach(a -> a.run(player,placeholders));
     }
 
     public List<String> getHologram() {
