@@ -82,7 +82,12 @@ public class CrateConfig extends Config {
             return list;
         }
         getConfiguration().getConfigurationSection("rewards").getKeys(false).forEach(rStr -> {
-            list.add(loadReward(rStr));
+            Reward r = loadReward(rStr);
+            if (r.getItem().getItem().getItemMeta() == null || r.getPreviewItem().getItem().getItemMeta() == null) {
+                Bukkit.getConsoleSender().sendMessage("§cReward §l"+rStr+"§c could not be loaded!");
+            } else {
+                list.add(r);
+            }
         });
         return list;
     }
