@@ -23,6 +23,7 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.larkyy.colorutils.Colors;
 import xyz.larkyy.itemlibrary.CustomItem;
+import xyz.larkyy.itemlibrary.UnknownCustomItemException;
 import xyz.larkyy.menulib.Menu;
 import xyz.larkyy.menulib.MenuItem;
 
@@ -44,11 +45,15 @@ public class CrateConfig extends Config {
         AtomicReference<RerollGUI> rerollGUIAtomicReference = new AtomicReference<>(null);
         AtomicReference<RerollManager> rerollManagerAtomicReference = new AtomicReference<>(null);
         AtomicReference<AnimationManager> animationAtomicReference = new AtomicReference<>(null);
-
+        var key = loadKey();
+        if (key == null) {
+            Bukkit.getConsoleSender().sendMessage("§cCrate could not be loaded, because the Key item is null!");
+            return null;
+        }
         Crate c = new Crate(
                 identifier,
                 Colors.format(getConfiguration().getString("display-name",identifier)),
-                loadKey(),
+                key,
                 getConfiguration().getString("model"),
                 loadRewards(),
                 getConfiguration().getBoolean("key.requires-crate-to-open",true),
@@ -73,7 +78,12 @@ public class CrateConfig extends Config {
     }
 
     private CustomItem loadItem(String path) {
-        return CustomItem.loadFromYaml(getConfiguration(),path);
+        try {
+            return CustomItem.loadFromYaml(getConfiguration(),path);
+        } catch (UnknownCustomItemException e) {
+            Bukkit.getConsoleSender().sendMessage("§cItem §l"+path+"§c could not be loaded! Please, check your configuration!");
+            return null;
+        }
     }
 
     private List<Reward> loadRewards() {
@@ -83,7 +93,7 @@ public class CrateConfig extends Config {
         }
         getConfiguration().getConfigurationSection("rewards").getKeys(false).forEach(rStr -> {
             Reward r = loadReward(rStr);
-            if (r.getItem().getItem().getItemMeta() == null || r.getPreviewItem().getItem().getItemMeta() == null) {
+            if (r.getItem().getItem() == null || r.getPreviewItem().getItem() == null || r.getItem().getItem().getItemMeta() == null || r.getPreviewItem().getItem().getItemMeta() == null) {
                 Bukkit.getConsoleSender().sendMessage("§cReward §l"+rStr+"§c could not be loaded!");
             } else {
                 list.add(r);
@@ -95,7 +105,15 @@ public class CrateConfig extends Config {
     private Reward loadReward(String id) {
         final String path = "rewards."+id;
         CustomItem item = loadItem(path+".item");
+        if (item == null) {
+            Bukkit.getConsoleSender().sendMessage("The reward "+id+" could not be loaded, because the item is null!");
+            return null;
+        }
         CustomItem previewItem = loadItem(path+".preview-item");
+        if (previewItem == null) {
+            Bukkit.getConsoleSender().sendMessage("The reward "+id+" could not be loaded, because the preview item is null!");
+            return null;
+        }
         double chance = getConfiguration().getDouble(path+".chance");
         String permission = getConfiguration().getString(path+".permission");
         boolean giveItem = getConfiguration().getBoolean(path+".give-item",false);
@@ -150,7 +168,10 @@ public class CrateConfig extends Config {
 
         if (getConfiguration().contains("preview.items")) {
             for (String str : getConfiguration().getConfigurationSection("preview.items").getKeys(false)) {
-                builder.addItem(loadMenuItem(str,"preview.items."+str));
+                var item = loadMenuItem(str,"preview.items."+str);
+                if (item != null) {
+                    builder.addItem(item);
+                }
             }
         }
         List<String> rewardLore = getConfiguration().getStringList("preview.reward-lore");
@@ -183,7 +204,10 @@ public class CrateConfig extends Config {
 
         if (getConfiguration().contains(path+"items")) {
             for (String str : getConfiguration().getConfigurationSection(path+"items").getKeys(false)) {
-                builder.addItem(loadMenuItem(str,path+"items."+str));
+                var item = loadMenuItem(str,path+"items."+str);
+                if (item != null) {
+                    builder.addItem(item);
+                }
             }
         }
         int rewardSlot = getConfiguration().getInt(path+"reward-slot",13);
@@ -198,6 +222,10 @@ public class CrateConfig extends Config {
     private MenuItem loadMenuItem(String identifier, String path) {
 
         CustomItem item = loadItem(path);
+        if (item == null) {
+            Bukkit.getConsoleSender().sendMessage("§cMenu Item "+path+" could not be loaded, because the item is null!");
+            return null;
+        }
         List<Integer> slots;
         if (getConfiguration().contains(path+".slot")) {
             slots = Arrays.asList(getConfiguration().getInt(path+".slot"));

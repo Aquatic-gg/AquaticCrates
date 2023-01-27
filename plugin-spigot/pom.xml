@@ -191,7 +191,7 @@
         <dependency>
             <groupId>xyz.larkyy</groupId>
             <artifactId>ItemLibrary</artifactId>
-            <version>0.0.12</version>
+            <version>0.0.14</version>
             <exclusions>
                 <exclusion>
                     <groupId>xyz.larkyy</groupId>

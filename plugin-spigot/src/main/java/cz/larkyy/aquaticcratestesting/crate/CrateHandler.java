@@ -63,7 +63,9 @@ public class CrateHandler {
 
         for (File file : cratesFolder.listFiles()) {
             Crate crate = new CrateConfig(AquaticCratesTesting.instance(),file).loadCrate();
-            crates.put(crate.getIdentifier(),crate);
+            if (crate != null) {
+                crates.put(crate.getIdentifier(), crate);
+            }
         }
 
         if (!crateData.getConfiguration().contains("crates")) {
