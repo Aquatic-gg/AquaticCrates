@@ -82,7 +82,6 @@ public final class AquaticCratesTesting extends JavaPlugin {
         getCommand("aquaticcrates").setTabCompleter(new CommandCompleter());
 
         getServer().getPluginManager().registerEvents(new CrateListener(),this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(),this);
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 
@@ -120,7 +119,9 @@ public final class AquaticCratesTesting extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Crates&f!"));
         crateHandler.load();
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Players&f!"));
-        playerHandler.loadPlayers();
+        playerHandler.loadPlayers(() -> {
+            getServer().getPluginManager().registerEvents(new PlayerListener(),this);
+        });
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Messages!"));
         messageHandler.load();
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fPlugin &aLoaded&f!"));
@@ -148,6 +149,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
     @Override
     public void onDisable() {
         unload();
+        Bukkit.getLogger().info("DISABLING");
     }
 
     public static PlayerHandler getPlayerHandler() {

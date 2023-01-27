@@ -48,6 +48,7 @@ public class DatabaseManager {
                     String id = rs.getString("Identifier");
                     int amount = rs.getInt("Amount");
                     cp.addKeys(id,amount);
+                    Bukkit.getLogger().info("ADDED "+amount+ " KEYS TO PLAYER "+player.getName());
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -56,7 +57,7 @@ public class DatabaseManager {
         });
 
     }
-    public void loadPlayers() {
+    public void loadPlayers(Runnable callback) {
         driver.loadPlayers(rs -> {
             try {
                 while (rs.next()) {
@@ -64,8 +65,10 @@ public class DatabaseManager {
                     CratePlayer cp = CratePlayer.get(p);
                     String id = rs.getString("Identifier");
                     int amount = rs.getInt("Amount");
+                    Bukkit.getLogger().info("ADDING "+amount+" KEYS");
                     cp.addKeys(id,amount);
                 }
+                callback.run();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

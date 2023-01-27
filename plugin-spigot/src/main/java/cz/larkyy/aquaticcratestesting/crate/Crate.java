@@ -128,7 +128,7 @@ public class Crate {
 
     public void giveKeyAll(int amount, boolean virtual) {
         if (virtual) {
-            AquaticCratesAPI.getPlayerHandler().loadPlayers();
+            AquaticCratesAPI.getPlayerHandler().loadPlayers(()->{});
             AquaticCratesAPI.getPlayerHandler().getPlayers().forEach(
                     p -> p.addKeys(identifier,amount));
         }

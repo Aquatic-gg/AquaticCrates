@@ -3,10 +3,8 @@ package cz.larkyy.aquaticcratestesting.player;
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,8 +37,9 @@ public class PlayerHandler {
         players.put(offlinePlayer,player);
     }
 
-    public void loadPlayers() {
-        AquaticCratesTesting.getDatabaseManager().loadPlayers();
+    public void loadPlayers(Runnable callback)
+    {
+        AquaticCratesTesting.getDatabaseManager().loadPlayers(callback);
     }
 
     public void unloadPlayer(OfflinePlayer p) {

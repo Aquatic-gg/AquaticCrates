@@ -40,6 +40,7 @@ public class SQLiteDriver implements Driver {
 
     @Override
     public void loadPlayer(Player player, Consumer<ResultSet> callback) {
+        Bukkit.getLogger().info("LOADING PLAYER");
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -60,6 +61,7 @@ public class SQLiteDriver implements Driver {
 
     @Override
     public void loadPlayers(Consumer<ResultSet> callback) {
+        Bukkit.getLogger().info("LOADING PLAYERS");
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -78,11 +80,14 @@ public class SQLiteDriver implements Driver {
 
     @Override
     public void savePlayer(CratePlayer player, boolean async) {
+        Bukkit.getLogger().info("TRYING TO SAVE PLAYER 1");
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
                 try(Connection connection = getConnection()) {
+                    Bukkit.getLogger().info("TRYING TO SAVE PLAYER 2");
                     player.getVirtualKeys().forEach((id,i) -> {
+                        Bukkit.getLogger().info("KEYS "+i);
                         try (PreparedStatement ps = connection.prepareStatement(
                                 "SELECT id FROM aquaticcrates_keys WHERE UniqueID = ? AND Identifier = ?"
                         )) {
@@ -129,15 +134,20 @@ public class SQLiteDriver implements Driver {
 
     @Override
     public void savePlayers(boolean async) {
+        Bukkit.getLogger().info("TRYING TO SAVE PLAYERS 1");
         BukkitRunnable task = new BukkitRunnable() {
             @Override
             public void run() {
                 try(Connection connection = getConnection()) {
+                    Bukkit.getLogger().info("TRYING TO SAVE PLAYERS 2");
                     for (Player p : Bukkit.getOnlinePlayers()) {
+                        Bukkit.getLogger().info("SAVING PLAYER");
+
                         CratePlayer cp = CratePlayer.get(p);
                         for (Map.Entry<String, Integer> entry : cp.getVirtualKeys().entrySet()) {
                             String id = entry.getKey();
                             Integer i = entry.getValue();
+                            Bukkit.getLogger().info("KEYS "+i);
                             try (PreparedStatement ps = connection.prepareStatement(
                                     "SELECT id FROM aquaticcrates_keys WHERE UniqueID = ? AND Identifier = ?"
                             )) {
