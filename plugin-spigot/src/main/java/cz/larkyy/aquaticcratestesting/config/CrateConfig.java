@@ -93,10 +93,12 @@ public class CrateConfig extends Config {
         }
         getConfiguration().getConfigurationSection("rewards").getKeys(false).forEach(rStr -> {
             Reward r = loadReward(rStr);
-            if (r.getItem().getItem() == null || r.getPreviewItem().getItem() == null || r.getItem().getItem().getItemMeta() == null || r.getPreviewItem().getItem().getItemMeta() == null) {
-                Bukkit.getConsoleSender().sendMessage("§cReward §l"+rStr+"§c could not be loaded!");
-            } else {
-                list.add(r);
+            if (r != null) {
+                if (r.getItem().getItem() == null || r.getPreviewItem().getItem() == null || r.getItem().getItem().getItemMeta() == null || r.getPreviewItem().getItem().getItemMeta() == null) {
+                    Bukkit.getConsoleSender().sendMessage("§cReward §l" + rStr + "§c could not be loaded!");
+                } else {
+                    list.add(r);
+                }
             }
         });
         return list;
@@ -110,10 +112,6 @@ public class CrateConfig extends Config {
             return null;
         }
         CustomItem previewItem = loadItem(path+".preview-item");
-        if (previewItem == null) {
-            Bukkit.getConsoleSender().sendMessage("The reward "+id+" could not be loaded, because the preview item is null!");
-            return null;
-        }
         double chance = getConfiguration().getDouble(path+".chance");
         String permission = getConfiguration().getString(path+".permission");
         boolean giveItem = getConfiguration().getBoolean(path+".give-item",false);
