@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcratestesting.crate.reward.RewardActions;
 import cz.larkyy.aquaticcratestesting.dabatase.DatabaseManager;
 import cz.larkyy.aquaticcratestesting.item.ItemHandler;
 import cz.larkyy.aquaticcratestesting.loader.LoaderManager;
+import cz.larkyy.aquaticcratestesting.loader.impl.AquaticEngineLoader;
 import cz.larkyy.aquaticcratestesting.messages.MessageHandler;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerHandler;
@@ -125,6 +126,8 @@ public final class AquaticCratesTesting extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Messages!"));
         messageHandler.load();
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fPlugin &aLoaded&f!"));
+
+        //AquaticModelEngine.getInstance().getModelGenerator().generateModels();
     }
 
     public void unload() {

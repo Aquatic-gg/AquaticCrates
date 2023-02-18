@@ -10,6 +10,7 @@ softdepend:
   - ModelEngine
   - MythicMobs
   - HeadDatabase
+  - AquaticModelEngine
 commands:
   aquaticcrates:
     aliases:
