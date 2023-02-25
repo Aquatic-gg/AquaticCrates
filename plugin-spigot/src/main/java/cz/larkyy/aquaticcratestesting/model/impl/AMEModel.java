@@ -57,16 +57,7 @@ public class AMEModel extends Model {
     }
 
     public static Model create(String id, Location location, Player player) {
-        Location loc = location.clone();
-
-        Entity mob = loc.getWorld().spawnEntity(loc.clone().add(0,-3,0), EntityType.ARMOR_STAND);
-        ArmorStand as = (ArmorStand) mob;
-        as.setInvisible(true);
-        as.setCustomName("aquaticcrates");
-        as.setMarker(true);
-        as.teleport(loc);
-
-        var holder = AquaticModelEngine.getInstance().getModelHandler().getModelHolder(as);
+        var holder = AquaticModelEngine.getInstance().getModelHandler().createDummyModelHolder(location);
         var spawnedModel = AquaticModelEngine.getInstance().getModelHandler().spawnModel(holder,id);
 
         if (player != null) {
