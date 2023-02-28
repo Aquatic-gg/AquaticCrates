@@ -4,6 +4,7 @@ import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.api.events.ClaimRewardEvent;
+import cz.larkyy.aquaticcratestesting.api.events.CrateOpenEvent;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
@@ -157,9 +158,11 @@ public class Crate {
             Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
             return false;
         }
+        var event = new CrateOpenEvent(player.getPlayer(),this);
         AtomicReference<Reward> reward = new AtomicReference<>(getRandomReward(player.getPlayer()));
         if (reward.get() == null) {
             player.getPlayer().sendMessage("No available reward has been found! Contact an Admin!");
+            Bukkit.getPluginManager().callEvent(event);
             return true;
         }
         if (instant && instantWhileSneaking) {
@@ -187,6 +190,7 @@ public class Crate {
                 }
             });
         }
+        Bukkit.getPluginManager().callEvent(event);
         return true;
     }
 
