@@ -34,7 +34,11 @@ public class Reward {
 
     public void give(Player player) {
         if (giveItem) {
-            item.giveItem(player);
+            var is = item.getItem();
+            var map = player.getInventory().addItem(is);
+            map.forEach((i,is2) -> {
+                player.getLocation().getWorld().dropItem(player.getLocation(),is2);
+            });
         }
         Placeholders placeholders = new Placeholders(
                 new Placeholder("%player%",player.getName()),
