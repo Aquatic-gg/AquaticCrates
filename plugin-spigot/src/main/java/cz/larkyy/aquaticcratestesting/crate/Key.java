@@ -47,7 +47,12 @@ public class Key {
         im.getPersistentDataContainer().set(KEY, PersistentDataType.STRING,crate.getIdentifier());
         is.setItemMeta(im);
 
-        players.forEach(p->p.getInventory().addItem(is));
+        players.forEach(p->{
+            var map = p.getInventory().addItem(is);
+            map.forEach((i,item) -> {
+                p.getLocation().getWorld().dropItem(p.getLocation(),item);
+            });
+        });
     }
 
     public boolean isItemKey(ItemStack is) {
