@@ -6,8 +6,6 @@ import cz.larkyy.aquaticcratestesting.loader.impl.ItemsAdderLoader;
 import cz.larkyy.aquaticcratestesting.loader.impl.ModelEngineLoader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import xyz.larkyy.aquaticmodelengine.api.event.ModelLoadEvent;
-import xyz.larkyy.aquaticmodelengine.api.event.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +18,19 @@ public class LoaderManager {
     public LoaderManager(Runnable runnable) {
         this.runnable = runnable;
         if (getPlugin("AquaticModelEngine") != null) {
-            loaders.add(new AquaticEngineLoader(
-                    this::tryLoad
-            ));
-            if (AquaticCratesTesting.loaded) {
-                Bukkit.getPluginManager().callEvent(new ModelLoadEvent(State.FINISHED));
+            try {
+                Class.forName("xyz.larkyy.aquaticmodelengine.api.event.ModelLoadEvent");
+                Class.forName("xyz.larkyy.aquaticmodelengine.api.event.State");
+                var loader = new AquaticEngineLoader(
+                        this::tryLoad
+                );
+                loaders.add(loader);
+                if (AquaticCratesTesting.loaded) {
+                    loader.load();
+                }
+            } catch (ClassNotFoundException ignored) {
             }
         }
-
-
         if (getPlugin("ItemsAdder") != null) {
             loaders.add(new ItemsAdderLoader(
                     this::tryLoad

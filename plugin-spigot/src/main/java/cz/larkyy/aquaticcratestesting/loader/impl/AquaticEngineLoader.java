@@ -2,7 +2,6 @@ package cz.larkyy.aquaticcratestesting.loader.impl;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.loader.Loader;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import xyz.larkyy.aquaticmodelengine.api.event.ModelLoadEvent;
@@ -17,10 +16,13 @@ public class AquaticEngineLoader extends Loader implements Listener {
 
     @EventHandler
     public void onAMEModelsLoad(ModelLoadEvent e) {
-        Bukkit.broadcastMessage("Listened!");
         if (e.getState().equals(State.FINISHED)) {
-            setLoaded(true);
-            getRunnable().run();
+            load();
         }
+    }
+
+    public void load() {
+        setLoaded(true);
+        getRunnable().run();
     }
 }
