@@ -3,7 +3,7 @@ package cz.larkyy.aquaticcratestesting.animation.task.impl;
 import cz.larkyy.aquaticcratestesting.animation.Animation;
 import cz.larkyy.aquaticcratestesting.animation.task.Task;
 import cz.larkyy.aquaticcratestesting.animation.task.TaskArgument;
-import xyz.larkyy.colorutils.Colors;
+import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package cz.larkyy.aquaticcratestesting.animation.task;
 
+import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import org.bukkit.entity.Player;
-import xyz.larkyy.colorutils.Colors;
 
 public class PreOpenTitle {
 

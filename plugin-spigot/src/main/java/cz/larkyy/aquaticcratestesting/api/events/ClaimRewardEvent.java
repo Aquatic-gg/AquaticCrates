@@ -18,7 +18,6 @@ public class ClaimRewardEvent extends Event {
         this.crate = crate;
         this.reward = reward;
     }
-
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }

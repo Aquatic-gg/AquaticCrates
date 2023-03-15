@@ -4,13 +4,13 @@ import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.hologram.Hologram;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.utils.Utils;
+import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import xyz.larkyy.colorutils.Colors;
 
 import java.util.ArrayList;
 import java.util.List;

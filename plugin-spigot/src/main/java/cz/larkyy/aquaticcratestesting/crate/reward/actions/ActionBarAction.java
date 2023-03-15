@@ -2,11 +2,11 @@ package cz.larkyy.aquaticcratestesting.crate.reward.actions;
 
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
 import cz.larkyy.aquaticcratestesting.placeholders.Placeholders;
+import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
-import xyz.larkyy.colorutils.Colors;
 
 import java.util.HashMap;
 import java.util.Map;

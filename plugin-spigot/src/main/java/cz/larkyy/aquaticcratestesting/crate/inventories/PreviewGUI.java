@@ -4,12 +4,11 @@ import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
+import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import xyz.larkyy.colorutils.Colors;
 import xyz.larkyy.menulib.Menu;
 import xyz.larkyy.menulib.MenuItem;
 
@@ -129,6 +128,14 @@ public class PreviewGUI {
 
             mb.addItem(MenuItem.builder("reward-"+r.getIdentifier(),is)
                     .slots(Arrays.asList(slot))
+                    .action(e -> {
+                        if (!(e.getWhoClicked() instanceof Player player)) {
+                            return;
+                        }
+                        if (player.hasPermission("aquaticcrates.admin")) {
+                            r.give(player);
+                        }
+                    })
                     .build()
             );
             i++;

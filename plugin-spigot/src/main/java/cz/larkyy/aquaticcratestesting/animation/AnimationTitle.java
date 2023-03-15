@@ -1,10 +1,10 @@
 package cz.larkyy.aquaticcratestesting.animation;
 
+import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-import xyz.larkyy.colorutils.Colors;
 
 import java.util.ArrayList;
 import java.util.List;

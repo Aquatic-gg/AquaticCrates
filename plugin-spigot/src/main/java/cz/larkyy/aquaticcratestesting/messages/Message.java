@@ -1,8 +1,8 @@
 package cz.larkyy.aquaticcratestesting.messages;
 
+import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import xyz.larkyy.colorutils.Colors;
 
 import java.util.ArrayList;
 import java.util.List;

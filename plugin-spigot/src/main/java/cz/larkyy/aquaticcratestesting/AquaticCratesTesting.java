@@ -13,6 +13,7 @@ import cz.larkyy.aquaticcratestesting.messages.MessageHandler;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerListener;
+import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import cz.larkyy.nms.impl.impl.v1_16_R3;
 import cz.larkyy.nms.impl.impl.v1_17_R1;
 import cz.larkyy.nms.impl.impl.v1_18_R2;
@@ -22,7 +23,6 @@ import cz.larkyy.nms.impl.v1_19_R3;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import xyz.larkyy.colorutils.Colors;
 
 import java.io.IOException;
 import java.sql.SQLException;

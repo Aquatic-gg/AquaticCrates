@@ -1,8 +1,5 @@
 package cz.larkyy.aquaticcratestesting.utils;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
-import java.util.List;
 
 public class Utils {
 
