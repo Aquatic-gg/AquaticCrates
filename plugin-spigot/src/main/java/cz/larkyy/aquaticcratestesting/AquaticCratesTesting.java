@@ -23,6 +23,7 @@ import cz.larkyy.nms.impl.v1_19_R3;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.larkyy.nms.v1_19_4.V1_19_4;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -74,6 +75,10 @@ public final class AquaticCratesTesting extends JavaPlugin {
             case "1.19.3-R0.1-SNAPSHOT" -> {
                 nmsHandler = new v1_19_R3();
                 version = "v1_19_R3";
+            }
+            case "1.19.4-R0.1-SNAPSHOT" -> {
+                nmsHandler = new V1_19_4();
+                version = "v1_19_R4";
             }
         }
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));

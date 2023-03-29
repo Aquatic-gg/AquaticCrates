@@ -8,12 +8,16 @@ import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -47,9 +51,25 @@ public class CrateListener implements Listener {
     }
 
     @EventHandler
+    public void onEntityDamagedByEntity(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player p)) {
+            return;
+        }
+
+        Reroll rp = Reroll.get(p);
+        if (rp != null) {
+            if (rp.isRerolling()) {
+                rp.activate(new PlayerInteractEvent(p,Action.LEFT_CLICK_AIR,p.getInventory().getItemInMainHand(),null, BlockFace.SELF));
+            }
+        }
+    }
+
+    @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (e.getHand() == null) return;
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
+
+        Bukkit.broadcastMessage("Called Interact Event!");
 
         Player p = e.getPlayer();
         Reroll rp = Reroll.get(p);

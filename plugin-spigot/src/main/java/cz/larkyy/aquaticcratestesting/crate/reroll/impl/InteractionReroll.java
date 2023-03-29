@@ -19,13 +19,11 @@ public class InteractionReroll extends Reroll {
 
     @Override
     public void activate(Event event) {
-        if (event instanceof PlayerToggleSneakEvent) {
-            PlayerToggleSneakEvent e = (PlayerToggleSneakEvent) event;
+        if (event instanceof PlayerToggleSneakEvent e) {
             if (e.isSneaking()) {
                 getRerollManager().claim(e.getPlayer());
             }
-        } else if (event instanceof PlayerInteractEvent) {
-            PlayerInteractEvent e = (PlayerInteractEvent) event;
+        } else if (event instanceof PlayerInteractEvent e) {
             if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
                 getRerollManager().reroll(e.getPlayer());
             }
