@@ -69,8 +69,6 @@ public class CrateListener implements Listener {
         if (e.getHand() == null) return;
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
 
-        Bukkit.broadcastMessage("Called Interact Event!");
-
         Player p = e.getPlayer();
         Reroll rp = Reroll.get(p);
         if (rp != null) {
