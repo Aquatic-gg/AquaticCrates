@@ -5,7 +5,7 @@
     <parent>
         <artifactId>AquaticCratesTesting</artifactId>
         <groupId>cz.larkyy</groupId>
-        <version>2.3.9</version>
+        <version>2.4.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -120,36 +120,41 @@
         <dependency>
             <groupId>cz.larkyy</groupId>
             <artifactId>NMS_v1_18_R2</artifactId>
-            <version>2.2.7</version>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>cz.larkyy</groupId>
             <artifactId>NMS_v1_19_R2</artifactId>
-            <version>2.2.7</version>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>cz.larkyy</groupId>
             <artifactId>NMS_v1_17_R1</artifactId>
-            <version>2.2.7</version>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>cz.larkyy</groupId>
             <artifactId>NMS_v1_16_R3</artifactId>
-            <version>2.2.7</version>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>cz.larkyy</groupId>
             <artifactId>v1_19_4</artifactId>
-            <version>2.2.7</version>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cz.larkyy</groupId>
+            <artifactId>NMS_v1_20_R2</artifactId>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>cz.larkyy</groupId>
             <artifactId>api</artifactId>
-            <version>2.2.7</version>
+            <version>2.4.0</version>
         </dependency>
         <dependency>
             <groupId>cz.larkyy.playeremotes</groupId>
-            <artifactId>spigot-plugin</artifactId>
+            <artifactId>PlayerEmotes</artifactId>
             <version>0.0.3</version>
             <scope>provided</scope>
             <exclusions>
@@ -197,7 +202,7 @@
         <dependency>
             <groupId>xyz.larkyy</groupId>
             <artifactId>ItemLibrary</artifactId>
-            <version>0.0.15</version>
+            <version>0.0.13</version>
             <exclusions>
                 <exclusion>
                     <groupId>xyz.larkyy</groupId>
@@ -225,19 +230,7 @@
         <dependency>
             <groupId>cz.larkyy</groupId>
             <artifactId>NMS_v1_19_R3</artifactId>
-            <version>2.2.7</version>
-        </dependency>
-        <dependency>
-            <groupId>xyz.larkyy.aquaticmodelengine</groupId>
-            <artifactId>API</artifactId>
-            <version>0.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>xyz.larkyy.aquaticmodelengine</groupId>
-            <artifactId>plugin-spigot</artifactId>
-            <version>0.0.1</version>
-            <scope>provided</scope>
+            <version>2.4.0</version>
         </dependency>
     </dependencies>
 </project>

@@ -23,7 +23,6 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.larkyy.itemlibrary.CustomItem;
-import xyz.larkyy.itemlibrary.UnknownCustomItemException;
 import xyz.larkyy.menulib.Menu;
 import xyz.larkyy.menulib.MenuItem;
 
@@ -78,12 +77,7 @@ public class CrateConfig extends Config {
     }
 
     private CustomItem loadItem(String path) {
-        try {
-            return CustomItem.loadFromYaml(getConfiguration(),path);
-        } catch (UnknownCustomItemException e) {
-            Bukkit.getConsoleSender().sendMessage("§cItem §l"+path+"§c could not be loaded! Please, check your configuration!");
-            return null;
-        }
+        return CustomItem.loadFromYaml(getConfiguration(),path);
     }
 
     private List<Reward> loadRewards() {

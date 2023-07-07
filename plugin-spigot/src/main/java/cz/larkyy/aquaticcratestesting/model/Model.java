@@ -1,6 +1,5 @@
 package cz.larkyy.aquaticcratestesting.model;
 
-import cz.larkyy.aquaticcratestesting.model.impl.AMEModel;
 import cz.larkyy.aquaticcratestesting.model.impl.EmptyModel;
 import cz.larkyy.aquaticcratestesting.model.impl.IAModel;
 import cz.larkyy.aquaticcratestesting.model.impl.MEModel;
@@ -24,9 +23,6 @@ public abstract class Model implements IModel {
             }
             case "itemsadder" -> {
                 return IAModel.create(id,location,player);
-            }
-            case "aquatic" -> {
-                return AMEModel.create(id,location,player);
             }
         }
         return new EmptyModel(location);

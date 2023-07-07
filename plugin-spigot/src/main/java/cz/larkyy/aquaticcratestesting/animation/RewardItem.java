@@ -179,7 +179,11 @@ public class RewardItem {
 
     private void spawnItem(Reward reward) {
         Location location = animation.getModel().getLocation().clone().add(0,1,0).add(offset);
-        item = (Item) location.getWorld().spawnEntity(location,EntityType.DROPPED_ITEM);
+        if (location.getChunk().isLoaded()) {
+            location.getChunk().load();
+        }
+
+        item = location.getWorld().dropItem(location,reward.getItem().getItem());
         item.setItemStack(reward.getItem().getItem());
         item.setPickupDelay(Integer.MAX_VALUE);
         item.setGravity(gravity);

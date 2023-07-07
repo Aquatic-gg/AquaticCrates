@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcratestesting.loader;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.loader.impl.AquaticEngineLoader;
 import cz.larkyy.aquaticcratestesting.loader.impl.ItemsAdderLoader;
 import cz.larkyy.aquaticcratestesting.loader.impl.ModelEngineLoader;
 import org.bukkit.Bukkit;
@@ -17,20 +16,7 @@ public class LoaderManager {
 
     public LoaderManager(Runnable runnable) {
         this.runnable = runnable;
-        if (getPlugin("AquaticModelEngine") != null) {
-            try {
-                Class.forName("xyz.larkyy.aquaticmodelengine.api.event.ModelLoadEvent");
-                Class.forName("xyz.larkyy.aquaticmodelengine.api.event.State");
-                var loader = new AquaticEngineLoader(
-                        this::tryLoad
-                );
-                loaders.add(loader);
-                if (AquaticCratesTesting.loaded) {
-                    loader.load();
-                }
-            } catch (ClassNotFoundException ignored) {
-            }
-        }
+
         if (getPlugin("ItemsAdder") != null) {
             loaders.add(new ItemsAdderLoader(
                     this::tryLoad
