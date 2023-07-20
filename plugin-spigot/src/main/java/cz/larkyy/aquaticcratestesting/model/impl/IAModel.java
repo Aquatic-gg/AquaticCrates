@@ -17,6 +17,7 @@ public class IAModel extends Model {
 
     @Override
     public void playAnimation(String animation) {
+        entity.stopAnimation();
         entity.playAnimation(animation);
     }
 

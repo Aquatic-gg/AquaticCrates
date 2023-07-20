@@ -11,23 +11,32 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-public class MEModel extends Model {
+import java.util.UUID;
 
-    private final ActiveModel activeModel;
-    private final ModeledEntity modeledEntity;
+public class MEModel extends Model {
+    private final String modelId;
+
+    private final UUID uuid;
     private final Location location;
 
-    public MEModel(Location location, ModeledEntity modeledEntity, ActiveModel activeModel) {
-        this.activeModel = activeModel;
-        this.modeledEntity = modeledEntity;
+    public MEModel(Location location, UUID uuid, String modelId) {
+        this.modelId = modelId;
+        this.uuid = uuid;
         this.location = location;
     }
 
+    private ModeledEntity getModeledEntity() {
+        return ModelEngineAPI.getModeledEntity(uuid);
+    }
+
+    private ActiveModel getActiveModel() {
+        return getModeledEntity().getModels().values().stream().findFirst().get();
+    }
 
     @Override
     public void playAnimation(String animation) {
-        activeModel.getAnimationHandler().forceStopAllAnimations();
-        activeModel.getAnimationHandler().playAnimation(animation,0,0,1,true);
+        getActiveModel().getAnimationHandler().forceStopAllAnimations();
+        getActiveModel().getAnimationHandler().playAnimation(animation,0,0,1,true);
     }
 
     @Override
@@ -42,17 +51,17 @@ public class MEModel extends Model {
 
     @Override
     public void show(Player player) {
-        modeledEntity.showToPlayer(player);
+        getModeledEntity().showToPlayer(player);
     }
 
     @Override
     public void hide(Player player) {
-        modeledEntity.hideFromPlayer(player);
+        getModeledEntity().hideFromPlayer(player);
     }
 
     @Override
     public void remove() {
-        modeledEntity.destroy();
+        getModeledEntity().destroy();
     }
 
     @Override
@@ -90,6 +99,6 @@ public class MEModel extends Model {
             //modeledEntity.showToPlayer(player);
         }
 
-        return new MEModel(location,modeledEntity,activeModel);
+        return new MEModel(location,modeledEntity.getBase().getUniqueId(), id);
     }
 }
