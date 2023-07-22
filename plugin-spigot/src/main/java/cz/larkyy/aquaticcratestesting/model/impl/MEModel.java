@@ -5,6 +5,7 @@ import com.ticxo.modelengine.api.entity.Dummy;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
 import cz.larkyy.aquaticcratestesting.model.Model;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -61,7 +62,11 @@ public class MEModel extends Model {
 
     @Override
     public void remove() {
-        getModeledEntity().destroy();
+        var me = getModeledEntity();
+        if (me != null) me.destroy();
+
+        var e = Bukkit.getEntity(uuid);
+        if (e != null) e.remove();
     }
 
     @Override
