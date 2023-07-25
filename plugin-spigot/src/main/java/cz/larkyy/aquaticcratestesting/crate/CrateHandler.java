@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.api.events.CratePlaceEvent;
 import cz.larkyy.aquaticcratestesting.config.Config;
 import cz.larkyy.aquaticcratestesting.config.CrateConfig;
 import cz.larkyy.aquaticcratestesting.hologram.impl.AquaticHologram;
@@ -42,7 +43,11 @@ public class CrateHandler {
 
     public PlacedCrate spawnCrate(Location location, Crate crate) {
         PlacedCrate pc = new PlacedCrate(crate,location,crate.getModel());
+
+        CratePlaceEvent event = new CratePlaceEvent(pc);
+        Bukkit.getServer().getPluginManager().callEvent(event);
         Location loc = location.clone().getBlock().getLocation();
+        loc.getBlock().setType(event.getBlockMaterial());
         loc.setYaw(0);
         locations.put(loc,pc);
         return pc;
