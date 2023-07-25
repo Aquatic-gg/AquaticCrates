@@ -9,10 +9,11 @@ import org.jetbrains.annotations.NotNull;
 public class CratePlaceEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
     private final PlacedCrate crate;
-    private Material blockMaterial = Material.BARRIER;
+    private Material blockMaterial;
 
     public CratePlaceEvent(PlacedCrate crate) {
         this.crate = crate;
+        this.blockMaterial = crate.getCrate().getBlockType();
     }
 
     public static HandlerList getHandlerList() {

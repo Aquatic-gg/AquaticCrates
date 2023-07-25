@@ -18,6 +18,7 @@ import cz.larkyy.aquaticcratestesting.crate.reward.actions.MessageAction;
 import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -69,6 +70,9 @@ public class CrateConfig extends Config {
         loadRerollGUI(c,rerollGUIAtomicReference);
         loadRerollManager(c,rerollManagerAtomicReference);
         loadAnimationManager(c,animationAtomicReference);
+
+        c.setBlockType(Material.valueOf(getConfiguration().getString("block-type","BARRIER").toUpperCase()));
+
         return c;
     }
 

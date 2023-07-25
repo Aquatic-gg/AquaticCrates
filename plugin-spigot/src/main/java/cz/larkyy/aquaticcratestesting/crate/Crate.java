@@ -45,6 +45,7 @@ public class Crate {
     private final double hologramYOffset;
     private final String permission;
     private final boolean instantWhileSneaking;
+    private Material blockType = Material.BARRIER;
 
     public Crate(String identifier, String displayName, CustomItem key, String model,
                  List<Reward> rewards, boolean requiresCrateToOpen,
@@ -83,6 +84,14 @@ public class Crate {
             }
         }
         gui.open(p,0, pc);
+    }
+
+    public Material getBlockType() {
+        return blockType;
+    }
+
+    public void setBlockType(Material blockType) {
+        this.blockType = blockType;
     }
 
     public void openRerollGUI(MenuReroll reroll) {
