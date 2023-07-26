@@ -5,6 +5,7 @@ import cz.larkyy.aquaticcratestesting.commands.CommandCompleter;
 import cz.larkyy.aquaticcratestesting.commands.Commands;
 import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
 import cz.larkyy.aquaticcratestesting.crate.CrateListener;
+import cz.larkyy.aquaticcratestesting.crate.price.OpenPrices;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardActions;
 import cz.larkyy.aquaticcratestesting.dabatase.DatabaseManager;
 import cz.larkyy.aquaticcratestesting.item.ItemHandler;
@@ -40,6 +41,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
     private static MessageHandler messageHandler;
 
     private static ItemHandler itemHandler;
+    private static OpenPrices openPrices;
 
     public static boolean loaded = false;
 
@@ -47,6 +49,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
     public void onEnable() {
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading the plugin..."));
         tasks = new Tasks();
+        openPrices = new OpenPrices();
         rewardActions = new RewardActions();
         itemHandler = new ItemHandler();
         crateHandler = new CrateHandler();
@@ -197,5 +200,9 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
     public static RewardActions getRewardActions() {
         return rewardActions;
+    }
+
+    public static OpenPrices getOpenPrices() {
+        return openPrices;
     }
 }
