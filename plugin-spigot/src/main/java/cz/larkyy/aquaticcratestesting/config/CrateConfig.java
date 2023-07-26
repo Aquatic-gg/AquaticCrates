@@ -10,6 +10,7 @@ import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.price.*;
+import cz.larkyy.aquaticcratestesting.crate.price.types.KeyPrice;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.ConfiguredRewardAction;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
@@ -80,7 +81,18 @@ public class CrateConfig extends Config {
 
     private PriceHandler loadPriceHandler() {
         List<PriceGroup> priceGroups = new ArrayList<>();
-        if (!getConfiguration().contains("open-prices")) return new PriceHandler(priceGroups);
+        if (!getConfiguration().contains("open-prices")) {
+            Map<String,Object> args = new HashMap<>();
+            args.put("crate",null);
+            args.put("amount",1);
+            return new PriceHandler(Arrays.asList(new PriceGroup(Arrays.asList(
+                    new ConfiguredPrice(
+                            OpenPrices.inst().getPriceType("key"),
+                            args
+                            )
+            ))));
+        }
+
 
         for (String key : getConfiguration().getConfigurationSection("open-prices").getKeys(false)) {
             PriceGroup group = loadPriceGroup("open-prices."+key);
