@@ -7,6 +7,8 @@ import cz.larkyy.aquaticcratestesting.api.events.ClaimRewardEvent;
 import cz.larkyy.aquaticcratestesting.api.events.CrateOpenEvent;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
+import cz.larkyy.aquaticcratestesting.crate.price.PriceGroup;
+import cz.larkyy.aquaticcratestesting.crate.price.PriceHandler;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reroll.impl.MenuReroll;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
@@ -46,6 +48,7 @@ public class Crate {
     private final String permission;
     private final boolean instantWhileSneaking;
     private Material blockType = Material.BARRIER;
+    private final PriceHandler priceHandler;
 
     public Crate(String identifier, String displayName, CustomItem key, String model,
                  List<Reward> rewards, boolean requiresCrateToOpen,
@@ -54,7 +57,8 @@ public class Crate {
                  AtomicReference<RerollManager> rerollManager,
                  AtomicReference<AnimationManager> animationManager,
                  List<String> hologram,
-                 double hologramYOffset, String permission, boolean instantWhileSneaking) {
+                 double hologramYOffset, String permission, boolean instantWhileSneaking,
+                 PriceHandler priceHandler) {
         this.identifier = identifier;
         this.displayName = displayName;
         this.key = new Key(key,this,requiresCrateToOpen);
@@ -68,6 +72,11 @@ public class Crate {
         this.hologramYOffset = hologramYOffset;
         this.permission = permission;
         this.instantWhileSneaking = instantWhileSneaking;
+        this.priceHandler = priceHandler;
+    }
+
+    public PriceHandler getPriceHandler() {
+        return priceHandler;
     }
 
     public void openPreview(Player p, PlacedCrate pc) {
@@ -163,9 +172,19 @@ public class Crate {
             return false;
         }
 
-        if (takeKey && !player.takeKey(key)) {
-            Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
-            return false;
+        if (takeKey) {
+
+            PriceGroup pg = priceHandler.chooseGroup(player.getPlayer(),this);
+            if (pg == null) {
+                Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
+                return false;
+            }
+            if (!pg.has(player.getPlayer(),this)) {
+                Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
+                return false;
+            }
+            pg.take(player.getPlayer(),this);
+
         }
         var event = new CrateOpenEvent(player.getPlayer(),this);
         AtomicReference<Reward> reward = new AtomicReference<>(getRandomReward(player.getPlayer()));

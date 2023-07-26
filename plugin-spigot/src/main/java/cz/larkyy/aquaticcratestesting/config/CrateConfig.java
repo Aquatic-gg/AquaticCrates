@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
+import cz.larkyy.aquaticcratestesting.crate.price.*;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.ConfiguredRewardAction;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
@@ -64,7 +65,8 @@ public class CrateConfig extends Config {
                 loadHologram("hologram"),
                 getConfiguration().getDouble("hologram-y-offset",0),
                 getConfiguration().getString("open-permission"),
-                getConfiguration().getBoolean("instant-open-while-sneaking",true)
+                getConfiguration().getBoolean("instant-open-while-sneaking",true),
+                loadPriceHandler()
         );
         loadPreviewGUI(c,previewGUIAtomicReference);
         loadRerollGUI(c,rerollGUIAtomicReference);
@@ -74,6 +76,32 @@ public class CrateConfig extends Config {
         c.setBlockType(Material.valueOf(getConfiguration().getString("block-type","BARRIER").toUpperCase()));
 
         return c;
+    }
+
+    private PriceHandler loadPriceHandler() {
+        List<PriceGroup> priceGroups = new ArrayList<>();
+        if (!getConfiguration().contains("open-prices")) return new PriceHandler(priceGroups);
+
+        for (String key : getConfiguration().getConfigurationSection("open-prices").getKeys(false)) {
+            PriceGroup group = loadPriceGroup("open-prices."+key);
+            if (group == null) continue;
+            priceGroups.add(group);
+        }
+
+        return new PriceHandler(priceGroups);
+    }
+
+    private PriceGroup loadPriceGroup(String path) {
+        List<ConfiguredPrice> prices = new ArrayList<>();
+        for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
+            String p = path+"."+key;
+            OpenPrice type = OpenPrices.inst().getPriceType(p+".type");
+            if (type == null) continue;
+            prices.add(new ConfiguredPrice(type,loadArguments(p,type.getArgs())));
+        }
+
+        PriceGroup group = new PriceGroup(prices);
+        return group;
     }
 
     private CustomItem loadKey() {
