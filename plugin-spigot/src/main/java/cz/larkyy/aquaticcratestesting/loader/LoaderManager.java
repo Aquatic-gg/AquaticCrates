@@ -40,6 +40,9 @@ public class LoaderManager {
 
             }
         }
+        if (loaders.isEmpty()) {
+            tryLoad();
+        }
     }
 
     public void tryLoad() {
