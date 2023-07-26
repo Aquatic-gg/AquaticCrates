@@ -74,8 +74,7 @@ public class CratePlayer {
         for (ItemStack is : player.getInventory().getContents()) {
             if (is == null) continue;
             if (key.isItemKey(is)) {
-                is.setAmount(is.getAmount()-1);
-                return true;
+                if (is.getAmount() >= amount) return true;
             }
         }
         return false;

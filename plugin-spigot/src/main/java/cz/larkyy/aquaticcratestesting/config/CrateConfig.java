@@ -95,8 +95,10 @@ public class CrateConfig extends Config {
         List<ConfiguredPrice> prices = new ArrayList<>();
         for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
             String p = path+"."+key;
-            OpenPrice type = OpenPrices.inst().getPriceType(p+".type");
-            if (type == null) continue;
+            OpenPrice type = OpenPrices.inst().getPriceType(getConfiguration().getString(p+".type"));
+            if (type == null) {
+                continue;
+            }
             prices.add(new ConfiguredPrice(type,loadArguments(p,type.getArgs())));
         }
 
