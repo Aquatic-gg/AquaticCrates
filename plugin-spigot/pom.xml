@@ -51,33 +51,17 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/MANIFEST.MF</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <relocations>
-                                <relocation>
-                                    <pattern>xyz.larkyy.menulib</pattern>
-                                    <shadedPattern>cz.larkyy.aquaticcratestesting.shaded.menulib</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>xyz.larkyy.itemlibrary</pattern>
-                                    <shadedPattern>cz.larkyy.aquaticcratestesting.shaded.itemlibrary</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>xyz.larkyy.colorutils</pattern>
-                                    <shadedPattern>cz.larkyy.aquaticcratestesting.shaded.colorutils</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <!-- Replace this with your package! -->
+                            <shadedPattern>cz.larkyy.aquaticcratestesting.bstats</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -117,6 +101,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>3.0.2</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>cz.larkyy</groupId>
             <artifactId>NMS_v1_18_R2</artifactId>

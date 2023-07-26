@@ -22,6 +22,7 @@ import cz.larkyy.nms.impl.impl.v1_19_R2;
 import cz.larkyy.aquaticcratestesting.hooks.PAPIHook;
 import cz.larkyy.nms.impl.v1_19_R3;
 import cz.larkyy.nms.impl.v1_20_R1;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -56,6 +57,8 @@ public final class AquaticCratesTesting extends JavaPlugin {
         playerHandler = new PlayerHandler();
         databaseManager = new DatabaseManager();
         messageHandler = new MessageHandler();
+
+        Metrics metrics = new Metrics(this, 19254);
 
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7NMS Version&f!"));
         String version = "null";
