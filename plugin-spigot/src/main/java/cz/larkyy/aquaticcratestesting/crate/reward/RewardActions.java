@@ -1,10 +1,7 @@
 package cz.larkyy.aquaticcratestesting.crate.reward;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.crate.reward.actions.ActionBarAction;
-import cz.larkyy.aquaticcratestesting.crate.reward.actions.CommandAction;
-import cz.larkyy.aquaticcratestesting.crate.reward.actions.MessageAction;
-import cz.larkyy.aquaticcratestesting.crate.reward.actions.TitleAction;
+import cz.larkyy.aquaticcratestesting.crate.reward.actions.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +12,7 @@ public class RewardActions {
         {
             put("title",new TitleAction());
             put("message", new MessageAction());
+            put("broadcast", new BroadcastAction());
             put("command", new CommandAction());
             put("actionbar", new ActionBarAction());
         }

@@ -174,9 +174,9 @@ public class v1_16_R3 implements NMSHandler {
 
         try {
             final var clazz
-                    = Class.forName("net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo.PlayerInfoData");
+              = Class.forName("net.minecraft.server.v1_16_R3.PacketPlayOutPlayerInfo$PlayerInfoData");
             final var ctor
-                    = clazz.getConstructor(GameProfile.class, int.class, EnumGamemode.class,IChatBaseComponent.class);
+                    = clazz.getDeclaredConstructor(GameProfile.class, int.class, EnumGamemode.class,IChatBaseComponent.class);
             final var obj = ctor.newInstance(
                     playerHandle.getProfile(),
                     playerHandle.ping,
@@ -192,17 +192,10 @@ public class v1_16_R3 implements NMSHandler {
             list.add(obj);
 
             packetsField.set(packet,list);
-            sendPacket(Arrays.asList(player), packet);
+            sendPacket(List.of(player), packet);
 
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InstantiationException |
+                 InvocationTargetException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
