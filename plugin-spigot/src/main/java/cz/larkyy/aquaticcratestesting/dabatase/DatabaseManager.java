@@ -40,7 +40,6 @@ public class DatabaseManager {
     }
 
     public void loadPlayer(Player player, Consumer<CratePlayer> callback) {
-
         CratePlayer cp = CratePlayer.get(player);
         driver.loadPlayer(player, rs -> {
             try {
@@ -61,6 +60,8 @@ public class DatabaseManager {
             try {
                 while (rs.next()) {
                     Player p = Bukkit.getPlayer(UUID.fromString(rs.getString("UniqueID")));
+                    if (p == null) continue;
+                    if (!p.isOnline()) continue;
                     CratePlayer cp = CratePlayer.get(p);
                     String id = rs.getString("Identifier");
                     int amount = rs.getInt("Amount");

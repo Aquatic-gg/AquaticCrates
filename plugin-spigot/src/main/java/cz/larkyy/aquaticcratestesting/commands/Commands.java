@@ -1,9 +1,6 @@
 package cz.larkyy.aquaticcratestesting.commands;
 
-import cz.larkyy.aquaticcratestesting.commands.impl.CrateCommand;
-import cz.larkyy.aquaticcratestesting.commands.impl.ItemCommand;
-import cz.larkyy.aquaticcratestesting.commands.impl.KeyCommand;
-import cz.larkyy.aquaticcratestesting.commands.impl.ReloadCommand;
+import cz.larkyy.aquaticcratestesting.commands.impl.*;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,6 +18,7 @@ public class Commands implements CommandExecutor {
             put("crate",new CrateCommand());
             put("item",new ItemCommand());
             put("reload",new ReloadCommand());
+            put("editor",new EditorCommand());
         }
     };
 

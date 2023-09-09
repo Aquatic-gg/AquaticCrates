@@ -8,6 +8,7 @@ import cz.larkyy.aquaticcratestesting.crate.CrateListener;
 import cz.larkyy.aquaticcratestesting.crate.price.OpenPrices;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardActions;
 import cz.larkyy.aquaticcratestesting.dabatase.DatabaseManager;
+import cz.larkyy.aquaticcratestesting.editor.EditingHandler;
 import cz.larkyy.aquaticcratestesting.item.ItemHandler;
 import cz.larkyy.aquaticcratestesting.loader.LoaderManager;
 import cz.larkyy.aquaticcratestesting.messages.MessageHandler;
@@ -43,6 +44,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
     private static ItemHandler itemHandler;
     private static OpenPrices openPrices;
+    private static EditingHandler editingHandler;
 
     public static boolean loaded = false;
 
@@ -57,6 +59,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
         playerHandler = new PlayerHandler();
         databaseManager = new DatabaseManager();
         messageHandler = new MessageHandler();
+        editingHandler = new EditingHandler();
 
         Metrics metrics = new Metrics(this, 19254);
 
@@ -98,6 +101,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
         getCommand("aquaticcrates").setTabCompleter(new CommandCompleter());
 
         getServer().getPluginManager().registerEvents(new CrateListener(),this);
+        getServer().getPluginManager().registerEvents(new EditingHandler(),this);
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 
@@ -207,5 +211,9 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
     public static OpenPrices getOpenPrices() {
         return openPrices;
+    }
+
+    public static EditingHandler getEditingHandler() {
+        return editingHandler;
     }
 }
