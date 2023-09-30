@@ -139,6 +139,11 @@
         </dependency>
         <dependency>
             <groupId>cz.larkyy</groupId>
+            <artifactId>NMS_v1_20_2</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cz.larkyy</groupId>
             <artifactId>api</artifactId>
             <version>2.4.0</version>
         </dependency>

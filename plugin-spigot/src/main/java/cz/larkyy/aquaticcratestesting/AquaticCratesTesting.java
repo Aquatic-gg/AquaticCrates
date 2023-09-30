@@ -27,6 +27,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.larkyy.aquaticemotes.nms_v1_20_2.NMS_v1_20_2;
 import xyz.larkyy.nms.v1_19_4.V1_19_4;
 
 import java.io.IOException;
@@ -93,6 +94,10 @@ public final class AquaticCratesTesting extends JavaPlugin {
             case "1.20.1-R0.1-SNAPSHOT" -> {
                 nmsHandler = new v1_20_R1();
                 version = "v1_20_R1";
+            }
+            case "1.20.2-R0.1-SNAPSHOT" -> {
+                nmsHandler = new NMS_v1_20_2();
+                version = "v1_20_R2";
             }
         }
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));
