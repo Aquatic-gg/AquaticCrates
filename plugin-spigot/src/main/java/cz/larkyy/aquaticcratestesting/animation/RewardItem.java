@@ -7,10 +7,12 @@ import cz.larkyy.aquaticcratestesting.hologram.impl.AquaticHologram;
 import cz.larkyy.aquaticcratestesting.utils.RewardUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -36,6 +38,7 @@ public class RewardItem {
     private final Vector offset;
     private Item item;
 
+    public static final NamespacedKey REWARD_ITEM_KEY = new NamespacedKey(AquaticCratesTesting.instance(),"AQUATICCRATES_REWARD_ITEM");
     private final Player p;
 
     public RewardItem(
@@ -184,10 +187,12 @@ public class RewardItem {
         }
 
         item = location.getWorld().dropItem(location,reward.getItem().getItem());
-        item.setItemStack(reward.getItem().getItem());
+        item.setItemStack(reward.getItem().getItem().clone());
         item.setPickupDelay(Integer.MAX_VALUE);
         item.setGravity(gravity);
         item.setVelocity(vector);
+        var pdc = item.getPersistentDataContainer();
+        pdc.set(REWARD_ITEM_KEY, PersistentDataType.INTEGER, 1);
 
         if (p != null) {
             List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());

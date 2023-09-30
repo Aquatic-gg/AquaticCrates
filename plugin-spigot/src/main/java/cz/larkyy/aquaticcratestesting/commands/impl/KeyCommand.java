@@ -37,6 +37,7 @@ public class KeyCommand implements ICommand {
                     return;
                 }
 
+                String keyName = c.getKey().getItem(1).getItemMeta().getDisplayName();
                 if (args.length <= 4) {
                     if (!(sender instanceof Player p)) {
                         Messages.ONLY_FOR_PLAYERS.send(sender);
@@ -49,10 +50,12 @@ public class KeyCommand implements ICommand {
                                 .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%","1")
                                 .replace("%player%",p.getName())
+                                .replace("%key_name%",keyName)
                                 .send(sender);
                         Messages.KEY_GIVE_RECEIVER
                                 .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%","1")
+                                .replace("%key_name%",keyName)
                                 .send(p);
                         return;
                     }
@@ -64,10 +67,12 @@ public class KeyCommand implements ICommand {
                                 .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
                                 .replace("%player%",p.getName())
+                                .replace("%key_name%",keyName)
                                 .send(sender);
                         Messages.KEY_GIVE_RECEIVER
                                 .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
+                                .replace("%key_name%",keyName)
                                 .send(p);
                     } catch (NumberFormatException e) {
                         Messages.INVALID_NUMBER.send(sender);
@@ -95,10 +100,12 @@ public class KeyCommand implements ICommand {
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .replace("%player%",target.getName())
+                            .replace("%key_name%",keyName)
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
+                            .replace("%key_name%",keyName)
                             .send(target);
                 }
 
@@ -109,10 +116,12 @@ public class KeyCommand implements ICommand {
                                 .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
                                 .replace("%player%",target.getName())
+                                .replace("%key_name%",keyName)
                                 .send(sender);
                         Messages.KEY_GIVE_RECEIVER_VIRTUAL
                                 .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
+                                .replace("%key_name%",keyName)
                                 .send(target);
                     } else {
                         c.giveKey(target,amount, false);
@@ -120,10 +129,12 @@ public class KeyCommand implements ICommand {
                                 .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
                                 .replace("%player%",target.getName())
+                                .replace("%key_name%",keyName)
                                 .send(sender);
                         Messages.KEY_GIVE_RECEIVER
                                 .replace("%crate%",c.getDisplayName())
                                 .replace("%amount%",amount+"")
+                                .replace("%key_name%",keyName)
                                 .send(target);
                     }
                 }
@@ -143,6 +154,7 @@ public class KeyCommand implements ICommand {
                     Messages.KEY_UNKNOWN_IDENTIFIER.send(sender);
                     return;
                 }
+                String keyName = c.getKey().getItem(1).getItemMeta().getDisplayName();
 
                 if (args.length == 3) {
                     c.giveKeyAll(1,false);
@@ -150,10 +162,12 @@ public class KeyCommand implements ICommand {
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%","1")
                             .replace("%player%","ALL")
+                            .replace("%key_name%",keyName)
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%","1")
+                            .replace("%key_name%",keyName)
                             .broadcast();
                     return;
                 }
@@ -170,10 +184,12 @@ public class KeyCommand implements ICommand {
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .replace("%player%","ALL")
+                            .replace("%key_name%",keyName)
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
+                            .replace("%key_name%",keyName)
                             .broadcast();
                     return;
                 }
@@ -184,10 +200,12 @@ public class KeyCommand implements ICommand {
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .replace("%player%","ALL")
+                            .replace("%key_name%",keyName)
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER_VIRTUAL
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
+                            .replace("%key_name%",keyName)
                             .broadcast();
                 } else {
                     c.giveKeyAll(amount, false);
@@ -195,10 +213,12 @@ public class KeyCommand implements ICommand {
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
                             .replace("%player%","ALL")
+                            .replace("%key_name%",keyName)
                             .send(sender);
                     Messages.KEY_GIVE_RECEIVER
                             .replace("%crate%",c.getDisplayName())
                             .replace("%amount%",amount+"")
+                            .replace("%key_name%",keyName)
                             .broadcast();
                 }
 
@@ -218,6 +238,7 @@ public class KeyCommand implements ICommand {
                     Messages.INVALID_CRATE.send(sender);
                     return;
                 }
+                String keyName = c.getKey().getItem(1).getItemMeta().getDisplayName();
 
                 int amount = 0;
                 try {
@@ -237,10 +258,12 @@ public class KeyCommand implements ICommand {
                         .replace("%crate%",c.getDisplayName())
                         .replace("%amount%",amount+"")
                         .replace("%player%",target.getName())
+                        .replace("%key_name%",keyName)
                         .send(sender);
                 Messages.KEY_TAKE_RECEIVER
                         .replace("%crate%",c.getDisplayName())
                         .replace("%amount%",amount+"")
+                        .replace("%key_name%",keyName)
                         .send(target);
             }
             case "bank" -> {
@@ -262,9 +285,11 @@ public class KeyCommand implements ICommand {
                     if (k == null) {
                         continue;
                     }
+                    String keyName = k.getItem(1).getItemMeta().getDisplayName();
                     Messages.KEY_BANK_FORMAT
                             .replace("%crate%",k.getDisplayName())
                             .replace("%amount%",i+"")
+                            .replace("%key_name%",keyName)
                             .send(p);
                 }
             }

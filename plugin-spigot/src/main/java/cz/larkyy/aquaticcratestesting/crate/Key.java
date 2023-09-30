@@ -40,12 +40,7 @@ public class Key {
     }
 
     public void give(List<Player> players, int amount) {
-        ItemStack is = item.getItem();
-        is.setAmount(amount);
-
-        ItemMeta im = is.getItemMeta();
-        im.getPersistentDataContainer().set(KEY, PersistentDataType.STRING,crate.getIdentifier());
-        is.setItemMeta(im);
+        ItemStack is = getItem(amount);
 
         players.forEach(p->{
             var map = p.getInventory().addItem(is);
@@ -61,6 +56,17 @@ public class Key {
             return false;
         }
         return key.getIdentifier().equals(getIdentifier());
+    }
+
+    public ItemStack getItem(int amount) {
+        ItemStack is = item.getItem();
+        is.setAmount(amount);
+
+        ItemMeta im = is.getItemMeta();
+        im.getPersistentDataContainer().set(KEY, PersistentDataType.STRING,crate.getIdentifier());
+        is.setItemMeta(im);
+
+        return is;
     }
 
     public static Key get(String identifier) {

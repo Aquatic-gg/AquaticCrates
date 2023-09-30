@@ -1,12 +1,14 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.animation.RewardItem;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.api.events.CrateInteractEvent;
 import cz.larkyy.aquaticcratestesting.api.events.KeyInteractEvent;
 import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -16,12 +18,14 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 public class CrateListener implements Listener {
 
@@ -65,6 +69,12 @@ public class CrateListener implements Listener {
     }
 
     @EventHandler
+    public void onItemPickup(EntityPickupItemEvent e) {
+        if (e.getItem().getPersistentDataContainer().has(RewardItem.REWARD_ITEM_KEY, PersistentDataType.INTEGER)) {
+            e.setCancelled(true);
+        }
+    }
+    @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (e.getHand() == null) return;
         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
@@ -80,6 +90,18 @@ public class CrateListener implements Listener {
 
         ItemStack is = e.getItem();
         Location location = null;
+
+        Action action = e.getAction();
+        if (p.getGameMode() == GameMode.ADVENTURE) {
+            if (e.getAction() == Action.LEFT_CLICK_AIR) {
+                var b = p.getTargetBlockExact(5);
+                if (b != null) {
+                    location = b.getLocation();
+                    action = Action.LEFT_CLICK_BLOCK;
+                }
+            }
+        }
+
         if (e.getClickedBlock() != null) {
             location = e.getClickedBlock().getLocation();
         }
@@ -87,14 +109,14 @@ public class CrateListener implements Listener {
         PlacedCrate placedCrate = PlacedCrate.get(location);
         if (placedCrate != null) {
             e.setCancelled(true);
-            Bukkit.getPluginManager().callEvent(new CrateInteractEvent(p,placedCrate,e.getAction(),e.getClickedBlock().getLocation()));
+            Bukkit.getPluginManager().callEvent(new CrateInteractEvent(p,placedCrate,action,e.getClickedBlock().getLocation()));
             return;
         }
 
         Key key = Key.get(is);
         if (key != null) {
             e.setCancelled(true);
-            Bukkit.getPluginManager().callEvent(new KeyInteractEvent(p,key,location,e.getAction()));
+            Bukkit.getPluginManager().callEvent(new KeyInteractEvent(p,key,location,action));
             return;
         }
         Crate crate = Crate.get(is);

@@ -45,6 +45,8 @@ public class ItemHandler {
         ItemStack is = database.get(id);
         if (is == null) {
             return is;
+
+
         }
         return is.clone();
     }

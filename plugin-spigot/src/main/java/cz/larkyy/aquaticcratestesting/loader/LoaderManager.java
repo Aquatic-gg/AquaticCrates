@@ -17,6 +17,7 @@ public class LoaderManager {
     public LoaderManager(Runnable runnable) {
         this.runnable = runnable;
 
+
         if (getPlugin("ItemsAdder") != null) {
             loaders.add(new ItemsAdderLoader(
                     this::tryLoad
