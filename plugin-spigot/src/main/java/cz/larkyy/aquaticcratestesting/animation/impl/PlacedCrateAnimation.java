@@ -49,7 +49,14 @@ public class PlacedCrateAnimation extends Animation {
             reroll();
             return;
         }
-        placedCrate.getModel().playAnimation("open");
+        String openAnimation;
+        if (getReward().get() == null) {
+            openAnimation = "open";
+        } else {
+            openAnimation = getReward().get().getModelAnimation();
+            if (openAnimation == null) openAnimation = "open";
+        }
+        placedCrate.getModel().playAnimation(openAnimation);
         i = 0;
         if (runnable != null && !runnable.isCancelled()) {
             runnable.cancel();

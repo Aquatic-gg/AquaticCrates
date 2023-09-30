@@ -16,17 +16,20 @@ public class Reward {
     private final List<ConfiguredRewardAction> actions;
     private final double chance;
     private final boolean giveItem;
+    private final String modelAnimation;
     private final String permission;
     private final List<String> hologram;
     private final double hologramYOffset;
 
-    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredRewardAction> actions, String permission, boolean giveItem, List<String> hologram, double hologramYOffset) {
+    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredRewardAction> actions,
+                  String permission, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation) {
         this.identifier = identifier;
         this.item = item;
         this.chance = chance;
         this.actions = actions;
         this.giveItem = giveItem;
         this.permission = permission;
+        this.modelAnimation = modelAnimation;
         this.hologram = hologram;
         this.hologramYOffset = hologramYOffset;
         this.previewItem = previewItem;
@@ -66,6 +69,10 @@ public class Reward {
 
     public CustomItem getPreviewItem() {
         return previewItem == null ? item : previewItem;
+    }
+
+    public String getModelAnimation() {
+        return modelAnimation;
     }
 
     public double getChance() {

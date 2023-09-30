@@ -54,7 +54,14 @@ public class PlacedCratePersonalisedAnimation extends Animation {
             reroll();
             return;
         }
-        model.playAnimation("open");
+        String openAnimation;
+        if (getReward().get() == null) {
+            openAnimation = "open";
+        } else {
+            openAnimation = getReward().get().getModelAnimation();
+            if (openAnimation == null) openAnimation = "open";
+        }
+        model.playAnimation(openAnimation);
         i = 0;
         if (runnable != null && !runnable.isCancelled()) {
             runnable.cancel();
