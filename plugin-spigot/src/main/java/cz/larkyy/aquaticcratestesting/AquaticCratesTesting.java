@@ -12,6 +12,7 @@ import cz.larkyy.aquaticcratestesting.editor.EditingHandler;
 import cz.larkyy.aquaticcratestesting.item.ItemHandler;
 import cz.larkyy.aquaticcratestesting.loader.LoaderManager;
 import cz.larkyy.aquaticcratestesting.messages.MessageHandler;
+import cz.larkyy.aquaticcratestesting.nms.ModelEngineAdapter;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerHandler;
 import cz.larkyy.aquaticcratestesting.player.PlayerListener;
@@ -27,6 +28,9 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import xyz.larkyy.aquaticcrates.meg3hook.AdaptedMEG3;
+import xyz.larkyy.aquaticcrates.meg3hook.MEG3Hook;
+import xyz.larkyy.aquaticcrates.meg4hook.AdaptedMEG4;
 import xyz.larkyy.aquaticemotes.nms_v1_20_2.NMS_v1_20_2;
 import xyz.larkyy.nms.v1_19_4.V1_19_4;
 
@@ -46,7 +50,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
     private static ItemHandler itemHandler;
     private static OpenPrices openPrices;
     private static EditingHandler editingHandler;
-
+    private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean loaded = false;
 
     @Override
@@ -63,6 +67,16 @@ public final class AquaticCratesTesting extends JavaPlugin {
         editingHandler = new EditingHandler();
 
         Metrics metrics = new Metrics(this, 19254);
+
+        var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
+        if (megPlugin != null) {
+            var megVersion = megPlugin.getDescription().getVersion();
+            if (megVersion.contains("3.1.8")) {
+                modelEngineAdapter = new AdaptedMEG3();
+            } else {
+                modelEngineAdapter = new AdaptedMEG4();
+            }
+        }
 
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7NMS Version&f!"));
         String version = "null";
@@ -100,6 +114,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
                 version = "v1_20_R2";
             }
         }
+
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));
 
         getCommand("aquaticcrates").setExecutor(new Commands());
@@ -220,5 +235,9 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
     public static EditingHandler getEditingHandler() {
         return editingHandler;
+    }
+
+    public static ModelEngineAdapter getModelEngineAdapter() {
+        return modelEngineAdapter;
     }
 }

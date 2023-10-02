@@ -1,4 +1,4 @@
-package cz.larkyy.aquaticcratestesting.loader;
+package cz.larkyy.aquaticcratestesting.nms;
 
 public abstract class Loader {
 

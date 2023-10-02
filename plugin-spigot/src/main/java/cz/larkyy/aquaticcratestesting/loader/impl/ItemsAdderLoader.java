@@ -1,7 +1,7 @@
 package cz.larkyy.aquaticcratestesting.loader.impl;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.loader.Loader;
+import cz.larkyy.aquaticcratestesting.nms.Loader;
 import dev.lone.itemsadder.api.Events.ItemsAdderLoadDataEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

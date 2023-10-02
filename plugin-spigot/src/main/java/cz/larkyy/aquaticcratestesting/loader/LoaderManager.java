@@ -2,7 +2,8 @@ package cz.larkyy.aquaticcratestesting.loader;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.loader.impl.ItemsAdderLoader;
-import cz.larkyy.aquaticcratestesting.loader.impl.ModelEngineLoader;
+import xyz.larkyy.aquaticcrates.meg3hook.ModelEngineLoader;
+import cz.larkyy.aquaticcratestesting.nms.Loader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -27,18 +28,14 @@ public class LoaderManager {
             }
         }
         if (getPlugin("ModelEngine") != null) {
-            try {
-                Class.forName("com.ticxo.modelengine.api.events.ModelRegistrationEvent");
-
-                loaders.add(new ModelEngineLoader(
+            if (AquaticCratesTesting.getModelEngineAdapter() != null)
+            {
+                loaders.add(AquaticCratesTesting.getModelEngineAdapter().createMEGLoader(AquaticCratesTesting.instance(),
                         this::tryLoad
                 ));
                 if (AquaticCratesTesting.loaded) {
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "meg reload");
                 }
-            } catch (ClassNotFoundException ignored) {
-                Bukkit.getConsoleSender().sendMessage("[AquaticCrates] Using an old version of ModelEngine! Use at least v3.0.0!");
-
             }
         }
         if (loaders.isEmpty()) {
