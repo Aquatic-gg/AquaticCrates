@@ -41,10 +41,10 @@ public class MEG4Hook implements AdaptedMEModel {
         AnimationHandler animationHandler = getActiveModel().getAnimationHandler();
         if (animationHandler instanceof IPriorityHandler priorityHandler) {
             priorityHandler.forceStopAllAnimations();
-            priorityHandler.playAnimation(animation,1,0,0,false);
+            priorityHandler.playAnimation(animation,0,0,1,false);
         } else if (animationHandler instanceof IStateMachineHandler stateMachineHandler) {
             stateMachineHandler.forceStopAllAnimations();
-            stateMachineHandler.playAnimation(0,animation,1,0,0,false);
+            stateMachineHandler.playAnimation(0,animation,0,0,1,false);
         }
     }
 
