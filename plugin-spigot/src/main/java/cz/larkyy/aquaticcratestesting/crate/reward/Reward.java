@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcratestesting.crate.reward;
 
+import cz.larkyy.aquaticcratestesting.crate.reward.condition.ConfiguredRewardCondition;
 import cz.larkyy.aquaticcratestesting.placeholders.Placeholder;
 import cz.larkyy.aquaticcratestesting.placeholders.Placeholders;
 import org.bukkit.entity.Player;
@@ -18,11 +19,13 @@ public class Reward {
     private final boolean giveItem;
     private final String modelAnimation;
     private final String permission;
+    private final List<ConfiguredRewardCondition> winConditions;
     private final List<String> hologram;
     private final double hologramYOffset;
 
     public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredRewardAction> actions,
-                  String permission, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation) {
+                  String permission, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation,
+                  List<ConfiguredRewardCondition> winConditions) {
         this.identifier = identifier;
         this.item = item;
         this.chance = chance;
@@ -33,6 +36,7 @@ public class Reward {
         this.hologram = hologram;
         this.hologramYOffset = hologramYOffset;
         this.previewItem = previewItem;
+        this.winConditions = winConditions;
     }
 
     public void give(Player player) {
@@ -81,5 +85,9 @@ public class Reward {
 
     public String getPermission() {
         return permission;
+    }
+
+    public List<ConfiguredRewardCondition> getWinConditions() {
+        return winConditions;
     }
 }

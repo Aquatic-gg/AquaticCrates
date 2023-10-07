@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcratestesting.utils;
 
+import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import org.bukkit.entity.Player;
 
@@ -8,8 +9,8 @@ import java.util.List;
 
 public class RewardUtils {
 
-    public static Reward getRandomReward(Player player, List<Reward> rewards, Reward excludedReward) {
-        List<Reward> rs = getPossibleRewards(player,rewards);
+    public static Reward getRandomReward(Player player, List<Reward> rewards, Reward excludedReward, Crate crate) {
+        List<Reward> rs = getPossibleRewards(player,rewards,crate);
         if (excludedReward != null) {
             rs.remove(excludedReward);
             if (rs.isEmpty()) {
@@ -43,15 +44,13 @@ public class RewardUtils {
         return null;
     }
 
-    public static List<Reward> getPossibleRewards(Player player, List<Reward> rewards) {
+    public static List<Reward> getPossibleRewards(Player player, List<Reward> rewards, Crate crate) {
         List<Reward> rewardList = new ArrayList<>();
         for (Reward r : rewards) {
-            if (r.getPermission() == null) {
+            if (r.getWinConditions().isEmpty()) {
                 rewardList.add(r);
-            } else {
-                if (player.hasPermission(r.getPermission())) {
-                    rewardList.add(r);
-                }
+            } else if (r.getWinConditions().stream().allMatch(c -> c.check(player, crate))) {
+                rewardList.add(r);
             }
         }
         return rewardList;

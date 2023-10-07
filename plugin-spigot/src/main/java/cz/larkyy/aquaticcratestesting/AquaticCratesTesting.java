@@ -7,6 +7,7 @@ import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
 import cz.larkyy.aquaticcratestesting.crate.CrateListener;
 import cz.larkyy.aquaticcratestesting.crate.price.OpenPrices;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardActions;
+import cz.larkyy.aquaticcratestesting.crate.reward.condition.RewardConditions;
 import cz.larkyy.aquaticcratestesting.dabatase.DatabaseManager;
 import cz.larkyy.aquaticcratestesting.editor.EditingHandler;
 import cz.larkyy.aquaticcratestesting.item.ItemHandler;
@@ -49,6 +50,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
     private static ItemHandler itemHandler;
     private static OpenPrices openPrices;
+    private static RewardConditions rewardConditions;
     private static EditingHandler editingHandler;
     private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean loaded = false;
@@ -58,6 +60,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading the plugin..."));
         tasks = new Tasks();
         openPrices = new OpenPrices();
+        rewardConditions = new RewardConditions();
         rewardActions = new RewardActions();
         itemHandler = new ItemHandler();
         crateHandler = new CrateHandler();
@@ -231,6 +234,10 @@ public final class AquaticCratesTesting extends JavaPlugin {
 
     public static OpenPrices getOpenPrices() {
         return openPrices;
+    }
+
+    public static RewardConditions getRewardConditions() {
+        return rewardConditions;
     }
 
     public static EditingHandler getEditingHandler() {

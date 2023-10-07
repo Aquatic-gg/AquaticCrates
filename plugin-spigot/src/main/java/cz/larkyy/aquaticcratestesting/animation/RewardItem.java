@@ -149,11 +149,11 @@ public class RewardItem {
                     cancel();
                     return;
                 }
-
                 Reward r = RewardUtils.getRandomReward(
                         animation.getPlayer(),
                         animation.getAnimationManager().getCrate().getRewards(),
-                        cachedReward
+                        cachedReward,
+                        animation.getAnimationManager().getCrate()
                 );
                 updateItem(r);
                 tick+=rumblingPeriod;

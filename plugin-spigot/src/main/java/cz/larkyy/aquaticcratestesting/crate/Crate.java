@@ -228,7 +228,7 @@ public class Crate {
     }
 
     public Reward getRandomReward(Player p) {
-        return RewardUtils.getRandomReward(p,rewards,null);
+        return RewardUtils.getRandomReward(p,rewards,null,this);
     }
 
     public List<Reward> getRewards() {
@@ -244,7 +244,7 @@ public class Crate {
     }
 
     public List<Reward> getPossibleRewards(Player p) {
-        return RewardUtils.getPossibleRewards(p,rewards);
+        return RewardUtils.getPossibleRewards(p,rewards,this);
     }
 
     public RerollManager getRerollManager() {

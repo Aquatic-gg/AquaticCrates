@@ -12,6 +12,9 @@ import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.ConfiguredRewardAction;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardActions;
+import cz.larkyy.aquaticcratestesting.crate.reward.condition.ConfiguredRewardCondition;
+import cz.larkyy.aquaticcratestesting.crate.reward.condition.RewardCondition;
+import cz.larkyy.aquaticcratestesting.crate.reward.condition.RewardConditions;
 import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -139,6 +142,20 @@ public class CrateConfig extends Config {
         return list;
     }
 
+    private List<ConfiguredRewardCondition> loadRewardConditions(String path) {
+        List<ConfiguredRewardCondition> prices = new ArrayList<>();
+        if (!getConfiguration().contains(path)) return prices;
+        for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
+            String p = path+"."+key;
+            RewardCondition type = RewardConditions.inst().getPriceType(getConfiguration().getString(p+".type"));
+            if (type == null) {
+                continue;
+            }
+            prices.add(new ConfiguredRewardCondition(type,loadArguments(p,type.getArgs())));
+        }
+        return prices;
+    }
+
     private Reward loadReward(String id) {
         final String path = "rewards."+id;
         CustomItem item = loadItem(path+".item");
@@ -161,7 +178,8 @@ public class CrateConfig extends Config {
                 giveItem,
                 loadHologram(path+".hologram"),
                 getConfiguration().getDouble(path+".hologram-y-offset",0),
-                modelAnimation
+                modelAnimation,
+                loadRewardConditions(path+".conditions")
         );
     }
 
