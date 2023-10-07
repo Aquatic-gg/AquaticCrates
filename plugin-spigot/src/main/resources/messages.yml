@@ -36,3 +36,4 @@ key-given-receiver-virtual: "&fYou have been given &f%amount%x&f Virtual %crate%
 key-taken-sender: "&fYou have taken %amount%x Virtual %crate% Key from %player%!"
 key-taken-receiver: "&fYou have been taken %amount%x Virtual %crate% Key!"
 dont-have-key: "&cYou do not have the key to open the crate!"
+no-reward-available: "&cThere is no reward available in this crate!"

@@ -154,45 +154,51 @@ public class Crate {
         else key.give(new ArrayList<>(Bukkit.getOnlinePlayers()), amount);
     }
 
-    public boolean open(CratePlayer player, PlacedCrate pc, boolean instant) {
-        return open(player,pc,instant,true);
+    public void open(CratePlayer player, PlacedCrate pc, boolean instant) {
+        open(player,pc,instant,true);
     }
 
-    public boolean open(CratePlayer player, PlacedCrate pc, boolean instant, boolean takeKey) {
+    public void open(CratePlayer player, PlacedCrate pc, boolean instant, boolean takeKey) {
         if (AquaticCratesAPI.getCrateHandler().isInAnimation(player.getPlayer())) {
-            return false;
+            return;
         }
 
         if (permission != null && !player.getPlayer().hasPermission(permission)) {
             Messages.CRATE_NO_PERMISSION.send(player.getPlayer());
-            return false;
+            return;
         }
 
         if (!animationManager.get().canBeOpened(player.getPlayer())) {
-            return false;
+            return;
         }
-
+        AtomicReference<Reward> reward;
         if (takeKey) {
-
             PriceGroup pg = priceHandler.chooseGroup(player.getPlayer(),this);
             if (pg == null) {
                 Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
-                return false;
+                return;
             }
             if (!pg.has(player.getPlayer(),this)) {
                 Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
-                return false;
+                return;
             }
+            reward = new AtomicReference<>(getRandomReward(player.getPlayer()));
+            if (reward.get() == null) {
+                Messages.NO_REWARD_AVAILABLE.send(player.getPlayer());
+                return;
+            }
+
             pg.take(player.getPlayer(),this);
 
         }
-        var event = new CrateOpenEvent(player.getPlayer(),this);
-        AtomicReference<Reward> reward = new AtomicReference<>(getRandomReward(player.getPlayer()));
-        if (reward.get() == null) {
-            player.getPlayer().sendMessage("No available reward has been found! Contact an Admin!");
-            Bukkit.getPluginManager().callEvent(event);
-            return true;
+        else {
+            reward = new AtomicReference<>(getRandomReward(player.getPlayer()));
+            if (reward.get() == null) {
+                Messages.NO_REWARD_AVAILABLE.send(player.getPlayer());
+                return;
+            }
         }
+        var event = new CrateOpenEvent(player.getPlayer(),this);
         if (instant && instantWhileSneaking) {
             var e = new ClaimRewardEvent(player.getPlayer(),reward.get(),this);
             Bukkit.getServer().getPluginManager().callEvent(e);
@@ -219,7 +225,6 @@ public class Crate {
             });
         }
         Bukkit.getPluginManager().callEvent(event);
-        return true;
     }
 
     public Reward getRandomReward(Player p) {

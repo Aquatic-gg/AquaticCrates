@@ -49,8 +49,8 @@ public class PlacedCrate {
         hologram.despawn();
     }
 
-    public boolean open(CratePlayer player, boolean instant) {
-        return crate.open(player,this,instant);
+    public void open(CratePlayer player, boolean instant) {
+        crate.open(player,this,instant);
     }
 
     public Hologram getHologram() {

@@ -25,6 +25,7 @@ public enum Messages {
             " &3| &7/acrates reload",
             "&f "
     )),
+    NO_REWARD_AVAILABLE("no-reward-available","&cThere is no reward available in this crate!"),
     KEY_BANK_TITLE("key-bank-title","&3Your Virtual Keys:"),
     KEY_BANK_FORMAT("key-bank-format","&7- &f%crate%&7: &b%amount%"),
     ONLY_FOR_PLAYERS("only-for-players","&cThis command is only for players!"),
