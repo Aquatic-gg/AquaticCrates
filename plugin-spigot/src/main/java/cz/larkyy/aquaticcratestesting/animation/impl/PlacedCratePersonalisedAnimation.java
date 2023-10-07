@@ -31,7 +31,7 @@ public class PlacedCratePersonalisedAnimation extends Animation {
             reroll();
         } else {
             placedCrate.getModel().hide(player);
-            this.model = Model.create(placedCrate.getCrate().getModel(),placedCrate.getLocation(),player);
+            this.model = Model.create(placedCrate.getCrate().getModel(),placedCrate.getLocation(),player,player);
             begin();
         }
     }

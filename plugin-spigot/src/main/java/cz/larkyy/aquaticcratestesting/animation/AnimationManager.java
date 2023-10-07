@@ -42,7 +42,6 @@ public class AnimationManager {
     private final boolean skippable;
     private final boolean setPumpkinHelmet;
     private final Map<Player, List<BossBar>> bossBars;
-    private final AnimationEmote emote;
 
 
     public enum Type {
@@ -53,7 +52,7 @@ public class AnimationManager {
     }
 
     public AnimationManager(Crate crate, Type type, List<ConfiguredTask> tasks, int length, AnimationTitle openingTitle, AnimationTitle rerollingTitle,
-                            Location modelLocation, Location cameraLocation, boolean skippable, boolean setPumpkinHelmet, AnimationEmote emote,
+                            Location modelLocation, Location cameraLocation, boolean skippable, boolean setPumpkinHelmet,
                             int startDelay, PreOpenTitle preOpenTitle) {
         this.crate = crate;
         this.type = type;
@@ -66,7 +65,6 @@ public class AnimationManager {
         this.cameraLocation = cameraLocation;
         this.skippable = skippable;
         this.setPumpkinHelmet = setPumpkinHelmet;
-        this.emote = emote;
         this.preOpenTitle = preOpenTitle;
         this.startDelay = startDelay;
 
@@ -82,7 +80,7 @@ public class AnimationManager {
                 new PlacedCrateAnimation(this,p,reward,callback,pc);
             }
             case CINEMATIC -> {
-                new CinematicAnimation(this,p,reward,emote,callback);
+                new CinematicAnimation(this,p,reward,callback);
             }
             case PLACEDCRATE_PERSONALISED -> {
                 new PlacedCratePersonalisedAnimation(this,p,reward,callback,pc);

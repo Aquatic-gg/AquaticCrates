@@ -9,8 +9,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class AdaptedMEG3 implements ModelEngineAdapter {
     @Override
-    public AdaptedMEModel create(String id, Location location, Player player) {
-        return MEG3Hook.create(id,location,player);
+    public AdaptedMEModel create(String id, Location location, Player player, Player skin) {
+        return MEG3Hook.create(id,location,player, skin);
     }
 
     @Override

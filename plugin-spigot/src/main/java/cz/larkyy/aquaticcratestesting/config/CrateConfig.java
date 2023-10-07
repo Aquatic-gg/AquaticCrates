@@ -1,22 +1,17 @@
 package cz.larkyy.aquaticcratestesting.config;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.animation.AnimationEmote;
 import cz.larkyy.aquaticcratestesting.animation.AnimationTitle;
 import cz.larkyy.aquaticcratestesting.animation.task.*;
-import cz.larkyy.aquaticcratestesting.animation.task.impl.*;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.price.*;
-import cz.larkyy.aquaticcratestesting.crate.price.types.KeyPrice;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.ConfiguredRewardAction;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
-import cz.larkyy.aquaticcratestesting.crate.reward.RewardAction;
 import cz.larkyy.aquaticcratestesting.crate.reward.RewardActions;
-import cz.larkyy.aquaticcratestesting.crate.reward.actions.MessageAction;
 import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -312,7 +307,6 @@ public class CrateConfig extends Config {
                 loadLocation("animation.camera-location"),
                 getConfiguration().getBoolean("animation.skippable",false),
                 getConfiguration().getBoolean("animation.use-pumpkin-helmet",false),
-                loadAnimationEmote(),
                 getConfiguration().getInt("animation.pre-open.length",0),
                 loadPreOpenTitle()
                         ));
@@ -330,16 +324,6 @@ public class CrateConfig extends Config {
         int out = getConfiguration().getInt(path+".out",0);
 
         return new PreOpenTitle(in,out,stay,title,subTitle);
-    }
-
-    private AnimationEmote loadAnimationEmote() {
-        String path = "animation.player-model";
-        if (!getConfiguration().contains(path)) {
-            return new AnimationEmote(null,null);
-        }
-        String emote = getConfiguration().getString(path+".emote",null);
-        Location location = loadLocation(path);
-        return new AnimationEmote(location,emote);
     }
 
     private AnimationTitle loadAnimationTitle(String path) {

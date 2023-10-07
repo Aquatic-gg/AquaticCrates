@@ -148,18 +148,6 @@
             <version>2.4.0</version>
         </dependency>
         <dependency>
-            <groupId>cz.larkyy.playeremotes</groupId>
-            <artifactId>PlayerEmotes</artifactId>
-            <version>0.0.3</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>xyz.larkyy</groupId>
-                    <artifactId>ColorUtils</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>

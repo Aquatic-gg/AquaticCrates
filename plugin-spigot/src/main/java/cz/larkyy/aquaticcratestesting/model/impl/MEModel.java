@@ -48,9 +48,9 @@ public class MEModel extends Model {
         return adaptedMEModel.getLocation();
     }
 
-    public static Model create(String id, Location location, Player player) {
+    public static Model create(String id, Location location, Player player, Player skin) {
 
-        AdaptedMEModel meModel = AquaticCratesTesting.getModelEngineAdapter().create(id,location,player);
+        AdaptedMEModel meModel = AquaticCratesTesting.getModelEngineAdapter().create(id,location,player,skin);
         return new MEModel(meModel);
     }
 }

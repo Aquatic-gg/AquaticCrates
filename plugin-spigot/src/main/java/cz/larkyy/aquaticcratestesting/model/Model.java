@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 public abstract class Model implements IModel {
 
-    public static Model create(String namespace, Location location, Player player) {
+    public static Model create(String namespace, Location location, Player player,Player skin) {
         if (namespace == null || !namespace.contains(":")) {
             return new EmptyModel(location);
         }
@@ -19,7 +19,7 @@ public abstract class Model implements IModel {
 
         switch (plugin) {
             case "modelengine" -> {
-                return MEModel.create(id,location,player);
+                return MEModel.create(id,location,player,skin);
             }
             case "itemsadder" -> {
                 return IAModel.create(id,location,player);

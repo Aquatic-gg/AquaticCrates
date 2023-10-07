@@ -23,7 +23,7 @@ public class PlacedCrate {
         this.crate = crate;
         this.hologram = new AquaticHologram(location.clone().add(0,crate.getHologramYOffset(),0),crate.getHologram());
         hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()), list -> {});
-        this.model = Model.create(model,location,null);
+        this.model = Model.create(model,location,null,null);
     }
 
     public static PlacedCrate get(Location location) {

@@ -7,12 +7,10 @@ import com.ticxo.modelengine.api.animation.handler.IStateMachineHandler;
 import com.ticxo.modelengine.api.entity.Dummy;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
+import com.ticxo.modelengine.api.model.bone.BoneBehaviorTypes;
 import cz.larkyy.aquaticcratestesting.nms.AdaptedMEModel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -52,7 +50,6 @@ public class MEG4Hook implements AdaptedMEModel {
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -92,7 +89,7 @@ public class MEG4Hook implements AdaptedMEModel {
         return location;
     }
 
-    public static AdaptedMEModel create(String id, Location location, Player player) {
+    public static AdaptedMEModel create(String id, Location location, Player player, Player skin) {
         Location loc = location.clone();
         ActiveModel activeModel = ModelEngineAPI.createActiveModel(id);
         ModeledEntity modeledEntity;
@@ -109,6 +106,14 @@ public class MEG4Hook implements AdaptedMEModel {
         if (player != null) {
             dummy.setDetectingPlayers(false);
             dummy.setForceViewing(player, true);
+        }
+
+        if (skin != null) {
+            activeModel.getBones().forEach((s, modelBone) -> {
+                modelBone.getBoneBehavior(BoneBehaviorTypes.PLAYER_LIMB).ifPresent(playerLimb -> {
+                    playerLimb.setTexture(skin);
+                });
+            });
         }
 
         return new MEG4Hook(location,modeledEntity.getBase().getUUID(), id);

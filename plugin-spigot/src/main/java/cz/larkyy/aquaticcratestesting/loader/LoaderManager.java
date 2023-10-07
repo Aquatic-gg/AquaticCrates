@@ -27,15 +27,13 @@ public class LoaderManager {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "iareload");
             }
         }
-        if (getPlugin("ModelEngine") != null) {
-            if (AquaticCratesTesting.getModelEngineAdapter() != null)
-            {
-                loaders.add(AquaticCratesTesting.getModelEngineAdapter().createMEGLoader(AquaticCratesTesting.instance(),
-                        this::tryLoad
-                ));
-                if (AquaticCratesTesting.loaded) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "meg reload");
-                }
+        if (AquaticCratesTesting.getModelEngineAdapter() != null) {
+            var loader = AquaticCratesTesting.getModelEngineAdapter().createMEGLoader(AquaticCratesTesting.instance(),
+                    this::tryLoad
+            );
+            loaders.add(loader);
+            if (AquaticCratesTesting.loaded) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "meg reload");
             }
         }
         if (loaders.isEmpty()) {

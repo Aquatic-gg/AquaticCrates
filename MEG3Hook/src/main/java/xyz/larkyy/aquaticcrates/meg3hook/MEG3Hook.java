@@ -4,6 +4,7 @@ import com.ticxo.modelengine.api.ModelEngineAPI;
 import com.ticxo.modelengine.api.entity.Dummy;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
+import com.ticxo.modelengine.api.mount.MountPairManager;
 import cz.larkyy.aquaticcratestesting.nms.AdaptedMEModel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -42,7 +43,6 @@ public class MEG3Hook implements AdaptedMEModel {
 
     @Override
     public void show() {
-
     }
 
     @Override
@@ -74,7 +74,7 @@ public class MEG3Hook implements AdaptedMEModel {
         return location;
     }
 
-    public static AdaptedMEModel create(String id, Location location, Player player) {
+    public static AdaptedMEModel create(String id, Location location, Player player, Player skin) {
         Location loc = location.clone();
         ActiveModel activeModel = ModelEngineAPI.createActiveModel(id);
         ModeledEntity modeledEntity;

@@ -1,6 +1,8 @@
 package cz.larkyy.aquaticcratestesting.nms;
 
-public abstract class Loader {
+import org.bukkit.event.Listener;
+
+public abstract class Loader implements Listener {
 
     private final Runnable runnable;
     private boolean loaded = false;

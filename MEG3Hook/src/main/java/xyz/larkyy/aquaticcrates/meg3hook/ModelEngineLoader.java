@@ -3,10 +3,8 @@ package xyz.larkyy.aquaticcrates.meg3hook;
 import com.ticxo.modelengine.api.events.ModelRegistrationEvent;
 import cz.larkyy.aquaticcratestesting.nms.Loader;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
-public class ModelEngineLoader extends Loader implements Listener {
-
+public class ModelEngineLoader extends Loader {
 
     public ModelEngineLoader(Runnable runnable) {
         super(runnable);
