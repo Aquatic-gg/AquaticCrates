@@ -12,6 +12,7 @@ public class Tasks {
         {
             put("spawnreward",new SpawnRewardTask());
             put("playsound",new PlaySoundTask());
+            put("command",new CommandTask());
             put("spawnparticle",new SpawnParticleTask());
             put("sendtitle",new SendTitleTask());
             put("movecamera",new CameraMoveTask());
