@@ -22,7 +22,7 @@ public class CommandCompleter implements TabCompleter {
         }
 
         if (args.length <= 1) {
-            return Arrays.asList("key","crate","item","reload");
+            return Arrays.asList("key","crate","item","reload","multicrate");
         }
         else if (args[0].equalsIgnoreCase("key")) {
             if (args.length == 2) {
@@ -45,6 +45,18 @@ public class CommandCompleter implements TabCompleter {
             return null;
         }
         else if (args[0].equalsIgnoreCase("crate")) {
+            if (args.length == 2) {
+                return Arrays.asList("give","open");
+            }
+            if (args[1].equalsIgnoreCase("give")) {
+                if (args.length == 3) {
+                    return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
+                }
+            }
+
+            return null;
+        }
+        else if (args[0].equalsIgnoreCase("multicrate")) {
             if (args.length == 2) {
                 return Arrays.asList("give");
             }

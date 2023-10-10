@@ -39,10 +39,10 @@ public class MultiPreviewGUI {
                 PlacedCrate pc = pmc.getPlacedCrates().get(crateId);
                 mi.addAction(e -> {
                     if (e.isRightClick()) {
+                        pc.getCrate().openPreview(p,pc);
+                    } else {
                         p.closeInventory();
                         pc.getCrate().open(CratePlayer.get(p),pc,false);
-                    } else {
-                        pc.getCrate().openPreview(p,pc);
                     }
                 });
             }
