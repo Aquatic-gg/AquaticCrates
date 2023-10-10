@@ -29,25 +29,19 @@ import xyz.larkyy.menulib.Menu;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class Crate {
+public class Crate extends CrateBase {
 
     private static final NamespacedKey KEY = new NamespacedKey(AquaticCratesTesting.instance(),"CrateIdentifier");
 
-    private final String identifier;
-    private final String displayName;
     private final Key key;
-    private final String model;
     private final List<Reward> rewards;
 
     private final AtomicReference<PreviewGUI> previewGUI;
     private final AtomicReference<RerollGUI> rerollGUI;
     private final AtomicReference<RerollManager> rerollManager;
     private final AtomicReference<AnimationManager> animationManager;
-    private final List<String> hologram;
-    private final double hologramYOffset;
     private final String permission;
     private final boolean instantWhileSneaking;
-    private Material blockType = Material.BARRIER;
     private final PriceHandler priceHandler;
 
     public Crate(String identifier, String displayName, CustomItem key, String model,
@@ -59,17 +53,13 @@ public class Crate {
                  List<String> hologram,
                  double hologramYOffset, String permission, boolean instantWhileSneaking,
                  PriceHandler priceHandler) {
-        this.identifier = identifier;
-        this.displayName = displayName;
+        super(identifier,displayName,model,hologram,hologramYOffset);
         this.key = new Key(key,this,requiresCrateToOpen);
-        this.model = model;
         this.rewards = rewards;
         this.previewGUI = previewGUI;
         this.rerollGUI = rerollGUI;
         this.rerollManager = rerollManager;
         this.animationManager = animationManager;
-        this.hologram = hologram;
-        this.hologramYOffset = hologramYOffset;
         this.permission = permission;
         this.instantWhileSneaking = instantWhileSneaking;
         this.priceHandler = priceHandler;
@@ -95,14 +85,6 @@ public class Crate {
         gui.open(p,0, pc);
     }
 
-    public Material getBlockType() {
-        return blockType;
-    }
-
-    public void setBlockType(Material blockType) {
-        this.blockType = blockType;
-    }
-
     public void openRerollGUI(MenuReroll reroll) {
         RerollGUI gui = rerollGUI.get();
         if (gui == null) {
@@ -115,14 +97,6 @@ public class Crate {
         return previewGUI.get();
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
     public Key getKey() {
         return key;
     }
@@ -130,7 +104,7 @@ public class Crate {
     public void giveKey(Player player, int amount, boolean virtual) {
         if (virtual) {
             CratePlayer cp = CratePlayer.get(player);
-            cp.addKeys(identifier,amount);
+            cp.addKeys(getIdentifier(),amount);
         }
         else key.give(Collections.singletonList(player), amount);
     }
@@ -138,8 +112,8 @@ public class Crate {
     public void giveCrate(Player player) {
         ItemStack is = new ItemStack(Material.CHEST);
         ItemMeta im = is.getItemMeta();
-        im.setDisplayName("§fCrate: "+identifier);
-        im.getPersistentDataContainer().set(KEY, PersistentDataType.STRING,identifier);
+        im.setDisplayName("§fCrate: "+getIdentifier());
+        im.getPersistentDataContainer().set(KEY, PersistentDataType.STRING,getIdentifier());
         is.setItemMeta(im);
 
         player.getInventory().addItem(is);
@@ -149,7 +123,7 @@ public class Crate {
         if (virtual) {
             AquaticCratesAPI.getPlayerHandler().loadPlayers(()->{});
             AquaticCratesAPI.getPlayerHandler().getPlayers().forEach(
-                    p -> p.addKeys(identifier,amount));
+                    p -> p.addKeys(getIdentifier(),amount));
         }
         else key.give(new ArrayList<>(Bukkit.getOnlinePlayers()), amount);
     }
@@ -239,9 +213,6 @@ public class Crate {
         return AquaticCratesAPI.getCrateHandler().spawnCrate(location,this);
     }
 
-    public String getModel() {
-        return model;
-    }
 
     public List<Reward> getPossibleRewards(Player p) {
         return RewardUtils.getPossibleRewards(p,rewards,this);
@@ -269,11 +240,4 @@ public class Crate {
         return animationManager;
     }
 
-    public List<String> getHologram() {
-        return hologram;
-    }
-
-    public double getHologramYOffset() {
-        return hologramYOffset;
-    }
 }

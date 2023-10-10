@@ -18,12 +18,18 @@ public class PlacedCrate {
     private final Model model;
     private final Hologram hologram;
 
-    public PlacedCrate(Crate crate, Location location, String model) {
+    public PlacedCrate(Crate crate, Location location) {
         this.location = location;
         this.crate = crate;
         this.hologram = new AquaticHologram(location.clone().add(0,crate.getHologramYOffset(),0),crate.getHologram());
         hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()), list -> {});
-        this.model = Model.create(model,location,null,null);
+        this.model = Model.create(crate.getModel(), location,null,null);
+    }
+    public PlacedCrate(Crate crate, Location location, Model model, Hologram hologram) {
+        this.location = location;
+        this.crate = crate;
+        this.hologram = hologram;
+        this.model = model;
     }
 
     public static PlacedCrate get(Location location) {

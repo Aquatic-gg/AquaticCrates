@@ -5,6 +5,7 @@ import cz.larkyy.aquaticcratestesting.animation.RewardItem;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.api.events.CrateInteractEvent;
 import cz.larkyy.aquaticcratestesting.api.events.KeyInteractEvent;
+import cz.larkyy.aquaticcratestesting.api.events.MultiCrateInteractEvent;
 import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
@@ -32,12 +33,19 @@ public class CrateListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
         PlacedCrate pc = PlacedCrate.get(e.getBlock().getLocation());
-        if (pc == null) {
+        if (pc != null) {
+            Player p = e.getPlayer();
+            e.setCancelled(true);
+            Bukkit.getPluginManager().callEvent(new CrateInteractEvent(p,pc,Action.LEFT_CLICK_BLOCK,e.getBlock().getLocation()));
             return;
         }
-        Player p = e.getPlayer();
-        e.setCancelled(true);
-        Bukkit.getPluginManager().callEvent(new CrateInteractEvent(p,pc,Action.LEFT_CLICK_BLOCK,e.getBlock().getLocation()));
+        PlacedMultiCrate pmc = AquaticCratesTesting.getCrateHandler().getPlacedMultiCrate(e.getBlock().getLocation());
+        if (pmc != null) {
+            Player p = e.getPlayer();
+            e.setCancelled(true);
+            Bukkit.getPluginManager().callEvent(new MultiCrateInteractEvent(p,pmc,Action.LEFT_CLICK_BLOCK,e.getBlock().getLocation()));
+            return;
+        }
     }
 
     @EventHandler
@@ -112,6 +120,12 @@ public class CrateListener implements Listener {
             Bukkit.getPluginManager().callEvent(new CrateInteractEvent(p,placedCrate,action,e.getClickedBlock().getLocation()));
             return;
         }
+        PlacedMultiCrate placedMultiCrate = AquaticCratesTesting.getCrateHandler().getPlacedMultiCrate(location);
+        if (placedMultiCrate != null) {
+            e.setCancelled(true);
+            Bukkit.getPluginManager().callEvent(new MultiCrateInteractEvent(p,placedMultiCrate,action,e.getClickedBlock().getLocation()));
+            return;
+        }
 
         Key key = Key.get(is);
         if (key != null) {
@@ -126,6 +140,16 @@ public class CrateListener implements Listener {
             Location loc = location.clone().add(0.5,1,0.5);
             loc.setYaw(p.getLocation().getYaw()+180);
             crate.spawn(loc);
+            AquaticCratesAPI.getCrateHandler().saveCrates();
+            return;
+        }
+        MultiCrate multiCrate = MultiCrate.get(is);
+        if (multiCrate != null) {
+            if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+            e.setCancelled(true);
+            Location loc = location.clone().add(0.5,1,0.5);
+            loc.setYaw(p.getLocation().getYaw()+180);
+            AquaticCratesTesting.getCrateHandler().spawnMultiCrate(loc,multiCrate);
             AquaticCratesAPI.getCrateHandler().saveCrates();
         }
     }
@@ -162,6 +186,21 @@ public class CrateListener implements Listener {
                 AquaticCratesAPI.getCrateHandler().removePlacedCrate(e.getLocation());
             } else {
                 pc.getCrate().openPreview(p,pc);
+            }
+        }
+    }
+    @EventHandler(ignoreCancelled = true)
+    public void onMultiCrateInteract(MultiCrateInteractEvent e) {
+        Player p = e.getPlayer();
+        PlacedMultiCrate pc = e.getPlacedCrate();
+
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            pc.getMultiCrate().openPreview(p,pc);
+        } else if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (p.isSneaking() && p.hasPermission("aquaticcrates.break")) {
+                AquaticCratesAPI.getCrateHandler().removePlacedCrate(e.getLocation());
+            } else {
+                pc.getMultiCrate().openPreview(p,pc);
             }
         }
     }

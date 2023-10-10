@@ -2,8 +2,10 @@ package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.api.events.CratePlaceEvent;
+import cz.larkyy.aquaticcratestesting.api.events.MultiCratePlaceEvent;
 import cz.larkyy.aquaticcratestesting.config.Config;
 import cz.larkyy.aquaticcratestesting.config.CrateConfig;
+import cz.larkyy.aquaticcratestesting.config.MultiCrateConfig;
 import cz.larkyy.aquaticcratestesting.hologram.impl.AquaticHologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,11 +22,16 @@ public class CrateHandler {
     private final Map<String,Crate> crates;
     private final Map<Location, PlacedCrate> locations;
 
+    private final Map<String,MultiCrate> multiCrates;
+    private final Map<Location, PlacedMultiCrate> multiLocations;
+
     private static final Config crateData = new Config(AquaticCratesTesting.instance(),"locations.yml");
 
     public CrateHandler() {
         crates = new HashMap<>();
         locations = new HashMap<>();
+        multiCrates = new HashMap<>();
+        multiLocations = new HashMap<>();
     }
 
     public void removePlacedCrate(Location location) {
@@ -35,14 +42,24 @@ public class CrateHandler {
         pc.destroy();
         saveCrates();
     }
-
+    public void removePlacedMultiCrate(Location location) {
+        PlacedMultiCrate pc = multiLocations.remove(location);
+        if (pc == null) {
+            return;
+        }
+        pc.destroy();
+        saveCrates();
+    }
 
     public Crate getCrate(String identifier) {
         return crates.get(identifier);
     }
+    public MultiCrate getMultiCrate(String identifier) {
+        return multiCrates.get(identifier);
+    }
 
     public PlacedCrate spawnCrate(Location location, Crate crate) {
-        PlacedCrate pc = new PlacedCrate(crate,location,crate.getModel());
+        PlacedCrate pc = new PlacedCrate(crate,location);
 
         CratePlaceEvent event = new CratePlaceEvent(pc);
         Bukkit.getServer().getPluginManager().callEvent(event);
@@ -52,9 +69,23 @@ public class CrateHandler {
         locations.put(loc,pc);
         return pc;
     }
+    public PlacedMultiCrate spawnMultiCrate(Location location, MultiCrate crate) {
+        PlacedMultiCrate pc = new PlacedMultiCrate(crate,location);
+
+        MultiCratePlaceEvent event = new MultiCratePlaceEvent(pc);
+        Bukkit.getServer().getPluginManager().callEvent(event);
+        Location loc = location.clone().getBlock().getLocation();
+        loc.getBlock().setType(event.getBlockMaterial());
+        loc.setYaw(0);
+        multiLocations.put(loc,pc);
+        return pc;
+    }
 
     public PlacedCrate getPlacedCrate(Location location) {
         return locations.get(location);
+    }
+    public PlacedMultiCrate getPlacedMultiCrate(Location location) {
+        return multiLocations.get(location);
     }
 
     public void load() {
@@ -72,30 +103,58 @@ public class CrateHandler {
                 crates.put(crate.getIdentifier(), crate);
             }
         }
-
-        if (!crateData.getConfiguration().contains("crates")) {
-            return;
+        cratesFolder = new File(AquaticCratesTesting.instance().getDataFolder(),"multicrates/");
+        cratesFolder.mkdirs();
+        for (File file : cratesFolder.listFiles()) {
+            MultiCrate crate = new MultiCrateConfig(AquaticCratesTesting.instance(),file).loadCrate();
+            if (crate != null) {
+                multiCrates.put(crate.getIdentifier(), crate);
+            }
         }
-        for (String s : crateData.getConfiguration().getStringList("crates")) {
-            String[] strs = s.split("\\|");
-            Crate crate = Crate.get(strs[0]);
-            if (crate == null) {
-                continue;
+
+        if (crateData.getConfiguration().contains("crates")) {
+            for (String s : crateData.getConfiguration().getStringList("crates")) {
+                String[] strs = s.split("\\|");
+                Crate crate = Crate.get(strs[0]);
+                if (crate == null) {
+                    continue;
+                }
+                World w = Bukkit.getWorld(strs[1]);
+                if (w == null) {
+                    continue;
+                }
+                double x = Double.parseDouble(strs[2]);
+                double y = Double.parseDouble(strs[3]);
+                double z = Double.parseDouble(strs[4]);
+                float yaw = Float.parseFloat(strs[5]);
+                spawnCrate(new Location(w,x,y,z,yaw,0),crate);
             }
-            World w = Bukkit.getWorld(strs[1]);
-            if (w == null) {
-                continue;
+        }
+        if (crateData.getConfiguration().contains("multi-crates")) {
+            for (String s : crateData.getConfiguration().getStringList("multi-crates")) {
+                String[] strs = s.split("\\|");
+                MultiCrate crate = getMultiCrate(strs[0]);
+                if (crate == null) {
+                    continue;
+                }
+                World w = Bukkit.getWorld(strs[1]);
+                if (w == null) {
+                    continue;
+                }
+                double x = Double.parseDouble(strs[2]);
+                double y = Double.parseDouble(strs[3]);
+                double z = Double.parseDouble(strs[4]);
+                float yaw = Float.parseFloat(strs[5]);
+                spawnMultiCrate(new Location(w,x,y,z,yaw,0),crate);
             }
-            double x = Double.parseDouble(strs[2]);
-            double y = Double.parseDouble(strs[3]);
-            double z = Double.parseDouble(strs[4]);
-            float yaw = Float.parseFloat(strs[5]);
-            spawnCrate(new Location(w,x,y,z,yaw,0),crate);
         }
     }
 
     public void unloadCrates() {
         for (PlacedCrate pc : locations.values()) {
+            pc.destroy();
+        }
+        for (PlacedMultiCrate pc : multiLocations.values()) {
             pc.destroy();
         }
     }
@@ -112,6 +171,14 @@ public class CrateHandler {
                     strs.add(pc.getCrate().getIdentifier()+"|"+l.getWorld().getName()+"|"+l.getX()+"|"+l.getY()+"|"+l.getZ()+"|"+l.getYaw());
                 }
                 crateData.getConfiguration().set("crates",strs);
+                strs = new ArrayList<>();
+                for (Map.Entry<Location, PlacedMultiCrate> entry : multiLocations.entrySet()) {
+                    PlacedMultiCrate pc = entry.getValue();
+                    Location l = pc.getLocation();
+
+                    strs.add(pc.getMultiCrate().getIdentifier()+"|"+l.getWorld().getName()+"|"+l.getX()+"|"+l.getY()+"|"+l.getZ()+"|"+l.getYaw());
+                }
+                crateData.getConfiguration().set("multi-crates",strs);
                 crateData.save();
             }
         }.runTaskAsynchronously(AquaticCratesTesting.instance());
@@ -146,5 +213,13 @@ public class CrateHandler {
 
     public Map<String, Crate> getCrates() {
         return crates;
+    }
+
+    public Map<Location, PlacedMultiCrate> getMultiLocations() {
+        return multiLocations;
+    }
+
+    public Map<String, MultiCrate> getMultiCrates() {
+        return multiCrates;
     }
 }

@@ -5,6 +5,8 @@ import cz.larkyy.aquaticcratestesting.animation.AnimationTitle;
 import cz.larkyy.aquaticcratestesting.animation.task.*;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
+import cz.larkyy.aquaticcratestesting.crate.MultiCrate;
+import cz.larkyy.aquaticcratestesting.crate.inventories.MultiPreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.price.*;
@@ -237,6 +239,8 @@ public class CrateConfig extends Config {
                 )
         );
     }
+
+
     private void loadRerollGUI(Crate crate,AtomicReference<RerollGUI> atomicReference) {
         if ((!getConfiguration().contains("reroll") || !getConfiguration().getBoolean("reroll.enabled",true))
                 || !getConfiguration().getString("reroll.type","Interaction").equalsIgnoreCase("gui")) {

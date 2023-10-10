@@ -16,6 +16,7 @@ public class Commands implements CommandExecutor {
         {
             put("key",new KeyCommand());
             put("crate",new CrateCommand());
+            put("multicrate",new MultiCrateCommand());
             put("item",new ItemCommand());
             put("reload",new ReloadCommand());
             put("editor",new EditorCommand());
