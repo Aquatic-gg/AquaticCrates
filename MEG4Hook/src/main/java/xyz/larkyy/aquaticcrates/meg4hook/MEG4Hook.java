@@ -97,9 +97,12 @@ public class MEG4Hook implements AdaptedMEModel {
         Dummy<?> dummy = new Dummy<>();
         dummy.setLocation(loc);
 
-        dummy.setYBodyRot(loc.getYaw());
+        dummy.getBodyRotationController().setYBodyRot(loc.getYaw());
         dummy.setYHeadRot(loc.getYaw());
         dummy.setXHeadRot(loc.getPitch());
+        /*
+        dummy.setYBodyRot(loc.getYaw());
+         */
         modeledEntity = ModelEngineAPI.createModeledEntity(dummy);
         modeledEntity.addModel(activeModel,false);
 
