@@ -27,6 +27,8 @@ public class AquaticCratesAPI {
     }
 
     public static Key getKey(String identifier) {
-        return getCrate(identifier).getKey();
+        var crate = getCrate(identifier);
+        if (crate == null) return null;
+        return crate.getKey();
     }
 }
