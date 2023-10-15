@@ -17,6 +17,8 @@ import cz.larkyy.aquaticcratestesting.crate.reward.RewardActions;
 import cz.larkyy.aquaticcratestesting.crate.reward.condition.ConfiguredRewardCondition;
 import cz.larkyy.aquaticcratestesting.crate.reward.condition.RewardCondition;
 import cz.larkyy.aquaticcratestesting.crate.reward.condition.RewardConditions;
+import cz.larkyy.aquaticcratestesting.placeholders.Placeholder;
+import cz.larkyy.aquaticcratestesting.placeholders.Placeholders;
 import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,6 +26,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.larkyy.itemlibrary.CustomItem;
 import xyz.larkyy.menulib.Menu;
@@ -228,6 +231,7 @@ public class CrateConfig extends Config {
                 var item = loadMenuItem(str,"preview.items."+str);
                 if (item != null) {
                     builder.addItem(item);
+
                 }
             }
         }
@@ -291,9 +295,15 @@ public class CrateConfig extends Config {
         } else {
             slots = getConfiguration().getIntegerList(path+".slots");
         }
+        var clickActions = loadRewardActions(path+".click-actions");
 
         return MenuItem.builder(identifier,item.getItem())
                 .slots(slots)
+                .action(a -> {
+                    clickActions.forEach(action -> {
+                        action.run((Player) a.getWhoClicked(),new Placeholders(new Placeholder("%player%",a.getWhoClicked().getName())));
+                    });
+                })
                 .build();
     }
 
