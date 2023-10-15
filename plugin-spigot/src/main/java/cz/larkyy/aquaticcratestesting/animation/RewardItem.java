@@ -1,9 +1,13 @@
 package cz.larkyy.aquaticcratestesting.animation;
 
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.animation.showcase.ItemRewardShowcase;
+import cz.larkyy.aquaticcratestesting.animation.showcase.ModelRewardShowcase;
+import cz.larkyy.aquaticcratestesting.animation.showcase.RewardShowcase;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.hologram.Hologram;
 import cz.larkyy.aquaticcratestesting.hologram.impl.AquaticHologram;
+import cz.larkyy.aquaticcratestesting.model.Model;
 import cz.larkyy.aquaticcratestesting.utils.RewardUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,7 +40,7 @@ public class RewardItem {
     private Hologram hologram;
     private Reward cachedReward;
     private final Vector offset;
-    private Item item;
+    private RewardShowcase rewardShowcase;
 
     public static final NamespacedKey REWARD_ITEM_KEY = new NamespacedKey(AquaticCratesTesting.instance(),"AQUATICCRATES_REWARD_ITEM");
     private final Player p;
@@ -63,7 +67,7 @@ public class RewardItem {
     }
 
     public void spawn() {
-        if (item != null) {
+        if (rewardShowcase != null) {
             return;
         }
 
@@ -76,7 +80,7 @@ public class RewardItem {
         despawnHologram();
 
         cachedReward = reward;
-        Location loc = item.getLocation().clone().add(0,reward.getHologramYOffset(),0);
+        Location loc = rewardShowcase.getLocation().clone().add(0,reward.getHologramYOffset(),0);
         hologram = new AquaticHologram(loc, reward.getHologram());
         if (p == null) {
             hologram.spawn(
@@ -105,7 +109,7 @@ public class RewardItem {
         }
         cachedReward = reward;
 
-        Location loc = item.getLocation().clone().add(0,reward.getHologramYOffset(),0);
+        Location loc = rewardShowcase.getLocation().clone().add(0,reward.getHologramYOffset(),0);
         hologram.setLocation(loc);
         hologram.setLines(reward.getHologram());
         hologram.update(list -> {
@@ -133,7 +137,7 @@ public class RewardItem {
         hologramRunnable = new BukkitRunnable() {
             @Override
             public void run() {
-                hologram.move(item.getLocation().clone().add(0,cachedReward.getHologramYOffset(),0));
+                hologram.move(rewardShowcase.getLocation().clone().add(0,cachedReward.getHologramYOffset(),0));
             }
         };
         hologramRunnable.runTaskTimer(AquaticCratesTesting.instance(),0,1);
@@ -163,10 +167,44 @@ public class RewardItem {
     }
 
     private void updateItem(Reward reward) {
-        if (item == null) {
+        if (rewardShowcase == null) {
             spawnItem(reward);
         }
-        item.setItemStack(reward.getItem().getItem());
+
+        var loc = rewardShowcase.getLocation().clone();
+        if (rewardShowcase instanceof ItemRewardShowcase itemRewardShowcase) {
+            if (reward.getModel() != null) {
+                rewardShowcase.destroy();
+                rewardShowcase = null;
+                rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),loc,p,p));
+                //spawnItem(reward);
+            } else {
+                itemRewardShowcase.getItem().setItemStack(reward.getItem().getItem());
+            }
+        } else if (rewardShowcase instanceof ModelRewardShowcase modelRewardShowcase) {
+            rewardShowcase.destroy();
+            if (reward.getModel() != null) {
+                rewardShowcase = null;
+                {
+                    var item = loc.getWorld().dropItem(loc,reward.getItem().getItem());
+                    item.setItemStack(reward.getItem().getItem().clone());
+                    item.setPickupDelay(Integer.MAX_VALUE);
+                    item.setGravity(gravity);
+                    //item.setVelocity(vector);
+                    var pdc = item.getPersistentDataContainer();
+                    pdc.set(REWARD_ITEM_KEY, PersistentDataType.INTEGER, 1);
+
+                    if (p != null) {
+                        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+                        players.remove(p);
+                        AquaticCratesTesting.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),players);
+                    }
+                    rewardShowcase = new ItemRewardShowcase(item);
+                }
+            } else {
+                rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),loc,p,p));
+            }
+        }
         updateHologram(reward);
     }
 
@@ -186,19 +224,25 @@ public class RewardItem {
             location.getChunk().load();
         }
 
-        item = location.getWorld().dropItem(location,reward.getItem().getItem());
-        item.setItemStack(reward.getItem().getItem().clone());
-        item.setPickupDelay(Integer.MAX_VALUE);
-        item.setGravity(gravity);
-        item.setVelocity(vector);
-        var pdc = item.getPersistentDataContainer();
-        pdc.set(REWARD_ITEM_KEY, PersistentDataType.INTEGER, 1);
+        if (reward.getModel() != null) {
+            rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),location,p,p));
+        } else {
+            var item = location.getWorld().dropItem(location,reward.getItem().getItem());
+            item.setItemStack(reward.getItem().getItem().clone());
+            item.setPickupDelay(Integer.MAX_VALUE);
+            item.setGravity(gravity);
+            item.setVelocity(vector);
+            var pdc = item.getPersistentDataContainer();
+            pdc.set(REWARD_ITEM_KEY, PersistentDataType.INTEGER, 1);
 
-        if (p != null) {
-            List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
-            players.remove(p);
-            AquaticCratesTesting.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),players);
+            if (p != null) {
+                List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+                players.remove(p);
+                AquaticCratesTesting.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),players);
+            }
+            rewardShowcase = new ItemRewardShowcase(item);
         }
+
     }
 
     public void despawn() {
@@ -215,11 +259,11 @@ public class RewardItem {
 
         despawnHologram();
 
-        if (item == null) {
+        if (rewardShowcase == null) {
             return;
         }
-        item.remove();
-        item = null;
+        rewardShowcase.destroy();
+        rewardShowcase = null;
     }
 
 }

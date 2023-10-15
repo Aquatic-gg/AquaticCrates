@@ -14,6 +14,7 @@ public class Reward {
     private final String identifier;
     private final CustomItem item;
     private final CustomItem previewItem;
+    private final String model;
     private final List<ConfiguredRewardAction> actions;
     private final double chance;
     private final boolean giveItem;
@@ -25,7 +26,7 @@ public class Reward {
 
     public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredRewardAction> actions,
                   String permission, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation,
-                  List<ConfiguredRewardCondition> winConditions) {
+                  List<ConfiguredRewardCondition> winConditions, String model) {
         this.identifier = identifier;
         this.item = item;
         this.chance = chance;
@@ -37,6 +38,7 @@ public class Reward {
         this.hologramYOffset = hologramYOffset;
         this.previewItem = previewItem;
         this.winConditions = winConditions;
+        this.model = model;
     }
 
     public void give(Player player) {
@@ -53,6 +55,10 @@ public class Reward {
                 new Placeholder("%chance%",chance+"")
         );
         actions.forEach(a -> a.run(player,placeholders));
+    }
+
+    public String getModel() {
+        return model;
     }
 
     public List<String> getHologram() {

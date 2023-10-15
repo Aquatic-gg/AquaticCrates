@@ -168,6 +168,7 @@ public class CrateConfig extends Config {
         CustomItem previewItem = loadItem(path+".preview-item");
         double chance = getConfiguration().getDouble(path+".chance");
         String permission = getConfiguration().getString(path+".permission");
+        String model = getConfiguration().getString(path+".model");
         String modelAnimation = getConfiguration().getString(path+".open-animation",null);
         boolean giveItem = getConfiguration().getBoolean(path+".give-item",false);
         return new Reward(
@@ -181,7 +182,8 @@ public class CrateConfig extends Config {
                 loadHologram(path+".hologram"),
                 getConfiguration().getDouble(path+".hologram-y-offset",0),
                 modelAnimation,
-                loadRewardConditions(path+".conditions")
+                loadRewardConditions(path+".conditions"),
+                model
         );
     }
 
