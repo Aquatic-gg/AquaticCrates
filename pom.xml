@@ -6,7 +6,7 @@
 
     <groupId>cz.larkyy</groupId>
     <artifactId>AquaticCratesTesting</artifactId>
-    <version>2.5.3</version>
+    <version>2.5.4</version>
     <modules>
         <module>plugin-spigot</module>
         <module>NMS_v1_18_R2</module>

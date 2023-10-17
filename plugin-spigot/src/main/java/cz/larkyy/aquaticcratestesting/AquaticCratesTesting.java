@@ -74,7 +74,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
         var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
         if (megPlugin != null) {
             var megVersion = megPlugin.getDescription().getVersion();
-            if (megVersion.contains("R3.1.")) {
+            if (megVersion.contains("R3.")) {
                 modelEngineAdapter = new AdaptedMEG3();
             } else {
                 modelEngineAdapter = new AdaptedMEG4();
