@@ -176,7 +176,9 @@ public class RewardItem {
             if (reward.getModel() != null) {
                 rewardShowcase.destroy();
                 rewardShowcase = null;
-                rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),loc,p,p));
+                var l = loc.clone();
+                l.setYaw(reward.getModelYaw());
+                rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),l,p,p));
                 //spawnItem(reward);
             } else {
                 itemRewardShowcase.getItem().setItemStack(reward.getItem().getItem());
@@ -202,7 +204,9 @@ public class RewardItem {
                     rewardShowcase = new ItemRewardShowcase(item);
                 }
             } else {
-                rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),loc,p,p));
+                var l = loc.clone();
+                l.setYaw(reward.getModelYaw());
+                rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),l,p,p));
             }
         }
         updateHologram(reward);
@@ -225,7 +229,9 @@ public class RewardItem {
         }
 
         if (reward.getModel() != null) {
-            rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),location,p,p));
+            var l = location.clone();
+            l.setYaw(reward.getModelYaw());
+            rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),l,p,p));
         } else {
             var item = location.getWorld().dropItem(location,reward.getItem().getItem());
             item.setItemStack(reward.getItem().getItem().clone());

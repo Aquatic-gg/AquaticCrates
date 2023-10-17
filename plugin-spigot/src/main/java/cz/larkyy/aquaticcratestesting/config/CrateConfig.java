@@ -172,6 +172,7 @@ public class CrateConfig extends Config {
         double chance = getConfiguration().getDouble(path+".chance");
         String permission = getConfiguration().getString(path+".permission");
         String model = getConfiguration().getString(path+".model");
+        float modelYaw = (float) getConfiguration().getDouble(path+".model-yaw");
         String modelAnimation = getConfiguration().getString(path+".open-animation",null);
         boolean giveItem = getConfiguration().getBoolean(path+".give-item",false);
         return new Reward(
@@ -186,7 +187,8 @@ public class CrateConfig extends Config {
                 getConfiguration().getDouble(path+".hologram-y-offset",0),
                 modelAnimation,
                 loadRewardConditions(path+".conditions"),
-                model
+                model,
+                modelYaw
         );
     }
 
