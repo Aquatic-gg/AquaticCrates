@@ -56,31 +56,8 @@ public final class AquaticCratesTesting extends JavaPlugin {
     public static boolean loaded = false;
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading the plugin..."));
-        tasks = new Tasks();
-        openPrices = new OpenPrices();
-        rewardConditions = new RewardConditions();
-        rewardActions = new RewardActions();
-        itemHandler = new ItemHandler();
-        crateHandler = new CrateHandler();
-        playerHandler = new PlayerHandler();
-        databaseManager = new DatabaseManager();
-        messageHandler = new MessageHandler();
-        editingHandler = new EditingHandler();
-
-        Metrics metrics = new Metrics(this, 19254);
-
-        var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
-        if (megPlugin != null) {
-            var megVersion = megPlugin.getDescription().getVersion();
-            if (megVersion.contains("R3.")) {
-                modelEngineAdapter = new AdaptedMEG3();
-            } else {
-                modelEngineAdapter = new AdaptedMEG4();
-            }
-        }
-
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7NMS Version&f!"));
         String version = "null";
         switch (getServer().getBukkitVersion()) {
@@ -108,7 +85,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
                 nmsHandler = new V1_19_4();
                 version = "v1_19_R4";
             }
-            case "1.20.1-R0.1-SNAPSHOT" -> {
+            case "1.20.1-R0.1-SNAPSHOT", "1.20-R0.1-SNAPSHOT" -> {
                 nmsHandler = new v1_20_R1();
                 version = "v1_20_R1";
             }
@@ -117,8 +94,34 @@ public final class AquaticCratesTesting extends JavaPlugin {
                 version = "v1_20_R2";
             }
         }
-
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));
+    }
+
+    @Override
+    public void onEnable() {
+
+        tasks = new Tasks();
+        openPrices = new OpenPrices();
+        rewardConditions = new RewardConditions();
+        rewardActions = new RewardActions();
+        itemHandler = new ItemHandler();
+        crateHandler = new CrateHandler();
+        playerHandler = new PlayerHandler();
+        databaseManager = new DatabaseManager();
+        messageHandler = new MessageHandler();
+        editingHandler = new EditingHandler();
+
+        Metrics metrics = new Metrics(this, 19254);
+
+        var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
+        if (megPlugin != null) {
+            var megVersion = megPlugin.getDescription().getVersion();
+            if (megVersion.contains("R3.")) {
+                modelEngineAdapter = new AdaptedMEG3();
+            } else {
+                modelEngineAdapter = new AdaptedMEG4();
+            }
+        }
 
         getCommand("aquaticcrates").setExecutor(new Commands());
         getCommand("aquaticcrates").setTabCompleter(new CommandCompleter());
