@@ -5,6 +5,7 @@ import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.api.events.ClaimRewardEvent;
 import cz.larkyy.aquaticcratestesting.api.events.CrateOpenEvent;
+import cz.larkyy.aquaticcratestesting.api.events.KeyUseEvent;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.price.PriceGroup;
@@ -163,9 +164,10 @@ public class Crate extends CrateBase {
             }
 
             pg.take(player.getPlayer(),this);
-
         }
         else {
+            var event = new KeyUseEvent(player.getPlayer(),this, KeyUseEvent.KeyType.NONE,null);
+            Bukkit.getPluginManager().callEvent(event);
             reward = new AtomicReference<>(getRandomReward(player.getPlayer()));
             if (reward.get() == null) {
                 Messages.NO_REWARD_AVAILABLE.send(player.getPlayer());

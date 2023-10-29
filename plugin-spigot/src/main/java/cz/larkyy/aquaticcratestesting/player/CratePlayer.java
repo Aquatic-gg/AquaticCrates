@@ -1,7 +1,9 @@
 package cz.larkyy.aquaticcratestesting.player;
 
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
+import cz.larkyy.aquaticcratestesting.api.events.KeyUseEvent;
 import cz.larkyy.aquaticcratestesting.crate.Key;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -60,6 +62,8 @@ public class CratePlayer {
             if (is == null) continue;
             if (key.isItemKey(is)) {
                 is.setAmount(is.getAmount()-1);
+                var event = new KeyUseEvent(player.getPlayer(),key.getCrate(), KeyUseEvent.KeyType.PHYSICAL,is);
+                Bukkit.getPluginManager().callEvent(event);
                 return true;
             }
         }
@@ -86,6 +90,9 @@ public class CratePlayer {
             return false;
         }
         virtualKeys.put(key.getIdentifier(),keys-1);
+
+        var event = new KeyUseEvent(player.getPlayer(),key.getCrate(), KeyUseEvent.KeyType.VIRTUAL,null);
+        Bukkit.getPluginManager().callEvent(event);
         return true;
     }
 
