@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcratestesting.hologram.Hologram;
 import cz.larkyy.aquaticcratestesting.hologram.impl.AquaticHologram;
 import cz.larkyy.aquaticcratestesting.model.Model;
 import cz.larkyy.aquaticcratestesting.utils.RewardUtils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -174,11 +175,12 @@ public class RewardItem {
         var loc = rewardShowcase.getLocation().clone();
         if (rewardShowcase instanceof ItemRewardShowcase itemRewardShowcase) {
             if (reward.getModel() != null) {
+                String model = PlaceholderAPI.setPlaceholders(p,reward.getModel());
                 rewardShowcase.destroy();
                 rewardShowcase = null;
                 var l = loc.clone();
                 l.setYaw(reward.getModelYaw());
-                rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),l,p,p));
+                rewardShowcase = new ModelRewardShowcase(Model.create(model,l,p,p));
                 //spawnItem(reward);
             } else {
                 itemRewardShowcase.getItem().setItemStack(reward.getItem().getItem());
@@ -206,7 +208,8 @@ public class RewardItem {
             } else {
                 var l = loc.clone();
                 l.setYaw(reward.getModelYaw());
-                rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),l,p,p));
+                String model = PlaceholderAPI.setPlaceholders(p,reward.getModel());
+                rewardShowcase = new ModelRewardShowcase(Model.create(model,l,p,p));
             }
         }
         updateHologram(reward);
@@ -231,7 +234,8 @@ public class RewardItem {
         if (reward.getModel() != null) {
             var l = location.clone();
             l.setYaw(reward.getModelYaw());
-            rewardShowcase = new ModelRewardShowcase(Model.create(reward.getModel(),l,p,p));
+            String model = PlaceholderAPI.setPlaceholders(p,reward.getModel());
+            rewardShowcase = new ModelRewardShowcase(Model.create(model,l,p,p));
         } else {
             var item = location.getWorld().dropItem(location,reward.getItem().getItem());
             item.setItemStack(reward.getItem().getItem().clone());
