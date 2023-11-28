@@ -3,13 +3,14 @@ package cz.larkyy.aquaticcratestesting.crate.reward;
 import cz.larkyy.aquaticcratestesting.crate.reward.condition.ConfiguredRewardCondition;
 import cz.larkyy.aquaticcratestesting.placeholders.Placeholder;
 import cz.larkyy.aquaticcratestesting.placeholders.Placeholders;
+import cz.larkyy.aquaticcratestesting.utils.IReward;
 import org.bukkit.entity.Player;
 import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Reward {
+public class Reward implements IReward {
 
     private final String identifier;
     private final CustomItem item;

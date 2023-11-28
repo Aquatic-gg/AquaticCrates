@@ -8,6 +8,8 @@ import cz.larkyy.aquaticcratestesting.api.events.CrateOpenEvent;
 import cz.larkyy.aquaticcratestesting.api.events.KeyUseEvent;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
+import cz.larkyy.aquaticcratestesting.crate.milestone.Milestone;
+import cz.larkyy.aquaticcratestesting.crate.milestone.MilestoneHandler;
 import cz.larkyy.aquaticcratestesting.crate.price.PriceGroup;
 import cz.larkyy.aquaticcratestesting.crate.price.PriceHandler;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
@@ -15,6 +17,7 @@ import cz.larkyy.aquaticcratestesting.crate.reroll.impl.MenuReroll;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
+import cz.larkyy.aquaticcratestesting.utils.IReward;
 import cz.larkyy.aquaticcratestesting.utils.RewardUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,6 +47,7 @@ public class Crate extends CrateBase {
     private final String permission;
     private final boolean instantWhileSneaking;
     private final PriceHandler priceHandler;
+    private final MilestoneHandler milestoneHandler;
 
     public Crate(String identifier, String displayName, CustomItem key, String model,
                  List<Reward> rewards, boolean requiresCrateToOpen,
@@ -53,7 +57,8 @@ public class Crate extends CrateBase {
                  AtomicReference<AnimationManager> animationManager,
                  List<String> hologram,
                  double hologramYOffset, String permission, boolean instantWhileSneaking,
-                 PriceHandler priceHandler) {
+                 PriceHandler priceHandler, TreeMap<Integer, Milestone> milestones,
+                 HashMap<Integer,Milestone> repeatableMilestones) {
         super(identifier,displayName,model,hologram,hologramYOffset);
         this.key = new Key(key,this,requiresCrateToOpen);
         this.rewards = rewards;
@@ -64,6 +69,11 @@ public class Crate extends CrateBase {
         this.permission = permission;
         this.instantWhileSneaking = instantWhileSneaking;
         this.priceHandler = priceHandler;
+        this.milestoneHandler = new MilestoneHandler(this,milestones,repeatableMilestones);
+    }
+
+    public MilestoneHandler getMilestoneHandler() {
+        return milestoneHandler;
     }
 
     public PriceHandler getPriceHandler() {
@@ -186,6 +196,7 @@ public class Crate extends CrateBase {
                             animationManager.get().hideTitle(player.getPlayer());
                             var e = new ClaimRewardEvent(player.getPlayer(),r,this);
                             Bukkit.getServer().getPluginManager().callEvent(e);
+                            milestoneHandler.increaseAmt(player.getPlayer());
                             r.give(player.getPlayer());
                             animationManager.get().removeAnimation(player.getPlayer());
                             a.end();
@@ -204,7 +215,9 @@ public class Crate extends CrateBase {
     }
 
     public Reward getRandomReward(Player p) {
-        return RewardUtils.getRandomReward(p,rewards,null,this);
+        var rewards = RewardUtils
+                .getPossibleRewards(p,this.rewards,this);
+        return (Reward) RewardUtils.getRandomReward(rewards,null);
     }
 
     public List<Reward> getRewards() {
@@ -217,7 +230,7 @@ public class Crate extends CrateBase {
 
 
     public List<Reward> getPossibleRewards(Player p) {
-        return RewardUtils.getPossibleRewards(p,rewards,this);
+        return RewardUtils.getPossibleRewards(p,rewards,this).stream().map(r -> (Reward)r).toList();
     }
 
     public RerollManager getRerollManager() {

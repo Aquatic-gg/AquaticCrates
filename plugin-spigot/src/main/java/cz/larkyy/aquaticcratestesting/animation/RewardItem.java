@@ -154,11 +154,13 @@ public class RewardItem {
                     cancel();
                     return;
                 }
-                Reward r = RewardUtils.getRandomReward(
-                        animation.getPlayer(),
-                        animation.getAnimationManager().getCrate().getRewards(),
-                        cachedReward,
-                        animation.getAnimationManager().getCrate()
+
+                var rewards = RewardUtils
+                        .getPossibleRewards(animation.getPlayer(),animation.getAnimationManager().getCrate().getRewards(),animation.getAnimationManager().getCrate());
+
+                Reward r = (Reward) RewardUtils.getRandomReward(
+                        rewards,
+                        cachedReward
                 );
                 updateItem(r);
                 tick+=rumblingPeriod;

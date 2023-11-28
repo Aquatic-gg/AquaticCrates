@@ -9,6 +9,8 @@ import cz.larkyy.aquaticcratestesting.crate.MultiCrate;
 import cz.larkyy.aquaticcratestesting.crate.inventories.MultiPreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
+import cz.larkyy.aquaticcratestesting.crate.milestone.Milestone;
+import cz.larkyy.aquaticcratestesting.crate.milestone.MilestoneReward;
 import cz.larkyy.aquaticcratestesting.crate.price.*;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.ConfiguredRewardAction;
@@ -19,6 +21,7 @@ import cz.larkyy.aquaticcratestesting.crate.reward.condition.RewardCondition;
 import cz.larkyy.aquaticcratestesting.crate.reward.condition.RewardConditions;
 import cz.larkyy.aquaticcratestesting.placeholders.Placeholder;
 import cz.larkyy.aquaticcratestesting.placeholders.Placeholders;
+import cz.larkyy.aquaticcratestesting.utils.IReward;
 import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -70,7 +73,9 @@ public class CrateConfig extends Config {
                 getConfiguration().getDouble("hologram-y-offset",0),
                 getConfiguration().getString("open-permission"),
                 getConfiguration().getBoolean("instant-open-while-sneaking",true),
-                loadPriceHandler()
+                loadPriceHandler(),
+                loadMilestones(),
+                loadRepeatableMilestones()
         );
         loadPreviewGUI(c,previewGUIAtomicReference);
         loadRerollGUI(c,rerollGUIAtomicReference);
@@ -145,6 +150,40 @@ public class CrateConfig extends Config {
             }
         });
         return list;
+    }
+    private TreeMap<Integer,Milestone> loadMilestones() {
+        TreeMap<Integer,Milestone> milestones = new TreeMap<>();
+        if (!getConfiguration().contains("milestones")) return milestones;
+        for (String key : getConfiguration().getConfigurationSection("milestones").getKeys(false)) {
+            String path = "milestones."+key;
+            var milestoneRewards = loadMilestoneRewards(path+".rewards");
+            var milestone = getConfiguration().getInt(path+".milestone");
+
+            milestones.put(milestone,new Milestone(milestone,milestoneRewards));
+        }
+        return milestones;
+    }
+    private HashMap<Integer,Milestone> loadRepeatableMilestones() {
+        HashMap<Integer,Milestone> milestones = new HashMap<>();
+        if (!getConfiguration().contains("repeatable-milestones")) return milestones;
+        for (String key : getConfiguration().getConfigurationSection("repeatable-milestones").getKeys(false)) {
+            String path = "repeatable-milestones."+key;
+            var milestoneRewards = loadMilestoneRewards(path+".rewards");
+            var milestone = getConfiguration().getInt(path+".milestone");
+
+            milestones.put(milestone,new Milestone(milestone,milestoneRewards));
+        }
+        return milestones;
+    }
+
+    private List<IReward> loadMilestoneRewards(String path) {
+        var rewards = new ArrayList<IReward>();
+        for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
+            var reward = loadReward(path+"."+key);
+            if (reward == null) continue;
+            rewards.add(new MilestoneReward(reward,reward.getChance()));
+        }
+        return rewards;
     }
 
     private List<ConfiguredRewardCondition> loadRewardConditions(String path) {
