@@ -55,14 +55,13 @@ public class MilestoneHandler {
     }
 
     public void checkMilestones(Player player, int amt) {
-        if (!milestones.containsKey(amt)) {
-            return;
+        if (milestones.containsKey(amt)) {
+            var milestone = milestones.get(amt);
+            milestone.giveRandomReward(player);
         }
-        var milestone = milestones.get(amt);
-        milestone.giveRandomReward(player);
 
         for (Milestone m : repeatableMilestones.values()) {
-            if (m.getMilestone() % (double)amt == 0) {
+            if ((double)amt % m.getMilestone()  == 0) {
                 m.giveRandomReward(player);
             }
         }

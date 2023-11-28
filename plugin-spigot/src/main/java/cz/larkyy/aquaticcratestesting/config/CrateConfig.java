@@ -140,7 +140,7 @@ public class CrateConfig extends Config {
             return list;
         }
         getConfiguration().getConfigurationSection("rewards").getKeys(false).forEach(rStr -> {
-            Reward r = loadReward(rStr);
+            Reward r = loadReward("rewards."+rStr,rStr);
             if (r != null) {
                 if (r.getItem().getItem() == null || r.getPreviewItem().getItem() == null || r.getItem().getItem().getItemMeta() == null || r.getPreviewItem().getItem().getItemMeta() == null) {
                     Bukkit.getConsoleSender().sendMessage("§cReward §l" + rStr + "§c could not be loaded!");
@@ -179,7 +179,7 @@ public class CrateConfig extends Config {
     private List<IReward> loadMilestoneRewards(String path) {
         var rewards = new ArrayList<IReward>();
         for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
-            var reward = loadReward(path+"."+key);
+            var reward = loadReward(path+"."+key,key);
             if (reward == null) continue;
             rewards.add(new MilestoneReward(reward,reward.getChance()));
         }
@@ -200,11 +200,10 @@ public class CrateConfig extends Config {
         return prices;
     }
 
-    private Reward loadReward(String id) {
-        final String path = "rewards."+id;
+    private Reward loadReward(String path, String id) {
         CustomItem item = loadItem(path+".item");
         if (item == null) {
-            Bukkit.getConsoleSender().sendMessage("The reward "+id+" could not be loaded, because the item is null!");
+            Bukkit.getConsoleSender().sendMessage("The reward "+path+" could not be loaded, because the item is null!");
             return null;
         }
         CustomItem previewItem = loadItem(path+".preview-item");
