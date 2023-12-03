@@ -39,6 +39,9 @@ public class CrateHandler {
         if (pc == null) {
             return;
         }
+        for (Location hitboxLocation : pc.getHitboxLocations()) {
+            locations.remove(hitboxLocation);
+        }
         pc.destroy();
         saveCrates();
     }
@@ -64,9 +67,13 @@ public class CrateHandler {
         CratePlaceEvent event = new CratePlaceEvent(pc);
         Bukkit.getServer().getPluginManager().callEvent(event);
         Location loc = location.clone().getBlock().getLocation();
-        loc.getBlock().setType(event.getBlockMaterial());
+
         loc.setYaw(0);
-        locations.put(loc,pc);
+        for (Location hitboxLocation : pc.getHitboxLocations()) {
+            hitboxLocation.getBlock().setType(event.getBlockMaterial());
+            locations.put(hitboxLocation,pc);
+        }
+
         return pc;
     }
     public PlacedMultiCrate spawnMultiCrate(Location location, MultiCrate crate) {

@@ -75,7 +75,9 @@ public class CrateConfig extends Config {
                 getConfiguration().getBoolean("instant-open-while-sneaking",true),
                 loadPriceHandler(),
                 loadMilestones(),
-                loadRepeatableMilestones()
+                loadRepeatableMilestones(),
+                getConfiguration().getInt("hitbox-height",1),
+                getConfiguration().getInt("hitbox-width",1)
         );
         loadPreviewGUI(c,previewGUIAtomicReference);
         loadRerollGUI(c,rerollGUIAtomicReference);

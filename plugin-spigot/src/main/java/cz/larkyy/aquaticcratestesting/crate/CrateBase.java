@@ -11,13 +11,17 @@ public class CrateBase {
     private final List<String> hologram;
     private final double hologramYOffset;
     private Material blockType = Material.BARRIER;
+    private final int hitboxHeight;
+    private final int hitboxWidth;
 
-    public CrateBase(String identifier, String displayName, String model, List<String> hologram, double hologramYOffset) {
+    public CrateBase(String identifier, String displayName, String model, List<String> hologram, double hologramYOffset, int hitboxHeight, int hitboxWidth) {
         this.identifier = identifier;
         this.displayName = displayName;
         this.model = model;
         this.hologram = hologram;
         this.hologramYOffset = hologramYOffset;
+        this.hitboxHeight = hitboxHeight;
+        this.hitboxWidth = hitboxWidth;
     }
 
     public double getHologramYOffset() {
@@ -46,5 +50,13 @@ public class CrateBase {
 
     public void setBlockType(Material blockType) {
         this.blockType = blockType;
+    }
+
+    public int getHitboxHeight() {
+        return hitboxHeight;
+    }
+
+    public int getHitboxWidth() {
+        return hitboxWidth;
     }
 }

@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlacedCrate {
 
@@ -51,8 +52,25 @@ public class PlacedCrate {
 
     public void destroy() {
         model.remove();
-        location.getBlock().setType(Material.AIR);
+
+        for (Location hitboxLocation : getHitboxLocations()) {
+            hitboxLocation.getBlock().setType(Material.AIR);
+        }
+
         hologram.despawn();
+    }
+
+    public List<Location> getHitboxLocations() {
+        List<Location> locations = new ArrayList<>();
+        var loc = location.clone();
+        for (int x = -(getCrate().getHitboxWidth()-1); x < getCrate().getHitboxWidth(); x++) {
+            for (int z = -(getCrate().getHitboxWidth()-1); z < getCrate().getHitboxWidth(); z++) {
+                for (int height = 0; height < getCrate().getHitboxHeight(); height++) {
+                    locations.add(loc.clone().add(x, height, z).getBlock().getLocation());
+                }
+            }
+        }
+        return locations;
     }
 
     public void open(CratePlayer player, boolean instant) {

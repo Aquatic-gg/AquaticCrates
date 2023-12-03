@@ -34,7 +34,9 @@ public class MultiCrateConfig extends Config {
                 loadHologram("hologram"),
                 getConfiguration().getDouble("hologram-y-offset",0),
                 getConfiguration().getStringList("crates"),
-                previewGUIAtomicReference
+                previewGUIAtomicReference,
+                getConfiguration().getInt("hitbox-height",1),
+                getConfiguration().getInt("hitbox-width",1)
         );
         loadMultiPreviewGUI(c,previewGUIAtomicReference);
 

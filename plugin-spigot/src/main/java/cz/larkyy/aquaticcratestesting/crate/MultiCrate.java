@@ -21,8 +21,8 @@ public class MultiCrate extends CrateBase {
     private final AtomicReference<MultiPreviewGUI> previewGUI;
 
     public MultiCrate(String identifier, String displayName, String model, List<String> hologram, double hologramYOffset,
-                      List<String> crates, AtomicReference<MultiPreviewGUI> previewGUI) {
-        super(identifier, displayName, model, hologram, hologramYOffset);
+                      List<String> crates, AtomicReference<MultiPreviewGUI> previewGUI, int hitboxHeight, int hitboxWidth) {
+        super(identifier, displayName, model, hologram, hologramYOffset,hitboxHeight,hitboxWidth);
         this.crates = crates;
         this.previewGUI = previewGUI;
     }

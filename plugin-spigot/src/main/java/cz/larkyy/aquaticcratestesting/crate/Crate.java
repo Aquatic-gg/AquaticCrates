@@ -58,8 +58,9 @@ public class Crate extends CrateBase {
                  List<String> hologram,
                  double hologramYOffset, String permission, boolean instantWhileSneaking,
                  PriceHandler priceHandler, TreeMap<Integer, Milestone> milestones,
-                 HashMap<Integer,Milestone> repeatableMilestones) {
-        super(identifier,displayName,model,hologram,hologramYOffset);
+                 HashMap<Integer,Milestone> repeatableMilestones, int hitboxHeight,
+                 int hitboxWidth) {
+        super(identifier,displayName,model,hologram,hologramYOffset,hitboxHeight,hitboxWidth);
         this.key = new Key(key,this,requiresCrateToOpen);
         this.rewards = rewards;
         this.previewGUI = previewGUI;
