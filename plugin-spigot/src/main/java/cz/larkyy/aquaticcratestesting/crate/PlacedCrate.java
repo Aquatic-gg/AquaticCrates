@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
+import cz.larkyy.aquaticcratestesting.crate.model.ModelAnimationHandler;
 import cz.larkyy.aquaticcratestesting.hologram.Hologram;
 import cz.larkyy.aquaticcratestesting.hologram.impl.AquaticHologram;
 import cz.larkyy.aquaticcratestesting.model.Model;
@@ -18,6 +19,7 @@ public class PlacedCrate {
     private final Crate crate;
     private final Model model;
     private final Hologram hologram;
+    private final ModelAnimationHandler modelAnimationHandler;
 
     public PlacedCrate(Crate crate, Location location) {
         this.location = location;
@@ -25,12 +27,14 @@ public class PlacedCrate {
         this.hologram = new AquaticHologram(location.clone().add(0,crate.getHologramYOffset(),0),crate.getHologram());
         hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()), list -> {});
         this.model = Model.create(crate.getModel(), location,null,null);
+        this.modelAnimationHandler = new ModelAnimationHandler(model,crate);
     }
     public PlacedCrate(Crate crate, Location location, Model model, Hologram hologram) {
         this.location = location;
         this.crate = crate;
         this.hologram = hologram;
         this.model = model;
+        this.modelAnimationHandler = new ModelAnimationHandler(model,crate);
     }
 
     public static PlacedCrate get(Location location) {
@@ -51,6 +55,7 @@ public class PlacedCrate {
     }
 
     public void destroy() {
+        modelAnimationHandler.setCancelled(true);
         model.remove();
 
         for (Location hitboxLocation : getHitboxLocations()) {

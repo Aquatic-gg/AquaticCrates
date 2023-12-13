@@ -127,6 +127,10 @@ public class AnimationManager {
         return true;
     }
 
+    public boolean isAnyoneOpening() {
+        return !animations.isEmpty();
+    }
+
 
     public List<BossBar> showTitle(AnimationTitle title, Player p) {
         List<BossBar> list = title.create();

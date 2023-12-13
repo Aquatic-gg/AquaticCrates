@@ -10,6 +10,7 @@ import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.milestone.Milestone;
 import cz.larkyy.aquaticcratestesting.crate.milestone.MilestoneHandler;
+import cz.larkyy.aquaticcratestesting.crate.model.ModelSettings;
 import cz.larkyy.aquaticcratestesting.crate.price.PriceGroup;
 import cz.larkyy.aquaticcratestesting.crate.price.PriceHandler;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
@@ -49,7 +50,7 @@ public class Crate extends CrateBase {
     private final PriceHandler priceHandler;
     private final MilestoneHandler milestoneHandler;
 
-    public Crate(String identifier, String displayName, CustomItem key, String model,
+    public Crate(String identifier, String displayName, CustomItem key, ModelSettings modelSettings,
                  List<Reward> rewards, boolean requiresCrateToOpen,
                  AtomicReference<PreviewGUI> previewGUI,
                  AtomicReference<RerollGUI> rerollGUI,
@@ -60,7 +61,7 @@ public class Crate extends CrateBase {
                  PriceHandler priceHandler, TreeMap<Integer, Milestone> milestones,
                  HashMap<Integer,Milestone> repeatableMilestones, int hitboxHeight,
                  int hitboxWidth) {
-        super(identifier,displayName,model,hologram,hologramYOffset,hitboxHeight,hitboxWidth);
+        super(identifier,displayName,modelSettings,hologram,hologramYOffset,hitboxHeight,hitboxWidth);
         this.key = new Key(key,this,requiresCrateToOpen);
         this.rewards = rewards;
         this.previewGUI = previewGUI;

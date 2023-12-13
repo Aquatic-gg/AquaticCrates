@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
+import cz.larkyy.aquaticcratestesting.crate.model.ModelAnimationHandler;
 import cz.larkyy.aquaticcratestesting.hologram.Hologram;
 import cz.larkyy.aquaticcratestesting.hologram.impl.AquaticHologram;
 import cz.larkyy.aquaticcratestesting.model.Model;
@@ -19,6 +20,7 @@ public class PlacedMultiCrate {
     private final Map<String,PlacedCrate> placedCrates;
     private final Model model;
     private final Hologram hologram;
+    private final ModelAnimationHandler modelAnimationHandler;
 
     public PlacedMultiCrate(MultiCrate multiCrate, Location location) {
         this.location = location;
@@ -28,6 +30,7 @@ public class PlacedMultiCrate {
         this.model = Model.create(multiCrate.getModel(), location,null,null);
 
         placedCrates = createPlacedCrates();
+        this.modelAnimationHandler = new ModelAnimationHandler(model,multiCrate);
     }
 
     private Map<String,PlacedCrate> createPlacedCrates() {
@@ -61,6 +64,7 @@ public class PlacedMultiCrate {
     }
 
     public void destroy() {
+        modelAnimationHandler.setCancelled(true);
         model.remove();
         location.getBlock().setType(Material.AIR);
         hologram.despawn();

@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
+import cz.larkyy.aquaticcratestesting.crate.model.ModelSettings;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -7,17 +8,17 @@ import java.util.List;
 public class CrateBase {
     private final String identifier;
     private final String displayName;
-    private final String model;
     private final List<String> hologram;
     private final double hologramYOffset;
     private Material blockType = Material.BARRIER;
     private final int hitboxHeight;
     private final int hitboxWidth;
+    private final ModelSettings modelSettings;
 
-    public CrateBase(String identifier, String displayName, String model, List<String> hologram, double hologramYOffset, int hitboxHeight, int hitboxWidth) {
+    public CrateBase(String identifier, String displayName, ModelSettings modelSettings, List<String> hologram, double hologramYOffset, int hitboxHeight, int hitboxWidth) {
         this.identifier = identifier;
         this.displayName = displayName;
-        this.model = model;
+        this.modelSettings = modelSettings;
         this.hologram = hologram;
         this.hologramYOffset = hologramYOffset;
         this.hitboxHeight = hitboxHeight;
@@ -44,8 +45,12 @@ public class CrateBase {
         return identifier;
     }
 
+    public ModelSettings getModelSettings() {
+        return modelSettings;
+    }
+
     public String getModel() {
-        return model;
+        return modelSettings.getModelId();
     }
 
     public void setBlockType(Material blockType) {

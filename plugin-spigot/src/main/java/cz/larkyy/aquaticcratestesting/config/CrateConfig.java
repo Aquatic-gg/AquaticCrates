@@ -11,6 +11,9 @@ import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.milestone.Milestone;
 import cz.larkyy.aquaticcratestesting.crate.milestone.MilestoneReward;
+import cz.larkyy.aquaticcratestesting.crate.model.ModelAnimation;
+import cz.larkyy.aquaticcratestesting.crate.model.ModelAnimations;
+import cz.larkyy.aquaticcratestesting.crate.model.ModelSettings;
 import cz.larkyy.aquaticcratestesting.crate.price.*;
 import cz.larkyy.aquaticcratestesting.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcratestesting.crate.reward.ConfiguredRewardAction;
@@ -62,7 +65,7 @@ public class CrateConfig extends Config {
                 identifier,
                 Colors.format(getConfiguration().getString("display-name",identifier)),
                 key,
-                getConfiguration().getString("model"),
+                loadModelSettings(),
                 loadRewards(),
                 getConfiguration().getBoolean("key.requires-crate-to-open",true),
                 previewGUIAtomicReference,
@@ -87,6 +90,21 @@ public class CrateConfig extends Config {
         c.setBlockType(Material.valueOf(getConfiguration().getString("block-type","BARRIER").toUpperCase()));
 
         return c;
+    }
+
+    private ModelSettings loadModelSettings() {
+        String modelId = getConfiguration().getString("model");
+        int period = getConfiguration().getInt("idle-animation-period",-1);
+        if (!getConfiguration().contains("idle-animations")) {
+            return new ModelSettings(modelId, new ModelAnimations(new ArrayList<>(),period));
+        }
+        List<ModelAnimation> animations = new ArrayList<>();
+        for (String key : getConfiguration().getConfigurationSection("idle-animations").getKeys(false)) {
+            String animationId = getConfiguration().getString("idle-animations."+key+".animation");
+            int animationLength = getConfiguration().getInt("idle-animations."+key+".length");
+            animations.add(new ModelAnimation(animationId,animationLength));
+        }
+        return new ModelSettings(modelId,new ModelAnimations(animations,period));
     }
 
     private PriceHandler loadPriceHandler() {

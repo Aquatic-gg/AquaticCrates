@@ -3,6 +3,9 @@ package cz.larkyy.aquaticcratestesting.config;
 import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
 import cz.larkyy.aquaticcratestesting.crate.MultiCrate;
 import cz.larkyy.aquaticcratestesting.crate.inventories.MultiPreviewGUI;
+import cz.larkyy.aquaticcratestesting.crate.model.ModelAnimation;
+import cz.larkyy.aquaticcratestesting.crate.model.ModelAnimations;
+import cz.larkyy.aquaticcratestesting.crate.model.ModelSettings;
 import cz.larkyy.aquaticcratestesting.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -30,7 +33,7 @@ public class MultiCrateConfig extends Config {
         MultiCrate c = new MultiCrate(
                 identifier,
                 Colors.format(getConfiguration().getString("display-name",identifier)),
-                getConfiguration().getString("model"),
+                loadModelSettings(),
                 loadHologram("hologram"),
                 getConfiguration().getDouble("hologram-y-offset",0),
                 getConfiguration().getStringList("crates"),
@@ -44,6 +47,22 @@ public class MultiCrateConfig extends Config {
 
         return c;
     }
+
+    private ModelSettings loadModelSettings() {
+        String modelId = getConfiguration().getString("model");
+        int period = getConfiguration().getInt("idle-animation-period",-1);
+        if (!getConfiguration().contains("idle-animations")) {
+            return new ModelSettings(modelId, new ModelAnimations(new ArrayList<>(),period));
+        }
+        List<ModelAnimation> animations = new ArrayList<>();
+        for (String key : getConfiguration().getConfigurationSection("idle-animations").getKeys(false)) {
+            String animationId = getConfiguration().getString("idle-animations."+key+".animation");
+            int animationLength = getConfiguration().getInt("idle-animations."+key+".length");
+            animations.add(new ModelAnimation(animationId,animationLength));
+        }
+        return new ModelSettings(modelId,new ModelAnimations(animations,period));
+    }
+
     private List<String> loadHologram(String path) {
         if (!getConfiguration().contains(path)) {
             return new ArrayList<>();
