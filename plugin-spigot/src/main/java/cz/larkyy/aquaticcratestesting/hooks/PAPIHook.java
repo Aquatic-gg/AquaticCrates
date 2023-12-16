@@ -1,5 +1,7 @@
 package cz.larkyy.aquaticcratestesting.hooks;
 
+import cz.larkyy.aquaticcratestesting.crate.Crate;
+import cz.larkyy.aquaticcratestesting.crate.milestone.Milestone;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
@@ -52,6 +54,62 @@ public class PAPIHook extends PlaceholderExpansion {
                 }
                 CratePlayer cp = CratePlayer.get(player.getPlayer());
                 return cp.getKeys(args[1])+"";
+            }
+            case "milestone" -> {
+
+                if (!player.isOnline()) {
+                    return null;
+                }
+                Player p = (Player) player;
+
+                if (args.length < 4) {
+                    return "";
+                }
+                var crate = Crate.get(args[2]);
+                if (crate == null) return "";
+                Milestone milestone = crate.getMilestoneHandler().getMilestones().get(Integer.valueOf(args[3]));
+                if (milestone == null) return "";
+
+                if (args[1].equalsIgnoreCase("reached")) {
+                    return crate.getMilestoneHandler().getAmt(p)+"";
+                }
+                if (args[1].equalsIgnoreCase("remaining")) {
+                    return (milestone.getMilestone()-crate.getMilestoneHandler().getAmt(p))+"";
+                }
+                if (args[1].equalsIgnoreCase("required")) {
+                    return milestone.getMilestone()+"";
+                }
+            }case "repeatable-milestone" -> {
+
+                if (!player.isOnline()) {
+                    return null;
+                }
+                Player p = (Player) player;
+
+                if (args.length < 4) {
+                    return "";
+                }
+                var crate = Crate.get(args[2]);
+                if (crate == null) return "";
+                Milestone milestone = crate.getMilestoneHandler().getRepeatableMilestones().get(Integer.valueOf(args[3]));
+                if (milestone == null) return "";
+
+                var current = crate.getMilestoneHandler().getAmt(p);
+
+                double d1 = (double)current/(double)milestone.getMilestone();
+                double d2 = Math.floor(d1);
+
+                int reached = (int) ((d1-d2)*milestone.getMilestone());
+
+                if (args[1].equalsIgnoreCase("reached")) {
+                    return reached + "";
+                }
+                if (args[1].equalsIgnoreCase("remaining")) {
+                    return (milestone.getMilestone() - reached) + "";
+                }
+                if (args[1].equalsIgnoreCase("required")) {
+                    return milestone.getMilestone()+"";
+                }
             }
         }
 
