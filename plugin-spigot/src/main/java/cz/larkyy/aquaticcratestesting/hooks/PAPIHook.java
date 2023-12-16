@@ -70,6 +70,10 @@ public class PAPIHook extends PlaceholderExpansion {
                 Milestone milestone = crate.getMilestoneHandler().getMilestones().get(Integer.valueOf(args[3]));
                 if (milestone == null) return "";
 
+                if (args[1].equalsIgnoreCase("isreached")) {
+                    return (milestone.getMilestone()<=crate.getMilestoneHandler().getAmt(p))+"";
+                }
+
                 if (args[1].equalsIgnoreCase("reached")) {
                     return crate.getMilestoneHandler().getAmt(p)+"";
                 }
@@ -79,7 +83,7 @@ public class PAPIHook extends PlaceholderExpansion {
                 if (args[1].equalsIgnoreCase("required")) {
                     return milestone.getMilestone()+"";
                 }
-            }case "repeatable-milestone" -> {
+            } case "repeatable-milestone" -> {
 
                 if (!player.isOnline()) {
                     return null;
