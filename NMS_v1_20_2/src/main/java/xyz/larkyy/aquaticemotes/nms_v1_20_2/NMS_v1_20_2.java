@@ -16,6 +16,8 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_20_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Field;
@@ -24,6 +26,10 @@ import java.util.function.Consumer;
 
 public class NMS_v1_20_2 implements NMSHandler {
 
+    private final JavaPlugin plugin;
+    public  NMS_v1_20_2(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
     private final Map<Integer, Entity> entities = new HashMap<>();
 
     public int spawnEntity(Location l, Consumer<org.bukkit.entity.Entity> factory, List<Player> players, String type) {
@@ -123,7 +129,12 @@ public class NMS_v1_20_2 implements NMSHandler {
         net.minecraft.world.entity.Entity entity = entities.get(id);
         Location prevLoc = entity.getBukkitEntity().getLocation();
 
-        entity.getBukkitEntity().teleport(location);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                entity.getBukkitEntity().teleport(location);
+            }
+        }.runTask(plugin);
         final var packet = new ClientboundMoveEntityPacket.PosRot(
                 id,
                 (short)((location.getX() * 32 - prevLoc.getX() * 32) * 128),

@@ -25,6 +25,10 @@ public class MilestoneHandler {
         return milestones;
     }
 
+    public HashMap<Integer, Milestone> getRepeatableMilestones() {
+        return repeatableMilestones;
+    }
+
     public Milestone getNext(Player player) {
         var amt = getAmt(player);
         var milestone = milestones.higherEntry(amt);

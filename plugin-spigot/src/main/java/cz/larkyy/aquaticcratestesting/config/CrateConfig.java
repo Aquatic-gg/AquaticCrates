@@ -178,8 +178,9 @@ public class CrateConfig extends Config {
             String path = "milestones."+key;
             var milestoneRewards = loadMilestoneRewards(path+".rewards");
             var milestone = getConfiguration().getInt(path+".milestone");
+            var displayName = getConfiguration().getString(path+".display-name","milestone-"+milestone);
 
-            milestones.put(milestone,new Milestone(milestone,milestoneRewards));
+            milestones.put(milestone,new Milestone(milestone,milestoneRewards,Colors.format(displayName)));
         }
         return milestones;
     }
@@ -190,8 +191,9 @@ public class CrateConfig extends Config {
             String path = "repeatable-milestones."+key;
             var milestoneRewards = loadMilestoneRewards(path+".rewards");
             var milestone = getConfiguration().getInt(path+".milestone");
+            var displayName = getConfiguration().getString(path+".display-name","milestone-"+milestone);
 
-            milestones.put(milestone,new Milestone(milestone,milestoneRewards));
+            milestones.put(milestone,new Milestone(milestone,milestoneRewards,Colors.format(displayName)));
         }
         return milestones;
     }
@@ -297,12 +299,24 @@ public class CrateConfig extends Config {
         }
         List<String> rewardLore = getConfiguration().getStringList("preview.reward-lore");
 
+        var milestonesItem = loadMenuItem("milestones","preview.milestones");
+        String milestoneFormat= getConfiguration().getString("preview.milestones.format", "&7 - &f%milestone% &7(%remains%/%required%)");
+        String milestoneFormatReached= getConfiguration().getString("preview.milestones.reached-format", "&7 - &a%milestone% &7(Reached)");
+
+        var repeatableMilestonesItem = loadMenuItem("repeatable-milestones","preview.repeatable-milestones");
+        String repeatableMilestoneFormat= getConfiguration().getString("preview.repeatable-milestones.format","&7 - &f%milestone% &7(%remains%/%required%)");
+
         atomicReference.set(new PreviewGUI(crate,
-                        builder,
-                        getConfiguration().getIntegerList("preview.reward-slots"),
-                        rewardLore,
-                        getConfiguration().getBoolean("preview.openable-by-key",false)
-                )
+                builder,
+                getConfiguration().getIntegerList("preview.reward-slots"),
+                rewardLore,
+                getConfiguration().getBoolean("preview.openable-by-key",false),
+                milestonesItem,
+                milestoneFormat,
+                milestoneFormatReached,
+                repeatableMilestonesItem,
+                repeatableMilestoneFormat
+            )
         );
     }
 

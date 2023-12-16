@@ -90,7 +90,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
                 version = "v1_20_R1";
             }
             case "1.20.2-R0.1-SNAPSHOT" -> {
-                nmsHandler = new NMS_v1_20_2();
+                nmsHandler = new NMS_v1_20_2(this);
                 version = "v1_20_R2";
             }
         }

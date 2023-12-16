@@ -23,6 +23,10 @@ public class Placeholders {
         this.placeholders.add(placeholder);
     }
 
+    public void addPlaceholder(String placeholder, String value) {
+        this.placeholders.add(new Placeholder(placeholder,value));
+    }
+
     public String replace(String input) {
         for (var placeholder : placeholders) {
             input = placeholder.replace(input);

@@ -9,11 +9,17 @@ import java.util.List;
 public class Milestone {
 
     private final int milestone;
+    private final String displayName;
     private final List<IReward> rewards;
 
-    public Milestone(int milestone, List<IReward> rewards) {
+    public Milestone(int milestone, List<IReward> rewards, String displayName) {
         this.milestone = milestone;
         this.rewards = rewards;
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public int getMilestone() {
