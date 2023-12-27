@@ -189,6 +189,7 @@ public class Crate extends CrateBase {
         var event = new CrateOpenEvent(player.getPlayer(),this);
         if (instant && instantWhileSneaking) {
             var e = new ClaimRewardEvent(player.getPlayer(),reward.get(),this);
+            milestoneHandler.increaseAmt(player.getPlayer());
             Bukkit.getServer().getPluginManager().callEvent(e);
             reward.get().give(player.getPlayer());
         } else {
