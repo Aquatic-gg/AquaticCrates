@@ -45,9 +45,11 @@ public class MilestoneHandler {
 
     public void increaseAmt(Player player, int amount) {
         var amt = getAmt(player)+amount;
+        if (amt < 0) amt = 0;
         var pdc = player.getPersistentDataContainer();
         pdc.set(namespacedKey,PersistentDataType.INTEGER,amt);
 
+        if (amt == 0) return;
         checkMilestones(player, amt);
     }
 
@@ -56,14 +58,16 @@ public class MilestoneHandler {
     }
 
     public void decreaseAmt(Player player, int amount) {
-        increaseAmt(player,-1);
+        increaseAmt(player,-amount);
     }
 
     public void setAmt(Player player, int amount) {
         var amt = amount;
+        if (amt < 0) amt = 0;
         var pdc = player.getPersistentDataContainer();
         pdc.set(namespacedKey,PersistentDataType.INTEGER,amt);
 
+        if (amt == 0) return;
         checkMilestones(player, amt);
     }
 
