@@ -113,7 +113,6 @@ public class MEG4Hook implements AdaptedMEModel {
                 });
             });
         }
-
         return new MEG4Hook(location,modeledEntity.getBase().getUUID(), id);
     }
 

@@ -3,6 +3,7 @@ package xyz.larkyy.aquaticcratestesting.nms_v_1_20_4;
 import com.mojang.datafixers.util.Pair;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
+import net.minecraft.commands.arguments.GameModeArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;
@@ -165,13 +166,13 @@ public class NMS_v1_20_4 implements NMSHandler {
             entity = ((CraftPlayer)player).getHandle();
         }
         final var packet = new ClientboundSetCameraPacket(entity);
-        sendPacket(Arrays.asList(player),packet);
+        sendPacket(List.of(player),packet);
     }
 
     @Override
     public void changeGamemode(Player player, GameMode gamemode) {
         final var packet = new ClientboundGameEventPacket(new ClientboundGameEventPacket.Type(3),gamemode.getValue());
-        sendPacket(Arrays.asList(player),packet);
+        sendPacket(List.of(player),packet);
     }
 
     @Override
@@ -199,7 +200,7 @@ public class NMS_v1_20_4 implements NMSHandler {
             );
 
             packetsField.set(packet,list);
-            sendPacket(Arrays.asList(player), packet);
+            sendPacket(List.of(player), packet);
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);

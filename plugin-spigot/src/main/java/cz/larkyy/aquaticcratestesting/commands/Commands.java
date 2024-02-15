@@ -20,6 +20,7 @@ public class Commands implements CommandExecutor {
             put("item",new ItemCommand());
             put("reload",new ReloadCommand());
             put("editor",new EditorCommand());
+            put("milestone",new MilestoneCommand());
         }
     };
 
