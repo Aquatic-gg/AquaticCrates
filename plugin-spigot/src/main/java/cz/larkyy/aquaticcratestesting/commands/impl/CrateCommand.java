@@ -46,14 +46,16 @@ public class CrateCommand implements ICommand {
                     return;
                 }
 
-                if (args.length < 4) {
+                if (args.length < 5) {
                     return;
                 }
 
                 boolean takeKey = true;
-                if (args.length > 4) {
-                    takeKey = Boolean.parseBoolean(args[4].toLowerCase());
+                if (args.length > 5) {
+                    takeKey = Boolean.parseBoolean(args[5].toLowerCase());
                 }
+
+                var instant = Boolean.parseBoolean(args[4].toLowerCase());
 
                 Crate crate = Crate.get(args[2]);
                 if (crate == null) {
@@ -66,7 +68,7 @@ public class CrateCommand implements ICommand {
                     Messages.INVALID_PLAYER.send(sender);
                     return;
                 }
-                crate.open(CratePlayer.get(player), null, player.isSneaking(),takeKey);
+                crate.open(CratePlayer.get(player), null, instant,takeKey);
             }
         }
     }
