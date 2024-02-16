@@ -53,6 +53,17 @@ public class CommandCompleter implements TabCompleter {
                     return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
                 }
             }
+            if (args[1].equalsIgnoreCase("open")) {
+                if (args.length == 3) {
+                    return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
+                }
+                if (args.length == 5) {
+                    return Arrays.asList("<instant true/false>");
+                }
+                if (args.length == 6) {
+                    return Arrays.asList("<takeKey true/false>");
+                }
+            }
 
             return null;
         }
