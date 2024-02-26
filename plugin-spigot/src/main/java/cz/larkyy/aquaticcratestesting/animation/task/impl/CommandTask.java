@@ -15,14 +15,20 @@ public class CommandTask extends Task {
     static {
         ARGUMENTS.add(new TaskArgument("delay",0,false));
         ARGUMENTS.add(new TaskArgument("command",null,false));
+        ARGUMENTS.add(new TaskArgument("commands",new ArrayList<>(),false));
     }
 
     @Override
     public void run(Animation animation, Map<String,Object> arguments) {
         if (arguments.get("command") == null) return;
         String command = (String) arguments.get("command");
-        if (command == null) return;
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(),command.replace("%player%",animation.getPlayer().getName()));
+        var commands = (List<String>) arguments.get("commands");
+        if (command != null) {
+            commands.add(command);
+        }
+        commands.forEach(cmd -> {
+            if (cmd != null) Bukkit.dispatchCommand(Bukkit.getConsoleSender(),cmd.replace("%player%",animation.getPlayer().getName()));
+        });
     }
 
     @Override
