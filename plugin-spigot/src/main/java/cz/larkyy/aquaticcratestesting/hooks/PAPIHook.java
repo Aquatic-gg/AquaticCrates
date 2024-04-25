@@ -67,20 +67,35 @@ public class PAPIHook extends PlaceholderExpansion {
                 }
                 var crate = Crate.get(args[2]);
                 if (crate == null) return "";
-                Milestone milestone = crate.getMilestoneHandler().getMilestones().get(Integer.valueOf(args[3]));
-                if (milestone == null) return "";
 
                 if (args[1].equalsIgnoreCase("isreached")) {
+                    Milestone milestone = crate.getMilestoneHandler().getMilestones().get(Integer.valueOf(args[3]));
+                    if (milestone == null) return "";
                     return (milestone.getMilestone()<=crate.getMilestoneHandler().getAmt(p))+"";
                 }
 
                 if (args[1].equalsIgnoreCase("reached")) {
+                    Milestone milestone = crate.getMilestoneHandler().getMilestones().get(Integer.valueOf(args[3]));
+                    if (milestone == null) {
+                        milestone = crate.getMilestoneHandler().getRepeatableMilestones().get(Integer.valueOf(args[3]));
+                    }
+                    if (milestone == null) return "";
                     return crate.getMilestoneHandler().getAmt(p)+"";
                 }
                 if (args[1].equalsIgnoreCase("remaining")) {
+                    Milestone milestone = crate.getMilestoneHandler().getMilestones().get(Integer.valueOf(args[3]));
+                    if (milestone == null) {
+                        milestone = crate.getMilestoneHandler().getRepeatableMilestones().get(Integer.valueOf(args[3]));
+                    }
+                    if (milestone == null) return "";
                     return (milestone.getMilestone()-crate.getMilestoneHandler().getAmt(p))+"";
                 }
                 if (args[1].equalsIgnoreCase("required")) {
+                    Milestone milestone = crate.getMilestoneHandler().getMilestones().get(Integer.valueOf(args[3]));
+                    if (milestone == null) {
+                        milestone = crate.getMilestoneHandler().getRepeatableMilestones().get(Integer.valueOf(args[3]));
+                    }
+                    if (milestone == null) return "";
                     return milestone.getMilestone()+"";
                 }
             } case "repeatable-milestone" -> {

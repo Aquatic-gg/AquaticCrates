@@ -223,6 +223,7 @@ public class CrateConfig extends Config {
     }
 
     private Reward loadReward(String path, String id) {
+        Bukkit.getConsoleSender().sendMessage("[AquaticCrates] Loading reward: "+id);
         CustomItem item = loadItem(path+".item");
         if (item == null) {
             Bukkit.getConsoleSender().sendMessage("The reward "+path+" could not be loaded, because the item is null!");

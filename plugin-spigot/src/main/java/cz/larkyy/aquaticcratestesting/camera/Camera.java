@@ -27,7 +27,7 @@ public class Camera {
     }
 
     private int spawnEntity(Location location) {
-        return AquaticCratesTesting.getNmsHandler().spawnEntity(location,
+        var id = AquaticCratesTesting.getNmsHandler().spawnEntity(location,
                 e -> {
                     ArmorStand as = (ArmorStand) e;
                     as.setInvisible(true);
@@ -36,6 +36,8 @@ public class Camera {
                 },
                 Arrays.asList(player),
                 "armor_stand");
+        move(location);
+        return id;
     }
 
     public Location location() {

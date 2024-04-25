@@ -32,6 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import xyz.larkyy.aquaticcrates.meg3hook.AdaptedMEG3;
 import xyz.larkyy.aquaticcrates.meg4hook.AdaptedMEG4;
+import xyz.larkyy.aquaticcratestesting.nms.v1_20_5.NMS_v1_20_5;
 import xyz.larkyy.aquaticcratestesting.nms_v_1_20_4.NMS_v1_20_4;
 import xyz.larkyy.aquaticemotes.nms_v1_20_2.NMS_v1_20_2;
 import xyz.larkyy.nms.v1_19_4.V1_19_4;
@@ -97,6 +98,10 @@ public final class AquaticCratesTesting extends JavaPlugin {
             case "1.20.4-R0.1-SNAPSHOT" -> {
                 nmsHandler = new NMS_v1_20_4(this);
                 version = "v1_20_R3";
+            }
+            case "1.20.5-R0.1-SNAPSHOT" -> {
+                nmsHandler = new NMS_v1_20_5(this);
+                version = "v1_20_R4";
             }
         }
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));
