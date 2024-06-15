@@ -10,7 +10,7 @@
         <version>2.4.0</version>
     </parent>
 
-    <artifactId>NMS_v1_20_R2</artifactId>
+    <artifactId>NMS_v1_20_R1</artifactId>
     <packaging>jar</packaging>
 
     <name>NMS_v1_20_R1</name>

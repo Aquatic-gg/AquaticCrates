@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.Consumer;
 
-public final class v1_20_R1 implements NMSHandler {
+public final class NMS_v1_20_1 implements NMSHandler {
 
     private final Map<Integer, net.minecraft.world.entity.Entity> entities = new HashMap<>();
 

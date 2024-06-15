@@ -9,10 +9,10 @@
         <groupId>cz.larkyy</groupId>
         <version>2.4.0</version>
     </parent>
-    <artifactId>NMS_v_1_20_5</artifactId>
+    <artifactId>NMS_v1_20_5</artifactId>
     <packaging>jar</packaging>
 
-    <name>NMS_v_1_20_5</name>
+    <name>NMS_v1_20_5</name>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -81,7 +81,7 @@
             <groupId>cz.larkyy</groupId>
             <artifactId>api</artifactId>
             <version>2.4.0</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

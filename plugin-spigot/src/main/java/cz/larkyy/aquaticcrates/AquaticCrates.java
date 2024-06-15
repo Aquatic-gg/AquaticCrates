@@ -19,13 +19,13 @@ import cz.larkyy.aquaticcrates.nms.NMSHandler;
 import cz.larkyy.aquaticcrates.player.PlayerHandler;
 import cz.larkyy.aquaticcrates.player.PlayerListener;
 import cz.larkyy.aquaticcrates.utils.colors.Colors;
+import cz.larkyy.nms.impl.NMS_v1_20_1;
 import cz.larkyy.nms.impl.impl.v1_16_R3;
 import cz.larkyy.nms.impl.impl.v1_17_R1;
 import cz.larkyy.nms.impl.impl.v1_18_R2;
 import cz.larkyy.nms.impl.impl.v1_19_R2;
 import cz.larkyy.aquaticcrates.hooks.PAPIHook;
 import cz.larkyy.nms.impl.v1_19_R3;
-import cz.larkyy.nms.impl.v1_20_R1;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -89,7 +89,7 @@ public final class AquaticCrates extends JavaPlugin {
                 version = "v1_19_R4";
             }
             case "1.20.1-R0.1-SNAPSHOT", "1.20-R0.1-SNAPSHOT" -> {
-                nmsHandler = new v1_20_R1();
+                nmsHandler = new NMS_v1_20_1();
                 version = "v1_20_R1";
             }
             case "1.20.2-R0.1-SNAPSHOT" -> {
