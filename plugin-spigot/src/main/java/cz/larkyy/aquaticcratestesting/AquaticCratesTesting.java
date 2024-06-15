@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcratestesting;
 import cz.larkyy.aquaticcratestesting.animation.task.Tasks;
 import cz.larkyy.aquaticcratestesting.commands.CommandCompleter;
 import cz.larkyy.aquaticcratestesting.commands.Commands;
+import cz.larkyy.aquaticcratestesting.config.Config;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
 import cz.larkyy.aquaticcratestesting.crate.CrateListener;
@@ -56,6 +57,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
     private static EditingHandler editingHandler;
     private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean loaded = false;
+    public static boolean configDebug = true;
 
     @Override
     public void onLoad() {
@@ -105,6 +107,12 @@ public final class AquaticCratesTesting extends JavaPlugin {
             }
         }
         Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));
+
+        var config = new Config(this,"config.yml");
+        config.load();
+        var cfg = config.getConfiguration();
+
+        configDebug = cfg.getBoolean("config-debug-messages",true);
     }
 
     @Override
@@ -121,7 +129,7 @@ public final class AquaticCratesTesting extends JavaPlugin {
         messageHandler = new MessageHandler();
         editingHandler = new EditingHandler();
 
-        Metrics metrics = new Metrics(this, 19254);
+        new Metrics(this, 19254);
 
         var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
         if (megPlugin != null) {
