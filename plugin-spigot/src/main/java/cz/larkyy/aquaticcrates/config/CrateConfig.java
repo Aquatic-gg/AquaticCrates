@@ -221,10 +221,12 @@ public class CrateConfig extends Config {
     }
 
     private Reward loadReward(String path, String id) {
-        Bukkit.getConsoleSender().sendMessage("[AquaticCrates] Loading reward: "+id);
+        if (AquaticCrates.configDebug)
+            Bukkit.getConsoleSender().sendMessage("[AquaticCrates] Loading reward: "+id);
         CustomItem item = loadItem(path+".item");
         if (item == null) {
-            Bukkit.getConsoleSender().sendMessage("The reward "+path+" could not be loaded, because the item is null!");
+            if (AquaticCrates.configDebug)
+                Bukkit.getConsoleSender().sendMessage("The reward "+path+" could not be loaded, because the item is null!");
             return null;
         }
         CustomItem previewItem = loadItem(path+".preview-item");
@@ -359,7 +361,8 @@ public class CrateConfig extends Config {
 
         CustomItem item = loadItem(path);
         if (item == null) {
-            Bukkit.getConsoleSender().sendMessage("§cMenu Item "+path+" could not be loaded, because the item is null!");
+            if (AquaticCrates.configDebug)
+                Bukkit.getConsoleSender().sendMessage("§cMenu Item "+path+" could not be loaded, because the item is null!");
             return null;
         }
         List<Integer> slots;
