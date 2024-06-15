@@ -2,7 +2,7 @@ package cz.larkyy.nms.impl.impl;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
-import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
+import cz.larkyy.aquaticcrates.nms.NMSHandler;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -14,7 +14,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;

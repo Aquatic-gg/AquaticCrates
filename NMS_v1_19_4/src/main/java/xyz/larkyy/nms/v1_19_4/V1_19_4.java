@@ -1,10 +1,9 @@
 package xyz.larkyy.nms.v1_19_4;
 
 import com.mojang.datafixers.util.Pair;
-import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
+import cz.larkyy.aquaticcrates.nms.NMSHandler;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.world.entity.EntityType;
@@ -19,7 +18,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_19_R3.util.CraftVector;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;

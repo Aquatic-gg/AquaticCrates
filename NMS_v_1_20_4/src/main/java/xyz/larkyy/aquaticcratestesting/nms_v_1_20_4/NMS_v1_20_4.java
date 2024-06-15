@@ -1,9 +1,8 @@
 package xyz.larkyy.aquaticcratestesting.nms_v_1_20_4;
 
 import com.mojang.datafixers.util.Pair;
-import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
+import cz.larkyy.aquaticcrates.nms.NMSHandler;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
-import net.minecraft.commands.arguments.GameModeArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.*;

@@ -2,13 +2,11 @@ package xyz.larkyy.aquaticcrates.meg4hook;
 
 import com.ticxo.modelengine.api.ModelEngineAPI;
 import com.ticxo.modelengine.api.animation.handler.AnimationHandler;
-import com.ticxo.modelengine.api.animation.handler.IPriorityHandler;
-import com.ticxo.modelengine.api.animation.handler.IStateMachineHandler;
 import com.ticxo.modelengine.api.entity.Dummy;
 import com.ticxo.modelengine.api.model.ActiveModel;
 import com.ticxo.modelengine.api.model.ModeledEntity;
 import com.ticxo.modelengine.api.model.bone.BoneBehaviorTypes;
-import cz.larkyy.aquaticcratestesting.nms.AdaptedMEModel;
+import cz.larkyy.aquaticcrates.nms.AdaptedMEModel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

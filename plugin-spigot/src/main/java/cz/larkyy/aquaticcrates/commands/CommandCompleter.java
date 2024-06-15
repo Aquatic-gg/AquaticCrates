@@ -1,0 +1,101 @@
+package cz.larkyy.aquaticcrates.commands;
+
+import cz.larkyy.aquaticcrates.AquaticCrates;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class CommandCompleter implements TabCompleter {
+
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        if (!command.getName().equalsIgnoreCase("aquaticcrates")) {
+            return null;
+        }
+
+        if (args.length <= 1) {
+            return Arrays.asList("key","crate","item","reload","multicrate","milestone");
+        }
+        else if (args[0].equalsIgnoreCase("key")) {
+            if (args.length == 2) {
+                return Arrays.asList("give","giveall","take");
+            }
+            if (args[1].equalsIgnoreCase("give")) {
+                if (args.length == 3) {
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+                }
+            } else if (args[1].equalsIgnoreCase("giveall")) {
+                if (args.length == 3) {
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+                }
+            } else if (args[1].equalsIgnoreCase("take")) {
+                if (args.length == 3) {
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+                }
+            }
+
+            return null;
+        }
+        else if (args[0].equalsIgnoreCase("crate")) {
+            if (args.length == 2) {
+                return Arrays.asList("give","open");
+            }
+            if (args[1].equalsIgnoreCase("give")) {
+                if (args.length == 3) {
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+                }
+            }
+            if (args[1].equalsIgnoreCase("open")) {
+                if (args.length == 3) {
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+                }
+                if (args.length == 5) {
+                    return Arrays.asList("<instant true/false>");
+                }
+                if (args.length == 6) {
+                    return Arrays.asList("<takeKey true/false>");
+                }
+            }
+
+            return null;
+        }
+        else if (args[0].equalsIgnoreCase("multicrate")) {
+            if (args.length == 2) {
+                return Arrays.asList("give");
+            }
+            if (args[1].equalsIgnoreCase("give")) {
+                if (args.length == 3) {
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+                }
+            }
+
+            return null;
+        }
+        else if (args[0].equalsIgnoreCase("item")) {
+            if (args.length == 2) {
+                return Arrays.asList("save","give");
+            }
+            if (args[1].equalsIgnoreCase("give")) {
+                if (args.length == 3) {
+                    return new ArrayList<>(AquaticCrates.getItemHandler().getItems().keySet());
+                }
+            }
+        }
+        else if (args[0].equalsIgnoreCase("milestone")) {
+            if (args.length == 2) {
+                return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+            }
+            if (args.length == 3) {
+                return Arrays.asList("set","take","add");
+            }
+        }
+        return null;
+    }
+}

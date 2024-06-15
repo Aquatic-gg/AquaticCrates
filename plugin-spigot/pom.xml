@@ -46,7 +46,7 @@
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <!-- Replace this with your package! -->
-                            <shadedPattern>cz.larkyy.aquaticcratestesting.bstats</shadedPattern>
+                            <shadedPattern>cz.larkyy.aquaticcrates.bstats</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

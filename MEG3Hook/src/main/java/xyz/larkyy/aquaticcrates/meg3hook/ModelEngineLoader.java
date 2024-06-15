@@ -1,7 +1,7 @@
 package xyz.larkyy.aquaticcrates.meg3hook;
 
 import com.ticxo.modelengine.api.events.ModelRegistrationEvent;
-import cz.larkyy.aquaticcratestesting.nms.Loader;
+import cz.larkyy.aquaticcrates.nms.Loader;
 import org.bukkit.event.EventHandler;
 
 public class ModelEngineLoader extends Loader {
