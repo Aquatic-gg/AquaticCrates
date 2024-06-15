@@ -2,7 +2,7 @@ package cz.larkyy.aquaticcratestesting.dabatase.drivers;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -97,7 +97,7 @@ public class MySQLDriver implements Driver {
                     throw new RuntimeException(e);
                 }
             }
-        }.runTaskAsynchronously(AquaticCratesTesting.instance());
+        }.runTaskAsynchronously(AquaticCrates.instance());
     }
 
     @Override
@@ -118,7 +118,7 @@ public class MySQLDriver implements Driver {
                     throw new RuntimeException(e);
                 }
             }
-        }.runTaskAsynchronously(AquaticCratesTesting.instance());
+        }.runTaskAsynchronously(AquaticCrates.instance());
     }
 
     @Override
@@ -170,7 +170,7 @@ public class MySQLDriver implements Driver {
         };
 
         if (async) {
-            runnable.runTaskAsynchronously(AquaticCratesTesting.instance());
+            runnable.runTaskAsynchronously(AquaticCrates.instance());
         } else {
             runnable.run();
         }
@@ -188,13 +188,13 @@ public class MySQLDriver implements Driver {
             }
         };
         if (async) {
-            task.runTaskAsynchronously(AquaticCratesTesting.instance());
+            task.runTaskAsynchronously(AquaticCrates.instance());
         } else {
             task.run();
         }
     }
 
     private FileConfiguration getCfg() {
-        return AquaticCratesTesting.getDatabaseManager().getCfg();
+        return AquaticCrates.getDatabaseManager().getCfg();
     }
 }

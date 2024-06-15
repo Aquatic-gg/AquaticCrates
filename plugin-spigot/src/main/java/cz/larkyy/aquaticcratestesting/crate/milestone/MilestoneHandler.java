@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.crate.milestone;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ public class MilestoneHandler {
     public MilestoneHandler(Crate crate, TreeMap<Integer,Milestone> milestones, HashMap<Integer,Milestone> repeatableMilestones) {
         this.milestones = milestones;
         this.repeatableMilestones = repeatableMilestones;
-        this.namespacedKey = new NamespacedKey(AquaticCratesTesting.instance(),crate.getIdentifier()+"-milestone");
+        this.namespacedKey = new NamespacedKey(AquaticCrates.instance(),crate.getIdentifier()+"-milestone");
     }
 
     public TreeMap<Integer, Milestone> getMilestones() {

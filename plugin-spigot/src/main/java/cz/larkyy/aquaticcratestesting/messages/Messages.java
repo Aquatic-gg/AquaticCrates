@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.messages;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -69,13 +69,13 @@ public enum Messages {
             return new Message(getMsgFile().get(path));
         } else {
             getMsgFile().set(path,defVal);
-            AquaticCratesTesting.getMessageHandler().save();
+            AquaticCrates.getMessageHandler().save();
             return new Message(defVal);
         }
     }
 
     private FileConfiguration getMsgFile() {
-        return AquaticCratesTesting.getMessageHandler().getCfg();
+        return AquaticCrates.getMessageHandler().getCfg();
     }
 
     public void send(CommandSender sender) {

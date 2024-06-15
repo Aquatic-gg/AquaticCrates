@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.camera;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -66,7 +66,7 @@ public class CameraMovement {
                 i++;
             }
         };
-        runnable.runTaskTimerAsynchronously(AquaticCratesTesting.getPlugin(AquaticCratesTesting.class),0,1);
+        runnable.runTaskTimerAsynchronously(AquaticCrates.getPlugin(AquaticCrates.class),0,1);
     }
 
     public void stop() {

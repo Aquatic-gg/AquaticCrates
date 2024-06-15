@@ -1,15 +1,13 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.api.events.CratePlaceEvent;
 import cz.larkyy.aquaticcratestesting.api.events.MultiCratePlaceEvent;
 import cz.larkyy.aquaticcratestesting.config.Config;
 import cz.larkyy.aquaticcratestesting.config.CrateConfig;
 import cz.larkyy.aquaticcratestesting.config.MultiCrateConfig;
-import cz.larkyy.aquaticcratestesting.hologram.impl.AquaticHologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,7 +23,7 @@ public class CrateHandler {
     private final Map<String,MultiCrate> multiCrates;
     private final Map<Location, PlacedMultiCrate> multiLocations;
 
-    private static final Config crateData = new Config(AquaticCratesTesting.instance(),"locations.yml");
+    private static final Config crateData = new Config(AquaticCrates.instance(),"locations.yml");
 
     public CrateHandler() {
         crates = new HashMap<>();
@@ -101,19 +99,19 @@ public class CrateHandler {
 
     private void loadCrates() {
         crateData.load();
-        File cratesFolder = new File(AquaticCratesTesting.instance().getDataFolder(),"crates/");
+        File cratesFolder = new File(AquaticCrates.instance().getDataFolder(),"crates/");
         cratesFolder.mkdirs();
 
         for (File file : cratesFolder.listFiles()) {
-            Crate crate = new CrateConfig(AquaticCratesTesting.instance(),file).loadCrate();
+            Crate crate = new CrateConfig(AquaticCrates.instance(),file).loadCrate();
             if (crate != null) {
                 crates.put(crate.getIdentifier(), crate);
             }
         }
-        cratesFolder = new File(AquaticCratesTesting.instance().getDataFolder(),"multicrates/");
+        cratesFolder = new File(AquaticCrates.instance().getDataFolder(),"multicrates/");
         cratesFolder.mkdirs();
         for (File file : cratesFolder.listFiles()) {
-            MultiCrate crate = new MultiCrateConfig(AquaticCratesTesting.instance(),file).loadCrate();
+            MultiCrate crate = new MultiCrateConfig(AquaticCrates.instance(),file).loadCrate();
             if (crate != null) {
                 multiCrates.put(crate.getIdentifier(), crate);
             }
@@ -188,7 +186,7 @@ public class CrateHandler {
                 crateData.getConfiguration().set("multi-crates",strs);
                 crateData.save();
             }
-        }.runTaskAsynchronously(AquaticCratesTesting.instance());
+        }.runTaskAsynchronously(AquaticCrates.instance());
     }
 
     public boolean isInAnimation(Player p) {

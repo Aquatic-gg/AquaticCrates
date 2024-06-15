@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.animation.task;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.animation.task.impl.*;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class Tasks {
     }
 
     public static Tasks inst() {
-        return AquaticCratesTesting.getTasks();
+        return AquaticCrates.getTasks();
     }
 
 }

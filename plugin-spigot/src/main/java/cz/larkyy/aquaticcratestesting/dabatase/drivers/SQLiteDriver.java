@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcratestesting.dabatase.drivers;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.dabatase.DatabaseManager;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -15,13 +14,13 @@ import java.util.function.Consumer;
 
 public class SQLiteDriver implements Driver {
 
-    private final File databaseFile = new File(AquaticCratesTesting.instance().getDataFolder(), "database.db");
+    private final File databaseFile = new File(AquaticCrates.instance().getDataFolder(), "database.db");
     private Connection activeConnection;
 
     @Override
     public void setup() throws IOException, SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
-        AquaticCratesTesting.instance().getDataFolder().mkdirs();
+        AquaticCrates.instance().getDataFolder().mkdirs();
         databaseFile.createNewFile();
 
         Connection connection = this.getConnection();
@@ -55,7 +54,7 @@ public class SQLiteDriver implements Driver {
                     throw new RuntimeException(e);
                 }
             }
-        }.runTaskAsynchronously(AquaticCratesTesting.instance());
+        }.runTaskAsynchronously(AquaticCrates.instance());
     }
 
     @Override
@@ -73,7 +72,7 @@ public class SQLiteDriver implements Driver {
                     throw new RuntimeException(e);
                 }
             }
-        }.runTaskAsynchronously(AquaticCratesTesting.instance());
+        }.runTaskAsynchronously(AquaticCrates.instance());
     }
 
     @Override
@@ -121,7 +120,7 @@ public class SQLiteDriver implements Driver {
             }
         };
         if (async) {
-            runnable.runTaskAsynchronously(AquaticCratesTesting.instance());
+            runnable.runTaskAsynchronously(AquaticCrates.instance());
         } else {
             runnable.run();
         }
@@ -179,7 +178,7 @@ public class SQLiteDriver implements Driver {
         };
 
         if (async) {
-            task.runTaskAsynchronously(AquaticCratesTesting.instance());
+            task.runTaskAsynchronously(AquaticCrates.instance());
         } else {
             task.run();
         }

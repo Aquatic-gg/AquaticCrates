@@ -1,5 +1,5 @@
 package cz.larkyy.aquaticcratestesting.crate.model;
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.CrateBase;
 import cz.larkyy.aquaticcratestesting.model.Model;
@@ -38,7 +38,7 @@ public class ModelAnimationHandler {
                 if (cancelled) return;
                 playNext();
             }
-        }.runTaskLater(AquaticCratesTesting.instance(),period+ animation.getAnimationLength());
+        }.runTaskLater(AquaticCrates.instance(),period+ animation.getAnimationLength());
     }
 
     public void setCancelled(boolean cancelled) {

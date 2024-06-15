@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.player;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.crate.reroll.Reroll;
 import org.bukkit.OfflinePlayer;
@@ -22,15 +22,15 @@ public class PlayerHandler {
     }
 
     public void loadPlayer(Player player, Consumer<CratePlayer> callback) {
-        AquaticCratesTesting.getDatabaseManager().loadPlayer(player,callback);
+        AquaticCrates.getDatabaseManager().loadPlayer(player,callback);
     }
 
     public void savePlayer(CratePlayer player) {
-        AquaticCratesTesting.getDatabaseManager().savePlayer(player);
+        AquaticCrates.getDatabaseManager().savePlayer(player);
     }
 
     public void savePlayers(boolean async) {
-        AquaticCratesTesting.getDatabaseManager().savePlayers(async);
+        AquaticCrates.getDatabaseManager().savePlayers(async);
     }
 
     public void addPlayer(OfflinePlayer offlinePlayer, CratePlayer player) {
@@ -39,7 +39,7 @@ public class PlayerHandler {
 
     public void loadPlayers(Runnable callback)
     {
-        AquaticCratesTesting.getDatabaseManager().loadPlayers(callback);
+        AquaticCrates.getDatabaseManager().loadPlayers(callback);
     }
 
     public void unloadPlayer(OfflinePlayer p) {

@@ -1,11 +1,11 @@
 package cz.larkyy.aquaticcratestesting.messages;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.config.Config;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class MessageHandler {
-    private final Config config = new Config(AquaticCratesTesting.instance(),"messages.yml");
+    private final Config config = new Config(AquaticCrates.instance(),"messages.yml");
 
     public void load() {
         config.load();

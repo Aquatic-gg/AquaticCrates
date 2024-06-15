@@ -1,8 +1,7 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.crate.inventories.MultiPreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.model.ModelSettings;
 import org.bukkit.Material;
@@ -17,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class MultiCrate extends CrateBase {
 
-    private static final NamespacedKey KEY = new NamespacedKey(AquaticCratesTesting.instance(),"MultiCrateIdentifier");
+    private static final NamespacedKey KEY = new NamespacedKey(AquaticCrates.instance(),"MultiCrateIdentifier");
     private final List<String> crates;
     private final AtomicReference<MultiPreviewGUI> previewGUI;
 
@@ -33,7 +32,7 @@ public class MultiCrate extends CrateBase {
     }
 
     public void openPreview(Player p, PlacedMultiCrate pc) {
-        if (AquaticCratesTesting.getCrateHandler().isInAnimation(p)) {
+        if (AquaticCrates.getCrateHandler().isInAnimation(p)) {
             return;
         }
         MultiPreviewGUI gui = previewGUI.get();
@@ -63,6 +62,6 @@ public class MultiCrate extends CrateBase {
         else return get(id);
     }
     public static MultiCrate get(String identifier) {
-        return AquaticCratesTesting.getCrateHandler().getMultiCrate(identifier);
+        return AquaticCrates.getCrateHandler().getMultiCrate(identifier);
     }
 }

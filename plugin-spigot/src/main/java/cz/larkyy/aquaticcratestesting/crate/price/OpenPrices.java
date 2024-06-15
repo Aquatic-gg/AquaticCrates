@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.crate.price;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.crate.price.types.KeyPrice;
 
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class OpenPrices {
     }
 
     public static OpenPrices inst() {
-        return AquaticCratesTesting.getOpenPrices();
+        return AquaticCrates.getOpenPrices();
     }
 
 }

@@ -1,12 +1,10 @@
 package cz.larkyy.aquaticcratestesting.config;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.animation.AnimationTitle;
 import cz.larkyy.aquaticcratestesting.animation.task.*;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
-import cz.larkyy.aquaticcratestesting.crate.MultiCrate;
-import cz.larkyy.aquaticcratestesting.crate.inventories.MultiPreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcratestesting.crate.milestone.Milestone;
@@ -285,7 +283,7 @@ public class CrateConfig extends Config {
         } else {
             title = crate.getDisplayName()+"§8 Preview";
         }
-        Menu.Builder builder =Menu.builder(AquaticCratesTesting.instance())
+        Menu.Builder builder =Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt("preview.size",54))
                 .title(title);
 
@@ -336,7 +334,7 @@ public class CrateConfig extends Config {
         } else {
             title = crate.getDisplayName()+"§8 Reroll";
         }
-        Menu.Builder builder =Menu.builder(AquaticCratesTesting.instance())
+        Menu.Builder builder =Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt(path+"size",27))
                 .title(title);
 

@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.crate.reward.condition;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.crate.reward.condition.types.PermissionCondition;
 
 import java.util.HashMap;
@@ -27,7 +27,7 @@ public class RewardConditions {
     }
 
     public static RewardConditions inst() {
-        return AquaticCratesTesting.getRewardConditions();
+        return AquaticCrates.getRewardConditions();
     }
 
 }

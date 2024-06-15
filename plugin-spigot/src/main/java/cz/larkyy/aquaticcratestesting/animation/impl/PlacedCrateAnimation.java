@@ -1,13 +1,12 @@
 package cz.larkyy.aquaticcratestesting.animation.impl;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.animation.Animation;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.animation.RewardItem;
 import cz.larkyy.aquaticcratestesting.crate.PlacedCrate;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.model.Model;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -71,7 +70,7 @@ public class PlacedCrateAnimation extends Animation {
                 i++;
             }
         };
-        runnable.runTaskTimer(AquaticCratesTesting.instance(),0,1);
+        runnable.runTaskTimer(AquaticCrates.instance(),0,1);
     }
 
     @Override

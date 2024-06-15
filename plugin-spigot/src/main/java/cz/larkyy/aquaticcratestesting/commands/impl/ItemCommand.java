@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.commands.impl;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.commands.ICommand;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import org.bukkit.Bukkit;
@@ -39,12 +39,12 @@ public class ItemCommand implements ICommand {
                     Messages.MUST_HAVE_ITEM_IN_HAND.send(sender);
                     return;
                 }
-                if (AquaticCratesTesting.getItemHandler().getItem(id) != null) {
+                if (AquaticCrates.getItemHandler().getItem(id) != null) {
                     Messages.ITEM_UNKNOWN_IDENTIFIER.send(sender);
                     return;
                 }
 
-                AquaticCratesTesting.getItemHandler().addItem(id,is);
+                AquaticCrates.getItemHandler().addItem(id,is);
                 Messages.ITEM_SAVED.send(sender);
             }
             // item give <Identifier> [amount] [player]
@@ -59,7 +59,7 @@ public class ItemCommand implements ICommand {
                 }
 
                 String id = args[2];
-                ItemStack is = AquaticCratesTesting.getItemHandler().getItem(id);
+                ItemStack is = AquaticCrates.getItemHandler().getItem(id);
                 if (is == null) {
                     Messages.ITEM_UNKNOWN_IDENTIFIER.send(sender);
                     return;

@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.hologram.impl;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.hologram.Hologram;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
 import cz.larkyy.aquaticcratestesting.utils.Utils;
@@ -41,7 +41,7 @@ public class AquaticHologram extends Hologram {
                     i--;
                 }
             }
-        }.runTask(AquaticCratesTesting.instance());
+        }.runTask(AquaticCrates.instance());
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AquaticHologram extends Hologram {
                     i--;
                 }
             }
-        }.runTask(AquaticCratesTesting.instance());
+        }.runTask(AquaticCrates.instance());
     }
 
     @Override
@@ -178,6 +178,6 @@ public class AquaticHologram extends Hologram {
     }
 
     private NMSHandler nmsHandler() {
-        return AquaticCratesTesting.getNmsHandler();
+        return AquaticCrates.getNmsHandler();
     }
 }

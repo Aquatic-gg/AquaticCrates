@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.config;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.crate.MultiCrate;
 import cz.larkyy.aquaticcratestesting.crate.inventories.MultiPreviewGUI;
 import cz.larkyy.aquaticcratestesting.crate.model.ModelAnimation;
@@ -81,7 +81,7 @@ public class MultiCrateConfig extends Config {
         } else {
             title = crate.getDisplayName()+"§8 Preview";
         }
-        Menu.Builder builder =Menu.builder(AquaticCratesTesting.instance())
+        Menu.Builder builder =Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt("preview.size",54))
                 .title(title);
 

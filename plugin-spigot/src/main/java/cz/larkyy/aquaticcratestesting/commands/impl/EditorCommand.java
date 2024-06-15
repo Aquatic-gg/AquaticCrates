@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.commands.impl;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.commands.ICommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,6 +13,6 @@ public class EditorCommand implements ICommand {
         }
 
         if (!(sender instanceof Player p)) return;
-        AquaticCratesTesting.getEditingHandler().openEditorMenu(p);
+        AquaticCrates.getEditingHandler().openEditorMenu(p);
     }
 }

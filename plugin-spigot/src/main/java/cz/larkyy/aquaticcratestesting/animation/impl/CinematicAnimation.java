@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.animation.impl;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.animation.Animation;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.animation.RewardItem;
@@ -37,7 +37,7 @@ public class CinematicAnimation extends Animation {
 
             }
         };
-        runnable.runTask(AquaticCratesTesting.instance());
+        runnable.runTask(AquaticCrates.instance());
 
         if (getAnimationManager().getModelLocation() == null || getAnimationManager().getCameraLocation() == null) {
             model = null;
@@ -67,7 +67,7 @@ public class CinematicAnimation extends Animation {
                     start();
                 });
             }
-        }.runTaskLater(AquaticCratesTesting.instance(), getAnimationManager().getStartDelay());
+        }.runTaskLater(AquaticCrates.instance(), getAnimationManager().getStartDelay());
     }
 
     @Override
@@ -112,7 +112,7 @@ public class CinematicAnimation extends Animation {
                 i++;
             }
         };
-        runnable.runTaskTimer(AquaticCratesTesting.instance(),0,1);
+        runnable.runTaskTimer(AquaticCrates.instance(),0,1);
     }
 
     @Override

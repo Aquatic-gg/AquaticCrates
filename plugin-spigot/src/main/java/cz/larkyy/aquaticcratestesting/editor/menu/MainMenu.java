@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.editor.menu;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.editor.EditingPlayer;
 import cz.larkyy.aquaticcratestesting.editor.EditorMenu;
 import cz.larkyy.aquaticcratestesting.editor.item.EditorItem;
@@ -16,7 +16,7 @@ public class MainMenu extends EditorMenu {
     public MainMenu() {
         super(54, "Select Or Create a Crate");
 
-        AquaticCratesTesting.getCrateHandler().getCrates().forEach((id,c) -> {
+        AquaticCrates.getCrateHandler().getCrates().forEach((id, c) -> {
             ItemStack is = new ItemStack(Material.CHEST);
             ItemMeta im = is.getItemMeta();
             im.setDisplayName("§b"+id);
@@ -24,7 +24,7 @@ public class MainMenu extends EditorMenu {
             is.setItemMeta(im);
             addEditorItem(new EditorItem(is,(ep,e) -> {
                 Player p = Bukkit.getPlayer(ep.getUuid());
-                AquaticCratesTesting.getEditingHandler().addEditingPlayer(new EditingPlayer(ep.getUuid(),c));
+                AquaticCrates.getEditingHandler().addEditingPlayer(new EditingPlayer(ep.getUuid(),c));
                 p.sendMessage("§fYou are editing: "+id);
             }));
         });

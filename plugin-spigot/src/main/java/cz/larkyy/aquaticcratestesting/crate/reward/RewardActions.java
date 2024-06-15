@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.crate.reward;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.crate.reward.actions.*;
 
 import java.util.HashMap;
@@ -31,7 +31,7 @@ public class RewardActions {
     }
 
     public static RewardActions inst() {
-        return AquaticCratesTesting.getRewardActions();
+        return AquaticCrates.getRewardActions();
     }
 
     public Map<String, RewardAction> getActionTypes() {

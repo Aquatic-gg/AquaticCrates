@@ -4,7 +4,6 @@ import cz.larkyy.aquaticcratestesting.animation.task.Tasks;
 import cz.larkyy.aquaticcratestesting.commands.CommandCompleter;
 import cz.larkyy.aquaticcratestesting.commands.Commands;
 import cz.larkyy.aquaticcratestesting.config.Config;
-import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
 import cz.larkyy.aquaticcratestesting.crate.CrateListener;
 import cz.larkyy.aquaticcratestesting.crate.price.OpenPrices;
@@ -41,7 +40,7 @@ import xyz.larkyy.nms.v1_19_4.V1_19_4;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public final class AquaticCratesTesting extends JavaPlugin {
+public final class AquaticCrates extends JavaPlugin {
 
     private static PlayerHandler playerHandler;
     private static Tasks tasks;
@@ -229,8 +228,8 @@ public final class AquaticCratesTesting extends JavaPlugin {
     public static DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
-    public static AquaticCratesTesting instance() {
-        return AquaticCratesTesting.getPlugin(AquaticCratesTesting.class);
+    public static AquaticCrates instance() {
+        return AquaticCrates.getPlugin(AquaticCrates.class);
     }
 
     public static NMSHandler getNmsHandler() {

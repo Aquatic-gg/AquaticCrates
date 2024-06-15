@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.api;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.crate.Crate;
 import cz.larkyy.aquaticcratestesting.crate.CrateHandler;
 import cz.larkyy.aquaticcratestesting.crate.Key;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class AquaticCratesAPI {
 
     public static PlayerHandler getPlayerHandler() {
-        return AquaticCratesTesting.getPlayerHandler();
+        return AquaticCrates.getPlayerHandler();
     }
 
     public static CratePlayer getPlayer(Player player) {
@@ -19,7 +19,7 @@ public class AquaticCratesAPI {
     }
 
     public static CrateHandler getCrateHandler() {
-        return AquaticCratesTesting.getCrateHandler();
+        return AquaticCrates.getCrateHandler();
     }
 
     public static Crate getCrate(String identifier) {

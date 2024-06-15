@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.crate;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.api.events.ClaimRewardEvent;
@@ -18,7 +18,6 @@ import cz.larkyy.aquaticcratestesting.crate.reroll.impl.MenuReroll;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import cz.larkyy.aquaticcratestesting.player.CratePlayer;
-import cz.larkyy.aquaticcratestesting.utils.IReward;
 import cz.larkyy.aquaticcratestesting.utils.RewardUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,14 +28,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import xyz.larkyy.itemlibrary.CustomItem;
-import xyz.larkyy.menulib.Menu;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Crate extends CrateBase {
 
-    private static final NamespacedKey KEY = new NamespacedKey(AquaticCratesTesting.instance(),"CrateIdentifier");
+    private static final NamespacedKey KEY = new NamespacedKey(AquaticCrates.instance(),"CrateIdentifier");
 
     private final Key key;
     private final List<Reward> rewards;
@@ -83,7 +81,7 @@ public class Crate extends CrateBase {
     }
 
     public void openPreview(Player p, PlacedCrate pc) {
-        if (AquaticCratesTesting.getCrateHandler().isInAnimation(p)) {
+        if (AquaticCrates.getCrateHandler().isInAnimation(p)) {
             return;
         }
         PreviewGUI gui = previewGUI.get();

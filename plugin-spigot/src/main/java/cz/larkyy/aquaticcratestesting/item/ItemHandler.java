@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.item;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.config.Config;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ItemHandler {
 
-    private final Config databaseCfg = new Config(AquaticCratesTesting.instance(),"itemdatabase.yml");
+    private final Config databaseCfg = new Config(AquaticCrates.instance(),"itemdatabase.yml");
     private final Map<String, ItemStack> database;
 
     public ItemHandler() {
@@ -63,7 +63,7 @@ public class ItemHandler {
                 cfg().set("items."+id,is);
                 databaseCfg.save();
             }
-        }.runTaskAsynchronously(AquaticCratesTesting.instance());
+        }.runTaskAsynchronously(AquaticCrates.instance());
     }
 
     public Map<String, ItemStack> getItems() {

@@ -1,12 +1,10 @@
 package cz.larkyy.aquaticcratestesting.camera;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.nms.NMSHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -27,7 +25,7 @@ public class Camera {
     }
 
     private int spawnEntity(Location location) {
-        var id = AquaticCratesTesting.getNmsHandler().spawnEntity(location,
+        var id = AquaticCrates.getNmsHandler().spawnEntity(location,
                 e -> {
                     ArmorStand as = (ArmorStand) e;
                     as.setInvisible(true);
@@ -87,7 +85,7 @@ public class Camera {
                 nmsHandler().setCamera(id,player);
                 runnable.run();
             }
-        }.runTaskLater(AquaticCratesTesting.instance(),delay);
+        }.runTaskLater(AquaticCrates.instance(),delay);
     }
 
     public void detachPlayer() {
@@ -108,10 +106,10 @@ public class Camera {
             public void run() {
                 nmsHandler().despawnEntity(Arrays.asList(id),Arrays.asList(player));
             }
-        }.runTaskLaterAsynchronously(AquaticCratesTesting.instance(),1);
+        }.runTaskLaterAsynchronously(AquaticCrates.instance(),1);
     }
 
     private NMSHandler nmsHandler() {
-        return AquaticCratesTesting.getNmsHandler();
+        return AquaticCrates.getNmsHandler();
     }
 }

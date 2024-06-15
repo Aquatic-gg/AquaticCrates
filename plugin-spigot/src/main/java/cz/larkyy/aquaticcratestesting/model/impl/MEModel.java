@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.model.impl;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.model.Model;
 import cz.larkyy.aquaticcratestesting.nms.AdaptedMEModel;
 import org.bukkit.Location;
@@ -50,7 +50,7 @@ public class MEModel extends Model {
 
     public static Model create(String id, Location location, Player player, Player skin) {
 
-        AdaptedMEModel meModel = AquaticCratesTesting.getModelEngineAdapter().create(id,location,player,skin);
+        AdaptedMEModel meModel = AquaticCrates.getModelEngineAdapter().create(id,location,player,skin);
         return new MEModel(meModel);
     }
 }

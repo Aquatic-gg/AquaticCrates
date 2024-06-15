@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.animation.impl;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.animation.Animation;
 import cz.larkyy.aquaticcratestesting.animation.AnimationManager;
 import cz.larkyy.aquaticcratestesting.animation.RewardItem;
@@ -76,7 +76,7 @@ public class PlacedCratePersonalisedAnimation extends Animation {
                 i++;
             }
         };
-        runnable.runTaskTimer(AquaticCratesTesting.instance(),0,1);
+        runnable.runTaskTimer(AquaticCrates.instance(),0,1);
     }
 
     @Override

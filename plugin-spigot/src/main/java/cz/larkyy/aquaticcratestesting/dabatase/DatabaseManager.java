@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcratestesting.dabatase;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import cz.larkyy.aquaticcratestesting.api.AquaticCratesAPI;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.config.Config;
 import cz.larkyy.aquaticcratestesting.dabatase.drivers.Driver;
 import cz.larkyy.aquaticcratestesting.dabatase.drivers.MySQLDriver;
@@ -20,7 +19,7 @@ import java.util.function.Consumer;
 
 public class DatabaseManager {
 
-    private final Config config = new Config(AquaticCratesTesting.instance(),"database-settings.yml");
+    private final Config config = new Config(AquaticCrates.instance(),"database-settings.yml");
 
     private final Map<String,Driver> availableDrivers = new HashMap<>(){
         {

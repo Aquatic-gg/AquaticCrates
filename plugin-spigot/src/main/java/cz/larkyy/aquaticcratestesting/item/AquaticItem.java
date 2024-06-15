@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.item;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +20,6 @@ public class AquaticItem extends CustomItem {
 
     @Override
     public ItemStack getUnmodifiedItem() {
-        return AquaticCratesTesting.getItemHandler().getItem(identifier);
+        return AquaticCrates.getItemHandler().getItem(identifier);
     }
 }

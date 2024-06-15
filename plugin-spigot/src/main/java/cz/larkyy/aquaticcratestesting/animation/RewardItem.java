@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.animation;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.animation.showcase.ItemRewardShowcase;
 import cz.larkyy.aquaticcratestesting.animation.showcase.ModelRewardShowcase;
 import cz.larkyy.aquaticcratestesting.animation.showcase.RewardShowcase;
@@ -13,10 +13,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -43,7 +40,7 @@ public class RewardItem {
     private final Vector offset;
     private RewardShowcase rewardShowcase;
 
-    public static final NamespacedKey REWARD_ITEM_KEY = new NamespacedKey(AquaticCratesTesting.instance(),"AQUATICCRATES_REWARD_ITEM");
+    public static final NamespacedKey REWARD_ITEM_KEY = new NamespacedKey(AquaticCrates.instance(),"AQUATICCRATES_REWARD_ITEM");
     private final Player p;
 
     public RewardItem(
@@ -141,7 +138,7 @@ public class RewardItem {
                 hologram.move(rewardShowcase.getLocation().clone().add(0,cachedReward.getHologramYOffset(),0));
             }
         };
-        hologramRunnable.runTaskTimer(AquaticCratesTesting.instance(),0,1);
+        hologramRunnable.runTaskTimer(AquaticCrates.instance(),0,1);
     }
 
     private void startRumbling() {
@@ -166,7 +163,7 @@ public class RewardItem {
                 tick+=rumblingPeriod;
             }
         };
-        rumbleRunnable.runTaskTimer(AquaticCratesTesting.instance(),0,rumblingPeriod);
+        rumbleRunnable.runTaskTimer(AquaticCrates.instance(),0,rumblingPeriod);
     }
 
     private void updateItem(Reward reward) {
@@ -203,7 +200,7 @@ public class RewardItem {
                     if (p != null) {
                         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
                         players.remove(p);
-                        AquaticCratesTesting.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),players);
+                        AquaticCrates.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),players);
                     }
                     rewardShowcase = new ItemRewardShowcase(item);
                 }
@@ -224,7 +221,7 @@ public class RewardItem {
                 despawn();
             }
         };
-        aliveRunnable.runTaskLater(AquaticCratesTesting.instance(),aliveLength);
+        aliveRunnable.runTaskLater(AquaticCrates.instance(),aliveLength);
     }
 
     private void spawnItem(Reward reward) {
@@ -250,7 +247,7 @@ public class RewardItem {
             if (p != null) {
                 List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
                 players.remove(p);
-                AquaticCratesTesting.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),players);
+                AquaticCrates.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),players);
             }
             rewardShowcase = new ItemRewardShowcase(item);
         }

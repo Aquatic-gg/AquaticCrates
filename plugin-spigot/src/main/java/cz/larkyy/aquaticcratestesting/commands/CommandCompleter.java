@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcratestesting.commands;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
-import org.bukkit.Bukkit;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -30,15 +29,15 @@ public class CommandCompleter implements TabCompleter {
             }
             if (args[1].equalsIgnoreCase("give")) {
                 if (args.length == 3) {
-                    return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
                 }
             } else if (args[1].equalsIgnoreCase("giveall")) {
                 if (args.length == 3) {
-                    return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
                 }
             } else if (args[1].equalsIgnoreCase("take")) {
                 if (args.length == 3) {
-                    return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
                 }
             }
 
@@ -50,12 +49,12 @@ public class CommandCompleter implements TabCompleter {
             }
             if (args[1].equalsIgnoreCase("give")) {
                 if (args.length == 3) {
-                    return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
                 }
             }
             if (args[1].equalsIgnoreCase("open")) {
                 if (args.length == 3) {
-                    return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
                 }
                 if (args.length == 5) {
                     return Arrays.asList("<instant true/false>");
@@ -73,7 +72,7 @@ public class CommandCompleter implements TabCompleter {
             }
             if (args[1].equalsIgnoreCase("give")) {
                 if (args.length == 3) {
-                    return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
+                    return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
                 }
             }
 
@@ -85,13 +84,13 @@ public class CommandCompleter implements TabCompleter {
             }
             if (args[1].equalsIgnoreCase("give")) {
                 if (args.length == 3) {
-                    return new ArrayList<>(AquaticCratesTesting.getItemHandler().getItems().keySet());
+                    return new ArrayList<>(AquaticCrates.getItemHandler().getItems().keySet());
                 }
             }
         }
         else if (args[0].equalsIgnoreCase("milestone")) {
             if (args.length == 2) {
-                return new ArrayList<>(AquaticCratesTesting.getCrateHandler().getCrates().keySet());
+                return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
             }
             if (args.length == 3) {
                 return Arrays.asList("set","take","add");

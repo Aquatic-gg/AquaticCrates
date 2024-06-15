@@ -1,20 +1,18 @@
 package cz.larkyy.aquaticcratestesting.animation;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.crate.reward.Reward;
 import cz.larkyy.aquaticcratestesting.model.Model;
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import xyz.larkyy.itemlibrary.impl.OraxenItem;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public abstract class Animation {
 
-    public static final NamespacedKey KEY = new NamespacedKey(AquaticCratesTesting.instance(),"inAnimation");
+    public static final NamespacedKey KEY = new NamespacedKey(AquaticCrates.instance(),"inAnimation");
 
     private final Player player;
     private Consumer<Animation> callback;

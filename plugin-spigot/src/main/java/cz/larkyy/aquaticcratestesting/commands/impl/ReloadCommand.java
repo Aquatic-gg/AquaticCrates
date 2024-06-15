@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcratestesting.commands.impl;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.commands.ICommand;
 import cz.larkyy.aquaticcratestesting.messages.Messages;
 import org.bukkit.command.CommandSender;
@@ -13,6 +13,6 @@ public class ReloadCommand implements ICommand {
             return;
         }
         Messages.PLUGIN_RELOADED.send(sender);
-        AquaticCratesTesting.instance().reload();
+        AquaticCrates.instance().reload();
     }
 }

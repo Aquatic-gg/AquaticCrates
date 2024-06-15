@@ -1,8 +1,7 @@
 package cz.larkyy.aquaticcratestesting.loader;
 
-import cz.larkyy.aquaticcratestesting.AquaticCratesTesting;
+import cz.larkyy.aquaticcratestesting.AquaticCrates;
 import cz.larkyy.aquaticcratestesting.loader.impl.ItemsAdderLoader;
-import xyz.larkyy.aquaticcrates.meg3hook.ModelEngineLoader;
 import cz.larkyy.aquaticcratestesting.nms.Loader;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -23,16 +22,16 @@ public class LoaderManager {
             loaders.add(new ItemsAdderLoader(
                     this::tryLoad
             ));
-            if (AquaticCratesTesting.loaded) {
+            if (AquaticCrates.loaded) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "iareload");
             }
         }
-        if (AquaticCratesTesting.getModelEngineAdapter() != null) {
-            var loader = AquaticCratesTesting.getModelEngineAdapter().createMEGLoader(AquaticCratesTesting.instance(),
+        if (AquaticCrates.getModelEngineAdapter() != null) {
+            var loader = AquaticCrates.getModelEngineAdapter().createMEGLoader(AquaticCrates.instance(),
                     this::tryLoad
             );
             loaders.add(loader);
-            if (AquaticCratesTesting.loaded) {
+            if (AquaticCrates.loaded) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "meg reload");
             }
         }
@@ -55,7 +54,7 @@ public class LoaderManager {
     }
 
     private Plugin getPlugin(String str) {
-        return AquaticCratesTesting.instance().getServer().getPluginManager().getPlugin(str);
+        return AquaticCrates.instance().getServer().getPluginManager().getPlugin(str);
     }
 
 }
