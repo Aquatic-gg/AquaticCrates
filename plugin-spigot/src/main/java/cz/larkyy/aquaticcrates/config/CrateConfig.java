@@ -304,7 +304,7 @@ public class CrateConfig extends Config {
         String milestoneFormat= getConfiguration().getString("preview.milestones.format", "&7 - &f%milestone% &7(%remains%/%required%)");
         String milestoneFormatReached= getConfiguration().getString("preview.milestones.reached-format", "&7 - &a%milestone% &7(Reached)");
 
-        var repeatableMilestonesItem = loadMenuItem("repeatable-milestones","preview.repeatable-milestones");
+        var repeatableMilestonesItem = getConfiguration().contains("repeatable-milestones") ? loadMenuItem("repeatable-milestones","preview.repeatable-milestones") : null;
         String repeatableMilestoneFormat= getConfiguration().getString("preview.repeatable-milestones.format","&7 - &f%milestone% &7(%remains%/%required%)");
 
         atomicReference.set(new PreviewGUI(crate,
