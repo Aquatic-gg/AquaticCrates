@@ -37,7 +37,7 @@ public class AquaticHologram extends Hologram {
             public void run() {
                 int i = getLines().size();
                 for (Integer id : ids) {
-                    nmsHandler().teleportEntity(id,location.clone().add(0,0.25*i,0));
+                    nmsHandler().teleportEntity(id, location.clone().add(0, 0.25 * i, 0));
                     i--;
                 }
             }
@@ -46,7 +46,7 @@ public class AquaticHologram extends Hologram {
 
     @Override
     public void move(Location location) {
-        if (Utils.isVectorSame(getLocation().toVector(),location.toVector())) {
+        if (Utils.isVectorSame(getLocation().toVector(), location.toVector())) {
             return;
         }
         setLocation(location);
@@ -55,7 +55,7 @@ public class AquaticHologram extends Hologram {
             public void run() {
                 int i = getLines().size();
                 for (Integer id : ids) {
-                    nmsHandler().moveEntity(id,location.clone().add(0,0.25*i,0));
+                    nmsHandler().moveEntity(id, location.clone().add(0, 0.25 * i, 0));
                     i--;
                 }
             }
@@ -64,7 +64,7 @@ public class AquaticHologram extends Hologram {
 
     @Override
     public void despawn() {
-        nmsHandler().despawnEntity(ids,visitors);
+        nmsHandler().despawnEntity(ids, visitors);
         visitors.clear();
         ids.clear();
     }
@@ -72,8 +72,10 @@ public class AquaticHologram extends Hologram {
     @Override
     public void spawn(List<Player> visitors, Consumer<List<String>> consumer) {
 
+        var filtered = visitors.stream().filter(player -> player.getLocation().getWorld().getName().equals(getLocation().getWorld().getName())).toList();
+
         if (hidden) {
-            addAllVisitors(visitors);
+            addAllVisitors(filtered);
             return;
         }
 
@@ -81,11 +83,11 @@ public class AquaticHologram extends Hologram {
         consumer.accept(lines);
 
         despawn();
-        addAllVisitors(visitors);
+        addAllVisitors(filtered);
 
         int i = lines.size();
         for (String line : lines) {
-            ids.add(spawnLine(getLocation().clone().add(0,0.25*i,0),line));
+            ids.add(spawnLine(getLocation().clone().add(0, 0.25 * i, 0), line));
             i--;
         }
     }
@@ -102,7 +104,7 @@ public class AquaticHologram extends Hologram {
     @Override
     public void hide() {
         hidden = true;
-        nmsHandler().despawnEntity(ids,visitors);
+        nmsHandler().despawnEntity(ids, visitors);
         ids.clear();
     }
 
@@ -112,7 +114,8 @@ public class AquaticHologram extends Hologram {
             return;
         }
         hidden = false;
-        spawn(visitors, list -> {});
+        spawn(visitors, list -> {
+        });
     }
 
     @Override
@@ -137,7 +140,7 @@ public class AquaticHologram extends Hologram {
 
         int lineNumber = 0;
         for (String line : lines) {
-            final String formattedLine = visitors.isEmpty() ? line : PlaceholderAPI.setPlaceholders(visitors.get(0),line);
+            final String formattedLine = visitors.isEmpty() ? line : PlaceholderAPI.setPlaceholders(visitors.get(0), line);
 
             Location l2 = getLocation().clone().add(0, 0.25 * (lines.size() - lineNumber), 0);
             if (lineNumber < ids.size()) {
@@ -153,14 +156,14 @@ public class AquaticHologram extends Hologram {
                     e.setCustomName(Colors.format(formattedLine));
                 });
             } else {
-                ids.add(spawnLine(l2,formattedLine));
+                ids.add(spawnLine(l2, formattedLine));
             }
             lineNumber++;
         }
     }
 
     private int spawnLine(Location location, String text) {
-        final String formattedLine = visitors.isEmpty() ? text : PlaceholderAPI.setPlaceholders(visitors.get(0),text);
+        final String formattedLine = visitors.isEmpty() ? text : PlaceholderAPI.setPlaceholders(visitors.get(0), text);
 
         return nmsHandler().spawnEntity(
                 location,
@@ -174,7 +177,7 @@ public class AquaticHologram extends Hologram {
                 },
                 visitors,
                 "area_effect_cloud"
-                );
+        );
     }
 
     private NMSHandler nmsHandler() {
