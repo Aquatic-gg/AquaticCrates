@@ -55,7 +55,7 @@ public class PlayerHandler {
     public CratePlayer getPlayer(Player player) {
         CratePlayer cp = players.get(player.getUniqueId());
         if (cp == null) {
-            cp = new CratePlayer(player);
+            cp = new CratePlayer(player.getUniqueId());
             players.put(player.getUniqueId(),cp);
         }
         return cp;
