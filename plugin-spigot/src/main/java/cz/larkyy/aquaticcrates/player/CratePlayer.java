@@ -85,6 +85,17 @@ public class CratePlayer {
         return false;
     }
 
+    public int getKeysAmount(Key key) {
+        int amt = getKeys(key.getIdentifier());
+        for (ItemStack is : getPlayer().getInventory().getContents()) {
+            if (is == null) continue;
+            if (key.isItemKey(is)) {
+                amt += is.getAmount();
+            }
+        }
+        return amt;
+    }
+
     private boolean takeVirtualKey(Key key) {
         int keys = getKeys(key.getIdentifier());
         if (keys < 1) {

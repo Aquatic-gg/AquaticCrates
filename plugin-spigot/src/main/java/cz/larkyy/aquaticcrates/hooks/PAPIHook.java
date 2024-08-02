@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcrates.hooks;
 
 import cz.larkyy.aquaticcrates.crate.Crate;
+import cz.larkyy.aquaticcrates.crate.Key;
 import cz.larkyy.aquaticcrates.crate.milestone.Milestone;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -53,7 +54,11 @@ public class PAPIHook extends PlaceholderExpansion {
                     return null;
                 }
                 CratePlayer cp = CratePlayer.get(player.getPlayer());
-                return cp.getKeys(args[1])+"";
+                var key = Key.get(args[1]);
+
+                if (key == null) return 0+"";
+
+                return cp.getKeysAmount(key)+"";
             }
             case "milestone" -> {
 
