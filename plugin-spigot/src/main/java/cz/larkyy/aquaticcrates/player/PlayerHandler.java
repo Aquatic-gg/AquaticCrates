@@ -5,15 +5,13 @@ import cz.larkyy.aquaticcrates.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcrates.crate.reroll.Reroll;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.function.Consumer;
 
 public class PlayerHandler {
 
-    private final Map<OfflinePlayer, CratePlayer> players;
+    private final Map<UUID, CratePlayer> players;
     private final Map<Player, Reroll> rerollPlayers;
 
     public PlayerHandler() {
@@ -33,8 +31,8 @@ public class PlayerHandler {
         AquaticCrates.getDatabaseManager().savePlayers(async);
     }
 
-    public void addPlayer(OfflinePlayer offlinePlayer, CratePlayer player) {
-        players.put(offlinePlayer,player);
+    public void addPlayer(UUID uuid, CratePlayer player) {
+        players.put(uuid,player);
     }
 
     public void loadPlayers(Runnable callback)
@@ -55,10 +53,10 @@ public class PlayerHandler {
     }
 
     public CratePlayer getPlayer(Player player) {
-        CratePlayer cp = players.get(player);
+        CratePlayer cp = players.get(player.getUniqueId());
         if (cp == null) {
             cp = new CratePlayer(player);
-            players.put(player,cp);
+            players.put(player.getUniqueId(),cp);
         }
         return cp;
     }

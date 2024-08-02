@@ -9,14 +9,15 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class CratePlayer {
 
-    private final Player player;
+    private final UUID uuid;
     private final Map<String, Integer> virtualKeys;
 
-    public CratePlayer(Player player) {
-        this.player = player;
+    public CratePlayer(UUID uuid) {
+        this.uuid = uuid;
         this.virtualKeys = new HashMap<>();
     }
 
@@ -58,11 +59,11 @@ public class CratePlayer {
     }
 
     private boolean takePhysicalKey(Key key) {
-        for (ItemStack is : player.getInventory().getContents()) {
+        for (ItemStack is : getPlayer().getInventory().getContents()) {
             if (is == null) continue;
             if (key.isItemKey(is)) {
                 is.setAmount(is.getAmount()-1);
-                var event = new KeyUseEvent(player.getPlayer(),key.getCrate(), KeyUseEvent.KeyType.PHYSICAL,is);
+                var event = new KeyUseEvent(getPlayer(),key.getCrate(), KeyUseEvent.KeyType.PHYSICAL,is);
                 Bukkit.getPluginManager().callEvent(event);
                 return true;
             }
@@ -75,7 +76,7 @@ public class CratePlayer {
         if (keys >= amount) {
             return true;
         }
-        for (ItemStack is : player.getInventory().getContents()) {
+        for (ItemStack is : getPlayer().getInventory().getContents()) {
             if (is == null) continue;
             if (key.isItemKey(is)) {
                 if (is.getAmount() >= amount) return true;
@@ -91,17 +92,17 @@ public class CratePlayer {
         }
         virtualKeys.put(key.getIdentifier(),keys-1);
 
-        var event = new KeyUseEvent(player.getPlayer(),key.getCrate(), KeyUseEvent.KeyType.VIRTUAL,null);
+        var event = new KeyUseEvent(getPlayer(),key.getCrate(), KeyUseEvent.KeyType.VIRTUAL,null);
         Bukkit.getPluginManager().callEvent(event);
         return true;
     }
 
     public Player getPlayer() {
-        return player;
+        return Bukkit.getPlayer(uuid);
     }
 
     public boolean isInAnimation() {
-        return AquaticCratesAPI.getPlayerHandler().isInAnimation(player);
+        return AquaticCratesAPI.getPlayerHandler().isInAnimation(getPlayer());
     }
 
     public static CratePlayer get(Player player) {

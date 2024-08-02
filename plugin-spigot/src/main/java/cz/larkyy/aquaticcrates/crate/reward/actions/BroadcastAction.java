@@ -14,14 +14,14 @@ public class BroadcastAction extends RewardAction {
     @Override
     public void run(Player player, Map<String, Object> arguments, Placeholders placeholders) {
         Bukkit.broadcastMessage(
-                PlaceholderAPI.setPlaceholders(player, placeholders.replace(arguments.get("message").toString())));
+                Colors.format(PlaceholderAPI.setPlaceholders(player, placeholders.replace(arguments.get("message").toString()))));
     }
 
     @Override
     public Map<String, Object> readArguments(String string) {
         return new HashMap<>() {
             {
-                put("message", Colors.format(string));
+                put("message", string);
             }
         };
     }

@@ -39,7 +39,7 @@ public class DatabaseManager {
     }
 
     public void loadPlayer(Player player, Consumer<CratePlayer> callback) {
-        CratePlayer cp = CratePlayer.get(player);
+        CratePlayer cp = new CratePlayer(player);
         driver.loadPlayer(player, rs -> {
             try {
                 while (rs.next()) {
@@ -50,6 +50,7 @@ public class DatabaseManager {
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
+            AquaticCrates.getPlayerHandler().addPlayer(player.getUniqueId(),cp);
             callback.accept(cp);
         });
 
@@ -61,10 +62,11 @@ public class DatabaseManager {
                     Player p = Bukkit.getPlayer(UUID.fromString(rs.getString("UniqueID")));
                     if (p == null) continue;
                     if (!p.isOnline()) continue;
-                    CratePlayer cp = CratePlayer.get(p);
+                    CratePlayer cp = new CratePlayer(p);
                     String id = rs.getString("Identifier");
                     int amount = rs.getInt("Amount");
                     cp.addKeys(id,amount);
+                    AquaticCrates.getPlayerHandler().addPlayer(p.getUniqueId(),cp);
                 }
                 callback.run();
             } catch (SQLException e) {
