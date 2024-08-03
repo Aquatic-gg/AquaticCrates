@@ -49,7 +49,7 @@ public class Crate extends CrateBase {
     private final MilestoneHandler milestoneHandler;
 
     public Crate(String identifier, String displayName, CustomItem key, ModelSettings modelSettings,
-                 List<Reward> rewards, boolean requiresCrateToOpen,
+                 List<Reward> rewards, boolean requiresCrateToOpen, boolean mustBeHeld,
                  AtomicReference<PreviewGUI> previewGUI,
                  AtomicReference<RerollGUI> rerollGUI,
                  AtomicReference<RerollManager> rerollManager,
@@ -60,7 +60,7 @@ public class Crate extends CrateBase {
                  HashMap<Integer,Milestone> repeatableMilestones, int hitboxHeight,
                  int hitboxWidth) {
         super(identifier,displayName,modelSettings,hologram,hologramYOffset,hitboxHeight,hitboxWidth);
-        this.key = new Key(key,this,requiresCrateToOpen);
+        this.key = new Key(key,this,requiresCrateToOpen, mustBeHeld);
         this.rewards = rewards;
         this.previewGUI = previewGUI;
         this.rerollGUI = rerollGUI;

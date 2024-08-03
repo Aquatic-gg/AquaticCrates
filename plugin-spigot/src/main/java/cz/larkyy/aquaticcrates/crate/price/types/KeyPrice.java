@@ -34,6 +34,12 @@ public class KeyPrice extends OpenPrice {
         }
         int amount = (int) arguments.get("amount");
 
+        if (key.isMustBeHeld()) {
+            var is = player.getInventory().getItemInMainHand();
+            if (!key.isItemKey(is)) return false;
+            return (is.getAmount() >= amount);
+        }
+
         CratePlayer cp = CratePlayer.get(player);
         return (cp.hasKey(key,amount));
     }

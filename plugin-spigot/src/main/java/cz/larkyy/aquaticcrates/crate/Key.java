@@ -20,11 +20,13 @@ public class Key {
     private final Crate crate;
 
     private final boolean requiresCrateToOpen;
+    private final boolean mustBeHeld;
 
-    public Key(CustomItem item, Crate crate, boolean requiresCrateToOpen) {
+    public Key(CustomItem item, Crate crate, boolean requiresCrateToOpen, boolean mustBeHeld) {
         this.item = item;
         this.crate = crate;
         this.requiresCrateToOpen = requiresCrateToOpen;
+        this.mustBeHeld = mustBeHeld;
     }
 
     public Crate getCrate() {
@@ -85,5 +87,9 @@ public class Key {
 
     public boolean requiresCrateToOpen() {
         return requiresCrateToOpen;
+    }
+
+    public boolean isMustBeHeld() {
+        return mustBeHeld;
     }
 }

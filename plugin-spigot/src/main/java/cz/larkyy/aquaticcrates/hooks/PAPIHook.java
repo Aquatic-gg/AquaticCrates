@@ -56,7 +56,7 @@ public class PAPIHook extends PlaceholderExpansion {
                 CratePlayer cp = CratePlayer.get(player.getPlayer());
                 var key = Key.get(args[1]);
 
-                if (key == null) return 0+"";
+                if (key == null) return "Unknown Crate";
 
                 return cp.getKeysAmount(key)+"";
             }

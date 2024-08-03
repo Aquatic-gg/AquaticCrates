@@ -66,6 +66,7 @@ public class CrateConfig extends Config {
                 loadModelSettings(),
                 loadRewards(),
                 getConfiguration().getBoolean("key.requires-crate-to-open",true),
+                getConfiguration().getBoolean("key.must-be-held",false),
                 previewGUIAtomicReference,
                 rerollGUIAtomicReference,
                 rerollManagerAtomicReference,
