@@ -1,6 +1,5 @@
 package cz.larkyy.aquaticcrates.animation;
 
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -16,7 +15,7 @@ public class AnimationTitle {
     private final BarStyle style;
 
     public AnimationTitle(List<String> title, BarColor color, BarStyle style) {
-        this.title = Colors.format(title);
+        this.title = title;
         this.color = color;
         this.style = style;
     }

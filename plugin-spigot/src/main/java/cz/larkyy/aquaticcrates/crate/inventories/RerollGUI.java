@@ -1,9 +1,9 @@
 package cz.larkyy.aquaticcrates.crate.inventories;
 
 import cz.larkyy.aquaticcrates.crate.reroll.impl.MenuReroll;
+import cz.larkyy.aquaticcrates.menu.Menu;
+import cz.larkyy.aquaticcrates.menu.MenuItem;
 import org.bukkit.entity.Player;
-import xyz.larkyy.menulib.Menu;
-import xyz.larkyy.menulib.MenuItem;
 
 import java.util.Arrays;
 

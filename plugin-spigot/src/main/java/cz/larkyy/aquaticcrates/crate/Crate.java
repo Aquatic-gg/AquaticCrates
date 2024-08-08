@@ -19,6 +19,7 @@ import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.messages.Messages;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import cz.larkyy.aquaticcrates.utils.RewardUtils;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,7 +49,7 @@ public class Crate extends CrateBase {
     private final PriceHandler priceHandler;
     private final MilestoneHandler milestoneHandler;
 
-    public Crate(String identifier, String displayName, CustomItem key, ModelSettings modelSettings,
+    public Crate(String identifier, AquaticString displayName, CustomItem key, ModelSettings modelSettings,
                  List<Reward> rewards, boolean requiresCrateToOpen, boolean mustBeHeld,
                  AtomicReference<PreviewGUI> previewGUI,
                  AtomicReference<RerollGUI> rerollGUI,

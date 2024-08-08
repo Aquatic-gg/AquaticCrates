@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcrates.messages;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -62,6 +63,9 @@ public enum Messages {
 
     public Message replace(String s1, String s2) {
         return get().replace(s1,s2);
+    }
+    public Message replace(String s1, AquaticString s2) {
+        return get().replace(s1,s2.getString());
     }
 
     public Message get() {

@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcrates.messages;
 
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
-import org.bukkit.Bukkit;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -27,20 +26,20 @@ public class Message {
     }
 
     public void send(CommandSender sender) {
-        if (values.size() == 1 && values.get(0).isEmpty()) {
+        if (values.size() == 1 && values.getFirst().isEmpty()) {
             return;
         }
         values.forEach(v -> {
-            sender.sendMessage(Colors.format(v));
+            StringExtKt.toAquatic(v).send(sender);
         });
     }
 
     public void broadcast() {
-        if (values.size() == 1 && values.get(0).isEmpty()) {
+        if (values.size() == 1 && values.getFirst().isEmpty()) {
             return;
         }
         values.forEach(v -> {
-            Bukkit.broadcastMessage(Colors.format(v));
+            StringExtKt.toAquatic(v).broadcast();
         });
     }
 }

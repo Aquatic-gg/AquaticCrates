@@ -2,7 +2,7 @@ package cz.larkyy.aquaticcrates.crate.reward.actions;
 
 import cz.larkyy.aquaticcrates.crate.reward.RewardAction;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
@@ -13,8 +13,8 @@ public class MessageAction extends RewardAction {
 
     @Override
     public void run(Player player, Map<String, Object> arguments, Placeholders placeholders) {
-        player.sendMessage(
-                Colors.format(PlaceholderAPI.setPlaceholders(player, placeholders.replace(arguments.get("message").toString()))));
+        var msg = PlaceholderAPI.setPlaceholders(player, placeholders.replace(arguments.get("message").toString()));
+        StringExtKt.toAquatic(msg).send(player);
     }
 
     @Override

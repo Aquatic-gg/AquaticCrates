@@ -20,10 +20,13 @@ import cz.larkyy.aquaticcrates.crate.reward.RewardActions;
 import cz.larkyy.aquaticcrates.crate.reward.condition.ConfiguredRewardCondition;
 import cz.larkyy.aquaticcrates.crate.reward.condition.RewardCondition;
 import cz.larkyy.aquaticcrates.crate.reward.condition.RewardConditions;
+import cz.larkyy.aquaticcrates.menu.Menu;
+import cz.larkyy.aquaticcrates.menu.MenuItem;
 import cz.larkyy.aquaticcrates.placeholders.Placeholder;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import cz.larkyy.aquaticcrates.utils.IReward;
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,9 +35,8 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.larkyy.colorutils.Colors;
 import xyz.larkyy.itemlibrary.CustomItem;
-import xyz.larkyy.menulib.Menu;
-import xyz.larkyy.menulib.MenuItem;
 
 import java.io.File;
 import java.util.*;
@@ -61,7 +63,7 @@ public class CrateConfig extends Config {
         }
         Crate c = new Crate(
                 identifier,
-                Colors.format(getConfiguration().getString("display-name",identifier)),
+                StringExtKt.toAquatic(getConfiguration().getString("display-name",identifier)),
                 key,
                 loadModelSettings(),
                 loadRewards(),
@@ -112,11 +114,11 @@ public class CrateConfig extends Config {
             Map<String,Object> args = new HashMap<>();
             args.put("crate",null);
             args.put("amount",1);
-            return new PriceHandler(Arrays.asList(new PriceGroup(Arrays.asList(
+            return new PriceHandler(List.of(new PriceGroup(List.of(
                     new ConfiguredPrice(
                             OpenPrices.inst().getPriceType("key"),
                             args
-                            )
+                    )
             ))));
         }
 
@@ -179,7 +181,7 @@ public class CrateConfig extends Config {
             var milestone = getConfiguration().getInt(path+".milestone");
             var displayName = getConfiguration().getString(path+".display-name","milestone-"+milestone);
 
-            milestones.put(milestone,new Milestone(milestone,milestoneRewards,Colors.format(displayName)));
+            milestones.put(milestone,new Milestone(milestone,milestoneRewards, StringExtKt.toAquatic(displayName)));
         }
         return milestones;
     }
@@ -192,7 +194,7 @@ public class CrateConfig extends Config {
             var milestone = getConfiguration().getInt(path+".milestone");
             var displayName = getConfiguration().getString(path+".display-name","milestone-"+milestone);
 
-            milestones.put(milestone,new Milestone(milestone,milestoneRewards,Colors.format(displayName)));
+            milestones.put(milestone,new Milestone(milestone,milestoneRewards,StringExtKt.toAquatic(displayName)));
         }
         return milestones;
     }
@@ -280,15 +282,15 @@ public class CrateConfig extends Config {
             return;
         }
 
-        String title;
+        AquaticString title;
         if (getConfiguration().contains("preview.title")) {
-            title = Colors.format(getConfiguration().getString("preview.title"));
+            title = StringExtKt.toAquatic(getConfiguration().getString("preview.title"));
         } else {
-            title = crate.getDisplayName()+"§8 Preview";
+            title = StringExtKt.toAquatic(crate.getDisplayName()+" Preview");
         }
-        Menu.Builder builder =Menu.builder(AquaticCrates.instance())
+        Menu.Builder builder = Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt("preview.size",54))
-                .title(title);
+                .title(title.getString());
 
         if (getConfiguration().contains("preview.items")) {
             for (String str : getConfiguration().getConfigurationSection("preview.items").getKeys(false)) {
@@ -331,15 +333,15 @@ public class CrateConfig extends Config {
 
         String path = "reroll.gui.";
 
-        String title;
+        AquaticString title;
         if (getConfiguration().contains(path+"title")) {
-            title = Colors.format(getConfiguration().getString(path+"title"));
+            title = StringExtKt.toAquatic(getConfiguration().getString(path+"title"));
         } else {
-            title = crate.getDisplayName()+"§8 Reroll";
+            title = StringExtKt.toAquatic(crate.getDisplayName()+" Reroll");
         }
         Menu.Builder builder =Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt(path+"size",27))
-                .title(title);
+                .title(title.getString());
 
         if (getConfiguration().contains(path+"items")) {
             for (String str : getConfiguration().getConfigurationSection(path+"items").getKeys(false)) {

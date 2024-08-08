@@ -152,21 +152,15 @@
             <version>2.4.0</version>
         </dependency>
         <dependency>
+            <groupId>gg.aquatic.aquaticseries</groupId>
+            <artifactId>aquatic-lib</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>xyz.larkyy</groupId>
-            <artifactId>MenuLib</artifactId>
-            <version>1.0.13</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>xyz.larkyy</groupId>
-                    <artifactId>ColorUtils</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.LoneDev6</groupId>

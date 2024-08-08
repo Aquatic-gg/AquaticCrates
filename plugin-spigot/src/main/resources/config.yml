@@ -1,1 +1,2 @@
 config-debug-messages: true
+message-format: LEGACY

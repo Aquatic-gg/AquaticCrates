@@ -1,9 +1,10 @@
 package cz.larkyy.aquaticcrates.animation.task.impl;
 
+import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.animation.Animation;
 import cz.larkyy.aquaticcrates.animation.task.Task;
 import cz.larkyy.aquaticcrates.animation.task.TaskArgument;
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +24,14 @@ public class SendTitleTask extends Task {
 
     @Override
     public void run(Animation animation, Map<String,Object> arguments) {
-        animation.getPlayer().sendTitle(
-                Colors.format(arguments.get("title").toString()),
-                Colors.format(arguments.get("subtitle").toString()),
+        AquaticCrates.aquaticSeriesLib.getAdapter().getTitleAdapter().send(
+                animation.getPlayer(),
+                StringExtKt.toAquatic(arguments.get("title").toString()),
+                StringExtKt.toAquatic(arguments.get("subtitle").toString()),
                 (int)arguments.get("in"),
                 (int)arguments.get("stay"),
                 (int)arguments.get("out")
-                );
+        );
     }
 
     @Override

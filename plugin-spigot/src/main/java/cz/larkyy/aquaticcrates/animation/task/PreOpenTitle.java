@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcrates.animation.task;
 
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
+import cz.larkyy.aquaticcrates.AquaticCrates;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
 import org.bukkit.entity.Player;
 
 public class PreOpenTitle {
@@ -20,9 +21,10 @@ public class PreOpenTitle {
     }
 
     public void show(Player player) {
-        player.sendTitle(
-                Colors.format(title),
-                Colors.format(subtitle),
+        AquaticCrates.aquaticSeriesLib.getAdapter().getTitleAdapter().send(
+                player,
+                StringExtKt.toAquatic(title),
+                StringExtKt.toAquatic(subtitle),
                 in,
                 stay,
                 out

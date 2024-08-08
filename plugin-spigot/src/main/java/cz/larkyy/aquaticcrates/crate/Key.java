@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcrates.crate;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.api.AquaticCratesAPI;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -37,7 +38,7 @@ public class Key {
         return crate.getIdentifier();
     }
 
-    public String getDisplayName() {
+    public AquaticString getDisplayName() {
         return crate.getDisplayName();
     }
 

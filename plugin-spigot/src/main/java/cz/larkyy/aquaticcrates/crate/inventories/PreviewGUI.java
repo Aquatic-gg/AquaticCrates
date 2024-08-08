@@ -3,15 +3,16 @@ package cz.larkyy.aquaticcrates.crate.inventories;
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
+import cz.larkyy.aquaticcrates.menu.Menu;
+import cz.larkyy.aquaticcrates.menu.MenuItem;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
+import gg.aquatic.aquaticseries.lib.ItemStackExtKt;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import xyz.larkyy.menulib.Menu;
-import xyz.larkyy.menulib.MenuItem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,20 +137,21 @@ public class PreviewGUI {
             }
             milestoneHandler.getMilestones().forEach((i, milestone) -> {
                 var placeholders = new Placeholders();
-                placeholders.addPlaceholder("%milestone%", milestone.getDisplayName());
+                placeholders.addPlaceholder("%milestone%", milestone.getDisplayName().getString());
                 var reached = milestoneHandler.getAmt(p);
 
                 if (reached < milestone.getMilestone()) {
                     placeholders.addPlaceholder("%remains%", (milestone.getMilestone() - reached) + "");
                     placeholders.addPlaceholder("%reached%", reached + "");
                     placeholders.addPlaceholder("%required%", milestone.getMilestone() + "");
-                    newLore.add(Colors.format(placeholders.replace(milestoneFormat)));
+                    newLore.add(placeholders.replace(milestoneFormat));
                 } else {
-                    newLore.add(Colors.format(placeholders.replace(milestoneReachedFormat)));
+                    newLore.add(placeholders.replace(milestoneReachedFormat));
                 }
             });
         }
-        im.setLore(newLore);
+        ItemStackExtKt.lore(im, StringExtKt.toAquatic(newLore));
+        //im.setLore(newLore);
         is.setItemMeta(im);
         mb.addItem(MenuItem.builder("milestones", is).action(milestoneItem::activate).slots(milestoneItem.getSlots()).build());
     }
@@ -170,7 +172,7 @@ public class PreviewGUI {
             }
             milestoneHandler.getRepeatableMilestones().forEach((i, milestone) -> {
                 var placeholders = new Placeholders();
-                placeholders.addPlaceholder("%milestone%", milestone.getDisplayName());
+                placeholders.addPlaceholder("%milestone%", milestone.getDisplayName().getString());
 
                 var current = milestoneHandler.getAmt(p);
 
@@ -182,10 +184,10 @@ public class PreviewGUI {
                 placeholders.addPlaceholder("%remains%", (milestone.getMilestone() - reached) + "");
                 placeholders.addPlaceholder("%reached%", reached + "");
                 placeholders.addPlaceholder("%required%", milestone.getMilestone() + "");
-                newLore.add(Colors.format(placeholders.replace(repeatableMilestoneFormat)));
+                newLore.add(placeholders.replace(repeatableMilestoneFormat));
             });
         }
-        im.setLore(newLore);
+        ItemStackExtKt.lore(im, StringExtKt.toAquatic(newLore));
         is.setItemMeta(im);
         mb.addItem(MenuItem.builder("repeatable-milestones", is).action(repeatableMilestoneItem::activate).slots(repeatableMilestoneItem.getSlots()).build());
     }
@@ -205,15 +207,16 @@ public class PreviewGUI {
             if (im.getLore() != null) {
                 lore.addAll(im.getLore());
             }
-            lore.addAll(Colors.format(rewardLore));
+
+            lore.addAll(rewardLore);
             lore.replaceAll(s ->
                     s.replace("%chance%", r.getChance() + "")
             );
-            im.setLore(lore);
+            ItemStackExtKt.lore(im, StringExtKt.toAquatic(lore));
             is.setItemMeta(im);
 
             mb.addItem(MenuItem.builder("reward-" + r.getIdentifier(), is)
-                    .slots(Arrays.asList(slot))
+                    .slots(List.of(slot))
                     .action(e -> {
                         if (!(e.getWhoClicked() instanceof Player player)) {
                             return;

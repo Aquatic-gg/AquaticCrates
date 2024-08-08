@@ -1,13 +1,14 @@
 package cz.larkyy.aquaticcrates.crate;
 
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import org.bukkit.Material;
 
 import java.util.List;
 
 public class CrateBase {
     private final String identifier;
-    private final String displayName;
+    private final AquaticString displayName;
     private final List<String> hologram;
     private final double hologramYOffset;
     private Material blockType = Material.BARRIER;
@@ -15,7 +16,7 @@ public class CrateBase {
     private final int hitboxWidth;
     private final ModelSettings modelSettings;
 
-    public CrateBase(String identifier, String displayName, ModelSettings modelSettings, List<String> hologram, double hologramYOffset, int hitboxHeight, int hitboxWidth) {
+    public CrateBase(String identifier, AquaticString displayName, ModelSettings modelSettings, List<String> hologram, double hologramYOffset, int hitboxHeight, int hitboxWidth) {
         this.identifier = identifier;
         this.displayName = displayName;
         this.modelSettings = modelSettings;
@@ -37,7 +38,7 @@ public class CrateBase {
         return blockType;
     }
 
-    public String getDisplayName() {
+    public AquaticString getDisplayName() {
         return displayName;
     }
 

@@ -4,7 +4,7 @@ import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.hologram.Hologram;
 import cz.larkyy.aquaticcrates.nms.NMSHandler;
 import cz.larkyy.aquaticcrates.utils.Utils;
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.entity.AreaEffectCloud;
@@ -140,7 +140,7 @@ public class AquaticHologram extends Hologram {
 
         int lineNumber = 0;
         for (String line : lines) {
-            final String formattedLine = visitors.isEmpty() ? line : PlaceholderAPI.setPlaceholders(visitors.get(0), line);
+            final String formattedLine = visitors.isEmpty() ? line : PlaceholderAPI.setPlaceholders(visitors.getFirst(), line);
 
             Location l2 = getLocation().clone().add(0, 0.25 * (lines.size() - lineNumber), 0);
             if (lineNumber < ids.size()) {
@@ -153,7 +153,7 @@ public class AquaticHologram extends Hologram {
                     nmsHandler().teleportEntity(id, l2);
                 }
                 nmsHandler().updateEntity(id, e -> {
-                    e.setCustomName(Colors.format(formattedLine));
+                    StringExtKt.toAquatic(formattedLine).setEntityName(e);
                 });
             } else {
                 ids.add(spawnLine(l2, formattedLine));
@@ -170,7 +170,7 @@ public class AquaticHologram extends Hologram {
                 e -> {
                     AreaEffectCloud aec = (AreaEffectCloud) e;
                     aec.setRadius(0f);
-                    e.setCustomName(Colors.format(formattedLine));
+                    StringExtKt.toAquatic(formattedLine).setEntityName(e);
                     e.setCustomNameVisible(true);
                     e.setGravity(false);
                     e.setPersistent(false);

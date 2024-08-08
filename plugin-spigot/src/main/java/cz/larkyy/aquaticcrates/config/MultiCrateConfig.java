@@ -6,13 +6,14 @@ import cz.larkyy.aquaticcrates.crate.inventories.MultiPreviewGUI;
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimation;
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimations;
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
+import cz.larkyy.aquaticcrates.menu.Menu;
+import cz.larkyy.aquaticcrates.menu.MenuItem;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.larkyy.itemlibrary.CustomItem;
-import xyz.larkyy.menulib.Menu;
-import xyz.larkyy.menulib.MenuItem;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class MultiCrateConfig extends Config {
         AtomicReference<MultiPreviewGUI> previewGUIAtomicReference = new AtomicReference<>(null);
         MultiCrate c = new MultiCrate(
                 identifier,
-                Colors.format(getConfiguration().getString("display-name",identifier)),
+                StringExtKt.toAquatic(getConfiguration().getString("display-name",identifier)),
                 loadModelSettings(),
                 loadHologram("hologram"),
                 getConfiguration().getDouble("hologram-y-offset",0),
@@ -75,15 +76,15 @@ public class MultiCrateConfig extends Config {
             return;
         }
 
-        String title;
+        AquaticString title;
         if (getConfiguration().contains("preview.title")) {
-            title = Colors.format(getConfiguration().getString("preview.title"));
+            title = StringExtKt.toAquatic(getConfiguration().getString("preview.title"));
         } else {
-            title = crate.getDisplayName()+"§8 Preview";
+            title = StringExtKt.toAquatic(crate.getDisplayName()+" Preview");
         }
         Menu.Builder builder =Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt("preview.size",54))
-                .title(title);
+                .title(title.getString());
 
         if (getConfiguration().contains("preview.items")) {
             for (String str : getConfiguration().getConfigurationSection("preview.items").getKeys(false)) {

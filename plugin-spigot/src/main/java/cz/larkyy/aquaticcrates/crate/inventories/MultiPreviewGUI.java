@@ -3,13 +3,13 @@ package cz.larkyy.aquaticcrates.crate.inventories;
 import cz.larkyy.aquaticcrates.crate.MultiCrate;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.PlacedMultiCrate;
+import cz.larkyy.aquaticcrates.menu.Menu;
+import cz.larkyy.aquaticcrates.menu.MenuItem;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import xyz.larkyy.menulib.Menu;
-import xyz.larkyy.menulib.MenuItem;
 
 import java.util.Map;
 

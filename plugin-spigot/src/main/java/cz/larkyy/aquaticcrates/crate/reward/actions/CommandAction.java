@@ -2,10 +2,10 @@ package cz.larkyy.aquaticcrates.crate.reward.actions;
 
 import cz.larkyy.aquaticcrates.crate.reward.RewardAction;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import xyz.larkyy.colorutils.Colors;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -18,7 +18,6 @@ import cz.larkyy.aquaticcrates.nms.ModelEngineAdapter;
 import cz.larkyy.aquaticcrates.nms.NMSHandler;
 import cz.larkyy.aquaticcrates.player.PlayerHandler;
 import cz.larkyy.aquaticcrates.player.PlayerListener;
-import cz.larkyy.aquaticcrates.utils.colors.Colors;
 import cz.larkyy.nms.impl.NMS_v1_20_1;
 import cz.larkyy.nms.impl.impl.v1_16_R3;
 import cz.larkyy.nms.impl.impl.v1_17_R1;
@@ -26,6 +25,9 @@ import cz.larkyy.nms.impl.impl.v1_18_R2;
 import cz.larkyy.nms.impl.impl.v1_19_R2;
 import cz.larkyy.aquaticcrates.hooks.PAPIHook;
 import cz.larkyy.nms.impl.v1_19_R3;
+import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
+import gg.aquatic.aquaticseries.lib.format.Format;
+import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -58,11 +60,14 @@ public final class AquaticCrates extends JavaPlugin {
     private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean loaded = false;
     public static boolean configDebug = true;
+    public static AquaticSeriesLib aquaticSeriesLib;
+
+    public static Format messageFormat;
 
     @Override
     public void onLoad() {
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading the plugin..."));
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7NMS Version&f!"));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading the plugin..."));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7NMS Version&f!"));
         String version = "null";
         switch (getServer().getBukkitVersion()) {
             case "1.16.5-R0.1-SNAPSHOT" -> {
@@ -110,17 +115,20 @@ public final class AquaticCrates extends JavaPlugin {
                 version = "v1_21";
             }
         }
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));
 
         var config = new Config(this,"config.yml");
         config.load();
         var cfg = config.getConfiguration();
 
         configDebug = cfg.getBoolean("config-debug-messages",true);
+        messageFormat = Format.valueOf(cfg.getString("message-format","LEGACY").toUpperCase());
     }
 
     @Override
     public void onEnable() {
+        aquaticSeriesLib = AquaticSeriesLib.Companion.init(this,10);
+        aquaticSeriesLib.setMessageFormatting(messageFormat);
 
         tasks = new Tasks();
         openPrices = new OpenPrices();
@@ -153,10 +161,10 @@ public final class AquaticCrates extends JavaPlugin {
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 
-            Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7PlaceholderAPI Hook&f!"));
+            Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7PlaceholderAPI Hook&f!"));
             new PAPIHook().register();
         }
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Database&f!"));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Database&f!"));
         try {
             databaseManager.setup();
         } catch (SQLException | IOException | ClassNotFoundException e) {
@@ -182,17 +190,17 @@ public final class AquaticCrates extends JavaPlugin {
     }
 
     public void load() {
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Item Database&f!"));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Item Database&f!"));
         itemHandler.load();
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Crates&f!"));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Crates&f!"));
         crateHandler.load();
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Players&f!"));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Players&f!"));
         playerHandler.loadPlayers(() -> {
             getServer().getPluginManager().registerEvents(new PlayerListener(),this);
         });
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fLoading &7Messages!"));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Messages!"));
         messageHandler.load();
-        Bukkit.getConsoleSender().sendMessage(Colors.format("&bAquaticCrates &8| &fPlugin &aLoaded&f!"));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fPlugin &aLoaded&f!"));
 
         //AquaticModelEngine.getInstance().getModelGenerator().generateModels();
     }

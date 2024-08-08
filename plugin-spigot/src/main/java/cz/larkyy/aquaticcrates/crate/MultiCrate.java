@@ -4,6 +4,7 @@ package cz.larkyy.aquaticcrates.crate;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.inventories.MultiPreviewGUI;
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -20,7 +21,7 @@ public class MultiCrate extends CrateBase {
     private final List<String> crates;
     private final AtomicReference<MultiPreviewGUI> previewGUI;
 
-    public MultiCrate(String identifier, String displayName, ModelSettings modelSettings, List<String> hologram, double hologramYOffset,
+    public MultiCrate(String identifier, AquaticString displayName, ModelSettings modelSettings, List<String> hologram, double hologramYOffset,
                       List<String> crates, AtomicReference<MultiPreviewGUI> previewGUI, int hitboxHeight, int hitboxWidth) {
         super(identifier, displayName, modelSettings, hologram, hologramYOffset,hitboxHeight,hitboxWidth);
         this.crates = crates;
