@@ -3,6 +3,8 @@ version: '${project.version}'
 main: cz.larkyy.aquaticcrates.AquaticCrates
 api-version: 1.16
 author: LARKYY
+libraries:
+  - "org.jetbrains.kotlin:kotlin-stdlib:2.0.0"
 softdepend:
   - PlaceholderAPI
   - PlayerEmotes
