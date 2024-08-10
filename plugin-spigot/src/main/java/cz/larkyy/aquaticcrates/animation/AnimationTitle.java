@@ -1,41 +1,43 @@
 package cz.larkyy.aquaticcrates.animation;
 
-import org.bukkit.Bukkit;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
+import cz.larkyy.aquaticcrates.AquaticCrates;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationTitle {
 
-    private final List<String> title;
-    private final BarColor color;
-    private final BarStyle style;
+    private final List<AquaticString> title;
+    private final AquaticBossBar.Color color;
+    private final AquaticBossBar.Style style;
 
-    public AnimationTitle(List<String> title, BarColor color, BarStyle style) {
-        this.title = title;
+    public AnimationTitle(List<String> title, AquaticBossBar.Color color, AquaticBossBar.Style style) {
+        this.title = StringExtKt.toAquatic(title);
         this.color = color;
         this.style = style;
     }
 
-    public List<String> getTitles() {
+    public List<AquaticString> getTitles() {
         return title;
     }
 
-    public BarColor getColor() {
+    public AquaticBossBar.Color getColor() {
         return color;
     }
 
-    public BarStyle getStyle() {
+    public AquaticBossBar.Style getStyle() {
         return style;
     }
 
-    public List<BossBar> create() {
-        List<BossBar> bars = new ArrayList<>();
-        for (String str : title) {
-            bars.add(Bukkit.createBossBar(str,color,style));
+    public List<AquaticBossBar> create() {
+        List<AquaticBossBar> bars = new ArrayList<>();
+        for (AquaticString str : title) {
+            bars.add(AquaticCrates.aquaticSeriesLib.getAdapter().getBossBarAdapter().create(
+                    str, color, style, 100.0
+            ));
         }
         return bars;
     }

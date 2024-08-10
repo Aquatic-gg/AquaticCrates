@@ -11,8 +11,8 @@ import cz.larkyy.aquaticcrates.animation.impl.PlacedCrateAnimation;
 import cz.larkyy.aquaticcrates.crate.reroll.Reroll;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.messages.Messages;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import org.bukkit.Location;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public class AnimationManager {
     private final Map<Player,Animation> animations;
     private final boolean skippable;
     private final boolean setPumpkinHelmet;
-    private final Map<Player, List<BossBar>> bossBars;
+    private final Map<Player, List<AquaticBossBar>> bossBars;
 
 
     public enum Type {
@@ -128,14 +128,14 @@ public class AnimationManager {
     }
 
 
-    public List<BossBar> showTitle(AnimationTitle title, Player p) {
-        List<BossBar> list = title.create();
+    public void showTitle(AnimationTitle title, Player p) {
+        List<AquaticBossBar> list = title.create();
         for (var item : list) {
             var rp = Reroll.get(p);
             if (rp == null) {
                 continue;
             }
-            item.setTitle(item.getTitle().replace("%rerolls-available%",
+            item.setText(item.getText().replace("%rerolls-available%",
                     (crate.getRerollManager().getPlayerLimit(p) - rp.getReroll())+""));
         }
 
@@ -148,7 +148,6 @@ public class AnimationManager {
         });
         bossBars.put(p,list);
 
-        return list;
     }
 
     public void hideTitle(Player p) {

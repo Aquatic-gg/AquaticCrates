@@ -26,6 +26,7 @@ import cz.larkyy.aquaticcrates.placeholders.Placeholder;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import cz.larkyy.aquaticcrates.utils.IReward;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -441,12 +442,12 @@ public class CrateConfig extends Config {
 
     private AnimationTitle loadAnimationTitle(String path) {
         if (!getConfiguration().contains(path)) {
-            return new AnimationTitle(new ArrayList<>(),BarColor.WHITE,BarStyle.SOLID);
+            return new AnimationTitle(new ArrayList<>(), AquaticBossBar.Color.WHITE, AquaticBossBar.Style.SOLID);
         }
 
         List<String> lines = getConfiguration().getStringList(path+".lines");
-        BarColor color = BarColor.valueOf(getConfiguration().getString(path+".color").toUpperCase());
-        BarStyle style = BarStyle.valueOf(getConfiguration().getString(path+".style").toUpperCase());
+        var color = AquaticBossBar.Color.valueOf(getConfiguration().getString(path+".color").toUpperCase());
+        var style = AquaticBossBar.Style.valueOf(getConfiguration().getString(path+".style").toUpperCase());
 
         return new AnimationTitle(lines,color,style);
     }
