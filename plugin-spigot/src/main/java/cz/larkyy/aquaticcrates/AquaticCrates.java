@@ -42,6 +42,7 @@ import xyz.larkyy.nms.v1_19_4.V1_19_4;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public final class AquaticCrates extends JavaPlugin {
 
@@ -127,7 +128,7 @@ public final class AquaticCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        aquaticSeriesLib = AquaticSeriesLib.Companion.init(this,10);
+        aquaticSeriesLib = AquaticSeriesLib.Companion.init(this, List.of());
         aquaticSeriesLib.setMessageFormatting(messageFormat);
 
         tasks = new Tasks();
