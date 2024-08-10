@@ -287,7 +287,7 @@ public class CrateConfig extends Config {
         if (getConfiguration().contains("preview.title")) {
             title = StringExtKt.toAquatic(getConfiguration().getString("preview.title"));
         } else {
-            title = StringExtKt.toAquatic(crate.getDisplayName()+" Preview");
+            title = StringExtKt.toAquatic(crate.getDisplayName().getString()+" Preview");
         }
         Menu.Builder builder = Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt("preview.size",54))
@@ -338,7 +338,7 @@ public class CrateConfig extends Config {
         if (getConfiguration().contains(path+"title")) {
             title = StringExtKt.toAquatic(getConfiguration().getString(path+"title"));
         } else {
-            title = StringExtKt.toAquatic(crate.getDisplayName()+" Reroll");
+            title = StringExtKt.toAquatic(crate.getDisplayName().getString()+" Reroll");
         }
         Menu.Builder builder =Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt(path+"size",27))

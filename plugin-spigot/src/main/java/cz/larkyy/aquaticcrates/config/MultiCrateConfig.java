@@ -80,7 +80,7 @@ public class MultiCrateConfig extends Config {
         if (getConfiguration().contains("preview.title")) {
             title = StringExtKt.toAquatic(getConfiguration().getString("preview.title"));
         } else {
-            title = StringExtKt.toAquatic(crate.getDisplayName()+" Preview");
+            title = StringExtKt.toAquatic(crate.getDisplayName().getString()+" Preview");
         }
         Menu.Builder builder =Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt("preview.size",54))
