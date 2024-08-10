@@ -36,7 +36,7 @@ public class AnimationTitle {
         List<AquaticBossBar> bars = new ArrayList<>();
         for (AquaticString str : title) {
             bars.add(AquaticCrates.aquaticSeriesLib.getAdapter().getBossBarAdapter().create(
-                    str, color, style, 100.0
+                    str, color, style, 1.0
             ));
         }
         return bars;
