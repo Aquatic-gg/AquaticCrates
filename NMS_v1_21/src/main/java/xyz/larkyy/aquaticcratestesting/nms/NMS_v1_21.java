@@ -206,7 +206,7 @@ public class NMS_v1_21 implements NMSHandler {
 
         try {
             final Field packetsField;
-            packetsField = packet.getClass().getDeclaredField("b");
+            packetsField = packet.getClass().getDeclaredField("c");
             packetsField.setAccessible(true);
 
             List<ClientboundPlayerInfoUpdatePacket.Entry> list = new ArrayList<>();
