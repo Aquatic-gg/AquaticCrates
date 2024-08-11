@@ -8,7 +8,7 @@ import cz.larkyy.aquaticcrates.crate.CrateHandler;
 import cz.larkyy.aquaticcrates.crate.CrateListener;
 import cz.larkyy.aquaticcrates.crate.price.OpenPrices;
 import cz.larkyy.aquaticcrates.crate.reward.RewardActions;
-import cz.larkyy.aquaticcrates.crate.reward.condition.RewardConditions;
+import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
 import cz.larkyy.aquaticcrates.dabatase.DatabaseManager;
 import cz.larkyy.aquaticcrates.editor.EditingHandler;
 import cz.larkyy.aquaticcrates.item.ItemHandler;
@@ -25,10 +25,10 @@ import cz.larkyy.nms.impl.impl.v1_18_R2;
 import cz.larkyy.nms.impl.impl.v1_19_R2;
 import cz.larkyy.aquaticcrates.hooks.PAPIHook;
 import cz.larkyy.nms.impl.v1_19_R3;
-import gg.aquatic.aquaticseries.lib.AbstractAquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.format.Format;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
+import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -57,7 +57,7 @@ public final class AquaticCrates extends JavaPlugin {
 
     private static ItemHandler itemHandler;
     private static OpenPrices openPrices;
-    private static RewardConditions rewardConditions;
+    //private static RewardConditions rewardConditions;
     private static EditingHandler editingHandler;
     private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean loaded = false;
@@ -117,6 +117,8 @@ public final class AquaticCrates extends JavaPlugin {
                 version = "v1_21";
             }
         }
+        RequirementTypes.INSTANCE.register("permission", new PermissionCondition());
+
         Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));
 
         var config = new Config(this,"config.yml");
@@ -134,7 +136,7 @@ public final class AquaticCrates extends JavaPlugin {
 
         tasks = new Tasks();
         openPrices = new OpenPrices();
-        rewardConditions = new RewardConditions();
+        //rewardConditions = new RewardConditions();
         rewardActions = new RewardActions();
         itemHandler = new ItemHandler();
         crateHandler = new CrateHandler();
@@ -271,9 +273,10 @@ public final class AquaticCrates extends JavaPlugin {
         return openPrices;
     }
 
-    public static RewardConditions getRewardConditions() {
+    /*public static RewardConditions getRewardConditions() {
         return rewardConditions;
     }
+     */
 
     public static EditingHandler getEditingHandler() {
         return editingHandler;

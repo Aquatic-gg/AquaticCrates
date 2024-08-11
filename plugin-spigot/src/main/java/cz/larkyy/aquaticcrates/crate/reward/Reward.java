@@ -1,9 +1,10 @@
 package cz.larkyy.aquaticcrates.crate.reward;
 
-import cz.larkyy.aquaticcrates.crate.reward.condition.ConfiguredRewardCondition;
 import cz.larkyy.aquaticcrates.placeholders.Placeholder;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import cz.larkyy.aquaticcrates.utils.IReward;
+import gg.aquatic.aquaticseries.lib.requirement.AbstractInstancedRequirement;
+import gg.aquatic.aquaticseries.lib.requirement.player.PlayerInstancedRequirement;
 import org.bukkit.entity.Player;
 import xyz.larkyy.itemlibrary.CustomItem;
 
@@ -21,13 +22,13 @@ public class Reward implements IReward {
     private final boolean giveItem;
     private final String modelAnimation;
     private final String permission;
-    private final List<ConfiguredRewardCondition> winConditions;
+    private final List<PlayerInstancedRequirement> winConditions;
     private final List<String> hologram;
     private final double hologramYOffset;
 
     public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredRewardAction> actions,
                   String permission, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation,
-                  List<ConfiguredRewardCondition> winConditions, String model, float modelYaw) {
+                  List<PlayerInstancedRequirement> winConditions, String model, float modelYaw) {
         this.identifier = identifier;
         this.item = item;
         this.chance = chance;
@@ -99,7 +100,7 @@ public class Reward implements IReward {
         return permission;
     }
 
-    public List<ConfiguredRewardCondition> getWinConditions() {
+    public List<PlayerInstancedRequirement> getWinConditions() {
         return winConditions;
     }
 }

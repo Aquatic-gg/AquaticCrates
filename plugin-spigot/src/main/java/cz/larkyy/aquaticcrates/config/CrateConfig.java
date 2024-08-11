@@ -17,9 +17,6 @@ import cz.larkyy.aquaticcrates.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcrates.crate.reward.ConfiguredRewardAction;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.crate.reward.RewardActions;
-import cz.larkyy.aquaticcrates.crate.reward.condition.ConfiguredRewardCondition;
-import cz.larkyy.aquaticcrates.crate.reward.condition.RewardCondition;
-import cz.larkyy.aquaticcrates.crate.reward.condition.RewardConditions;
 import cz.larkyy.aquaticcrates.menu.Menu;
 import cz.larkyy.aquaticcrates.menu.MenuItem;
 import cz.larkyy.aquaticcrates.placeholders.Placeholder;
@@ -28,12 +25,15 @@ import cz.larkyy.aquaticcrates.utils.IReward;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.requirement.AbstractRequirement;
+import gg.aquatic.aquaticseries.lib.requirement.RequirementArgument;
+import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
+import gg.aquatic.aquaticseries.lib.requirement.player.PlayerInstancedRequirement;
+import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirement;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.larkyy.colorutils.Colors;
@@ -210,16 +210,18 @@ public class CrateConfig extends Config {
         return rewards;
     }
 
-    private List<ConfiguredRewardCondition> loadRewardConditions(String path) {
-        List<ConfiguredRewardCondition> prices = new ArrayList<>();
+    private List<PlayerInstancedRequirement> loadRewardConditions(String path) {
+        List<PlayerInstancedRequirement> prices = new ArrayList<>();
         if (!getConfiguration().contains(path)) return prices;
         for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
             String p = path+"."+key;
-            RewardCondition type = RewardConditions.inst().getPriceType(getConfiguration().getString(p+".type"));
+            AbstractRequirement<?> type = RequirementTypes.INSTANCE.getRequirementTypes().get(getConfiguration().getString(p+".type"));
             if (type == null) {
                 continue;
             }
-            prices.add(new ConfiguredRewardCondition(type,loadArguments(p,type.getArgs())));
+            if (type instanceof PlayerRequirement playerRequirement) {
+                prices.add(new PlayerInstancedRequirement(playerRequirement,loadRequirementArguments(p,playerRequirement.arguments())));
+            }
         }
         return prices;
     }
@@ -493,6 +495,20 @@ public class CrateConfig extends Config {
                 args.put(arg.getId(),getConfiguration().get(path+"."+arg.getId()));
                 continue;
             } else if (arg.isRequired()) {
+                Bukkit.getConsoleSender().sendMessage(Colors.format("&cARGUMENT &4"+arg.getId()+" &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
+            }
+            args.put(arg.getId(),arg.getDefaultValue());
+        }
+        return args;
+    }
+    private Map<String,Object> loadRequirementArguments(String path, List<RequirementArgument> arguments) {
+        Map<String,Object> args = new HashMap<>();
+
+        for (RequirementArgument arg : arguments) {
+            if (getConfiguration().getConfigurationSection(path).getKeys(false).contains(arg.getId())) {
+                args.put(arg.getId(),getConfiguration().get(path+"."+arg.getId()));
+                continue;
+            } else if (arg.getRequired()) {
                 Bukkit.getConsoleSender().sendMessage(Colors.format("&cARGUMENT &4"+arg.getId()+" &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
             }
             args.put(arg.getId(),arg.getDefaultValue());

@@ -48,7 +48,7 @@ public class RewardUtils {
         for (Reward r : rewards) {
             if (r.getWinConditions().isEmpty()) {
                 rewardList.add(r);
-            } else if (r.getWinConditions().stream().allMatch(c -> c.check(player, crate))) {
+            } else if (r.getWinConditions().stream().allMatch(c -> c.check(player))) {
                 rewardList.add(r);
             }
         }
