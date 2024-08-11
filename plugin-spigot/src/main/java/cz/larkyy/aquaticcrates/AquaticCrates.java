@@ -25,6 +25,7 @@ import cz.larkyy.nms.impl.impl.v1_18_R2;
 import cz.larkyy.nms.impl.impl.v1_19_R2;
 import cz.larkyy.aquaticcrates.hooks.PAPIHook;
 import cz.larkyy.nms.impl.v1_19_R3;
+import gg.aquatic.aquaticseries.lib.AbstractAquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.format.Format;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;

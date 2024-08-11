@@ -63,6 +63,11 @@
 
     <repositories>
         <repository>
+            <id>reposilite-repository-releases</id>
+            <name>Reposilite Repository</name>
+            <url>https://repo.nekroplex.com/releases</url>
+        </repository>
+        <repository>
             <id>jitpack-repo</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -87,9 +92,26 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>gg.aquatic.aquaticseries</groupId>
+            <artifactId>aquaticlib-21</artifactId>
+            <classifier>plugin</classifier>
+            <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>gg.aquatic.aquaticseries.lib</groupId>
+                    <artifactId>aquatic-lib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>gg.aquatic.aquaticseries.core</groupId>
+                    <artifactId>core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
@@ -150,11 +172,6 @@
             <groupId>cz.larkyy</groupId>
             <artifactId>api</artifactId>
             <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>gg.aquatic.aquaticseries</groupId>
-            <artifactId>aquatic-lib-21</artifactId>
-            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
