@@ -99,7 +99,7 @@
         <dependency>
             <groupId>gg.aquatic.aquaticseries</groupId>
             <artifactId>aquaticlib-21</artifactId>
-            <classifier>plugin</classifier>
+            <classifier>all</classifier>
             <version>1.0.0</version>
             <exclusions>
                 <exclusion>
