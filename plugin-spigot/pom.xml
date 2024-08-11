@@ -110,6 +110,14 @@
                     <groupId>gg.aquatic.aquaticseries.core</groupId>
                     <artifactId>core</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.jetbrains.kotlin</groupId>
+                    <artifactId>kotlin-stdlib</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.lumine</groupId>
+                    <artifactId>Mythic-Dist</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
