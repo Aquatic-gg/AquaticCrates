@@ -27,6 +27,7 @@ import cz.larkyy.aquaticcrates.utils.IReward;
 import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
 import gg.aquatic.aquaticseries.lib.action.ActionSerializer;
+import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
@@ -249,12 +250,18 @@ public class CrateConfig extends Config {
         float modelYaw = (float) getConfiguration().getDouble(path + ".model-yaw");
         String modelAnimation = getConfiguration().getString(path + ".open-animation", null);
         boolean giveItem = getConfiguration().getBoolean(path + ".give-item", false);
+
+        List<ConfiguredAction> actions = new ArrayList<>();
+        var section = getConfiguration().getConfigurationSection(path);
+        if (section != null) {
+            actions = ActionSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(section,"actions"));
+        }
         return new Reward(
                 id,
                 item,
                 previewItem,
                 chance,
-                loadRewardActions(path + ".actions"),
+                actions,
                 permission,
                 giveItem,
                 loadHologram(path + ".hologram"),

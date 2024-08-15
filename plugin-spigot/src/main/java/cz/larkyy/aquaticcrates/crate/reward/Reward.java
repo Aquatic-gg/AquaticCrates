@@ -1,10 +1,10 @@
 package cz.larkyy.aquaticcrates.crate.reward;
 
-import cz.larkyy.aquaticcrates.placeholders.Placeholder;
-import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import cz.larkyy.aquaticcrates.utils.IReward;
-import gg.aquatic.aquaticseries.lib.requirement.AbstractInstancedRequirement;
+import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerInstancedRequirement;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.entity.Player;
 import xyz.larkyy.itemlibrary.CustomItem;
 
@@ -17,7 +17,7 @@ public class Reward implements IReward {
     private final CustomItem previewItem;
     private final String model;
     private final float modelYaw;
-    private final List<ConfiguredRewardAction> actions;
+    private final List<ConfiguredAction> actions;
     private final double chance;
     private final boolean giveItem;
     private final String modelAnimation;
@@ -26,7 +26,7 @@ public class Reward implements IReward {
     private final List<String> hologram;
     private final double hologramYOffset;
 
-    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredRewardAction> actions,
+    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredAction> actions,
                   String permission, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation,
                   List<PlayerInstancedRequirement> winConditions, String model, float modelYaw) {
         this.identifier = identifier;
@@ -57,10 +57,12 @@ public class Reward implements IReward {
             });
         }
         Placeholders placeholders = new Placeholders(
-                new Placeholder("%player%",player.getName()),
-                new Placeholder("%reward%",getPreviewItem().getItem().getItemMeta().getDisplayName()),
-                new Placeholder("%chance%",chance+"")
+
         );
+
+        placeholders.addPlaceholder(new Placeholder("%player%",player.getName()));
+        placeholders.addPlaceholder(new Placeholder("%reward%",getPreviewItem().getItem().getItemMeta().getDisplayName()));
+        placeholders.addPlaceholder(new Placeholder("%chance%",chance+""));
         actions.forEach(a -> a.run(player,placeholders));
     }
 
