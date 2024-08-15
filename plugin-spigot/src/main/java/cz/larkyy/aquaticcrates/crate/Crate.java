@@ -8,6 +8,7 @@ import cz.larkyy.aquaticcrates.api.events.CrateOpenEvent;
 import cz.larkyy.aquaticcrates.api.events.KeyUseEvent;
 import cz.larkyy.aquaticcrates.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcrates.crate.inventories.RerollGUI;
+import cz.larkyy.aquaticcrates.crate.inventories.settings.PreviewGUISettings;
 import cz.larkyy.aquaticcrates.crate.milestone.Milestone;
 import cz.larkyy.aquaticcrates.crate.milestone.MilestoneHandler;
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
@@ -40,7 +41,6 @@ public class Crate extends CrateBase {
     private final Key key;
     private final List<Reward> rewards;
 
-    private final AtomicReference<PreviewGUI> previewGUI;
     private final AtomicReference<RerollGUI> rerollGUI;
     private final AtomicReference<RerollManager> rerollManager;
     private final AtomicReference<AnimationManager> animationManager;
@@ -48,10 +48,10 @@ public class Crate extends CrateBase {
     private final boolean instantWhileSneaking;
     private final PriceHandler priceHandler;
     private final MilestoneHandler milestoneHandler;
+    private final PreviewGUISettings previewGUISettings;
 
     public Crate(String identifier, AquaticString displayName, CustomItem key, ModelSettings modelSettings,
                  List<Reward> rewards, boolean requiresCrateToOpen, boolean mustBeHeld,
-                 AtomicReference<PreviewGUI> previewGUI,
                  AtomicReference<RerollGUI> rerollGUI,
                  AtomicReference<RerollManager> rerollManager,
                  AtomicReference<AnimationManager> animationManager,
@@ -59,11 +59,11 @@ public class Crate extends CrateBase {
                  double hologramYOffset, String permission, boolean instantWhileSneaking,
                  PriceHandler priceHandler, TreeMap<Integer, Milestone> milestones,
                  HashMap<Integer,Milestone> repeatableMilestones, int hitboxHeight,
-                 int hitboxWidth) {
+                 int hitboxWidth, PreviewGUISettings previewGUISettings) {
         super(identifier,displayName,modelSettings,hologram,hologramYOffset,hitboxHeight,hitboxWidth);
+        this.previewGUISettings = previewGUISettings;
         this.key = new Key(key,this,requiresCrateToOpen, mustBeHeld);
         this.rewards = rewards;
-        this.previewGUI = previewGUI;
         this.rerollGUI = rerollGUI;
         this.rerollManager = rerollManager;
         this.animationManager = animationManager;
@@ -81,20 +81,21 @@ public class Crate extends CrateBase {
         return priceHandler;
     }
 
+    public PreviewGUISettings getPreviewGUISettings() {
+        return previewGUISettings;
+    }
+
     public void openPreview(Player p, PlacedCrate pc) {
         if (AquaticCrates.getCrateHandler().isInAnimation(p)) {
             return;
         }
-        PreviewGUI gui = previewGUI.get();
-        if (gui == null) {
-            return;
-        }
+        var gui = new PreviewGUI(this, p);
         if (pc == null) {
             if (!gui.isOpenableByKey()) {
                 return;
             }
         }
-        gui.open(p,0, pc);
+        gui.open(p,pc);
     }
 
     public void openRerollGUI(MenuReroll reroll) {
@@ -103,10 +104,6 @@ public class Crate extends CrateBase {
             return;
         }
         gui.open(reroll);
-    }
-
-    public PreviewGUI getPreviewGUI() {
-        return previewGUI.get();
     }
 
     public Key getKey() {

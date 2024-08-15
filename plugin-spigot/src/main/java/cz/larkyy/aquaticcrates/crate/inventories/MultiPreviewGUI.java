@@ -1,74 +1,75 @@
 package cz.larkyy.aquaticcrates.crate.inventories;
 
-import cz.larkyy.aquaticcrates.crate.MultiCrate;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.PlacedMultiCrate;
-import cz.larkyy.aquaticcrates.menu.Menu;
-import cz.larkyy.aquaticcrates.menu.MenuItem;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
-import me.clip.placeholderapi.PlaceholderAPI;
+import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
+import gg.aquatic.aquaticseries.lib.inventory.lib.event.ComponentClickEvent;
+import gg.aquatic.aquaticseries.lib.inventory.lib.inventory.PersonalizedInventory;
+import gg.aquatic.aquaticseries.lib.inventory.lib.title.TitleHolder;
+import gg.aquatic.aquaticseries.lib.inventory.lib.title.component.BasicTitleComponent;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
+import java.util.function.Consumer;
 
-public class MultiPreviewGUI {
-    private final MultiCrate multiCrate;
-    private final Menu.Builder mb;
+public class MultiPreviewGUI extends PersonalizedInventory {
+    private final PlacedMultiCrate multiCrate;
 
-    public MultiPreviewGUI(MultiCrate crate, Menu.Builder mb) {
-        this.multiCrate = crate;
-        this.mb = mb;
+    public MultiPreviewGUI(PlacedMultiCrate multiCrate, @NotNull Player player) {
+        super(TitleHolder.Companion.of(
+                new BasicTitleComponent(StringExtKt.toAquatic(multiCrate.getMultiCrate().getPreviewSettings().getSettings().getTitle()))
+        ), multiCrate.getMultiCrate().getPreviewSettings().getSettings().getSize(), player, factory -> {});
+        this.multiCrate = multiCrate;
+
+        addItems();
     }
 
-    public void open(Player p, PlacedMultiCrate pmc) {
-        Menu.Builder builder = mb.clone();
-        Menu m = builder.build();
-
-        for (Map.Entry<String, MenuItem> entry : m.getItems().entrySet()) {
-            String id = entry.getKey();
-            MenuItem mi = entry.getValue();
+    private void addItems() {
+        for (var entry : multiCrate.getMultiCrate().getPreviewSettings().getSettings().getButtons().entrySet()) {
+            var id = entry.getKey();
+            var button = entry.getValue();
+            var placeholders = new Placeholders();
+            placeholders.addPlaceholder(new Placeholder("%player%", getPlayer().getName()));
 
             if (id.startsWith("crate-")) {
                 String crateId = id.substring(6);
-                if (!pmc.getPlacedCrates().containsKey(crateId)) continue;
-                PlacedCrate pc = pmc.getPlacedCrates().get(crateId);
-                mi.addAction(e -> {
-                    if (e.isRightClick()) {
-                        pc.getCrate().openPreview(p,pc);
+                if (!multiCrate.getPlacedCrates().containsKey(crateId)) continue;
+                PlacedCrate pc = multiCrate.getPlacedCrates().get(crateId);
+
+                addActionToButton(button, e -> {
+                    if (e.getOriginalEvent().isRightClick()) {
+                        pc.getCrate().openPreview(getPlayer(),pc);
                     } else {
-                        p.closeInventory();
-                        pc.getCrate().open(CratePlayer.get(p),pc,false);
+                        getPlayer().closeInventory();
+                        pc.getCrate().open(CratePlayer.get(getPlayer()),pc,false);
                     }
+                    e.getOriginalEvent().setCancelled(true);
                 });
+
+                this.getComponentHandler().getComponents().put(id, button);
+            } else if (id.equals("close-button")) {
+                addActionToButton(button, e -> {
+                    getPlayer().closeInventory();
+                    e.getOriginalEvent().setCancelled(true);
+                });
+
+                this.getComponentHandler().getComponents().put(id, button);
+            } else {
+                this.getComponentHandler().getComponents().put(id, button);
             }
         }
+        redrawComponents();
+    }
 
-        MenuItem mi;
-        mi = m.getItem("close-button");
-        if (mi != null) {
-            mi.addAction(e -> {
-                p.closeInventory();
-            });
+    private void addActionToButton(Button button, Consumer<ComponentClickEvent> consumer) {
+        if (button.getOnClick() != null) {
+            button.getOnClick().andThen(consumer);
+        } else {
+            button.setOnClick(consumer);
         }
-        for (ItemStack is : m.getInventory().getContents()) {
-            if (is == null) {
-                continue;
-            }
-            if (is.getItemMeta() == null) {
-                continue;
-            }
-
-            if (is.getItemMeta().getLore() == null) {
-                continue;
-            }
-
-            ItemMeta im = is.getItemMeta();
-            im.setLore(PlaceholderAPI.setPlaceholders(p.getPlayer(),im.getLore()));
-            is.setItemMeta(im);
-        }
-
-        p.openInventory(m.getInventory());
     }
 }

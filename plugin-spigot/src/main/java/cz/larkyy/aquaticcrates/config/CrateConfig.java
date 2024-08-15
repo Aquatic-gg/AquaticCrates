@@ -7,6 +7,8 @@ import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.animation.AnimationManager;
 import cz.larkyy.aquaticcrates.crate.inventories.PreviewGUI;
 import cz.larkyy.aquaticcrates.crate.inventories.RerollGUI;
+import cz.larkyy.aquaticcrates.crate.inventories.settings.CustomInventorySettings;
+import cz.larkyy.aquaticcrates.crate.inventories.settings.PreviewGUISettings;
 import cz.larkyy.aquaticcrates.crate.milestone.Milestone;
 import cz.larkyy.aquaticcrates.crate.milestone.MilestoneReward;
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimation;
@@ -22,25 +24,32 @@ import cz.larkyy.aquaticcrates.menu.MenuItem;
 import cz.larkyy.aquaticcrates.placeholders.Placeholder;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import cz.larkyy.aquaticcrates.utils.IReward;
+import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.action.ActionSerializer;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.requirement.AbstractRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementArgument;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerInstancedRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirement;
+import gg.aquatic.aquaticseries.nms.v1_20_4.NMS_1_20_4;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.larkyy.aquaticcratestesting.nms_v_1_20_4.NMS_v1_20_4;
 import xyz.larkyy.colorutils.Colors;
 import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.io.File;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class CrateConfig extends Config {
@@ -49,11 +58,10 @@ public class CrateConfig extends Config {
 
     public CrateConfig(JavaPlugin main, File f) {
         super(main, f);
-        this.identifier = f.getName().substring(0,f.getName().length()-4);
+        this.identifier = f.getName().substring(0, f.getName().length() - 4);
     }
 
     public Crate loadCrate() {
-        AtomicReference<PreviewGUI> previewGUIAtomicReference = new AtomicReference<>(null);
         AtomicReference<RerollGUI> rerollGUIAtomicReference = new AtomicReference<>(null);
         AtomicReference<RerollManager> rerollManagerAtomicReference = new AtomicReference<>(null);
         AtomicReference<AnimationManager> animationAtomicReference = new AtomicReference<>(null);
@@ -64,57 +72,56 @@ public class CrateConfig extends Config {
         }
         Crate c = new Crate(
                 identifier,
-                StringExtKt.toAquatic(getConfiguration().getString("display-name",identifier)),
+                StringExtKt.toAquatic(getConfiguration().getString("display-name", identifier)),
                 key,
                 loadModelSettings(),
                 loadRewards(),
-                getConfiguration().getBoolean("key.requires-crate-to-open",true),
-                getConfiguration().getBoolean("key.must-be-held",false),
-                previewGUIAtomicReference,
+                getConfiguration().getBoolean("key.requires-crate-to-open", true),
+                getConfiguration().getBoolean("key.must-be-held", false),
                 rerollGUIAtomicReference,
                 rerollManagerAtomicReference,
                 animationAtomicReference,
                 loadHologram("hologram"),
-                getConfiguration().getDouble("hologram-y-offset",0),
+                getConfiguration().getDouble("hologram-y-offset", 0),
                 getConfiguration().getString("open-permission"),
-                getConfiguration().getBoolean("instant-open-while-sneaking",true),
+                getConfiguration().getBoolean("instant-open-while-sneaking", true),
                 loadPriceHandler(),
                 loadMilestones(),
                 loadRepeatableMilestones(),
-                getConfiguration().getInt("hitbox-height",1),
-                getConfiguration().getInt("hitbox-width",1)
+                getConfiguration().getInt("hitbox-height", 1),
+                getConfiguration().getInt("hitbox-width", 1),
+                loadPreviewGUI(identifier)
         );
-        loadPreviewGUI(c,previewGUIAtomicReference);
-        loadRerollGUI(c,rerollGUIAtomicReference);
-        loadRerollManager(c,rerollManagerAtomicReference);
-        loadAnimationManager(c,animationAtomicReference);
+        loadRerollGUI(c, rerollGUIAtomicReference);
+        loadRerollManager(c, rerollManagerAtomicReference);
+        loadAnimationManager(c, animationAtomicReference);
 
-        c.setBlockType(Material.valueOf(getConfiguration().getString("block-type","BARRIER").toUpperCase()));
+        c.setBlockType(Material.valueOf(getConfiguration().getString("block-type", "BARRIER").toUpperCase()));
 
         return c;
     }
 
     private ModelSettings loadModelSettings() {
         String modelId = getConfiguration().getString("model");
-        int period = getConfiguration().getInt("idle-animation-period",-1);
+        int period = getConfiguration().getInt("idle-animation-period", -1);
         if (!getConfiguration().contains("idle-animations")) {
-            return new ModelSettings(modelId, new ModelAnimations(new ArrayList<>(),period));
+            return new ModelSettings(modelId, new ModelAnimations(new ArrayList<>(), period));
         }
         List<ModelAnimation> animations = new ArrayList<>();
         for (String key : getConfiguration().getConfigurationSection("idle-animations").getKeys(false)) {
-            String animationId = getConfiguration().getString("idle-animations."+key+".animation");
-            int animationLength = getConfiguration().getInt("idle-animations."+key+".length");
-            animations.add(new ModelAnimation(animationId,animationLength));
+            String animationId = getConfiguration().getString("idle-animations." + key + ".animation");
+            int animationLength = getConfiguration().getInt("idle-animations." + key + ".length");
+            animations.add(new ModelAnimation(animationId, animationLength));
         }
-        return new ModelSettings(modelId,new ModelAnimations(animations,period));
+        return new ModelSettings(modelId, new ModelAnimations(animations, period));
     }
 
     private PriceHandler loadPriceHandler() {
         List<PriceGroup> priceGroups = new ArrayList<>();
         if (!getConfiguration().contains("open-prices")) {
-            Map<String,Object> args = new HashMap<>();
-            args.put("crate",null);
-            args.put("amount",1);
+            Map<String, Object> args = new HashMap<>();
+            args.put("crate", null);
+            args.put("amount", 1);
             return new PriceHandler(List.of(new PriceGroup(List.of(
                     new ConfiguredPrice(
                             OpenPrices.inst().getPriceType("key"),
@@ -125,7 +132,7 @@ public class CrateConfig extends Config {
 
 
         for (String key : getConfiguration().getConfigurationSection("open-prices").getKeys(false)) {
-            PriceGroup group = loadPriceGroup("open-prices."+key);
+            PriceGroup group = loadPriceGroup("open-prices." + key);
             if (group == null) continue;
             priceGroups.add(group);
         }
@@ -136,12 +143,12 @@ public class CrateConfig extends Config {
     private PriceGroup loadPriceGroup(String path) {
         List<ConfiguredPrice> prices = new ArrayList<>();
         for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
-            String p = path+"."+key;
-            OpenPrice type = OpenPrices.inst().getPriceType(getConfiguration().getString(p+".type"));
+            String p = path + "." + key;
+            OpenPrice type = OpenPrices.inst().getPriceType(getConfiguration().getString(p + ".type"));
             if (type == null) {
                 continue;
             }
-            prices.add(new ConfiguredPrice(type,loadArguments(p,type.getArgs())));
+            prices.add(new ConfiguredPrice(type, loadArguments(p, type.getArgs())));
         }
 
         PriceGroup group = new PriceGroup(prices);
@@ -153,7 +160,7 @@ public class CrateConfig extends Config {
     }
 
     private CustomItem loadItem(String path) {
-        return CustomItem.loadFromYaml(getConfiguration(),path);
+        return CustomItem.loadFromYaml(getConfiguration(), path);
     }
 
     private List<Reward> loadRewards() {
@@ -162,7 +169,7 @@ public class CrateConfig extends Config {
             return list;
         }
         getConfiguration().getConfigurationSection("rewards").getKeys(false).forEach(rStr -> {
-            Reward r = loadReward("rewards."+rStr,rStr);
+            Reward r = loadReward("rewards." + rStr, rStr);
             if (r != null) {
                 if (r.getItem().getItem() == null || r.getPreviewItem().getItem() == null || r.getItem().getItem().getItemMeta() == null || r.getPreviewItem().getItem().getItemMeta() == null) {
                     Bukkit.getConsoleSender().sendMessage("§cReward §l" + rStr + "§c could not be loaded!");
@@ -173,29 +180,31 @@ public class CrateConfig extends Config {
         });
         return list;
     }
-    private TreeMap<Integer,Milestone> loadMilestones() {
-        TreeMap<Integer,Milestone> milestones = new TreeMap<>();
+
+    private TreeMap<Integer, Milestone> loadMilestones() {
+        TreeMap<Integer, Milestone> milestones = new TreeMap<>();
         if (!getConfiguration().contains("milestones")) return milestones;
         for (String key : getConfiguration().getConfigurationSection("milestones").getKeys(false)) {
-            String path = "milestones."+key;
-            var milestoneRewards = loadMilestoneRewards(path+".rewards");
-            var milestone = getConfiguration().getInt(path+".milestone");
-            var displayName = getConfiguration().getString(path+".display-name","milestone-"+milestone);
+            String path = "milestones." + key;
+            var milestoneRewards = loadMilestoneRewards(path + ".rewards");
+            var milestone = getConfiguration().getInt(path + ".milestone");
+            var displayName = getConfiguration().getString(path + ".display-name", "milestone-" + milestone);
 
-            milestones.put(milestone,new Milestone(milestone,milestoneRewards, StringExtKt.toAquatic(displayName)));
+            milestones.put(milestone, new Milestone(milestone, milestoneRewards, StringExtKt.toAquatic(displayName)));
         }
         return milestones;
     }
-    private HashMap<Integer,Milestone> loadRepeatableMilestones() {
-        HashMap<Integer,Milestone> milestones = new HashMap<>();
+
+    private HashMap<Integer, Milestone> loadRepeatableMilestones() {
+        HashMap<Integer, Milestone> milestones = new HashMap<>();
         if (!getConfiguration().contains("repeatable-milestones")) return milestones;
         for (String key : getConfiguration().getConfigurationSection("repeatable-milestones").getKeys(false)) {
-            String path = "repeatable-milestones."+key;
-            var milestoneRewards = loadMilestoneRewards(path+".rewards");
-            var milestone = getConfiguration().getInt(path+".milestone");
-            var displayName = getConfiguration().getString(path+".display-name","milestone-"+milestone);
+            String path = "repeatable-milestones." + key;
+            var milestoneRewards = loadMilestoneRewards(path + ".rewards");
+            var milestone = getConfiguration().getInt(path + ".milestone");
+            var displayName = getConfiguration().getString(path + ".display-name", "milestone-" + milestone);
 
-            milestones.put(milestone,new Milestone(milestone,milestoneRewards,StringExtKt.toAquatic(displayName)));
+            milestones.put(milestone, new Milestone(milestone, milestoneRewards, StringExtKt.toAquatic(displayName)));
         }
         return milestones;
     }
@@ -203,9 +212,9 @@ public class CrateConfig extends Config {
     private List<IReward> loadMilestoneRewards(String path) {
         var rewards = new ArrayList<IReward>();
         for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
-            var reward = loadReward(path+"."+key,key);
+            var reward = loadReward(path + "." + key, key);
             if (reward == null) continue;
-            rewards.add(new MilestoneReward(reward,reward.getChance()));
+            rewards.add(new MilestoneReward(reward, reward.getChance()));
         }
         return rewards;
     }
@@ -214,13 +223,13 @@ public class CrateConfig extends Config {
         List<PlayerInstancedRequirement> prices = new ArrayList<>();
         if (!getConfiguration().contains(path)) return prices;
         for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
-            String p = path+"."+key;
-            AbstractRequirement<?> type = RequirementTypes.INSTANCE.getRequirementTypes().get(getConfiguration().getString(p+".type"));
+            String p = path + "." + key;
+            AbstractRequirement<?> type = RequirementTypes.INSTANCE.getRequirementTypes().get(getConfiguration().getString(p + ".type"));
             if (type == null) {
                 continue;
             }
             if (type instanceof PlayerRequirement playerRequirement) {
-                prices.add(new PlayerInstancedRequirement(playerRequirement,loadRequirementArguments(p,playerRequirement.arguments())));
+                prices.add(new PlayerInstancedRequirement(playerRequirement, loadRequirementArguments(p, playerRequirement.arguments())));
             }
         }
         return prices;
@@ -228,32 +237,32 @@ public class CrateConfig extends Config {
 
     private Reward loadReward(String path, String id) {
         if (AquaticCrates.configDebug)
-            Bukkit.getConsoleSender().sendMessage("[AquaticCrates] Loading reward: "+id);
-        CustomItem item = loadItem(path+".item");
+            Bukkit.getConsoleSender().sendMessage("[AquaticCrates] Loading reward: " + id);
+        CustomItem item = loadItem(path + ".item");
         if (item == null) {
             if (AquaticCrates.configDebug)
-                Bukkit.getConsoleSender().sendMessage("The reward "+path+" could not be loaded, because the item is null!");
+                Bukkit.getConsoleSender().sendMessage("The reward " + path + " could not be loaded, because the item is null!");
             return null;
         }
-        CustomItem previewItem = loadItem(path+".preview-item");
-        double chance = getConfiguration().getDouble(path+".chance");
-        String permission = getConfiguration().getString(path+".permission");
-        String model = getConfiguration().getString(path+".model");
-        float modelYaw = (float) getConfiguration().getDouble(path+".model-yaw");
-        String modelAnimation = getConfiguration().getString(path+".open-animation",null);
-        boolean giveItem = getConfiguration().getBoolean(path+".give-item",false);
+        CustomItem previewItem = loadItem(path + ".preview-item");
+        double chance = getConfiguration().getDouble(path + ".chance");
+        String permission = getConfiguration().getString(path + ".permission");
+        String model = getConfiguration().getString(path + ".model");
+        float modelYaw = (float) getConfiguration().getDouble(path + ".model-yaw");
+        String modelAnimation = getConfiguration().getString(path + ".open-animation", null);
+        boolean giveItem = getConfiguration().getBoolean(path + ".give-item", false);
         return new Reward(
                 id,
                 item,
                 previewItem,
                 chance,
-                loadRewardActions(path+".actions"),
+                loadRewardActions(path + ".actions"),
                 permission,
                 giveItem,
-                loadHologram(path+".hologram"),
-                getConfiguration().getDouble(path+".hologram-y-offset",0),
+                loadHologram(path + ".hologram"),
+                getConfiguration().getDouble(path + ".hologram-y-offset", 0),
                 modelAnimation,
-                loadRewardConditions(path+".conditions"),
+                loadRewardConditions(path + ".conditions"),
                 model,
                 modelYaw
         );
@@ -280,24 +289,24 @@ public class CrateConfig extends Config {
         return getConfiguration().getStringList(path);
     }
 
-    private void loadPreviewGUI(Crate crate,AtomicReference<PreviewGUI> atomicReference) {
-        if (!getConfiguration().contains("preview") || !getConfiguration().getBoolean("preview.enabled",true)) {
-            return;
+    private PreviewGUISettings loadPreviewGUI(String crateId) {
+        if (!getConfiguration().contains("preview") || !getConfiguration().getBoolean("preview.enabled", true)) {
+            return null;
         }
 
-        AquaticString title;
+        String title;
         if (getConfiguration().contains("preview.title")) {
-            title = StringExtKt.toAquatic(getConfiguration().getString("preview.title"));
+            title = (getConfiguration().getString("preview.title"));
         } else {
-            title = StringExtKt.toAquatic(crate.getDisplayName().getString()+" Preview");
+            title = crateId + " Preview";
         }
         Menu.Builder builder = Menu.builder(AquaticCrates.instance())
-                .size(getConfiguration().getInt("preview.size",54))
-                .title(title.getString());
+                .size(getConfiguration().getInt("preview.size", 54))
+                .title(title);
 
         if (getConfiguration().contains("preview.items")) {
             for (String str : getConfiguration().getConfigurationSection("preview.items").getKeys(false)) {
-                var item = loadMenuItem(str,"preview.items."+str);
+                var item = loadMenuItem(str, "preview.items." + str);
                 if (item != null) {
                     builder.addItem(item);
 
@@ -305,56 +314,101 @@ public class CrateConfig extends Config {
             }
         }
         List<String> rewardLore = getConfiguration().getStringList("preview.reward-lore");
+        List<Integer> rewardSlots = getConfiguration().getIntegerList("preview.reward-slots");
 
-        var milestonesItem = loadMenuItem("milestones","preview.milestones");
-        String milestoneFormat= getConfiguration().getString("preview.milestones.format", "&7 - &f%milestone% &7(%remains%/%required%)");
-        String milestoneFormatReached= getConfiguration().getString("preview.milestones.reached-format", "&7 - &a%milestone% &7(Reached)");
+        var milestonesItem = loadButton("preview.milestones");
+        String milestoneFormat = getConfiguration().getString("preview.milestones.format", "&7 - &f%milestone% &7(%remains%/%required%)");
+        String milestoneFormatReached = getConfiguration().getString("preview.milestones.reached-format", "&7 - &a%milestone% &7(Reached)");
+        var openableUsingKey = getConfiguration().getBoolean("preview.openable-using-key", false);
+        var clearBottomInventory = getConfiguration().getBoolean("preview.clear-bottom-inventory", false);
 
-        var repeatableMilestonesItem = getConfiguration().contains("repeatable-milestones") ? loadMenuItem("repeatable-milestones","preview.repeatable-milestones") : null;
-        String repeatableMilestoneFormat= getConfiguration().getString("preview.repeatable-milestones.format","&7 - &f%milestone% &7(%remains%/%required%)");
+        var repeatableMilestonesItem = getConfiguration().contains("repeatable-milestones") ? loadButton("preview.repeatable-milestones") : null;
+        String repeatableMilestoneFormat = getConfiguration().getString("preview.repeatable-milestones.format", "&7 - &f%milestone% &7(%remains%/%required%)");
 
-        atomicReference.set(new PreviewGUI(crate,
-                builder,
-                getConfiguration().getIntegerList("preview.reward-slots"),
-                rewardLore,
-                getConfiguration().getBoolean("preview.openable-by-key",false),
+        var buttons = loadInventoryButtons(getConfiguration().getConfigurationSection("preview.items"));
+        return new PreviewGUISettings(
+                new CustomInventorySettings(title, getConfiguration().getInt("preview.size", 54), buttons),
+                rewardSlots,
                 milestonesItem,
                 milestoneFormat,
                 milestoneFormatReached,
                 repeatableMilestonesItem,
-                repeatableMilestoneFormat
-            )
+                repeatableMilestoneFormat,
+                rewardLore,
+                openableUsingKey,
+                clearBottomInventory
         );
     }
 
+    private Map<String, Button> loadInventoryButtons(ConfigurationSection section) {
+        Map<String, Button> buttons = new HashMap<>();
+        if (section == null) return buttons;
+        for (String key : section.getKeys(false)) {
+            var buttonSection = section.getConfigurationSection(key);
+            assert buttonSection != null;
+            var button = loadButton(buttonSection);
+            buttons.put(key, button);
+        }
+        return buttons;
+    }
 
-    private void loadRerollGUI(Crate crate,AtomicReference<RerollGUI> atomicReference) {
-        if ((!getConfiguration().contains("reroll") || !getConfiguration().getBoolean("reroll.enabled",true))
-                || !getConfiguration().getString("reroll.type","Interaction").equalsIgnoreCase("gui")) {
+    private Button loadButton(String path) {
+        if (!getConfiguration().contains(path)) {
+            return null;
+        }
+        return loadButton(getConfiguration().getConfigurationSection(path));
+    }
+
+    private Button loadButton(ConfigurationSection section) {
+        if (section == null) {
+            return null;
+        }
+        var button = Button.Companion.fromConfig(section);
+        var sections = ConfigExtKt.getSectionList(section, "click-actions");
+        var actions = ActionSerializer.INSTANCE.fromSections(sections);
+
+        button.setOnClick(e -> {
+            e.getOriginalEvent().setCancelled(true);
+            var placeholders = new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders();
+            placeholders.addPlaceholder(new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder("%player%",e.getOriginalEvent().getWhoClicked().getName()));
+            actions.forEach(action -> {
+                action.run((Player) e.getOriginalEvent().getWhoClicked(),placeholders);
+            });
+        });
+
+        button.setPriority(1);
+
+        return button;
+    }
+
+
+    private void loadRerollGUI(Crate crate, AtomicReference<RerollGUI> atomicReference) {
+        if ((!getConfiguration().contains("reroll") || !getConfiguration().getBoolean("reroll.enabled", true))
+                || !getConfiguration().getString("reroll.type", "Interaction").equalsIgnoreCase("gui")) {
             return;
         }
 
         String path = "reroll.gui.";
 
         AquaticString title;
-        if (getConfiguration().contains(path+"title")) {
-            title = StringExtKt.toAquatic(getConfiguration().getString(path+"title"));
+        if (getConfiguration().contains(path + "title")) {
+            title = StringExtKt.toAquatic(getConfiguration().getString(path + "title"));
         } else {
-            title = StringExtKt.toAquatic(crate.getDisplayName().getString()+" Reroll");
+            title = StringExtKt.toAquatic(crate.getDisplayName().getString() + " Reroll");
         }
-        Menu.Builder builder =Menu.builder(AquaticCrates.instance())
-                .size(getConfiguration().getInt(path+"size",27))
+        Menu.Builder builder = Menu.builder(AquaticCrates.instance())
+                .size(getConfiguration().getInt(path + "size", 27))
                 .title(title.getString());
 
-        if (getConfiguration().contains(path+"items")) {
-            for (String str : getConfiguration().getConfigurationSection(path+"items").getKeys(false)) {
-                var item = loadMenuItem(str,path+"items."+str);
+        if (getConfiguration().contains(path + "items")) {
+            for (String str : getConfiguration().getConfigurationSection(path + "items").getKeys(false)) {
+                var item = loadMenuItem(str, path + "items." + str);
                 if (item != null) {
                     builder.addItem(item);
                 }
             }
         }
-        int rewardSlot = getConfiguration().getInt(path+"reward-slot",13);
+        int rewardSlot = getConfiguration().getInt(path + "reward-slot", 13);
 
         atomicReference.set(new RerollGUI(
                         builder,
@@ -368,64 +422,66 @@ public class CrateConfig extends Config {
         CustomItem item = loadItem(path);
         if (item == null) {
             if (AquaticCrates.configDebug)
-                Bukkit.getConsoleSender().sendMessage("§cMenu Item "+path+" could not be loaded, because the item is null!");
+                Bukkit.getConsoleSender().sendMessage("§cMenu Item " + path + " could not be loaded, because the item is null!");
             return null;
         }
         List<Integer> slots;
-        if (getConfiguration().contains(path+".slot")) {
-            slots = Arrays.asList(getConfiguration().getInt(path+".slot"));
+        if (getConfiguration().contains(path + ".slot")) {
+            slots = Arrays.asList(getConfiguration().getInt(path + ".slot"));
         } else {
-            slots = getConfiguration().getIntegerList(path+".slots");
+            slots = getConfiguration().getIntegerList(path + ".slots");
         }
-        var clickActions = loadRewardActions(path+".click-actions");
+        var clickActions = loadRewardActions(path + ".click-actions");
 
-        return MenuItem.builder(identifier,item.getItem())
+        return MenuItem.builder(identifier, item.getItem())
                 .slots(slots)
                 .action(a -> {
                     clickActions.forEach(action -> {
-                        action.run((Player) a.getWhoClicked(),new Placeholders(new Placeholder("%player%",a.getWhoClicked().getName())));
+                        action.run((Player) a.getWhoClicked(), new Placeholders(new Placeholder("%player%", a.getWhoClicked().getName())));
                     });
                 })
                 .build();
     }
 
     private void loadRerollManager(Crate c, AtomicReference<RerollManager> atomicReference) {
-        if (!getConfiguration().contains("reroll") || !getConfiguration().getBoolean("reroll.enabled",true)) {
-            atomicReference.set(new RerollManager(c,new HashMap<>(), RerollManager.Type.INTERACTION));;
+        if (!getConfiguration().contains("reroll") || !getConfiguration().getBoolean("reroll.enabled", true)) {
+            atomicReference.set(new RerollManager(c, new HashMap<>(), RerollManager.Type.INTERACTION));
+            ;
         }
 
         RerollManager.Type type = RerollManager.Type.valueOf(
-                getConfiguration().getString("reroll.type","interaction").toUpperCase()
+                getConfiguration().getString("reroll.type", "interaction").toUpperCase()
         );
-        atomicReference.set(new RerollManager(c,loadRerollGroups(),type));
+        atomicReference.set(new RerollManager(c, loadRerollGroups(), type));
     }
-    private Map<String,Integer> loadRerollGroups() {
-        Map<String,Integer> map = new HashMap<>();
+
+    private Map<String, Integer> loadRerollGroups() {
+        Map<String, Integer> map = new HashMap<>();
         if (getConfiguration().contains("reroll.limits")) {
             getConfiguration().getConfigurationSection("reroll.limits").getKeys(false).forEach(id -> {
-                int i = getConfiguration().getInt("reroll.limits."+id);
-                map.put(id,i);
+                int i = getConfiguration().getInt("reroll.limits." + id);
+                map.put(id, i);
             });
         }
         return map;
     }
 
     private void loadAnimationManager(Crate c, AtomicReference<AnimationManager> atomicReference) {
-        AnimationManager.Type type = AnimationManager.Type.valueOf(getConfiguration().getString("animation.type","INSTANT").toUpperCase());
+        AnimationManager.Type type = AnimationManager.Type.valueOf(getConfiguration().getString("animation.type", "INSTANT").toUpperCase());
         atomicReference.set(new AnimationManager(
                 c,
                 type,
                 loadTasks(),
-                getConfiguration().getInt("animation.length",0),
+                getConfiguration().getInt("animation.length", 0),
                 loadAnimationTitle("animation.title"),
                 loadAnimationTitle("reroll.title"),
                 loadLocation("animation.model-location"),
                 loadLocation("animation.camera-location"),
-                getConfiguration().getBoolean("animation.skippable",false),
-                getConfiguration().getBoolean("animation.use-pumpkin-helmet",false),
-                getConfiguration().getInt("animation.pre-open.length",0),
+                getConfiguration().getBoolean("animation.skippable", false),
+                getConfiguration().getBoolean("animation.use-pumpkin-helmet", false),
+                getConfiguration().getInt("animation.pre-open.length", 0),
                 loadPreOpenTitle()
-                        ));
+        ));
     }
 
     private PreOpenTitle loadPreOpenTitle() {
@@ -433,13 +489,13 @@ public class CrateConfig extends Config {
             return null;
         }
         String path = "animation.pre-open.title";
-        String title = getConfiguration().getString(path+".title","");
-        String subTitle = getConfiguration().getString(path+".subtitle","");
-        int in = getConfiguration().getInt(path+".in",0);
-        int stay = getConfiguration().getInt(path+".stay",10);
-        int out = getConfiguration().getInt(path+".out",0);
+        String title = getConfiguration().getString(path + ".title", "");
+        String subTitle = getConfiguration().getString(path + ".subtitle", "");
+        int in = getConfiguration().getInt(path + ".in", 0);
+        int stay = getConfiguration().getInt(path + ".stay", 10);
+        int out = getConfiguration().getInt(path + ".out", 0);
 
-        return new PreOpenTitle(in,out,stay,title,subTitle);
+        return new PreOpenTitle(in, out, stay, title, subTitle);
     }
 
     private AnimationTitle loadAnimationTitle(String path) {
@@ -447,29 +503,29 @@ public class CrateConfig extends Config {
             return new AnimationTitle(new ArrayList<>(), AquaticBossBar.Color.WHITE, AquaticBossBar.Style.SOLID);
         }
 
-        List<String> lines = getConfiguration().getStringList(path+".lines");
-        var color = AquaticBossBar.Color.valueOf(getConfiguration().getString(path+".color").toUpperCase());
-        var style = AquaticBossBar.Style.valueOf(getConfiguration().getString(path+".style").toUpperCase());
+        List<String> lines = getConfiguration().getStringList(path + ".lines");
+        var color = AquaticBossBar.Color.valueOf(getConfiguration().getString(path + ".color").toUpperCase());
+        var style = AquaticBossBar.Style.valueOf(getConfiguration().getString(path + ".style").toUpperCase());
 
-        return new AnimationTitle(lines,color,style);
+        return new AnimationTitle(lines, color, style);
     }
 
     private Location loadLocation(String path) {
         if (!getConfiguration().contains(path)) {
             return null;
         }
-        World w = Bukkit.getWorld(getConfiguration().getString(path+".world"));
+        World w = Bukkit.getWorld(getConfiguration().getString(path + ".world"));
         if (w == null) {
             return null;
         }
-        double x = getConfiguration().getDouble(path+".x");
-        double y = getConfiguration().getDouble(path+".y");
-        double z = getConfiguration().getDouble(path+".z");
+        double x = getConfiguration().getDouble(path + ".x");
+        double y = getConfiguration().getDouble(path + ".y");
+        double z = getConfiguration().getDouble(path + ".z");
 
-        float yaw = Float.parseFloat(getConfiguration().getString(path+".yaw","0"));
-        float pitch = Float.parseFloat(getConfiguration().getString(path+".pitch","0"));
+        float yaw = Float.parseFloat(getConfiguration().getString(path + ".yaw", "0"));
+        float pitch = Float.parseFloat(getConfiguration().getString(path + ".pitch", "0"));
 
-        return new Location(w,x,y,z,yaw,pitch);
+        return new Location(w, x, y, z, yaw, pitch);
     }
 
     private List<ConfiguredTask> loadTasks() {
@@ -478,40 +534,41 @@ public class CrateConfig extends Config {
             return tasks;
         }
         getConfiguration().getConfigurationSection("animation.actions").getKeys(false).forEach(id -> {
-            String actionId = getConfiguration().getString("animation.actions."+id+".type").toLowerCase();
+            String actionId = getConfiguration().getString("animation.actions." + id + ".type").toLowerCase();
             var task = Tasks.inst().getTask(actionId);
             if (task != null) {
-                tasks.add(new ConfiguredTask(task,loadArguments("animation.actions." + id, task.getArgs())));
+                tasks.add(new ConfiguredTask(task, loadArguments("animation.actions." + id, task.getArgs())));
             }
         });
         return tasks;
     }
 
-    private Map<String,Object> loadArguments(String path, List<TaskArgument> arguments) {
-        Map<String,Object> args = new HashMap<>();
+    private Map<String, Object> loadArguments(String path, List<TaskArgument> arguments) {
+        Map<String, Object> args = new HashMap<>();
 
         for (TaskArgument arg : arguments) {
             if (getConfiguration().getConfigurationSection(path).getKeys(false).contains(arg.getId())) {
-                args.put(arg.getId(),getConfiguration().get(path+"."+arg.getId()));
+                args.put(arg.getId(), getConfiguration().get(path + "." + arg.getId()));
                 continue;
             } else if (arg.isRequired()) {
-                Bukkit.getConsoleSender().sendMessage(Colors.format("&cARGUMENT &4"+arg.getId()+" &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
+                Bukkit.getConsoleSender().sendMessage(Colors.format("&cARGUMENT &4" + arg.getId() + " &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
             }
-            args.put(arg.getId(),arg.getDefaultValue());
+            args.put(arg.getId(), arg.getDefaultValue());
         }
         return args;
     }
-    private Map<String,Object> loadRequirementArguments(String path, List<RequirementArgument> arguments) {
-        Map<String,Object> args = new HashMap<>();
+
+    private Map<String, Object> loadRequirementArguments(String path, List<RequirementArgument> arguments) {
+        Map<String, Object> args = new HashMap<>();
 
         for (RequirementArgument arg : arguments) {
             if (getConfiguration().getConfigurationSection(path).getKeys(false).contains(arg.getId())) {
-                args.put(arg.getId(),getConfiguration().get(path+"."+arg.getId()));
+                args.put(arg.getId(), getConfiguration().get(path + "." + arg.getId()));
                 continue;
             } else if (arg.getRequired()) {
-                Bukkit.getConsoleSender().sendMessage(Colors.format("&cARGUMENT &4"+arg.getId()+" &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
+                Bukkit.getConsoleSender().sendMessage(Colors.format("&cARGUMENT &4" + arg.getId() + " &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
             }
-            args.put(arg.getId(),arg.getDefaultValue());
+            args.put(arg.getId(), arg.getDefaultValue());
         }
         return args;
     }

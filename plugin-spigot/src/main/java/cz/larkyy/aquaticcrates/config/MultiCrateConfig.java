@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcrates.config;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.MultiCrate;
 import cz.larkyy.aquaticcrates.crate.inventories.MultiPreviewGUI;
+import cz.larkyy.aquaticcrates.crate.inventories.settings.MultiPreviewGUISettings;
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimation;
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimations;
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
@@ -19,7 +20,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MultiCrateConfig extends Config {
 
@@ -30,7 +30,6 @@ public class MultiCrateConfig extends Config {
     }
 
     public MultiCrate loadCrate() {
-        AtomicReference<MultiPreviewGUI> previewGUIAtomicReference = new AtomicReference<>(null);
         MultiCrate c = new MultiCrate(
                 identifier,
                 StringExtKt.toAquatic(getConfiguration().getString("display-name",identifier)),
@@ -38,11 +37,11 @@ public class MultiCrateConfig extends Config {
                 loadHologram("hologram"),
                 getConfiguration().getDouble("hologram-y-offset",0),
                 getConfiguration().getStringList("crates"),
-                previewGUIAtomicReference,
                 getConfiguration().getInt("hitbox-height",1),
-                getConfiguration().getInt("hitbox-width",1)
+                getConfiguration().getInt("hitbox-width",1),
+                loadMultiPreviewGUI(identifier)
+
         );
-        loadMultiPreviewGUI(c,previewGUIAtomicReference);
 
         c.setBlockType(Material.valueOf(getConfiguration().getString("block-type","BARRIER").toUpperCase()));
 
@@ -71,16 +70,16 @@ public class MultiCrateConfig extends Config {
         return getConfiguration().getStringList(path);
     }
 
-    private void loadMultiPreviewGUI(MultiCrate crate, AtomicReference<MultiPreviewGUI> atomicReference) {
+    private MultiPreviewGUISettings loadMultiPreviewGUI(String crateId) {
         if (!getConfiguration().contains("preview") || !getConfiguration().getBoolean("preview.enabled",true)) {
-            return;
+            return null;
         }
 
         AquaticString title;
         if (getConfiguration().contains("preview.title")) {
             title = StringExtKt.toAquatic(getConfiguration().getString("preview.title"));
         } else {
-            title = StringExtKt.toAquatic(crate.getDisplayName().getString()+" Preview");
+            title = StringExtKt.toAquatic(crateId+" Preview");
         }
         Menu.Builder builder =Menu.builder(AquaticCrates.instance())
                 .size(getConfiguration().getInt("preview.size",54))
@@ -95,10 +94,7 @@ public class MultiCrateConfig extends Config {
             }
         }
 
-        atomicReference.set(new MultiPreviewGUI(crate,
-                        builder
-                )
-        );
+        return null;
     }
 
     private MenuItem loadMenuItem(String identifier, String path) {

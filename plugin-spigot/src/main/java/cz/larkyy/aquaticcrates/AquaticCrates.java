@@ -28,6 +28,7 @@ import cz.larkyy.nms.impl.v1_19_R3;
 import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.format.Format;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
+import gg.aquatic.aquaticseries.lib.inventory.lib.InventoryHandler;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -131,7 +132,9 @@ public final class AquaticCrates extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        aquaticSeriesLib = AquaticSeriesLib.Companion.init(this, List.of());
+        aquaticSeriesLib = AquaticSeriesLib.Companion.init(this, List.of(
+                InventoryHandler.INSTANCE
+        ));
         aquaticSeriesLib.setMessageFormatting(messageFormat);
 
         tasks = new Tasks();

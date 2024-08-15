@@ -3,113 +3,126 @@ package cz.larkyy.aquaticcrates.crate.inventories;
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.menu.Menu;
-import cz.larkyy.aquaticcrates.menu.MenuItem;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import gg.aquatic.aquaticseries.lib.ItemStackExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
-import me.clip.placeholderapi.PlaceholderAPI;
+import gg.aquatic.aquaticseries.lib.inventory.lib.SlotSelection;
+import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
+import gg.aquatic.aquaticseries.lib.inventory.lib.event.ComponentClickEvent;
+import gg.aquatic.aquaticseries.lib.inventory.lib.inventory.PersonalizedInventory;
+import gg.aquatic.aquaticseries.lib.inventory.lib.title.TitleHolder;
+import gg.aquatic.aquaticseries.lib.inventory.lib.title.component.BasicTitleComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class PreviewGUI {
+public class PreviewGUI extends PersonalizedInventory {
 
     private final Crate crate;
-    private final List<Integer> rewardSlots;
-    private final MenuItem milestoneItem;
-    private final String milestoneFormat;
-    private final String milestoneReachedFormat;
-    private final MenuItem repeatableMilestoneItem;
-    private final String repeatableMilestoneFormat;
-    private final Menu.Builder mb;
-    private final List<String> rewardLore;
-    private final boolean openableByKey;
 
-    public PreviewGUI(Crate crate, Menu.Builder mb, List<Integer> rewardSlots, List<String> rewardLore, boolean openableByKey,
-                      MenuItem milestoneItem, String milestoneFormat, String milestoneReachedFormat, MenuItem repeatableMilestoneItem,
-                      String repeatableMilestoneFormat) {
+    public PreviewGUI(Crate crate, Player player) {
+        super(TitleHolder.Companion.of(
+                new BasicTitleComponent(StringExtKt.toAquatic(crate.getPreviewGUISettings().getSettings().getTitle()))
+        ), crate.getPreviewGUISettings().getSettings().getSize(), player, factory -> {
+        });
+        Bukkit.broadcastMessage("Title: " + crate.getPreviewGUISettings().getSettings().getTitle());
         this.crate = crate;
-        this.rewardSlots = rewardSlots;
-        this.mb = mb;
-        this.openableByKey = openableByKey;
-        this.rewardLore = rewardLore;
-        this.milestoneItem = milestoneItem;
-        this.milestoneFormat = milestoneFormat;
-        this.milestoneReachedFormat = milestoneReachedFormat;
-        this.repeatableMilestoneItem = repeatableMilestoneItem;
-        this.repeatableMilestoneFormat = repeatableMilestoneFormat;
     }
 
+    private void addItems(Integer page, PlacedCrate placedCrate) {
+        for (var entry : crate.getPreviewGUISettings().getSettings().getButtons().entrySet()) {
+            var id = entry.getKey();
+            var button = entry.getValue();
+            switch (id.toLowerCase()) {
+                case "next-page" -> {
+                    addActionToButton(button, e -> {
+                        openNextPage(getPlayer(), placedCrate, page);
+                        e.getOriginalEvent().setCancelled(true);
+                    });
+                }
+                case "prev-page" -> {
+                    addActionToButton(button, e -> {
+                        openPrevPage(getPlayer(), placedCrate, page);
+                        e.getOriginalEvent().setCancelled(true);
+                    });
+                }
+                case "open-button" -> {
+                    addActionToButton(button, e -> {
+                        getPlayer().closeInventory();
+                        crate.open(CratePlayer.get(getPlayer()), placedCrate, false);
+                        e.getOriginalEvent().setCancelled(true);
+                    });
+                }
+                case "close-button" -> {
+                    addActionToButton(button, e -> {
+                        getPlayer().closeInventory();
+                        e.getOriginalEvent().setCancelled(true);
+                    });
+                }
+                default -> {
 
-    public void open(Player p, int page, PlacedCrate pc) {
-        Menu.Builder builder = mb.clone();
-        loadRewardItems(p, builder, page);
-        loadMilestoneItem(p, builder);
-        loadRepetableMilestoneItem(p, builder);
-        Menu m = builder.build();
-
-        MenuItem mi;
-        mi = m.getItem("next-page");
-        if (mi != null) {
-            mi.addAction(e -> openNextPage(p, page, pc));
-        }
-        mi = m.getItem("prev-page");
-        if (mi != null) {
-            mi.addAction(e -> openPrevPage(p, page, pc));
-        }
-        mi = m.getItem("open-button");
-        if (mi != null) {
-            mi.addAction(e -> {
-                p.closeInventory();
-                crate.open(CratePlayer.get(p), pc, false);
-            });
-        }
-        mi = m.getItem("close-button");
-        if (mi != null) {
-            mi.addAction(e -> {
-                p.closeInventory();
-            });
-        }
-        for (ItemStack is : m.getInventory().getContents()) {
-            if (is == null) {
-                continue;
+                }
             }
-            if (is.getItemMeta() == null) {
-                continue;
-            }
-
-            if (is.getItemMeta().getLore() == null) {
-                continue;
-            }
-
-            ItemMeta im = is.getItemMeta();
-            im.setLore(PlaceholderAPI.setPlaceholders(p.getPlayer(), im.getLore()));
-            is.setItemMeta(im);
+            this.getComponentHandler().getComponents().put(id, button);
         }
-
-        p.openInventory(m.getInventory());
+        if (crate.getPreviewGUISettings().isClearBottomInventory()) {
+            for (int i = 0; i < crate.getPreviewGUISettings().getSettings().getSize() + 36 - 1; i++) {
+                var button = new Button(
+                        new ItemStack(Material.AIR),
+                        SlotSelection.Companion.of(i),
+                        e -> {
+                            e.getOriginalEvent().setCancelled(true);
+                        },
+                        0
+                );
+                getComponentHandler().getComponents().put("clear-item-" + i, button);
+            }
+        }
     }
 
-    public void openNextPage(Player p, int page, PlacedCrate pc) {
+    private void addActionToButton(Button button, Consumer<ComponentClickEvent> consumer) {
+        if (button.getOnClick() != null) {
+            button.getOnClick().andThen(consumer);
+        } else {
+            button.setOnClick(consumer);
+        }
+    }
+
+    public void open(Player p, PlacedCrate placedCrate) {
+        openPage(p, placedCrate, 0);
+        open(true);
+    }
+
+    public void openPage(Player p, PlacedCrate placedCrate, int page) {
+        getComponentHandler().getComponents().clone();
+        addItems(page, placedCrate);
+        loadRewardItems(p, page);
+        loadMilestoneItem(p);
+        loadRepetableMilestoneItem(p);
+        redrawComponents();
+    }
+
+    public void openNextPage(Player p, PlacedCrate placedCrate, int page) {
         if (hasNextPage(p, page)) {
-            open(p, page + 1, pc);
+            openPage(p, placedCrate, page + 1);
         }
     }
 
     private boolean hasNextPage(Player p, int page) {
         List<Reward> list = crate.getPossibleRewards(p);
-        return (page < list.size() / rewardSlots.size());
+        return (page < list.size() / crate.getPreviewGUISettings().getRewardSlots().size());
     }
 
-    public void openPrevPage(Player p, int page, PlacedCrate pc) {
+    public void openPrevPage(Player p, PlacedCrate placedCrate, int page) {
         if (hasPreviousPage(page)) {
-            open(p, page - 1, pc);
+            openPage(p, placedCrate, page - 1);
         }
     }
 
@@ -118,10 +131,11 @@ public class PreviewGUI {
     }
 
     public boolean isOpenableByKey() {
-        return openableByKey;
+        return crate.getPreviewGUISettings().isOpenableByKey();
     }
 
-    private void loadMilestoneItem(Player p, Menu.Builder mb) {
+    private void loadMilestoneItem(Player p) {
+        var milestoneItem = crate.getPreviewGUISettings().getMilestoneItem();
         if (milestoneItem == null) {
             return;
         }
@@ -144,19 +158,26 @@ public class PreviewGUI {
                     placeholders.addPlaceholder("%remains%", (milestone.getMilestone() - reached) + "");
                     placeholders.addPlaceholder("%reached%", reached + "");
                     placeholders.addPlaceholder("%required%", milestone.getMilestone() + "");
-                    newLore.add(placeholders.replace(milestoneFormat));
+                    newLore.add(placeholders.replace(crate.getPreviewGUISettings().getMilestoneFormat()));
                 } else {
-                    newLore.add(placeholders.replace(milestoneReachedFormat));
+                    newLore.add(placeholders.replace(crate.getPreviewGUISettings().getMilestoneReachedFormat()));
                 }
             });
         }
         ItemStackExtKt.lore(im, StringExtKt.toAquatic(newLore));
         //im.setLore(newLore);
         is.setItemMeta(im);
-        mb.addItem(MenuItem.builder("milestones", is).action(milestoneItem::activate).slots(milestoneItem.getSlots()).build());
+        var newButton = new Button(
+                is,
+                milestoneItem.getSlotSelection(),
+                milestoneItem.getOnClick(),
+                1
+        );
+        getComponentHandler().getComponents().put("milestone", newButton);
     }
 
-    private void loadRepetableMilestoneItem(Player p, Menu.Builder mb) {
+    private void loadRepetableMilestoneItem(Player p) {
+        var repeatableMilestoneItem = crate.getPreviewGUISettings().getRepeatableMilestoneItem();
         if (repeatableMilestoneItem == null) {
             return;
         }
@@ -176,24 +197,32 @@ public class PreviewGUI {
 
                 var current = milestoneHandler.getAmt(p);
 
-                double d1 = (double)current/(double)milestone.getMilestone();
+                double d1 = (double) current / (double) milestone.getMilestone();
                 double d2 = Math.floor(d1);
 
-                int reached = (int) ((d1-d2)*milestone.getMilestone());
+                int reached = (int) ((d1 - d2) * milestone.getMilestone());
 
                 placeholders.addPlaceholder("%remains%", (milestone.getMilestone() - reached) + "");
                 placeholders.addPlaceholder("%reached%", reached + "");
                 placeholders.addPlaceholder("%required%", milestone.getMilestone() + "");
-                newLore.add(placeholders.replace(repeatableMilestoneFormat));
+                newLore.add(placeholders.replace(crate.getPreviewGUISettings().getRepeatableMilestoneFormat()));
             });
         }
         ItemStackExtKt.lore(im, StringExtKt.toAquatic(newLore));
         is.setItemMeta(im);
-        mb.addItem(MenuItem.builder("repeatable-milestones", is).action(repeatableMilestoneItem::activate).slots(repeatableMilestoneItem.getSlots()).build());
+        var newButton = new Button(
+                is,
+                repeatableMilestoneItem.getSlotSelection(),
+                repeatableMilestoneItem.getOnClick(),
+                1
+        );
+        getComponentHandler().getComponents().put("repeatable-milestone", newButton);
     }
 
-    public void loadRewardItems(Player p, Menu.Builder mb, int page) {
+    public void loadRewardItems(Player p, int page) {
         List<Reward> rewards = crate.getPossibleRewards(p);
+        var rewardSlots = crate.getPreviewGUISettings().getRewardSlots();
+        var rewardLore = crate.getPreviewGUISettings().getRewardLore();
 
         int i = page * rewardSlots.size();
         for (int slot : rewardSlots) {
@@ -215,18 +244,21 @@ public class PreviewGUI {
             ItemStackExtKt.lore(im, StringExtKt.toAquatic(lore));
             is.setItemMeta(im);
 
-            mb.addItem(MenuItem.builder("reward-" + r.getIdentifier(), is)
-                    .slots(List.of(slot))
-                    .action(e -> {
-                        if (!(e.getWhoClicked() instanceof Player player)) {
+            var newButton = new Button(
+                    is,
+                    SlotSelection.Companion.of(slot),
+                    e -> {
+                        e.getOriginalEvent().setCancelled(true);
+                        if (!(e.getOriginalEvent().getWhoClicked() instanceof Player player)) {
                             return;
                         }
                         if (player.hasPermission("aquaticcrates.admin")) {
                             r.give(player);
                         }
-                    })
-                    .build()
+                    },
+                    1
             );
+            getComponentHandler().getComponents().put("reward-"+r.getIdentifier(), newButton);
             i++;
         }
     }

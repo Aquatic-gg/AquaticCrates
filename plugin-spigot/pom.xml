@@ -43,11 +43,17 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <minimizeJar>true</minimizeJar>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <!-- Replace this with your package! -->
                             <shadedPattern>cz.larkyy.aquaticcrates.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>gg.aquatic.aquaticseries.lib</pattern>
+                            <!-- Replace this with your package! -->
+                            <shadedPattern>cz.larkyy.aquaticcrates.aquaticlib</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -98,13 +104,13 @@
     <dependencies>
         <dependency>
             <groupId>gg.aquatic.aquaticseries</groupId>
-            <artifactId>aquaticlib-21</artifactId>
+            <artifactId>aquaticlib-17</artifactId>
             <classifier>all</classifier>
-            <version>1.0.0</version>
+            <version>1.0.1.19</version>
             <exclusions>
                 <exclusion>
-                    <groupId>gg.aquatic.aquaticseries.lib</groupId>
-                    <artifactId>aquatic-lib</artifactId>
+                    <groupId>gg.aquatic.aquaticseries</groupId>
+                    <artifactId>aquaticlib</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>gg.aquatic.aquaticseries.core</groupId>
