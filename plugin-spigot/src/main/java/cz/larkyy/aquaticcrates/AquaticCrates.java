@@ -25,10 +25,12 @@ import cz.larkyy.nms.impl.impl.v1_18_R2;
 import cz.larkyy.nms.impl.impl.v1_19_R2;
 import cz.larkyy.aquaticcrates.hooks.PAPIHook;
 import cz.larkyy.nms.impl.v1_19_R3;
+import gg.aquatic.aquaticseries.lib.AbstractAquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.format.Format;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
 import gg.aquatic.aquaticseries.lib.inventory.lib.InventoryHandler;
+import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -53,7 +55,7 @@ public final class AquaticCrates extends JavaPlugin {
     private static RewardActions rewardActions;
     private static CrateHandler crateHandler;
     private static DatabaseManager databaseManager;
-    private static NMSHandler nmsHandler;
+    //private static NMSHandler nmsHandler;
     private static MessageHandler messageHandler;
 
     private static ItemHandler itemHandler;
@@ -71,6 +73,7 @@ public final class AquaticCrates extends JavaPlugin {
     public void onLoad() {
         Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading the plugin..."));
         Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7NMS Version&f!"));
+        /*
         String version = "null";
         switch (getServer().getBukkitVersion()) {
             case "1.16.5-R0.1-SNAPSHOT" -> {
@@ -118,9 +121,8 @@ public final class AquaticCrates extends JavaPlugin {
                 version = "v1_21";
             }
         }
+         */
         RequirementTypes.INSTANCE.register("permission", new PermissionCondition());
-
-        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fUsing NMS version &7"+version+"&f."));
 
         var config = new Config(this,"config.yml");
         config.load();
@@ -252,8 +254,8 @@ public final class AquaticCrates extends JavaPlugin {
         return AquaticCrates.getPlugin(AquaticCrates.class);
     }
 
-    public static NMSHandler getNmsHandler() {
-        return nmsHandler;
+    public static NMSAdapter getNmsHandler() {
+        return aquaticSeriesLib.getNmsAdapter();
     }
 
     public static ItemHandler getItemHandler() {

@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcrates.hologram.Hologram;
 import cz.larkyy.aquaticcrates.hologram.impl.AquaticHologram;
 import cz.larkyy.aquaticcrates.model.Model;
 import cz.larkyy.aquaticcrates.utils.RewardUtils;
+import gg.aquatic.aquaticseries.lib.util.AbstractAudience;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -200,7 +201,11 @@ public class RewardItem {
                     if (p != null) {
                         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
                         players.remove(p);
-                        AquaticCrates.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),players);
+                        var audience = new AbstractAudience.PrivateAudience();
+                        for (Player player : players) {
+                            audience.getCurrentlyViewing().add(player.getUniqueId());
+                        }
+                        AquaticCrates.getNmsHandler().despawnEntity(List.of(item.getEntityId()),audience);
                     }
                     rewardShowcase = new ItemRewardShowcase(item);
                 }
@@ -247,7 +252,11 @@ public class RewardItem {
             if (p != null) {
                 List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
                 players.remove(p);
-                AquaticCrates.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),players);
+                var audience = new AbstractAudience.PrivateAudience();
+                for (Player player : players) {
+                    audience.getCurrentlyViewing().add(player.getUniqueId());
+                }
+                AquaticCrates.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),audience);
             }
             rewardShowcase = new ItemRewardShowcase(item);
         }

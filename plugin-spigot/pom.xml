@@ -134,56 +134,6 @@
         </dependency>
         <dependency>
             <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v1_18_R2</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v1_19_R2</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v1_17_R1</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v1_16_R3</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>v1_19_4</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v1_20_R2</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v1_20_2</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy.aquaticcrates.nms</groupId>
-            <artifactId>NMS_v1_21</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v_1_20_4</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v1_20_5</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
             <artifactId>api</artifactId>
             <version>2.4.0</version>
         </dependency>
@@ -235,11 +185,6 @@
         </dependency>
         <dependency>
             <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v1_19_R3</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
             <artifactId>MEG4Hook</artifactId>
             <version>2.4.0</version>
         </dependency>
@@ -247,12 +192,6 @@
             <groupId>cz.larkyy</groupId>
             <artifactId>MEG3Hook</artifactId>
             <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>NMS_v1_20_R1</artifactId>
-            <version>2.4.0</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

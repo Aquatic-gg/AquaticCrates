@@ -5,6 +5,8 @@ import cz.larkyy.aquaticcrates.hologram.Hologram;
 import cz.larkyy.aquaticcrates.nms.NMSHandler;
 import cz.larkyy.aquaticcrates.utils.Utils;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
+import gg.aquatic.aquaticseries.lib.util.AbstractAudience;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.entity.AreaEffectCloud;
@@ -35,9 +37,13 @@ public class AquaticHologram extends Hologram {
         new BukkitRunnable() {
             @Override
             public void run() {
+                var audience = new AbstractAudience.PrivateAudience();
+                for (Player visitor : visitors) {
+                    audience.getCurrentlyViewing().add(visitor.getUniqueId());
+                }
                 int i = getLines().size();
                 for (Integer id : ids) {
-                    nmsHandler().teleportEntity(id, location.clone().add(0, 0.25 * i, 0));
+                    nmsHandler().teleportEntity(id, location.clone().add(0, 0.25 * i, 0), audience);
                     i--;
                 }
             }
@@ -53,9 +59,13 @@ public class AquaticHologram extends Hologram {
         new BukkitRunnable() {
             @Override
             public void run() {
+                var audience = new AbstractAudience.PrivateAudience();
+                for (Player visitor : visitors) {
+                    audience.getCurrentlyViewing().add(visitor.getUniqueId());
+                }
                 int i = getLines().size();
                 for (Integer id : ids) {
-                    nmsHandler().moveEntity(id, location.clone().add(0, 0.25 * i, 0));
+                    nmsHandler().moveEntity(id, location.clone().add(0, 0.25 * i, 0), audience);
                     i--;
                 }
             }
@@ -64,7 +74,11 @@ public class AquaticHologram extends Hologram {
 
     @Override
     public void despawn() {
-        nmsHandler().despawnEntity(ids, visitors);
+        var audience = new AbstractAudience.PrivateAudience();
+        for (Player visitor : visitors) {
+            audience.getCurrentlyViewing().add(visitor.getUniqueId());
+        }
+        nmsHandler().despawnEntity(ids, audience);
         visitors.clear();
         ids.clear();
     }
@@ -104,7 +118,11 @@ public class AquaticHologram extends Hologram {
     @Override
     public void hide() {
         hidden = true;
-        nmsHandler().despawnEntity(ids, visitors);
+        var audience = new AbstractAudience.PrivateAudience();
+        for (Player visitor : visitors) {
+            audience.getCurrentlyViewing().add(visitor.getUniqueId());
+        }
+        nmsHandler().despawnEntity(ids, audience);
         ids.clear();
     }
 
@@ -120,8 +138,12 @@ public class AquaticHologram extends Hologram {
 
     @Override
     public void update(Consumer<List<String>> consumer) {
+        var audience = new AbstractAudience.PrivateAudience();
+        for (Player visitor : visitors) {
+            audience.getCurrentlyViewing().add(visitor.getUniqueId());
+        }
         if (getLines() == null || getLines().isEmpty()) {
-            nmsHandler().despawnEntity(ids, visitors);
+            nmsHandler().despawnEntity(ids, audience);
             ids.clear();
             return;
         }
@@ -134,7 +156,7 @@ public class AquaticHologram extends Hologram {
             for (int i = 0; i < remove; i++) {
                 idsToRemove.add(ids.get(ids.size() - 1 - i));
             }
-            nmsHandler().despawnEntity(idsToRemove, visitors);
+            nmsHandler().despawnEntity(idsToRemove, audience);
             ids.removeAll(idsToRemove);
         }
 
@@ -150,11 +172,11 @@ public class AquaticHologram extends Hologram {
 
                 if (!l1.getWorld().equals(l2.getWorld()) || !Utils.isVectorSame(l1.toVector(), l2.toVector())
                 ) {
-                    nmsHandler().teleportEntity(id, l2);
+                    nmsHandler().teleportEntity(id, l2, audience);
                 }
                 nmsHandler().updateEntity(id, e -> {
                     StringExtKt.toAquatic(formattedLine).setEntityName(e);
-                });
+                }, audience);
             } else {
                 ids.add(spawnLine(l2, formattedLine));
             }
@@ -165,8 +187,15 @@ public class AquaticHologram extends Hologram {
     private int spawnLine(Location location, String text) {
         final String formattedLine = visitors.isEmpty() ? text : PlaceholderAPI.setPlaceholders(visitors.get(0), text);
 
+        var audience = new AbstractAudience.PrivateAudience();
+        for (Player visitor : visitors) {
+            audience.getCurrentlyViewing().add(visitor.getUniqueId());
+        }
+
         return nmsHandler().spawnEntity(
                 location,
+                "area_effect_cloud",
+                audience,
                 e -> {
                     AreaEffectCloud aec = (AreaEffectCloud) e;
                     aec.setRadius(0f);
@@ -174,13 +203,12 @@ public class AquaticHologram extends Hologram {
                     e.setCustomNameVisible(true);
                     e.setGravity(false);
                     e.setPersistent(false);
-                },
-                visitors,
-                "area_effect_cloud"
+                }
+
         );
     }
 
-    private NMSHandler nmsHandler() {
+    private NMSAdapter nmsHandler() {
         return AquaticCrates.getNmsHandler();
     }
 }
