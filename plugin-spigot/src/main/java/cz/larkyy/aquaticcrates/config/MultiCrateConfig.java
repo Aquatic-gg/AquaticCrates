@@ -1,25 +1,23 @@
 package cz.larkyy.aquaticcrates.config;
 
-import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.MultiCrate;
-import cz.larkyy.aquaticcrates.crate.inventories.MultiPreviewGUI;
+import cz.larkyy.aquaticcrates.crate.inventories.settings.CustomInventorySettings;
 import cz.larkyy.aquaticcrates.crate.inventories.settings.MultiPreviewGUISettings;
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimation;
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimations;
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
-import cz.larkyy.aquaticcrates.menu.Menu;
-import cz.larkyy.aquaticcrates.menu.MenuItem;
+import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
-import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
-import org.bukkit.Bukkit;
+import gg.aquatic.aquaticseries.lib.action.ActionSerializer;
+import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class MultiCrateConfig extends Config {
 
@@ -75,45 +73,61 @@ public class MultiCrateConfig extends Config {
             return null;
         }
 
-        AquaticString title;
+        String title;
         if (getConfiguration().contains("preview.title")) {
-            title = StringExtKt.toAquatic(getConfiguration().getString("preview.title"));
+            title = getConfiguration().getString("preview.title");
         } else {
-            title = StringExtKt.toAquatic(crateId+" Preview");
-        }
-        Menu.Builder builder =Menu.builder(AquaticCrates.instance())
-                .size(getConfiguration().getInt("preview.size",54))
-                .title(title.getString());
-
-        if (getConfiguration().contains("preview.items")) {
-            for (String str : getConfiguration().getConfigurationSection("preview.items").getKeys(false)) {
-                var item = loadMenuItem(str,"preview.items."+str);
-                if (item != null) {
-                    builder.addItem(item);
-                }
-            }
+            title = crateId+" Preview";
         }
 
-        return null;
+        var clearBottomInventory = getConfiguration().getBoolean("preview.clear-bottom-inventory", false);
+        var items = loadInventoryButtons(getConfiguration().getConfigurationSection("preview.items"));
+
+        return new MultiPreviewGUISettings(
+                new CustomInventorySettings(title, getConfiguration().getInt("preview.size",54), items),
+                clearBottomInventory
+        );
     }
 
-    private MenuItem loadMenuItem(String identifier, String path) {
+    private Map<String, Button> loadInventoryButtons(ConfigurationSection section) {
+        Map<String, Button> buttons = new HashMap<>();
+        if (section == null) return buttons;
+        for (String key : section.getKeys(false)) {
+            var buttonSection = section.getConfigurationSection(key);
+            assert buttonSection != null;
+            var button = loadButton(buttonSection);
+            buttons.put(key, button);
+        }
+        return buttons;
+    }
 
-        CustomItem item = loadItem(path);
-        if (item == null) {
-            Bukkit.getConsoleSender().sendMessage("§cMenu Item "+path+" could not be loaded, because the item is null!");
+    private Button loadButton(String path) {
+        if (!getConfiguration().contains(path)) {
             return null;
         }
-        List<Integer> slots;
-        if (getConfiguration().contains(path+".slot")) {
-            slots = Arrays.asList(getConfiguration().getInt(path+".slot"));
-        } else {
-            slots = getConfiguration().getIntegerList(path+".slots");
-        }
+        return loadButton(getConfiguration().getConfigurationSection(path));
+    }
 
-        return MenuItem.builder(identifier,item.getItem())
-                .slots(slots)
-                .build();
+    private Button loadButton(ConfigurationSection section) {
+        if (section == null) {
+            return null;
+        }
+        var button = Button.Companion.fromConfig(section);
+        var sections = ConfigExtKt.getSectionList(section, "click-actions");
+        var actions = ActionSerializer.INSTANCE.fromSections(sections);
+
+        button.setOnClick(e -> {
+            e.getOriginalEvent().setCancelled(true);
+            var placeholders = new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders();
+            placeholders.addPlaceholder(new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder("%player%",e.getOriginalEvent().getWhoClicked().getName()));
+            actions.forEach(action -> {
+                action.run((Player) e.getOriginalEvent().getWhoClicked(),placeholders);
+            });
+        });
+
+        button.setPriority(1);
+
+        return button;
     }
     private CustomItem loadItem(String path) {
         return CustomItem.loadFromYaml(getConfiguration(),path);

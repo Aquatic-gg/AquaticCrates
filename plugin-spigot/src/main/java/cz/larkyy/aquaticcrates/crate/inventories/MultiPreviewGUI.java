@@ -4,6 +4,7 @@ import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.PlacedMultiCrate;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.inventory.lib.SlotSelection;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.inventory.lib.event.ComponentClickEvent;
 import gg.aquatic.aquaticseries.lib.inventory.lib.inventory.PersonalizedInventory;
@@ -11,7 +12,9 @@ import gg.aquatic.aquaticseries.lib.inventory.lib.title.TitleHolder;
 import gg.aquatic.aquaticseries.lib.inventory.lib.title.component.BasicTitleComponent;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -62,6 +65,20 @@ public class MultiPreviewGUI extends PersonalizedInventory {
                 this.getComponentHandler().getComponents().put(id, button);
             }
         }
+        if (multiCrate.getMultiCrate().getPreviewSettings().isClearBottomInventory()) {
+            for (int i = 0; i < multiCrate.getMultiCrate().getPreviewSettings().getSettings().getSize() + 36 - 1; i++) {
+                var button = new Button(
+                        new ItemStack(Material.AIR),
+                        SlotSelection.Companion.of(i),
+                        e -> {
+                            e.getOriginalEvent().setCancelled(true);
+                        },
+                        0
+                );
+                getComponentHandler().getComponents().put("clear-item-" + i, button);
+            }
+        }
+
         redrawComponents();
     }
 
