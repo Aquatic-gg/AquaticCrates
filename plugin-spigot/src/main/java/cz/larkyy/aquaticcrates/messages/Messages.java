@@ -2,10 +2,12 @@ package cz.larkyy.aquaticcrates.messages;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Arrays;
+import java.util.List;
 
 public enum Messages {
 
@@ -69,12 +71,12 @@ public enum Messages {
     }
 
     public Message get() {
-        if (getMsgFile().contains(path)) {
-            return new Message(getMsgFile().get(path));
+        var obj = getMsgFile().get(path, defVal);
+
+        if (obj instanceof String) {
+            return new Message((String) obj);
         } else {
-            getMsgFile().set(path,defVal);
-            AquaticCrates.getMessageHandler().save();
-            return new Message(defVal);
+            return new Message((List<String>) obj);
         }
     }
 
@@ -83,10 +85,7 @@ public enum Messages {
     }
 
     public void send(CommandSender sender) {
-        if (getMsgFile().contains(path)) {
-            new Message(getMsgFile().get(path)).send(sender);
-        } else {
-            new Message(defVal).send(sender);
-        }
+        var msg = get();
+        msg.send(sender);
     }
 }
