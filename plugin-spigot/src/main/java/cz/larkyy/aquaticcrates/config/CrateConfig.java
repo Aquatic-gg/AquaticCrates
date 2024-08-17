@@ -28,6 +28,7 @@ import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
 import gg.aquatic.aquaticseries.lib.action.ActionSerializer;
 import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
+import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
@@ -251,10 +252,11 @@ public class CrateConfig extends Config {
         String modelAnimation = getConfiguration().getString(path + ".open-animation", null);
         boolean giveItem = getConfiguration().getBoolean(path + ".give-item", false);
 
-        List<ConfiguredAction> actions = new ArrayList<>();
+        List<ConfiguredAction<Player>> actions = new ArrayList<>();
+
         var section = getConfiguration().getConfigurationSection(path);
         if (section != null) {
-            actions = ActionSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(section,"actions"));
+            actions = PlayerActionSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(section,"actions"));
         }
         return new Reward(
                 id,
@@ -370,7 +372,7 @@ public class CrateConfig extends Config {
         }
         var button = Button.Companion.fromConfig(section);
         var sections = ConfigExtKt.getSectionList(section, "click-actions");
-        var actions = ActionSerializer.INSTANCE.fromSections(sections);
+        var actions = PlayerActionSerializer.INSTANCE.fromSections(sections);
 
         button.setOnClick(e -> {
             e.getOriginalEvent().setCancelled(true);

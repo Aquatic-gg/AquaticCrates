@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
 import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
 import gg.aquatic.aquaticseries.lib.action.ActionSerializer;
+import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -114,7 +115,7 @@ public class MultiCrateConfig extends Config {
         }
         var button = Button.Companion.fromConfig(section);
         var sections = ConfigExtKt.getSectionList(section, "click-actions");
-        var actions = ActionSerializer.INSTANCE.fromSections(sections);
+        var actions = PlayerActionSerializer.INSTANCE.fromSections(sections);
 
         button.setOnClick(e -> {
             e.getOriginalEvent().setCancelled(true);

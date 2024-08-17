@@ -17,7 +17,7 @@ public class Reward implements IReward {
     private final CustomItem previewItem;
     private final String model;
     private final float modelYaw;
-    private final List<ConfiguredAction> actions;
+    private final List<ConfiguredAction<Player>> actions;
     private final double chance;
     private final boolean giveItem;
     private final String modelAnimation;
@@ -26,7 +26,7 @@ public class Reward implements IReward {
     private final List<String> hologram;
     private final double hologramYOffset;
 
-    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredAction> actions,
+    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredAction<Player>> actions,
                   String permission, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation,
                   List<PlayerInstancedRequirement> winConditions, String model, float modelYaw) {
         this.identifier = identifier;
