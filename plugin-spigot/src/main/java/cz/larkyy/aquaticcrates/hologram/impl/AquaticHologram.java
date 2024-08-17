@@ -162,7 +162,7 @@ public class AquaticHologram extends Hologram {
 
         int lineNumber = 0;
         for (String line : lines) {
-            final String formattedLine = visitors.isEmpty() ? line : PlaceholderAPI.setPlaceholders(visitors.getFirst(), line);
+            final String formattedLine = visitors.isEmpty() ? line : PlaceholderAPI.setPlaceholders(visitors.stream().findFirst().get(), line);
 
             Location l2 = getLocation().clone().add(0, 0.25 * (lines.size() - lineNumber), 0);
             if (lineNumber < ids.size()) {
