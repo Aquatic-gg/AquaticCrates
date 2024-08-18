@@ -33,10 +33,12 @@ import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.requirement.AbstractRequirement;
+import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementArgument;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerInstancedRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirement;
+import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -219,20 +221,8 @@ public class CrateConfig extends Config {
         return rewards;
     }
 
-    private List<PlayerInstancedRequirement> loadRewardConditions(String path) {
-        List<PlayerInstancedRequirement> prices = new ArrayList<>();
-        if (!getConfiguration().contains(path)) return prices;
-        for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
-            String p = path + "." + key;
-            AbstractRequirement<?> type = RequirementTypes.INSTANCE.getRequirementTypes().get(getConfiguration().getString(p + ".type"));
-            if (type == null) {
-                continue;
-            }
-            if (type instanceof PlayerRequirement playerRequirement) {
-                prices.add(new PlayerInstancedRequirement(playerRequirement, loadRequirementArguments(p, playerRequirement.arguments())));
-            }
-        }
-        return prices;
+    private List<ConfiguredRequirement<Player>> loadRewardConditions(String path) {
+        return PlayerRequirementSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(getConfiguration(),path));
     }
 
     private Reward loadReward(String path, String id) {

@@ -1,9 +1,12 @@
 package cz.larkyy.aquaticcrates.commands.impl;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
-import cz.larkyy.aquaticcrates.commands.ICommand;
+import gg.aquatic.aquaticseries.lib.util.ICommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class EditorCommand implements ICommand {
     @Override
@@ -14,5 +17,11 @@ public class EditorCommand implements ICommand {
 
         if (!(sender instanceof Player p)) return;
         AquaticCrates.getEditingHandler().openEditorMenu(p);
+    }
+
+    @NotNull
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String[] strings) {
+        return List.of();
     }
 }

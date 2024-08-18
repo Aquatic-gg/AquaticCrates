@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcrates;
 
 import cz.larkyy.aquaticcrates.animation.task.Tasks;
-import cz.larkyy.aquaticcrates.commands.CommandCompleter;
 import cz.larkyy.aquaticcrates.commands.Commands;
 import cz.larkyy.aquaticcrates.config.Config;
 import cz.larkyy.aquaticcrates.crate.CrateHandler;
@@ -149,8 +148,9 @@ public final class AquaticCrates extends JavaPlugin {
             }
         }
 
-        getCommand("aquaticcrates").setExecutor(new Commands());
-        getCommand("aquaticcrates").setTabCompleter(new CommandCompleter());
+        var cmds = new Commands();
+        getCommand("aquaticcrates").setExecutor(cmds);
+        getCommand("aquaticcrates").setTabCompleter(cmds);
 
         getServer().getPluginManager().registerEvents(new CrateListener(),this);
         getServer().getPluginManager().registerEvents(new EditingHandler(),this);

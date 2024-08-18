@@ -1,13 +1,18 @@
 package cz.larkyy.aquaticcrates.commands.impl;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
-import cz.larkyy.aquaticcrates.commands.ICommand;
 import cz.larkyy.aquaticcrates.messages.Messages;
+import gg.aquatic.aquaticseries.lib.util.ICommand;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ItemCommand implements ICommand {
     @Override
@@ -101,5 +106,20 @@ public class ItemCommand implements ICommand {
                 }
             }
         }
+    }
+
+    @NotNull
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String[] args) {
+        if (args.length == 1) {
+            return Arrays.asList("save","give");
+        }
+        if (args[0].equalsIgnoreCase("give")) {
+            if (args.length == 2) {
+                return new ArrayList<>(AquaticCrates.getItemHandler().getItems().keySet());
+            }
+        }
+
+        return List.of();
     }
 }

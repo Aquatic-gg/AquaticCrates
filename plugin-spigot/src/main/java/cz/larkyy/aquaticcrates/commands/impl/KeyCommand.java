@@ -1,14 +1,19 @@
 package cz.larkyy.aquaticcrates.commands.impl;
 
-import cz.larkyy.aquaticcrates.commands.ICommand;
+import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.crate.Key;
 import cz.larkyy.aquaticcrates.messages.Messages;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
+import gg.aquatic.aquaticseries.lib.util.ICommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class KeyCommand implements ICommand {
@@ -294,5 +299,29 @@ public class KeyCommand implements ICommand {
                 }
             }
         }
+    }
+
+    @NotNull
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String[] args) {
+
+        if (args.length == 1) {
+            return Arrays.asList("give","giveall","take");
+        }
+        if (args[0].equalsIgnoreCase("give")) {
+            if (args.length == 2) {
+                return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+            }
+        } else if (args[0].equalsIgnoreCase("giveall")) {
+            if (args.length == 2) {
+                return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+            }
+        } else if (args[0].equalsIgnoreCase("take")) {
+            if (args.length == 2) {
+                return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+            }
+        }
+
+        return List.of();
     }
 }

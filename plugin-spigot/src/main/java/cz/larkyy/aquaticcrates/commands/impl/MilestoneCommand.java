@@ -1,10 +1,16 @@
 package cz.larkyy.aquaticcrates.commands.impl;
 
-import cz.larkyy.aquaticcrates.commands.ICommand;
+import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.messages.Messages;
+import gg.aquatic.aquaticseries.lib.util.ICommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MilestoneCommand implements ICommand {
     // /acrates milestone <crate> set/take/add <player> <amount>
@@ -46,5 +52,18 @@ public class MilestoneCommand implements ICommand {
                 sender.sendMessage("Milestone amount has been increased to "+player.getName()+"!");
             }
         }
+    }
+
+    @NotNull
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String[] args) {
+        if (args.length == 1) {
+            return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+        }
+        if (args.length == 2) {
+            return Arrays.asList("set","take","add");
+        }
+
+        return List.of();
     }
 }

@@ -1,12 +1,18 @@
 package cz.larkyy.aquaticcrates.commands.impl;
 
-import cz.larkyy.aquaticcrates.commands.ICommand;
+import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.messages.Messages;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
+import gg.aquatic.aquaticseries.lib.util.ICommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CrateCommand implements ICommand {
 
@@ -71,5 +77,31 @@ public class CrateCommand implements ICommand {
                 crate.open(CratePlayer.get(player), null, instant,takeKey);
             }
         }
+    }
+
+    @NotNull
+    @Override
+    public List<String> tabComplete(@NotNull CommandSender commandSender, @NotNull String[] args) {
+        if (args.length == 1) {
+            return Arrays.asList("give","open");
+        }
+        if (args[0].equalsIgnoreCase("give")) {
+            if (args.length == 2) {
+                return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+            }
+        }
+        if (args[0].equalsIgnoreCase("open")) {
+            if (args.length == 2) {
+                return new ArrayList<>(AquaticCrates.getCrateHandler().getCrates().keySet());
+            }
+            if (args.length == 4) {
+                return List.of("<instant true/false>");
+            }
+            if (args.length == 5) {
+                return List.of("<takeKey true/false>");
+            }
+        }
+
+        return List.of();
     }
 }
