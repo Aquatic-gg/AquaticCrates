@@ -1,8 +1,5 @@
 package cz.larkyy.aquaticcrates.crate.milestone;
 
-import cz.larkyy.aquaticcrates.AquaticCrates;
-import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.utils.IReward;
 import cz.larkyy.aquaticcrates.utils.RewardUtils;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.chance.IChance;

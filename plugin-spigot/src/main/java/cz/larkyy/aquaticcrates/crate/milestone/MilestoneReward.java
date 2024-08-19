@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcrates.crate.milestone;
 
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.utils.IReward;
 import gg.aquatic.aquaticseries.lib.chance.IChance;
 
 public class MilestoneReward implements IChance {
