@@ -3,7 +3,6 @@ package cz.larkyy.aquaticcrates.crate.reward;
 import cz.larkyy.aquaticcrates.utils.IReward;
 import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
-import gg.aquatic.aquaticseries.lib.requirement.player.PlayerInstancedRequirement;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.entity.Player;

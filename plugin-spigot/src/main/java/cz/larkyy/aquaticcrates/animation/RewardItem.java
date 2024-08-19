@@ -158,7 +158,7 @@ public class RewardItem {
 
                 if (easedTick >= tick) {
                     var rewards = RewardUtils
-                            .getPossibleRewards(animation.getPlayer(),animation.getAnimationManager().getCrate().getRewards(),animation.getAnimationManager().getCrate());
+                            .getPossibleRewards(animation.getPlayer(),animation.getAnimationManager().getCrate().getRewards());
 
                     Reward r = (Reward) RewardUtils.getRandomReward(
                             rewards,
@@ -175,10 +175,10 @@ public class RewardItem {
                 double easedTick;
                 if (tick >= rumblingLength * easingThreshold) {
                     // Calculate normalized time within the easing phase
-                    double normalizedTime = (double) (tick - rumblingLength * easingThreshold) /
-                            (rumblingLength * (1 - easingThreshold));
-                    easedTick = easeOutCubic(normalizedTime) * (rumblingLength * (1 - easingThreshold)) +
-                            rumblingLength * easingThreshold;
+                    double normalizedTime = (double) (tick - rumblingPeriod * easingThreshold) /
+                            (rumblingPeriod * (1 - easingThreshold));
+                    easedTick = easeOutCubic(normalizedTime) * (rumblingPeriod * (1 - easingThreshold)) +
+                            rumblingPeriod * easingThreshold;
                 } else {
                     easedTick = tick;
                 }

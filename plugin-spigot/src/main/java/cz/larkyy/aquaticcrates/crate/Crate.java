@@ -215,7 +215,7 @@ public class Crate extends CrateBase {
 
     public Reward getRandomReward(Player p) {
         var rewards = RewardUtils
-                .getPossibleRewards(p,this.rewards,this);
+                .getPossibleRewards(p,this.rewards);
         return (Reward) RewardUtils.getRandomReward(rewards,null);
     }
 
@@ -229,7 +229,7 @@ public class Crate extends CrateBase {
 
 
     public List<Reward> getPossibleRewards(Player p) {
-        return RewardUtils.getPossibleRewards(p,rewards,this).stream().map(r -> (Reward)r).toList();
+        return RewardUtils.getPossibleRewards(p,rewards).stream().map(r -> (Reward)r).toList();
     }
 
     public RerollManager getRerollManager() {

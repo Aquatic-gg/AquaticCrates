@@ -43,7 +43,7 @@ public class RewardUtils {
         return null;
     }
 
-    public static List<IReward> getPossibleRewards(Player player, List<Reward> rewards, Crate crate) {
+    public static List<IReward> getPossibleRewards(Player player, List<Reward> rewards) {
         List<IReward> rewardList = new ArrayList<>();
         for (Reward r : rewards) {
             if (r.getWinConditions().isEmpty()) {
