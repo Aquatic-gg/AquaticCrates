@@ -20,6 +20,7 @@ import cz.larkyy.aquaticcrates.hooks.PAPIHook;
 import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.format.Format;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
+import gg.aquatic.aquaticseries.lib.interactable.InteractableHandler;
 import gg.aquatic.aquaticseries.lib.inventory.lib.InventoryHandler;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
@@ -121,7 +122,7 @@ public final class AquaticCrates extends JavaPlugin {
     @Override
     public void onEnable() {
         aquaticSeriesLib = AquaticSeriesLib.Companion.init(this, List.of(
-                InventoryHandler.INSTANCE
+                InventoryHandler.INSTANCE, new InteractableHandler(10)
         ));
         aquaticSeriesLib.setMessageFormatting(messageFormat);
 

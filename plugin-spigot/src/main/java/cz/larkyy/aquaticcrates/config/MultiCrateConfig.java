@@ -38,7 +38,8 @@ public class MultiCrateConfig extends Config {
                 getConfiguration().getStringList("crates"),
                 getConfiguration().getInt("hitbox-height",1),
                 getConfiguration().getInt("hitbox-width",1),
-                loadMultiPreviewGUI(identifier)
+                loadMultiPreviewGUI(identifier),
+                null
 
         );
 

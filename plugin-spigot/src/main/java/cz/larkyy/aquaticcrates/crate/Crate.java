@@ -21,6 +21,7 @@ import cz.larkyy.aquaticcrates.messages.Messages;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import cz.larkyy.aquaticcrates.utils.RewardUtils;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.interactable.AbstractInteractable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -59,8 +60,9 @@ public class Crate extends CrateBase {
                  double hologramYOffset, String permission, boolean instantWhileSneaking,
                  PriceHandler priceHandler, TreeMap<Integer, Milestone> milestones,
                  HashMap<Integer,Milestone> repeatableMilestones, int hitboxHeight,
-                 int hitboxWidth, PreviewGUISettings previewGUISettings) {
-        super(identifier,displayName,modelSettings,hologram,hologramYOffset,hitboxHeight,hitboxWidth);
+                 int hitboxWidth, PreviewGUISettings previewGUISettings,
+                 AbstractInteractable interactable) {
+        super(identifier,displayName,modelSettings,hologram,hologramYOffset,hitboxHeight,hitboxWidth, interactable);
         this.previewGUISettings = previewGUISettings;
         this.key = new Key(key,this,requiresCrateToOpen, mustBeHeld);
         this.rewards = rewards;

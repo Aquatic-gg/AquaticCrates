@@ -8,6 +8,7 @@ import cz.larkyy.aquaticcrates.api.events.KeyInteractEvent;
 import cz.larkyy.aquaticcrates.api.events.MultiCrateInteractEvent;
 import cz.larkyy.aquaticcrates.crate.reroll.Reroll;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
+import gg.aquatic.aquaticseries.lib.interactable.event.BlockInteractableBreakEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

@@ -6,6 +6,8 @@ import cz.larkyy.aquaticcrates.hologram.Hologram;
 import cz.larkyy.aquaticcrates.hologram.impl.AquaticHologram;
 import cz.larkyy.aquaticcrates.model.Model;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
+import gg.aquatic.aquaticseries.lib.interactable.AbstractInteractable;
+import gg.aquatic.aquaticseries.lib.interactable.AbstractSpawnedInteractable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +22,7 @@ public class PlacedCrate {
     private final Model model;
     private final Hologram hologram;
     private final ModelAnimationHandler modelAnimationHandler;
+    private final AbstractSpawnedInteractable spawnedInteractable;
 
     public PlacedCrate(Crate crate, Location location) {
         this.location = location;
@@ -28,6 +31,7 @@ public class PlacedCrate {
         hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()), list -> {});
         this.model = Model.create(crate.getModel(), location,null,null);
         this.modelAnimationHandler = new ModelAnimationHandler(model,crate);
+        spawnedInteractable = crate.getInteractable().spawn(location);
     }
     public PlacedCrate(Crate crate, Location location, Model model, Hologram hologram) {
         this.location = location;
@@ -35,6 +39,7 @@ public class PlacedCrate {
         this.hologram = hologram;
         this.model = model;
         this.modelAnimationHandler = new ModelAnimationHandler(model,crate);
+        spawnedInteractable = crate.getInteractable().spawn(location);
     }
 
     public static PlacedCrate get(Location location) {
@@ -63,6 +68,7 @@ public class PlacedCrate {
         }
 
         hologram.despawn();
+        spawnedInteractable.despawn();
     }
 
     public List<Location> getHitboxLocations() {

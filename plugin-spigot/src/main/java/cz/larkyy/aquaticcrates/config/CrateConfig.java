@@ -3,8 +3,10 @@ package cz.larkyy.aquaticcrates.config;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.animation.AnimationTitle;
 import cz.larkyy.aquaticcrates.animation.task.*;
+import cz.larkyy.aquaticcrates.api.events.CrateInteractEvent;
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.animation.AnimationManager;
+import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcrates.crate.inventories.settings.CustomInventorySettings;
 import cz.larkyy.aquaticcrates.crate.inventories.settings.PreviewGUISettings;
@@ -29,7 +31,15 @@ import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.block.AquaticBlock;
+import gg.aquatic.aquaticseries.lib.block.impl.ItemsAdderBlock;
+import gg.aquatic.aquaticseries.lib.block.impl.OraxenBlock;
+import gg.aquatic.aquaticseries.lib.block.impl.VanillaBlock;
 import gg.aquatic.aquaticseries.lib.chance.IChance;
+import gg.aquatic.aquaticseries.lib.interactable.AbstractInteractable;
+import gg.aquatic.aquaticseries.lib.interactable.impl.block.BlockInteractable;
+import gg.aquatic.aquaticseries.lib.interactable.impl.block.BlockShape;
+import gg.aquatic.aquaticseries.lib.interactable.impl.meg.MEGInteractable;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementArgument;
@@ -41,6 +51,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.larkyy.colorutils.Colors;
 import xyz.larkyy.itemlibrary.CustomItem;
@@ -49,6 +60,7 @@ import java.io.File;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 public class CrateConfig extends Config {
 
@@ -88,7 +100,8 @@ public class CrateConfig extends Config {
                 loadRepeatableMilestones(),
                 getConfiguration().getInt("hitbox-height", 1),
                 getConfiguration().getInt("hitbox-width", 1),
-                loadPreviewGUI(identifier)
+                loadPreviewGUI(identifier),
+                loadInteractable(identifier)
         );
         loadRerollGUI(c, rerollGUIAtomicReference);
         loadRerollManager(c, rerollManagerAtomicReference);
@@ -97,6 +110,84 @@ public class CrateConfig extends Config {
         c.setBlockType(Material.valueOf(getConfiguration().getString("block-type", "BARRIER").toUpperCase()));
 
         return c;
+    }
+
+    private AbstractInteractable loadInteractable(String crateId) {
+        var type = getConfiguration().getString("interactable.type", "block").toLowerCase();
+
+        if (type.equals("modelengine")) {
+            return new MEGInteractable(
+                    "aquaticcrates_" + crateId,
+                    new BlockShape(
+                            new HashMap<>() {
+                                {
+                                    put(0, new HashMap<>() {
+                                        {
+                                            put(0, "X");
+                                        }
+                                    });
+                                }
+                            },
+                            new HashMap<>() {
+                                {
+                                    put('X', new VanillaBlock(Material.AIR.createBlockData()));
+                                }
+                            }
+                    ),
+                    getConfiguration().getString("interactable.model", ""),
+                    onInteract -> {
+
+                    },
+                    false
+            );
+        }
+        var material = getConfiguration().getString("interactable.block-type", "STONE").toUpperCase();
+        AquaticBlock block;
+        if (material.startsWith("ORAXEN:")) {
+            block = new OraxenBlock(material.replace("ORAXEN:", ""));
+        } else if (material.startsWith("IA:")) {
+            block = new ItemsAdderBlock(material.replace("IA:", ""));
+        } else {
+            block = new VanillaBlock(Material.valueOf(material).createBlockData());
+        }
+
+        return new BlockInteractable(
+                "aquaticcrates_" + crateId,
+                onInteract -> {
+                    Action action = onInteract.getOriginalEvent().getAction();
+                    var loc = onInteract.getOriginalEvent().getClickedBlock().getLocation();
+                    PlacedCrate placedCrate = PlacedCrate.get(loc);
+                    if (placedCrate != null) {
+                        onInteract.getOriginalEvent().setCancelled(true);
+                        Bukkit.getPluginManager().callEvent(new CrateInteractEvent(onInteract.getOriginalEvent().getPlayer(), placedCrate, action, loc));
+                    }
+                },
+                onBreak -> {
+                    PlacedCrate pc = PlacedCrate.get(onBreak.getOriginalEvent().getBlock().getLocation());
+                    if (pc == null) return;
+                    Player p = onBreak.getOriginalEvent().getPlayer();
+                    onBreak.getOriginalEvent().setCancelled(true);
+                    Bukkit.getPluginManager().callEvent(new CrateInteractEvent(p, pc, Action.LEFT_CLICK_BLOCK, onBreak.getOriginalEvent().getBlock().getLocation()));
+                },
+                new BlockShape(
+                        new HashMap<>() {
+                            {
+                                put(0, new HashMap<>() {
+                                    {
+                                        put(0, "X");
+                                    }
+                                });
+                            }
+                        },
+                        new HashMap<>() {
+                            {
+                                put('X', block);
+                            }
+                        }
+                )
+                ,
+                false
+        );
     }
 
     private ModelSettings loadModelSettings() {
@@ -218,7 +309,7 @@ public class CrateConfig extends Config {
     }
 
     private List<ConfiguredRequirement<Player>> loadRewardConditions(String path) {
-        return PlayerRequirementSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(getConfiguration(),path));
+        return PlayerRequirementSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(getConfiguration(), path));
     }
 
     private Reward loadReward(String path, String id) {
@@ -248,7 +339,7 @@ public class CrateConfig extends Config {
 
         var section = getConfiguration().getConfigurationSection(path);
         if (section != null) {
-            actions = PlayerActionSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(section,"actions"));
+            actions = PlayerActionSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(section, "actions"));
         }
         return new Reward(
                 id,
@@ -369,9 +460,9 @@ public class CrateConfig extends Config {
         button.setOnClick(e -> {
             e.getOriginalEvent().setCancelled(true);
             var placeholders = new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders();
-            placeholders.addPlaceholder(new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder("%player%",e.getOriginalEvent().getWhoClicked().getName()));
+            placeholders.addPlaceholder(new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder("%player%", e.getOriginalEvent().getWhoClicked().getName()));
             actions.forEach(action -> {
-                action.run((Player) e.getOriginalEvent().getWhoClicked(),placeholders);
+                action.run((Player) e.getOriginalEvent().getWhoClicked(), placeholders);
             });
         });
 
