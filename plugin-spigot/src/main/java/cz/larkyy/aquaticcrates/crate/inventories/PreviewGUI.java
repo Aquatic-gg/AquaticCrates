@@ -237,7 +237,7 @@ public class PreviewGUI extends PersonalizedInventory {
 
             lore.addAll(rewardLore);
             lore.replaceAll(s ->
-                    s.replace("%chance%", r.getChance() + "")
+                    s.replace("%chance%", r.chance() + "")
             );
             ItemStackExtKt.lore(im, StringExtKt.toAquatic(lore));
             is.setItemMeta(im);

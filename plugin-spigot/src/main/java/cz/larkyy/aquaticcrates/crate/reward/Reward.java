@@ -1,7 +1,7 @@
 package cz.larkyy.aquaticcrates.crate.reward;
 
-import cz.larkyy.aquaticcrates.utils.IReward;
 import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
+import gg.aquatic.aquaticseries.lib.chance.IChance;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
@@ -10,7 +10,7 @@ import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.List;
 
-public class Reward implements IReward {
+public class Reward implements IChance {
 
     private final String identifier;
     private final CustomItem item;
@@ -92,7 +92,7 @@ public class Reward implements IReward {
         return modelAnimation;
     }
 
-    public double getChance() {
+    public double chance() {
         return chance;
     }
 

@@ -1,9 +1,11 @@
 package cz.larkyy.aquaticcrates.crate.milestone;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
+import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.utils.IReward;
 import cz.larkyy.aquaticcrates.utils.RewardUtils;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.chance.IChance;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -12,9 +14,9 @@ public class Milestone {
 
     private final int milestone;
     private final AquaticString displayName;
-    private final List<IReward> rewards;
+    private final List<IChance> rewards;
 
-    public Milestone(int milestone, List<IReward> rewards, AquaticString displayName) {
+    public Milestone(int milestone, List<IChance> rewards, AquaticString displayName) {
         this.milestone = milestone;
         this.rewards = rewards;
         this.displayName = displayName;

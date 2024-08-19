@@ -2,8 +2,9 @@ package cz.larkyy.aquaticcrates.crate.milestone;
 
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.utils.IReward;
+import gg.aquatic.aquaticseries.lib.chance.IChance;
 
-public class MilestoneReward implements IReward {
+public class MilestoneReward implements IChance {
 
     private final Reward reward;
     private final double chance;
@@ -17,7 +18,7 @@ public class MilestoneReward implements IReward {
         return reward;
     }
 
-    public double getChance() {
+    public double chance() {
         return chance;
     }
 }

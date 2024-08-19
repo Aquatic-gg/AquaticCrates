@@ -31,6 +31,7 @@ import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.chance.IChance;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.requirement.AbstractRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
@@ -211,12 +212,12 @@ public class CrateConfig extends Config {
         return milestones;
     }
 
-    private List<IReward> loadMilestoneRewards(String path) {
-        var rewards = new ArrayList<IReward>();
+    private List<IChance> loadMilestoneRewards(String path) {
+        var rewards = new ArrayList<IChance>();
         for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
             var reward = loadReward(path + "." + key, key);
             if (reward == null) continue;
-            rewards.add(new MilestoneReward(reward, reward.getChance()));
+            rewards.add(new MilestoneReward(reward, reward.chance()));
         }
         return rewards;
     }

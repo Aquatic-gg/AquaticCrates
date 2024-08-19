@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcrates.utils;
 
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
+import gg.aquatic.aquaticseries.lib.chance.IChance;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class RewardUtils {
 
-    public static IReward getRandomReward(List<IReward> rs, IReward excludedReward) {
+    public static IChance getRandomReward(List<IChance> rs, IChance excludedReward) {
         if (excludedReward != null) {
             rs.remove(excludedReward);
             if (rs.isEmpty()) {
@@ -24,15 +25,15 @@ public class RewardUtils {
         if (getTotalPercentage(rs) > 0) {
             // Compute the total weight of all items together
             double totalWeight = 0.0d;
-            for (IReward winning1 : rs) {
-                totalWeight += winning1.getChance();
+            for (var winning1 : rs) {
+                totalWeight += winning1.chance();
             }
 
             // Now choose a random item
             int randomIndex = -1;
             double random = Math.random() * totalWeight;
             for (int i = 0; i < rs.size(); ++i) {
-                random -= rs.get(i).getChance();
+                random -= rs.get(i).chance();
                 if (random <= 0.0d) {
                     randomIndex = i;
                     break;
@@ -43,8 +44,8 @@ public class RewardUtils {
         return null;
     }
 
-    public static List<IReward> getPossibleRewards(Player player, List<Reward> rewards) {
-        List<IReward> rewardList = new ArrayList<>();
+    public static List<IChance> getPossibleRewards(Player player, List<Reward> rewards) {
+        List<IChance> rewardList = new ArrayList<>();
         for (Reward r : rewards) {
             if (r.getWinConditions().isEmpty()) {
                 rewardList.add(r);
@@ -55,8 +56,8 @@ public class RewardUtils {
         return rewardList;
     }
 
-    private static double getTotalPercentage(List<IReward> rs) {
-        return rs.stream().mapToDouble(IReward::getChance).sum();
+    private static double getTotalPercentage(List<IChance> rs) {
+        return rs.stream().mapToDouble(IChance::chance).sum();
     }
 
 }
