@@ -1,6 +1,6 @@
 package cz.larkyy.aquaticcrates.crate.reward.condition;
 
-import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirement;
+import gg.aquatic.aquaticseries.lib.requirement.AbstractRequirement;
 import gg.aquatic.aquaticseries.lib.util.argument.AquaticObjectArgument;
 import gg.aquatic.aquaticseries.lib.util.argument.impl.PrimitiveObjectArgument;
 import org.bukkit.entity.Player;
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PermissionCondition extends PlayerRequirement {
+public class PermissionCondition extends AbstractRequirement<Player> {
 
     public static final List<AquaticObjectArgument<?>> ARGUMENTS = new ArrayList<>();
     static {
