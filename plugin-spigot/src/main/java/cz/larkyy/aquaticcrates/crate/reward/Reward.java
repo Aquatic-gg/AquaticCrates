@@ -57,9 +57,7 @@ public class Reward implements IReward {
                 player.getLocation().getWorld().dropItem(player.getLocation(),is2);
             });
         }
-        Placeholders placeholders = new Placeholders(
-
-        );
+        Placeholders placeholders = new Placeholders();
 
         placeholders.addPlaceholder(new Placeholder("%player%",player.getName()));
         placeholders.addPlaceholder(new Placeholder("%reward%",getPreviewItem().getItem().getItemMeta().getDisplayName()));
