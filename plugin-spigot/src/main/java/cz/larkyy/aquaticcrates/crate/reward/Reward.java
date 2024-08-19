@@ -57,10 +57,9 @@ public class Reward implements IChance {
             });
         }
         Placeholders placeholders = new Placeholders();
-
-        placeholders.addPlaceholder(new Placeholder("%player%",player.getName()));
-        placeholders.addPlaceholder(new Placeholder("%reward%",getPreviewItem().getItem().getItemMeta().getDisplayName()));
-        placeholders.addPlaceholder(new Placeholder("%chance%",chance+""));
+        placeholders.plusAssign(new Placeholder("%player%",player.getName()));
+        placeholders.plusAssign(new Placeholder("%reward%",getPreviewItem().getItem().getItemMeta().getDisplayName()));
+        placeholders.plusAssign(new Placeholder("%chance%",chance+""));
         actions.forEach(a -> a.run(player,placeholders));
     }
 

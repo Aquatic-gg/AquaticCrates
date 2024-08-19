@@ -18,6 +18,7 @@ import cz.larkyy.aquaticcrates.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcrates.crate.reward.ConfiguredRewardAction;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.crate.reward.RewardActions;
+import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
 import cz.larkyy.aquaticcrates.menu.Menu;
 import cz.larkyy.aquaticcrates.menu.MenuItem;
 import cz.larkyy.aquaticcrates.placeholders.Placeholder;
@@ -32,6 +33,7 @@ import gg.aquatic.aquaticseries.lib.chance.IChance;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementArgument;
+import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -237,6 +239,12 @@ public class CrateConfig extends Config {
         boolean giveItem = getConfiguration().getBoolean(path + ".give-item", false);
 
         List<ConfiguredAction<Player>> actions = new ArrayList<>();
+        var conditions = loadRewardConditions(path + ".conditions");
+        conditions.add(new ConfiguredRequirement<>(new PermissionCondition(), new HashMap<>() {
+            {
+                put("permission", permission);
+            }
+        }));
 
         var section = getConfiguration().getConfigurationSection(path);
         if (section != null) {
@@ -253,7 +261,7 @@ public class CrateConfig extends Config {
                 loadHologram(path + ".hologram"),
                 getConfiguration().getDouble(path + ".hologram-y-offset", 0),
                 modelAnimation,
-                loadRewardConditions(path + ".conditions"),
+                conditions,
                 model,
                 modelYaw
         );
