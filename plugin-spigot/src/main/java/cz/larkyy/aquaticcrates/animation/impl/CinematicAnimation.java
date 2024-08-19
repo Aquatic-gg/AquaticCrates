@@ -52,7 +52,7 @@ public class CinematicAnimation extends Animation {
 
     @Override
     public void begin() {
-        getPlayer().getPersistentDataContainer().set(KEY, PersistentDataType.INTEGER,1);
+        getPlayer().getPersistentDataContainer().set(KEY, PersistentDataType.INTEGER, 1);
 
         var title = getAnimationManager().getPreOpenTitle();
         if (title != null) {
@@ -81,7 +81,7 @@ public class CinematicAnimation extends Animation {
             rewardItem = null;
         }
         if (camera != null) {
-            camera.teleport(getAnimationManager().getCameraLocation().clone().add(0,1.8,0));
+            camera.teleport(getAnimationManager().getCameraLocation().clone().add(0, 1.8, 0));
         }
 
         if (getAnimationManager().getModelLocation() == null || getAnimationManager().getCameraLocation() == null) {
@@ -89,7 +89,7 @@ public class CinematicAnimation extends Animation {
             return;
         }
 
-        getAnimationManager().showTitle(getAnimationManager().getOpeningTitle(),getPlayer());
+        getAnimationManager().showTitle(getAnimationManager().getOpeningTitle(), getPlayer());
         String openAnimation;
         if (getReward().get() == null) {
             openAnimation = "open";
@@ -105,14 +105,14 @@ public class CinematicAnimation extends Animation {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                getAnimationManager().playTask(i,CinematicAnimation.this);
+                getAnimationManager().playTask(i, CinematicAnimation.this);
                 if (getAnimationManager().shouldStopAnimation(i)) {
                     reroll();
                 }
                 i++;
             }
         };
-        runnable.runTaskTimer(AquaticCrates.instance(),0,1);
+        runnable.runTaskTimer(AquaticCrates.instance(), 0, 1);
     }
 
     @Override
@@ -154,25 +154,25 @@ public class CinematicAnimation extends Animation {
     }
 
     @Override
-    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity, Vector offset) {
+    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity, Vector offset, Boolean easeOut) {
         if (rewardItem != null) {
             rewardItem.despawn();
         }
-        rewardItem = new RewardItem(getPlayer(),this,rumblingLength, rumblingPeriod,aliveLength,vector,gravity,offset);
+        rewardItem = new RewardItem(getPlayer(), this, rumblingLength, rumblingPeriod, aliveLength, vector, gravity, offset, easeOut);
         rewardItem.spawn();
     }
 
     private Model spawnModel() {
         String modelNamespace = getAnimationManager().getCrate().getModel();
-        return Model.create(modelNamespace,getAnimationManager().getModelLocation(),getPlayer(),getPlayer());
+        return Model.create(modelNamespace, getAnimationManager().getModelLocation(), getPlayer(), getPlayer());
     }
 
     private Camera spawnCamera() {
-        return new Camera(getAnimationManager().getCameraLocation(),getPlayer());
+        return new Camera(getAnimationManager().getCameraLocation(), getPlayer());
     }
 
     public void moveCamera(Vector offset, int duration, float yawOffset, float pitchOffset) {
-        camera.setMovement(offset,duration,yawOffset,pitchOffset);
+        camera.setMovement(offset, duration, yawOffset, pitchOffset);
     }
 
     public void teleportCamera(Vector offset, float yaw, float pitch) {

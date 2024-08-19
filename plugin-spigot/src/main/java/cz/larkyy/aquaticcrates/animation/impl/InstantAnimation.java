@@ -36,7 +36,7 @@ public class InstantAnimation extends Animation {
     }
 
     @Override
-    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity, Vector offset) {
+    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity, Vector offset, Boolean easeOut) {
 
     }
 

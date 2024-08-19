@@ -98,11 +98,11 @@ public class PlacedCrateAnimation extends Animation {
     }
 
     @Override
-    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity, Vector offset) {
+    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity, Vector offset, Boolean easeOut) {
         if (rewardItem != null) {
             rewardItem.despawn();
         }
-        rewardItem = new RewardItem(null,this,rumblingLength, rumblingPeriod,aliveLength,vector,gravity,offset);
+        rewardItem = new RewardItem(null,this,rumblingLength, rumblingPeriod,aliveLength,vector,gravity,offset,easeOut);
         rewardItem.spawn();
     }
 

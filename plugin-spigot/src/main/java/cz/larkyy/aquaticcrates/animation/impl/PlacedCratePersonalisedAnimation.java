@@ -31,21 +31,21 @@ public class PlacedCratePersonalisedAnimation extends Animation {
             reroll();
         } else {
             placedCrate.getModel().hide(player);
-            this.model = Model.create(placedCrate.getCrate().getModel(),placedCrate.getLocation(),player,player);
+            this.model = Model.create(placedCrate.getCrate().getModel(), placedCrate.getLocation(), player, player);
             begin();
         }
     }
 
     @Override
     public void begin() {
-        getPlayer().getPersistentDataContainer().set(KEY, PersistentDataType.INTEGER,1);
+        getPlayer().getPersistentDataContainer().set(KEY, PersistentDataType.INTEGER, 1);
         start();
     }
 
     @Override
     public void start() {
         setStarted(true);
-        getAnimationManager().showTitle(getAnimationManager().getOpeningTitle(),getPlayer());
+        getAnimationManager().showTitle(getAnimationManager().getOpeningTitle(), getPlayer());
         if (rewardItem != null) {
             rewardItem.despawn();
             rewardItem = null;
@@ -69,14 +69,14 @@ public class PlacedCratePersonalisedAnimation extends Animation {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                getAnimationManager().playTask(i,PlacedCratePersonalisedAnimation.this);
+                getAnimationManager().playTask(i, PlacedCratePersonalisedAnimation.this);
                 if (getAnimationManager().shouldStopAnimation(i)) {
                     reroll();
                 }
                 i++;
             }
         };
-        runnable.runTaskTimer(AquaticCrates.instance(),0,1);
+        runnable.runTaskTimer(AquaticCrates.instance(), 0, 1);
     }
 
     @Override
@@ -108,11 +108,11 @@ public class PlacedCratePersonalisedAnimation extends Animation {
     }
 
     @Override
-    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity, Vector offset) {
+    public void spawnReward(int rumblingLength, int rumblingPeriod, int aliveLength, Vector vector, boolean gravity, Vector offset, Boolean easeOut) {
         if (rewardItem != null) {
             rewardItem.despawn();
         }
-        rewardItem = new RewardItem(getPlayer(),this,rumblingLength, rumblingPeriod,aliveLength,vector,gravity,offset);
+        rewardItem = new RewardItem(getPlayer(), this, rumblingLength, rumblingPeriod, aliveLength, vector, gravity, offset, easeOut);
         rewardItem.spawn();
     }
 

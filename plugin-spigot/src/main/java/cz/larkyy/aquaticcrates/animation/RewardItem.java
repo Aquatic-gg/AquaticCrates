@@ -40,6 +40,7 @@ public class RewardItem {
     private Reward cachedReward;
     private final Vector offset;
     private RewardShowcase rewardShowcase;
+    private final boolean easeOut;
 
     public static final NamespacedKey REWARD_ITEM_KEY = new NamespacedKey(AquaticCrates.instance(),"AQUATICCRATES_REWARD_ITEM");
     private final Player p;
@@ -52,7 +53,7 @@ public class RewardItem {
             int aliveLength,
             Vector vector,
             boolean gravity,
-            Vector offset
+            Vector offset, boolean easeOut
     ) {
         this.p = p;
         this.rumblingLength = rumblingLength;
@@ -61,6 +62,7 @@ public class RewardItem {
         this.animation = animation;
         this.vector = vector;
         this.gravity = gravity;
+        this.easeOut = easeOut;
         this.cachedReward = null;
         this.offset = offset;
     }
@@ -154,9 +156,7 @@ public class RewardItem {
                     return;
                 }
 
-                double easedTick = getEasedTick();
-
-                if (easedTick >= tick) {
+                if (!easeOut || shouldPerformAction(tick, rumblingPeriod, rumblingLength)) {
                     var rewards = RewardUtils
                             .getPossibleRewards(animation.getPlayer(),animation.getAnimationManager().getCrate().getRewards());
 
@@ -167,30 +167,31 @@ public class RewardItem {
                     updateItem(r);
                 }
 
-
                 tick++;
-            }
-
-            private double getEasedTick() {
-                double easedTick;
-                if (tick >= rumblingLength * easingThreshold) {
-                    // Calculate normalized time within the easing phase
-                    double normalizedTime = (double) (tick - rumblingPeriod * easingThreshold) /
-                            (rumblingPeriod * (1 - easingThreshold));
-                    easedTick = easeOutCubic(normalizedTime) * (rumblingPeriod * (1 - easingThreshold)) +
-                            rumblingPeriod * easingThreshold;
-                } else {
-                    easedTick = tick;
-                }
-                return easedTick;
             }
         };
         rumbleRunnable.runTaskTimer(AquaticCrates.instance(),0,1);
     }
 
-    private static double easeOutCubic(double t) {
-        double p = t - 1;
-        return 1 + p * p * p;
+    private boolean shouldPerformAction(int tick, int period, int duration) {
+        int thresholdTick = (int) (duration * 0.5);
+
+        if (tick <= thresholdTick) {
+            // Perform action at regular intervals before reaching 70% of the duration
+            return tick % period == 0;
+        } else {
+            // Calculate easing based on remaining ticks
+            int ticksSinceThreshold = tick - thresholdTick;
+            int ticksRemaining = duration - tick;
+
+            // Easing interval increases as we get closer to the end (non-linear easing example)
+            double easingRatio = (double) ticksRemaining / (duration - thresholdTick);
+            int easingInterval = (int) (period * (1 + (1 - easingRatio) * 4)); // Adjust the multiplier as needed
+
+            // Ensure that the final tick always triggers the action
+            return ticksSinceThreshold % easingInterval == 0 || tick == duration;
+        }
+
     }
 
     private void updateItem(Reward reward) {

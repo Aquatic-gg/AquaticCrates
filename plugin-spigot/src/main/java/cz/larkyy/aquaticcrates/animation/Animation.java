@@ -61,7 +61,8 @@ public abstract class Animation {
             int aliveLength,
             Vector vector,
             boolean gravity,
-            Vector offset
+            Vector offset,
+            Boolean easeOut
     );
     public abstract Model getModel();
     public AnimationManager getAnimationManager() {

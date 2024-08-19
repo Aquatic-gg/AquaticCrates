@@ -20,6 +20,7 @@ public class SpawnRewardTask extends Task {
         ARGUMENTS.add(new TaskArgument("rumblingLength",0,false));
         ARGUMENTS.add(new TaskArgument("rumblingPeriod",4,false));
         ARGUMENTS.add(new TaskArgument("offset","0;0;0",false));
+        ARGUMENTS.add(new TaskArgument("ease-out",false,false));
     }
 
     @Override
@@ -30,7 +31,8 @@ public class SpawnRewardTask extends Task {
                 (Integer) arguments.get("length"),
                 readVector(arguments.get("velocity").toString()),
                 Boolean.parseBoolean(arguments.get("gravity").toString()),
-                readVector(arguments.get("offset").toString())
+                readVector(arguments.get("offset").toString()),
+                Boolean.parseBoolean(arguments.get("ease-out").toString())
         );
     }
 
