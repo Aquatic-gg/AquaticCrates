@@ -145,6 +145,7 @@ public class RewardItem {
     private void startRumbling() {
         rumbleRunnable = new BukkitRunnable() {
             int tick = 0;
+            double easingThreshold = 0.8;
             @Override
             public void run() {
                 if (tick >= rumblingLength) {
@@ -153,18 +154,43 @@ public class RewardItem {
                     return;
                 }
 
-                var rewards = RewardUtils
-                        .getPossibleRewards(animation.getPlayer(),animation.getAnimationManager().getCrate().getRewards(),animation.getAnimationManager().getCrate());
+                double easedTick = getEasedTick();
 
-                Reward r = (Reward) RewardUtils.getRandomReward(
-                        rewards,
-                        cachedReward
-                );
-                updateItem(r);
-                tick+=rumblingPeriod;
+                if (easedTick >= tick) {
+                    var rewards = RewardUtils
+                            .getPossibleRewards(animation.getPlayer(),animation.getAnimationManager().getCrate().getRewards(),animation.getAnimationManager().getCrate());
+
+                    Reward r = (Reward) RewardUtils.getRandomReward(
+                            rewards,
+                            cachedReward
+                    );
+                    updateItem(r);
+                }
+
+
+                tick++;
+            }
+
+            private double getEasedTick() {
+                double easedTick;
+                if (tick >= rumblingLength * easingThreshold) {
+                    // Calculate normalized time within the easing phase
+                    double normalizedTime = (double) (tick - rumblingLength * easingThreshold) /
+                            (rumblingLength * (1 - easingThreshold));
+                    easedTick = easeOutCubic(normalizedTime) * (rumblingLength * (1 - easingThreshold)) +
+                            rumblingLength * easingThreshold;
+                } else {
+                    easedTick = tick;
+                }
+                return easedTick;
             }
         };
-        rumbleRunnable.runTaskTimer(AquaticCrates.instance(),0,rumblingPeriod);
+        rumbleRunnable.runTaskTimer(AquaticCrates.instance(),0,1);
+    }
+
+    private static double easeOutCubic(double t) {
+        double p = t - 1;
+        return 1 + p * p * p;
     }
 
     private void updateItem(Reward reward) {

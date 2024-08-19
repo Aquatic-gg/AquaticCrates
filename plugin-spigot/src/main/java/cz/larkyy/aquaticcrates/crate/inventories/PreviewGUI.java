@@ -13,7 +13,6 @@ import gg.aquatic.aquaticseries.lib.inventory.lib.event.ComponentClickEvent;
 import gg.aquatic.aquaticseries.lib.inventory.lib.inventory.PersonalizedInventory;
 import gg.aquatic.aquaticseries.lib.inventory.lib.title.TitleHolder;
 import gg.aquatic.aquaticseries.lib.inventory.lib.title.component.BasicTitleComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,7 +31,6 @@ public class PreviewGUI extends PersonalizedInventory {
                 new BasicTitleComponent(StringExtKt.toAquatic(crate.getPreviewGUISettings().getSettings().getTitle()))
         ), crate.getPreviewGUISettings().getSettings().getSize(), player, factory -> {
         });
-        Bukkit.broadcastMessage("Title: " + crate.getPreviewGUISettings().getSettings().getTitle());
         this.crate = crate;
     }
 

@@ -51,9 +51,9 @@ public class Commands implements CommandExecutor, TabCompleter {
             return availableCommands.keySet().stream().toList();
         }
 
+        var cmd = availableCommands.get(args[0]);
         var args2 = Arrays.stream(args).collect(Collectors.toCollection(ArrayList::new));
         args2.remove(0);
-        var cmd = availableCommands.get(args[0]);
-        return cmd.tabComplete(commandSender, (String[]) args2.stream().toArray());
+        return cmd.tabComplete(commandSender, args2.toArray(new String[0]));
     }
 }
