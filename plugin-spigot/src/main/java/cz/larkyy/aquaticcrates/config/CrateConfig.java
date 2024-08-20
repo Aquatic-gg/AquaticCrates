@@ -42,8 +42,6 @@ import gg.aquatic.aquaticseries.lib.interactable.impl.block.BlockShape;
 import gg.aquatic.aquaticseries.lib.interactable.impl.meg.MEGInteractable;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
-import gg.aquatic.aquaticseries.lib.requirement.RequirementArgument;
-import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -643,21 +641,6 @@ public class CrateConfig extends Config {
                 args.put(arg.getId(), getConfiguration().get(path + "." + arg.getId()));
                 continue;
             } else if (arg.isRequired()) {
-                Bukkit.getConsoleSender().sendMessage(Colors.format("&cARGUMENT &4" + arg.getId() + " &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
-            }
-            args.put(arg.getId(), arg.getDefaultValue());
-        }
-        return args;
-    }
-
-    private Map<String, Object> loadRequirementArguments(String path, List<RequirementArgument> arguments) {
-        Map<String, Object> args = new HashMap<>();
-
-        for (RequirementArgument arg : arguments) {
-            if (getConfiguration().getConfigurationSection(path).getKeys(false).contains(arg.getId())) {
-                args.put(arg.getId(), getConfiguration().get(path + "." + arg.getId()));
-                continue;
-            } else if (arg.getRequired()) {
                 Bukkit.getConsoleSender().sendMessage(Colors.format("&cARGUMENT &4" + arg.getId() + " &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
             }
             args.put(arg.getId(), arg.getDefaultValue());
