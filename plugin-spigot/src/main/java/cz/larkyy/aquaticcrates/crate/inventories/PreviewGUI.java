@@ -5,6 +5,7 @@ import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
+import cz.larkyy.aquaticcrates.utils.Utils;
 import gg.aquatic.aquaticseries.lib.ItemStackExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
 import gg.aquatic.aquaticseries.lib.inventory.lib.SlotSelection;
@@ -28,7 +29,7 @@ public class PreviewGUI extends PersonalizedInventory {
 
     public PreviewGUI(Crate crate, Player player) {
         super(TitleHolder.Companion.of(
-                new BasicTitleComponent(StringExtKt.toAquatic(crate.getPreviewGUISettings().getSettings().getTitle()))
+                new BasicTitleComponent(StringExtKt.toAquatic(Utils.updatePlaceholders(crate.getPreviewGUISettings().getSettings().getTitle(), player)))
         ), crate.getPreviewGUISettings().getSettings().getSize(), player, factory -> {
         });
         this.crate = crate;
@@ -256,7 +257,7 @@ public class PreviewGUI extends PersonalizedInventory {
                     },
                     1
             );
-            getComponentHandler().getComponents().put("reward-"+r.getIdentifier(), newButton);
+            getComponentHandler().getComponents().put("reward-" + r.getIdentifier(), newButton);
             i++;
         }
     }
