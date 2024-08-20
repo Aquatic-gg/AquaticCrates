@@ -331,11 +331,13 @@ public class CrateConfig extends Config {
 
         List<ConfiguredAction<Player>> actions = new ArrayList<>();
         var conditions = loadRewardConditions(path + ".conditions");
-        conditions.add(new ConfiguredRequirement<>(new PermissionCondition(), new HashMap<>() {
-            {
-                put("permission", permission);
-            }
-        }));
+        if (permission != null) {
+            conditions.add(new ConfiguredRequirement<>(new PermissionCondition(), new HashMap<>() {
+                {
+                    put("permission", permission);
+                }
+            }));
+        }
 
         var section = getConfiguration().getConfigurationSection(path);
         if (section != null) {
