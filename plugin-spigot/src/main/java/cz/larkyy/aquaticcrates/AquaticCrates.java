@@ -23,6 +23,7 @@ import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
 import gg.aquatic.aquaticseries.lib.interactable.InteractableHandler;
 import gg.aquatic.aquaticseries.lib.inventory.lib.InventoryHandler;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
+import gg.aquatic.aquaticseries.lib.packet.PacketHandler;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -122,7 +123,7 @@ public final class AquaticCrates extends JavaPlugin {
     @Override
     public void onEnable() {
         aquaticSeriesLib = AquaticSeriesLib.Companion.init(this, List.of(
-                InventoryHandler.INSTANCE, new InteractableHandler(10)
+                InventoryHandler.INSTANCE, new InteractableHandler(10), PacketHandler.INSTANCE
         ));
         aquaticSeriesLib.setMessageFormatting(messageFormat);
 

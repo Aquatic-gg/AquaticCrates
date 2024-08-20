@@ -106,7 +106,7 @@
             <groupId>gg.aquatic.aquaticseries</groupId>
             <artifactId>aquaticlib-17</artifactId>
             <classifier>all</classifier>
-            <version>1.0.2.8</version>
+            <version>1.0.2.12</version>
             <exclusions>
                 <exclusion>
                     <groupId>gg.aquatic.aquaticseries</groupId>
