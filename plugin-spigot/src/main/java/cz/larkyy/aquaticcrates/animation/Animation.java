@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcrates.animation;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.model.Model;
+import gg.aquatic.aquaticseries.lib.interactable.AbstractSpawnedInteractable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -64,7 +65,7 @@ public abstract class Animation {
             Vector offset,
             Boolean easeOut
     );
-    public abstract Model getModel();
+    public abstract AbstractSpawnedInteractable getModel();
     public AnimationManager getAnimationManager() {
         return animationManager;
     }

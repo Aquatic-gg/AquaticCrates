@@ -7,6 +7,8 @@ import cz.larkyy.aquaticcrates.animation.RewardItem;
 import cz.larkyy.aquaticcrates.camera.Camera;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.model.Model;
+import gg.aquatic.aquaticseries.lib.interactable.AbstractSpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable.impl.meg.SpawnedMegInteractable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,7 +22,7 @@ import java.util.function.Consumer;
 
 public class CinematicAnimation extends Animation {
 
-    private final Model model;
+    private final AbstractSpawnedInteractable spawnedInteractable;
     private final Camera camera;
     private int i;
     private BukkitRunnable runnable;
@@ -40,11 +42,11 @@ public class CinematicAnimation extends Animation {
         runnable.runTask(AquaticCrates.instance());
 
         if (getAnimationManager().getModelLocation() == null || getAnimationManager().getCameraLocation() == null) {
-            model = null;
+            spawnedInteractable = null;
             camera = null;
             reroll();
         } else {
-            model = spawnModel();
+            spawnedInteractable = spawnModel();
             camera = spawnCamera();
             begin();
         }
@@ -162,9 +164,8 @@ public class CinematicAnimation extends Animation {
         rewardItem.spawn();
     }
 
-    private Model spawnModel() {
-        String modelNamespace = getAnimationManager().getCrate().getModel();
-        return Model.create(modelNamespace, getAnimationManager().getModelLocation(), getPlayer(), getPlayer());
+    private AbstractSpawnedInteractable spawnModel() {
+        return getAnimationManager().getCrate().getInteractable().spawn(getAnimationManager().getModelLocation());
     }
 
     private Camera spawnCamera() {
@@ -182,9 +183,15 @@ public class CinematicAnimation extends Animation {
 
         camera.teleport(location);
     }
+    private void playAnimation(String animation) {
+        var model = getModel();
+        if (model instanceof SpawnedMegInteractable megInteractable) {
+            megInteractable.getActiveModel().getAnimationHandler().playAnimation(animation, 0d, 0d, 1.0, true);
+        }
+    }
 
     @Override
-    public Model getModel() {
-        return model;
+    public AbstractSpawnedInteractable getModel() {
+        return spawnedInteractable;
     }
 }

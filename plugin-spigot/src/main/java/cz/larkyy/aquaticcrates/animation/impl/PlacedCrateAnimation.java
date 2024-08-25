@@ -7,6 +7,8 @@ import cz.larkyy.aquaticcrates.animation.RewardItem;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.model.Model;
+import gg.aquatic.aquaticseries.lib.interactable.AbstractSpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable.impl.meg.SpawnedMegInteractable;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -39,7 +41,7 @@ public class PlacedCrateAnimation extends Animation {
     @Override
     public void start() {
         setStarted(true);
-        getAnimationManager().showTitle(getAnimationManager().getOpeningTitle(),getPlayer());
+        getAnimationManager().showTitle(getAnimationManager().getOpeningTitle(), getPlayer());
         if (rewardItem != null) {
             rewardItem.despawn();
             rewardItem = null;
@@ -55,7 +57,7 @@ public class PlacedCrateAnimation extends Animation {
             openAnimation = getReward().get().getModelAnimation();
             if (openAnimation == null) openAnimation = "open";
         }
-        placedCrate.getModel().playAnimation(openAnimation);
+        playAnimation(openAnimation);
         i = 0;
         if (runnable != null && !runnable.isCancelled()) {
             runnable.cancel();
@@ -63,14 +65,14 @@ public class PlacedCrateAnimation extends Animation {
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                getAnimationManager().playTask(i,PlacedCrateAnimation.this);
+                getAnimationManager().playTask(i, PlacedCrateAnimation.this);
                 if (getAnimationManager().shouldStopAnimation(i)) {
                     reroll();
                 }
                 i++;
             }
         };
-        runnable.runTaskTimer(AquaticCrates.instance(),0,1);
+        runnable.runTaskTimer(AquaticCrates.instance(), 0, 1);
     }
 
     @Override
@@ -93,7 +95,7 @@ public class PlacedCrateAnimation extends Animation {
         }
         getAnimationManager().hideTitle(getPlayer());
         if (placedCrate != null) {
-            getModel().playAnimation("idle");
+            playAnimation("idle");
         }
     }
 
@@ -102,12 +104,19 @@ public class PlacedCrateAnimation extends Animation {
         if (rewardItem != null) {
             rewardItem.despawn();
         }
-        rewardItem = new RewardItem(null,this,rumblingLength, rumblingPeriod,aliveLength,vector,gravity,offset,easeOut);
+        rewardItem = new RewardItem(null, this, rumblingLength, rumblingPeriod, aliveLength, vector, gravity, offset, easeOut);
         rewardItem.spawn();
     }
 
+    private void playAnimation(String animation) {
+        var model = getModel();
+        if (model instanceof SpawnedMegInteractable megInteractable) {
+            megInteractable.getActiveModel().getAnimationHandler().playAnimation(animation, 0d, 0d, 1.0, true);
+        }
+    }
+
     @Override
-    public Model getModel() {
-        return placedCrate.getModel();
+    public AbstractSpawnedInteractable getModel() {
+        return placedCrate.getSpawnedInteractable();
     }
 }

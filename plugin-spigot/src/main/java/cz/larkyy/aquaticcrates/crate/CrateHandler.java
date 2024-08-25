@@ -64,6 +64,8 @@ public class CrateHandler {
 
         CratePlaceEvent event = new CratePlaceEvent(pc);
         Bukkit.getServer().getPluginManager().callEvent(event);
+
+        /*
         Location loc = location.clone().getBlock().getLocation();
 
         loc.setYaw(0);
@@ -71,6 +73,7 @@ public class CrateHandler {
             hitboxLocation.getBlock().setType(event.getBlockMaterial());
             locations.put(hitboxLocation,pc);
         }
+         */
 
         return pc;
     }
