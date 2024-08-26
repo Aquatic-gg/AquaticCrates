@@ -8,7 +8,6 @@ import cz.larkyy.aquaticcrates.crate.CrateListener;
 import cz.larkyy.aquaticcrates.crate.price.OpenPrices;
 import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
 import cz.larkyy.aquaticcrates.dabatase.DatabaseManager;
-import cz.larkyy.aquaticcrates.editor.EditingHandler;
 import cz.larkyy.aquaticcrates.item.ItemHandler;
 import cz.larkyy.aquaticcrates.messages.MessageHandler;
 import cz.larkyy.aquaticcrates.nms.ModelEngineAdapter;
@@ -50,7 +49,6 @@ public final class AquaticCrates extends JavaPlugin {
     private static ItemHandler itemHandler;
     private static OpenPrices openPrices;
     //private static RewardConditions rewardConditions;
-    private static EditingHandler editingHandler;
     private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean loaded = false;
     public static boolean configDebug = true;
@@ -137,7 +135,6 @@ public final class AquaticCrates extends JavaPlugin {
         playerHandler = new PlayerHandler();
         databaseManager = new DatabaseManager();
         messageHandler = new MessageHandler();
-        editingHandler = new EditingHandler();
 
         new Metrics(this, 19254);
 
@@ -146,7 +143,6 @@ public final class AquaticCrates extends JavaPlugin {
         getCommand("aquaticcrates").setTabCompleter(cmds);
 
         getServer().getPluginManager().registerEvents(new CrateListener(),this);
-        getServer().getPluginManager().registerEvents(new EditingHandler(),this);
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 
@@ -280,10 +276,6 @@ public final class AquaticCrates extends JavaPlugin {
         return rewardConditions;
     }
      */
-
-    public static EditingHandler getEditingHandler() {
-        return editingHandler;
-    }
 
     public static ModelEngineAdapter getModelEngineAdapter() {
         return modelEngineAdapter;
