@@ -43,12 +43,10 @@ public final class AquaticCrates extends JavaPlugin {
     private static Tasks tasks;
     private static CrateHandler crateHandler;
     private static DatabaseManager databaseManager;
-    //private static NMSHandler nmsHandler;
     private static MessageHandler messageHandler;
 
     private static ItemHandler itemHandler;
     private static OpenPrices openPrices;
-    //private static RewardConditions rewardConditions;
     private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean loaded = false;
     public static boolean configDebug = true;

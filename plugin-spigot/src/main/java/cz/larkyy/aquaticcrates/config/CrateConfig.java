@@ -44,8 +44,6 @@ import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
 import gg.aquatic.aquaticseries.lib.util.AquaticBlockSerializer;
-import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
-import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
