@@ -1,4 +1,4 @@
-package cz.larkyy.aquaticcrates.animation.task.impl2;
+package cz.larkyy.aquaticcrates.animation.task.impl;
 
 import cz.larkyy.aquaticcrates.animation.Animation;
 import cz.larkyy.aquaticcrates.animation.impl.CinematicAnimation;
@@ -12,14 +12,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public class CameraTeleportTask extends AnimationTask {
+public class CameraMoveTask extends AnimationTask {
     @Override
     public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull Placeholders placeholders) {
         if (animation instanceof CinematicAnimation a) {
-            a.teleportCamera(
+            a.moveCamera(
                     readVector(arguments.get("offset").toString()),
-                    Float.parseFloat(arguments.get("yaw").toString()),
-                    Float.parseFloat(arguments.get("pitch").toString())
+                    (int)arguments.get("duration"),
+                    Float.parseFloat(arguments.get("rotate-head-yaw").toString()),
+                    Float.parseFloat(arguments.get("rotate-head-pitch").toString())
             );
         }
     }
@@ -29,9 +30,10 @@ public class CameraTeleportTask extends AnimationTask {
     public List<AquaticObjectArgument<?>> arguments() {
         return List.of(
                 new PrimitiveObjectArgument("delay",0,false),
-                new PrimitiveObjectArgument("offset","0;0;0", true),
-                new PrimitiveObjectArgument("pitch",0,true),
-                new PrimitiveObjectArgument("yaw",0,true)
+                new PrimitiveObjectArgument("duration",100,true),
+                new PrimitiveObjectArgument("offset","0;0;0",true),
+                new PrimitiveObjectArgument("rotate-head-yaw",0,false),
+                new PrimitiveObjectArgument("rotate-head-pitch",0,false)
         );
     }
 
