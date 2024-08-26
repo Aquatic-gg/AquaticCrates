@@ -19,9 +19,9 @@ public class SpawnParticleTask extends AnimationTask {
                 Particle.valueOf(arguments.get("particle").toString()),
                 animation.getModel().getLocation().clone().add(readVector(arguments.get("offset").toString())),
                 Integer.parseInt(arguments.get("count").toString()),
-                Double.parseDouble(arguments.get("offsetX").toString()),
-                Double.parseDouble(arguments.get("offsetY").toString()),
-                Double.parseDouble(arguments.get("offsetZ").toString()),
+                Double.parseDouble(arguments.get("offsetx").toString()),
+                Double.parseDouble(arguments.get("offsety").toString()),
+                Double.parseDouble(arguments.get("offsetz").toString()),
                 1
         );
     }
