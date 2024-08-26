@@ -2,11 +2,11 @@ package cz.larkyy.aquaticcrates.crate.reward;
 
 import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.chance.IChance;
+import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.entity.Player;
-import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.List;
 

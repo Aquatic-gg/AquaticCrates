@@ -8,14 +8,13 @@ import cz.larkyy.aquaticcrates.crate.model.ModelAnimations;
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
 import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
-import gg.aquatic.aquaticseries.lib.action.ActionSerializer;
 import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
+import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.io.File;
 import java.util.*;
@@ -132,7 +131,7 @@ public class MultiCrateConfig extends Config {
         return button;
     }
     private CustomItem loadItem(String path) {
-        return CustomItem.loadFromYaml(getConfiguration(),path);
+        return CustomItem.Companion.loadFromYaml(getConfiguration().getConfigurationSection(path));
     }
 
 }

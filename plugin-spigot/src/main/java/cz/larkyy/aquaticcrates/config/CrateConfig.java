@@ -38,6 +38,7 @@ import gg.aquatic.aquaticseries.lib.block.impl.ItemsAdderBlock;
 import gg.aquatic.aquaticseries.lib.block.impl.OraxenBlock;
 import gg.aquatic.aquaticseries.lib.block.impl.VanillaBlock;
 import gg.aquatic.aquaticseries.lib.chance.IChance;
+import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
 import gg.aquatic.aquaticseries.lib.interactable2.AbstractInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.InteractableInteractEvent;
 import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
@@ -45,6 +46,7 @@ import gg.aquatic.aquaticseries.lib.interactable2.base.TempInteractableBase;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.block.BlockInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.MegInteractable;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
+import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
 import gg.aquatic.aquaticseries.lib.util.AquaticBlockSerializer;
@@ -56,8 +58,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.larkyy.colorutils.Colors;
-import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.io.File;
 import java.util.*;
@@ -277,7 +277,7 @@ public class CrateConfig extends Config {
     }
 
     private CustomItem loadItem(String path) {
-        return CustomItem.loadFromYaml(getConfiguration(), path);
+        return CustomItem.Companion.loadFromYaml(getConfiguration().getConfigurationSection(path));
     }
 
     private List<Reward> loadRewards() {
@@ -671,7 +671,7 @@ public class CrateConfig extends Config {
                 args.put(arg.getId(), getConfiguration().get(path + "." + arg.getId()));
                 continue;
             } else if (arg.isRequired()) {
-                Bukkit.getConsoleSender().sendMessage(Colors.format("&cARGUMENT &4" + arg.getId() + " &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
+                Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&cARGUMENT &4" + arg.getId() + " &cIS MISSING, PLEASE UPDATE YOUR CONFIGURATION!"));
             }
             args.put(arg.getId(), arg.getDefaultValue());
         }

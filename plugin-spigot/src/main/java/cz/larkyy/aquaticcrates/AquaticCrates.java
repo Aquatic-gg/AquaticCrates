@@ -169,7 +169,8 @@ public final class AquaticCrates extends JavaPlugin {
             awaiters.add(awaiter);
             Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7ModelEngine Hook&f!"));
             awaiter.getFuture().thenRun(() -> {
-                if (awaiters.stream().allMatch(AbstractAwaiter::getLoaded)) {
+                awaiters.remove(awaiter);
+                if (awaiters.isEmpty()) {
                     Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &7ModelEngine Hook&f initialized!"));
                     load();
                 }
@@ -178,9 +179,11 @@ public final class AquaticCrates extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("ItemsAdder") != null) {
             var awaiter = new IAAwaiter(aquaticSeriesLib);
             awaiters.add(awaiter);
+            Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7ItemsAdder Hook&f!"));
             awaiter.getFuture().thenRun(() -> {
-                if (awaiters.stream().allMatch(AbstractAwaiter::getLoaded)) {
-                    load();
+                awaiters.remove(awaiter);
+                if (awaiters.isEmpty()) {
+                    Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &7ItemsAdder Hook&f initialized!"));
                 }
             });
         }

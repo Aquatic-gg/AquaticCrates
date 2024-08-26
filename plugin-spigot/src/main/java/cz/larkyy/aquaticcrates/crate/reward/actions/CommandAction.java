@@ -2,10 +2,10 @@ package cz.larkyy.aquaticcrates.crate.reward.actions;
 
 import cz.larkyy.aquaticcrates.crate.reward.RewardAction;
 import cz.larkyy.aquaticcrates.placeholders.Placeholders;
+import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import xyz.larkyy.colorutils.Colors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class CommandAction extends RewardAction {
     public Map<String, Object> readArguments(String string) {
         return new HashMap<>() {
             {
-                put("message", Colors.format(string));
+                put("message", ColorUtils.Companion.format(string));
             }
         };
     }

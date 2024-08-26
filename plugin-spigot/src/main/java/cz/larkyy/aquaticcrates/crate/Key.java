@@ -3,12 +3,12 @@ package cz.larkyy.aquaticcrates.crate;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.api.AquaticCratesAPI;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.List;
 

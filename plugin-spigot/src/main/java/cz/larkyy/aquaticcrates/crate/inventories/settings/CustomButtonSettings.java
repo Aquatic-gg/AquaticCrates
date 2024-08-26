@@ -1,7 +1,7 @@
 package cz.larkyy.aquaticcrates.crate.inventories.settings;
 
 import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
-import xyz.larkyy.itemlibrary.CustomItem;
+import gg.aquatic.aquaticseries.lib.item.CustomItem;
 
 import java.util.List;
 

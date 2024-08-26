@@ -22,6 +22,7 @@ import cz.larkyy.aquaticcrates.player.CratePlayer;
 import cz.larkyy.aquaticcrates.utils.RewardUtils;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.interactable2.AbstractInteractable;
+import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,7 +31,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
