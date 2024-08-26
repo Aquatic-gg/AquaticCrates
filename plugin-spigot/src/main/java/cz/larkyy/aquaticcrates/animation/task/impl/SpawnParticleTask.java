@@ -19,9 +19,9 @@ public class SpawnParticleTask extends AnimationTask {
                 Particle.valueOf(arguments.get("particle").toString()),
                 animation.getModel().getLocation().clone().add(readVector(arguments.get("offset").toString())),
                 Integer.parseInt(arguments.get("count").toString()),
-                Double.parseDouble(arguments.get("offsetx").toString()),
-                Double.parseDouble(arguments.get("offsety").toString()),
-                Double.parseDouble(arguments.get("offsetz").toString()),
+                Double.parseDouble(arguments.get("offset-x").toString()),
+                Double.parseDouble(arguments.get("offset-y").toString()),
+                Double.parseDouble(arguments.get("offset-z").toString()),
                 1
         );
     }
@@ -32,9 +32,9 @@ public class SpawnParticleTask extends AnimationTask {
         return List.of(
                 new PrimitiveObjectArgument("delay",0,false),
                 new PrimitiveObjectArgument("offset","0;0;0",false),
-                new PrimitiveObjectArgument("offsetx",0,false),
-                new PrimitiveObjectArgument("offsety",0,false),
-                new PrimitiveObjectArgument("offsetz",0,false),
+                new PrimitiveObjectArgument("offset-x",0,false),
+                new PrimitiveObjectArgument("offset-y",0,false),
+                new PrimitiveObjectArgument("offset-z",0,false),
                 new PrimitiveObjectArgument("particle","VILLAGER_HAPPY",true),
                 new PrimitiveObjectArgument("count",1,false)
         );
