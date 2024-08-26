@@ -168,17 +168,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>xyz.larkyy</groupId>
-            <artifactId>ItemLibrary</artifactId>
-            <version>0.0.13</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>xyz.larkyy</groupId>
-                    <artifactId>ColorUtils</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.2</version>

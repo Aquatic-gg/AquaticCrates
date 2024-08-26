@@ -2,10 +2,10 @@ package cz.larkyy.aquaticcrates.item;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.config.Config;
+import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import xyz.larkyy.itemlibrary.CustomItem;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class ItemHandler {
     }
 
     public void load() {
-        CustomItem.getCustomItemHandler().addItemFactory("aquatic",new AquaticItemFactory());
+        CustomItem.Companion.getCustomItemHandler().registerItemFactory("aquatic",new AquaticItemFactory());
         database.clear();
         databaseCfg.load();
         loadItems();
