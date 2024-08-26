@@ -22,7 +22,6 @@ public class Commands implements CommandExecutor, TabCompleter {
             put("multicrate",new MultiCrateCommand());
             put("item",new ItemCommand());
             put("reload",new ReloadCommand());
-            put("editor",new EditorCommand());
             put("milestone",new MilestoneCommand());
         }
     };
