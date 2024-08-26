@@ -29,6 +29,7 @@ import gg.aquatic.aquaticseries.lib.worldobject.WorldObjectHandler;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import xyz.larkyy.aquaticcrates.meg3hook.AdaptedMEG3;
 import xyz.larkyy.aquaticcrates.meg4hook.AdaptedMEG4;
 
@@ -48,7 +49,6 @@ public final class AquaticCrates extends JavaPlugin {
     private static ItemHandler itemHandler;
     private static OpenPrices openPrices;
     private static ModelEngineAdapter modelEngineAdapter = null;
-    public static boolean loaded = false;
     public static boolean configDebug = true;
     public static AquaticSeriesLib aquaticSeriesLib;
 
@@ -57,56 +57,6 @@ public final class AquaticCrates extends JavaPlugin {
     @Override
     public void onLoad() {
         Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading the plugin..."));
-        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7NMS Version&f!"));
-        /*
-        String version = "null";
-        switch (getServer().getBukkitVersion()) {
-            case "1.16.5-R0.1-SNAPSHOT" -> {
-                nmsHandler = new v1_16_R3();
-                version = "v1_16_R3";
-            }
-            case "1.17.1-R0.1-SNAPSHOT" -> {
-                nmsHandler = new v1_17_R1();
-                version = "v1_17_R1";
-            }
-            case "1.18.2-R0.1-SNAPSHOT" -> {
-                nmsHandler = new v1_18_R2();
-                version = "v1_18_R2";
-            }
-            case "1.19.2-R0.1-SNAPSHOT" -> {
-                nmsHandler = new v1_19_R2();
-                version = "v1_19_R2";
-            }
-            case "1.19.3-R0.1-SNAPSHOT" -> {
-                nmsHandler = new v1_19_R3();
-                version = "v1_19_R3";
-            }
-            case "1.19.4-R0.1-SNAPSHOT" -> {
-                nmsHandler = new V1_19_4();
-                version = "v1_19_R4";
-            }
-            case "1.20.1-R0.1-SNAPSHOT", "1.20-R0.1-SNAPSHOT" -> {
-                nmsHandler = new NMS_v1_20_1();
-                version = "v1_20_R1";
-            }
-            case "1.20.2-R0.1-SNAPSHOT" -> {
-                nmsHandler = new NMS_v1_20_2(this);
-                version = "v1_20_R2";
-            }
-            case "1.20.4-R0.1-SNAPSHOT" -> {
-                nmsHandler = new NMS_v1_20_4(this);
-                version = "v1_20_R3";
-            }
-            case "1.20.5-R0.1-SNAPSHOT" -> {
-                nmsHandler = new NMS_v1_20_5(this);
-                version = "v1_20_R4";
-            }
-            case "1.21-R0.1-SNAPSHOT" -> {
-                nmsHandler = new NMS_v1_21(this);
-                version = "v1_21";
-            }
-        }
-         */
         RequirementTypes.INSTANCE.register("permission", new PermissionCondition());
 
         var config = new Config(this,"config.yml");
@@ -160,7 +110,12 @@ public final class AquaticCrates extends JavaPlugin {
                 awaiters.remove(awaiter);
                 if (awaiters.isEmpty()) {
                     Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &7ModelEngine Hook&f initialized!"));
-                    load();
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            load();
+                        }
+                    }.runTaskLater(this, 1L);
                 }
             });
         }
@@ -172,6 +127,12 @@ public final class AquaticCrates extends JavaPlugin {
                 awaiters.remove(awaiter);
                 if (awaiters.isEmpty()) {
                     Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &7ItemsAdder Hook&f initialized!"));
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            load();
+                        }
+                    }.runTaskLater(this, 1L);
                 }
             });
         }
