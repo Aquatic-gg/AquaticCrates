@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcrates.animation.task.impl2;
 
 import cz.larkyy.aquaticcrates.animation.Animation;
 import cz.larkyy.aquaticcrates.animation.impl.CinematicAnimation;
+import cz.larkyy.aquaticcrates.animation.task.AnimationTask;
 import gg.aquatic.aquaticseries.lib.action.AbstractAction;
 import gg.aquatic.aquaticseries.lib.util.argument.AquaticObjectArgument;
 import gg.aquatic.aquaticseries.lib.util.argument.impl.PrimitiveObjectArgument;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public class CameraMoveTask extends AbstractAction<Animation> {
+public class CameraMoveTask extends AnimationTask {
     @Override
     public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull Placeholders placeholders) {
         if (animation instanceof CinematicAnimation a) {

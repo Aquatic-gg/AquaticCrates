@@ -1,6 +1,5 @@
 package cz.larkyy.aquaticcrates;
 
-import cz.larkyy.aquaticcrates.animation.task.Tasks;
 import cz.larkyy.aquaticcrates.commands.Commands;
 import cz.larkyy.aquaticcrates.config.Config;
 import cz.larkyy.aquaticcrates.crate.CrateHandler;
@@ -15,6 +14,7 @@ import cz.larkyy.aquaticcrates.player.PlayerHandler;
 import cz.larkyy.aquaticcrates.player.PlayerListener;
 import cz.larkyy.aquaticcrates.hooks.PAPIHook;
 import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
+import gg.aquatic.aquaticseries.lib.action.ActionTypes;
 import gg.aquatic.aquaticseries.lib.awaiters.AbstractAwaiter;
 import gg.aquatic.aquaticseries.lib.awaiters.IAAwaiter;
 import gg.aquatic.aquaticseries.lib.awaiters.MEGAwaiter;
@@ -41,7 +41,6 @@ import java.util.List;
 public final class AquaticCrates extends JavaPlugin {
 
     private static PlayerHandler playerHandler;
-    private static Tasks tasks;
     private static CrateHandler crateHandler;
     private static DatabaseManager databaseManager;
     private static MessageHandler messageHandler;
@@ -58,6 +57,7 @@ public final class AquaticCrates extends JavaPlugin {
     public void onLoad() {
         Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading the plugin..."));
         RequirementTypes.INSTANCE.register("permission", new PermissionCondition());
+        setupAnimationTasks();
 
         var config = new Config(this,"config.yml");
         config.load();
@@ -75,7 +75,6 @@ public final class AquaticCrates extends JavaPlugin {
         //CustomItem.Companion.getCustomItemHandler().getItemRegistry();
         aquaticSeriesLib.setMessageFormatting(messageFormat);
 
-        tasks = new Tasks();
         openPrices = new OpenPrices();
         //rewardConditions = new RewardConditions();
         itemHandler = new ItemHandler();
@@ -155,6 +154,16 @@ public final class AquaticCrates extends JavaPlugin {
         }
     }
 
+    private void setupAnimationTasks() {
+        ActionTypes.INSTANCE.getActions().put("spawnreward", new cz.larkyy.aquaticcrates.animation.task.impl2.SpawnRewardTask());
+        ActionTypes.INSTANCE.getActions().put("playsound", new cz.larkyy.aquaticcrates.animation.task.impl2.PlaySoundTask());
+        ActionTypes.INSTANCE.getActions().put("command", new cz.larkyy.aquaticcrates.animation.task.impl2.CommandTask());
+        ActionTypes.INSTANCE.getActions().put("spawnparticle", new cz.larkyy.aquaticcrates.animation.task.impl2.SpawnParticleTask());
+        ActionTypes.INSTANCE.getActions().put("sendtitle", new cz.larkyy.aquaticcrates.animation.task.impl2.SendTitleTask());
+        ActionTypes.INSTANCE.getActions().put("movecamera", new cz.larkyy.aquaticcrates.animation.task.impl2.CameraMoveTask());
+        ActionTypes.INSTANCE.getActions().put("teleportcamera", new cz.larkyy.aquaticcrates.animation.task.impl2.CameraTeleportTask());
+    }
+
     public void load() {
         Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Item Database&f!"));
         itemHandler.load();
@@ -221,10 +230,6 @@ public final class AquaticCrates extends JavaPlugin {
 
     public static MessageHandler getMessageHandler() {
         return messageHandler;
-    }
-
-    public static Tasks getTasks() {
-        return tasks;
     }
 
     public static OpenPrices getOpenPrices() {

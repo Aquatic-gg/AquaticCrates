@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcrates.animation.task.impl2;
 
 import cz.larkyy.aquaticcrates.animation.Animation;
+import cz.larkyy.aquaticcrates.animation.task.AnimationTask;
 import gg.aquatic.aquaticseries.lib.action.AbstractAction;
 import gg.aquatic.aquaticseries.lib.action.ActionSerializer;
 import gg.aquatic.aquaticseries.lib.util.argument.AquaticObjectArgument;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public class SpawnRewardTask extends AbstractAction<Animation> {
+public class SpawnRewardTask extends AnimationTask {
     @Override
     public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull Placeholders placeholders) {
         animation.spawnReward(

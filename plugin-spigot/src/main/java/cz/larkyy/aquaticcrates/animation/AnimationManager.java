@@ -2,7 +2,6 @@ package cz.larkyy.aquaticcrates.animation;
 
 import cz.larkyy.aquaticcrates.animation.impl.CinematicAnimation;
 import cz.larkyy.aquaticcrates.animation.impl.PlacedCratePersonalisedAnimation;
-import cz.larkyy.aquaticcrates.animation.task.ConfiguredTask;
 import cz.larkyy.aquaticcrates.animation.task.PreOpenTitle;
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
@@ -11,13 +10,16 @@ import cz.larkyy.aquaticcrates.animation.impl.PlacedCrateAnimation;
 import cz.larkyy.aquaticcrates.crate.reroll.Reroll;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.messages.Messages;
+import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
@@ -26,7 +28,7 @@ public class AnimationManager {
     private final Crate crate;
     private final Type type;
 
-    private final List<ConfiguredTask> tasks;
+    private final TreeMap<Integer, List<ConfiguredAction<Animation>>> tasks;
     private final int length;
     private final int startDelay;
     private final PreOpenTitle preOpenTitle;
@@ -47,7 +49,7 @@ public class AnimationManager {
         CINEMATIC
     }
 
-    public AnimationManager(Crate crate, Type type, List<ConfiguredTask> tasks, int length, AnimationTitle openingTitle, AnimationTitle rerollingTitle,
+    public AnimationManager(Crate crate, Type type, TreeMap<Integer, List<ConfiguredAction<Animation>>> tasks, int length, AnimationTitle openingTitle, AnimationTitle rerollingTitle,
                             Location modelLocation, Location cameraLocation, boolean skippable, boolean setPumpkinHelmet,
                             int startDelay, PreOpenTitle preOpenTitle) {
         this.crate = crate;
@@ -85,11 +87,11 @@ public class AnimationManager {
     }
 
     public void playTask(int i, Animation animation) {
-        tasks.forEach(task -> {
-            if (i == task.getDelay()) {
-                task.run(animation);
-            }
-        });
+        var list = tasks.get(i);
+        if (list == null) return;
+        for (ConfiguredAction<Animation> animationConfiguredAction : list) {
+            animationConfiguredAction.run(animation, new Placeholders());
+        }
     }
 
     public boolean shouldStopAnimation(int i) {

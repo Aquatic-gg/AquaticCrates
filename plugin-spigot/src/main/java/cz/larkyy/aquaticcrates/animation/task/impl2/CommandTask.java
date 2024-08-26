@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcrates.animation.task.impl2;
 
 import cz.larkyy.aquaticcrates.animation.Animation;
+import cz.larkyy.aquaticcrates.animation.task.AnimationTask;
 import gg.aquatic.aquaticseries.lib.action.AbstractAction;
 import gg.aquatic.aquaticseries.lib.util.argument.AquaticObjectArgument;
 import gg.aquatic.aquaticseries.lib.util.argument.impl.PrimitiveObjectArgument;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CommandTask extends AbstractAction<Animation> {
+public class CommandTask extends AnimationTask {
     @Override
     public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull Placeholders placeholders) {
         var command = arguments.get("command");

@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcrates.animation.task.impl2;
 
 import cz.larkyy.aquaticcrates.animation.Animation;
+import cz.larkyy.aquaticcrates.animation.task.AnimationTask;
 import cz.larkyy.aquaticcrates.animation.task.TaskArgument;
 import gg.aquatic.aquaticseries.lib.action.AbstractAction;
 import gg.aquatic.aquaticseries.lib.util.argument.AquaticObjectArgument;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Map;
 
-public class PlaySoundTask extends AbstractAction<Animation> {
+public class PlaySoundTask extends AnimationTask {
     @Override
     public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull Placeholders placeholders) {
         Location location;

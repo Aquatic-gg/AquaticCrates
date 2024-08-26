@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcrates.config;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
+import cz.larkyy.aquaticcrates.animation.Animation;
 import cz.larkyy.aquaticcrates.animation.AnimationTitle;
 import cz.larkyy.aquaticcrates.animation.task.*;
 import cz.larkyy.aquaticcrates.api.events.CrateInteractEvent;
@@ -572,10 +573,15 @@ public class CrateConfig extends Config {
 
     private void loadAnimationManager(Crate c, AtomicReference<AnimationManager> atomicReference) {
         AnimationManager.Type type = AnimationManager.Type.valueOf(getConfiguration().getString("animation.type", "INSTANT").toUpperCase());
+        var tasks = new TreeMap<Integer,List<ConfiguredAction<Animation>>>();
+        if (getConfiguration().contains("animation.tasks")) {
+            tasks = TaskSerializer.load(getConfiguration().getConfigurationSection("animation.tasks"));
+        }
+
         atomicReference.set(new AnimationManager(
                 c,
                 type,
-                loadTasks(),
+                tasks,
                 getConfiguration().getInt("animation.length", 0),
                 loadAnimationTitle("animation.title"),
                 loadAnimationTitle("reroll.title"),
@@ -630,21 +636,6 @@ public class CrateConfig extends Config {
         float pitch = Float.parseFloat(getConfiguration().getString(path + ".pitch", "0"));
 
         return new Location(w, x, y, z, yaw, pitch);
-    }
-
-    private List<ConfiguredTask> loadTasks() {
-        List<ConfiguredTask> tasks = new ArrayList<>();
-        if (!getConfiguration().contains("animation.actions")) {
-            return tasks;
-        }
-        getConfiguration().getConfigurationSection("animation.actions").getKeys(false).forEach(id -> {
-            String actionId = getConfiguration().getString("animation.actions." + id + ".type").toLowerCase();
-            var task = Tasks.inst().getTask(actionId);
-            if (task != null) {
-                tasks.add(new ConfiguredTask(task, loadArguments("animation.actions." + id, task.getArgs())));
-            }
-        });
-        return tasks;
     }
 
     private Map<String, Object> loadArguments(String path, List<TaskArgument> arguments) {
