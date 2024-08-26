@@ -1,6 +1,5 @@
 package cz.larkyy.aquaticcrates.utils;
 
-import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import gg.aquatic.aquaticseries.lib.chance.IChance;
 import org.bukkit.entity.Player;

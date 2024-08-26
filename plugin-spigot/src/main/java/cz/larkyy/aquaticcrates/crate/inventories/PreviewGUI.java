@@ -3,7 +3,6 @@ package cz.larkyy.aquaticcrates.crate.inventories;
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import cz.larkyy.aquaticcrates.utils.Utils;
 import gg.aquatic.aquaticseries.lib.ItemStackExtKt;
@@ -14,6 +13,8 @@ import gg.aquatic.aquaticseries.lib.inventory.lib.event.ComponentClickEvent;
 import gg.aquatic.aquaticseries.lib.inventory.lib.inventory.PersonalizedInventory;
 import gg.aquatic.aquaticseries.lib.inventory.lib.title.TitleHolder;
 import gg.aquatic.aquaticseries.lib.inventory.lib.title.component.BasicTitleComponent;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -150,13 +151,13 @@ public class PreviewGUI extends PersonalizedInventory {
             }
             milestoneHandler.getMilestones().forEach((i, milestone) -> {
                 var placeholders = new Placeholders();
-                placeholders.addPlaceholder("%milestone%", milestone.getDisplayName().getString());
+                placeholders.addPlaceholder(new Placeholder("%milestone%", milestone.getDisplayName().getString()));
                 var reached = milestoneHandler.getAmt(p);
 
                 if (reached < milestone.getMilestone()) {
-                    placeholders.addPlaceholder("%remains%", (milestone.getMilestone() - reached) + "");
-                    placeholders.addPlaceholder("%reached%", reached + "");
-                    placeholders.addPlaceholder("%required%", milestone.getMilestone() + "");
+                    placeholders.addPlaceholder(new Placeholder("%remains%", (milestone.getMilestone() - reached) + ""));
+                    placeholders.addPlaceholder(new Placeholder("%reached%", reached + ""));
+                    placeholders.addPlaceholder(new Placeholder("%required%", milestone.getMilestone() + ""));
                     newLore.add(placeholders.replace(crate.getPreviewGUISettings().getMilestoneFormat()));
                 } else {
                     newLore.add(placeholders.replace(crate.getPreviewGUISettings().getMilestoneReachedFormat()));
@@ -192,7 +193,7 @@ public class PreviewGUI extends PersonalizedInventory {
             }
             milestoneHandler.getRepeatableMilestones().forEach((i, milestone) -> {
                 var placeholders = new Placeholders();
-                placeholders.addPlaceholder("%milestone%", milestone.getDisplayName().getString());
+                placeholders.addPlaceholder(new Placeholder("%milestone%", milestone.getDisplayName().getString()));
 
                 var current = milestoneHandler.getAmt(p);
 
@@ -201,9 +202,9 @@ public class PreviewGUI extends PersonalizedInventory {
 
                 int reached = (int) ((d1 - d2) * milestone.getMilestone());
 
-                placeholders.addPlaceholder("%remains%", (milestone.getMilestone() - reached) + "");
-                placeholders.addPlaceholder("%reached%", reached + "");
-                placeholders.addPlaceholder("%required%", milestone.getMilestone() + "");
+                placeholders.addPlaceholder(new Placeholder("%remains%", (milestone.getMilestone() - reached) + ""));
+                placeholders.addPlaceholder(new Placeholder("%reached%", reached + ""));
+                placeholders.addPlaceholder(new Placeholder("%required%", milestone.getMilestone() + ""));
                 newLore.add(placeholders.replace(crate.getPreviewGUISettings().getRepeatableMilestoneFormat()));
             });
         }
