@@ -122,8 +122,6 @@ public class CrateConfig extends Config {
 
         BiConsumer<SpawnedInteractable<?>, InteractableInteractEvent> consumer = (spawned, event) -> {
             event.setCancelled(true);
-            event.getPlayer().sendMessage("You have interacted crate " + crateId);
-
             var loc = event.getInteractable().getLocation();
             Action action = event.getAction();
             if (action == Action.LEFT_CLICK_AIR) {
@@ -132,13 +130,8 @@ public class CrateConfig extends Config {
 
             PlacedCrate placedCrate = PlacedCrate.get(loc);
             if (placedCrate != null) {
-                Bukkit.broadcastMessage("Crate is not null!");
                 Bukkit.getPluginManager().callEvent(new CrateInteractEvent(event.getPlayer(), placedCrate, action, loc));
-            } else {
-                Bukkit.broadcastMessage("Crate is null!");
             }
-
-
         };
 
         if (type.equals("modelengine")) {
