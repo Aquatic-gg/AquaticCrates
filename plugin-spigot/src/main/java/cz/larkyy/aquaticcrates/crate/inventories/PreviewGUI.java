@@ -230,7 +230,7 @@ public class PreviewGUI extends PersonalizedInventory {
                 return;
             }
             Reward r = rewards.get(i);
-            ItemStack is = r.getPreviewItem().getItem();
+            ItemStack is = r.getItem().getItem();
             ItemMeta im = is.getItemMeta();
             List<String> lore = new ArrayList<>();
             if (im.getLore() != null) {

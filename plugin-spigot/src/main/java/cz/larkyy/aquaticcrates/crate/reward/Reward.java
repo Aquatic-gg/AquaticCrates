@@ -14,31 +14,32 @@ public class Reward implements IChance {
 
     private final String identifier;
     private final CustomItem item;
-    private final CustomItem previewItem;
     private final String model;
     private final float modelYaw;
     private final List<ConfiguredAction<Player>> actions;
     private final double chance;
     private final boolean giveItem;
     private final String modelAnimation;
-    private final String permission;
     private final List<ConfiguredRequirement<Player>> winConditions;
     private final List<String> hologram;
     private final double hologramYOffset;
+    private final String displayName;
 
-    public Reward(String identifier, CustomItem item, CustomItem previewItem, double chance, List<ConfiguredAction<Player>> actions,
-                  String permission, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation,
+    public Reward(String identifier, String displayName, CustomItem item, double chance, List<ConfiguredAction<Player>> actions, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation,
                   List<ConfiguredRequirement<Player>> winConditions, String model, float modelYaw) {
         this.identifier = identifier;
         this.item = item;
+        if (displayName == null) {
+            this.displayName = item.getItem().getItemMeta().getDisplayName();
+        } else {
+            this.displayName = displayName;
+        }
         this.chance = chance;
         this.actions = actions;
         this.giveItem = giveItem;
-        this.permission = permission;
         this.modelAnimation = modelAnimation;
         this.hologram = hologram;
         this.hologramYOffset = hologramYOffset;
-        this.previewItem = previewItem;
         this.winConditions = winConditions;
         this.model = model;
         this.modelYaw = modelYaw;
@@ -52,15 +53,15 @@ public class Reward implements IChance {
         if (giveItem) {
             var is = item.getItem();
             var map = player.getInventory().addItem(is);
-            map.forEach((i,is2) -> {
-                player.getLocation().getWorld().dropItem(player.getLocation(),is2);
+            map.forEach((i, is2) -> {
+                player.getLocation().getWorld().dropItem(player.getLocation(), is2);
             });
         }
         Placeholders placeholders = new Placeholders();
-        placeholders.plusAssign(new Placeholder("%player%",player.getName()));
-        placeholders.plusAssign(new Placeholder("%reward%",getPreviewItem().getItem().getItemMeta().getDisplayName()));
-        placeholders.plusAssign(new Placeholder("%chance%",chance+""));
-        actions.forEach(a -> a.run(player,placeholders));
+        placeholders.plusAssign(new Placeholder("%player%", player.getName()));
+        placeholders.plusAssign(new Placeholder("%reward%", displayName));
+        placeholders.plusAssign(new Placeholder("%chance%", chance + ""));
+        actions.forEach(a -> a.run(player, placeholders));
     }
 
     public String getModel() {
@@ -83,10 +84,6 @@ public class Reward implements IChance {
         return item;
     }
 
-    public CustomItem getPreviewItem() {
-        return previewItem == null ? item : previewItem;
-    }
-
     public String getModelAnimation() {
         return modelAnimation;
     }
@@ -95,11 +92,11 @@ public class Reward implements IChance {
         return chance;
     }
 
-    public String getPermission() {
-        return permission;
-    }
-
     public List<ConfiguredRequirement<Player>> getWinConditions() {
         return winConditions;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 }

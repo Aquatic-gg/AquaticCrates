@@ -282,7 +282,7 @@ public class CrateConfig extends Config {
         getConfiguration().getConfigurationSection("rewards").getKeys(false).forEach(rStr -> {
             Reward r = loadReward("rewards." + rStr, rStr);
             if (r != null) {
-                if (r.getItem().getItem() == null || r.getPreviewItem().getItem() == null || r.getItem().getItem().getItemMeta() == null || r.getPreviewItem().getItem().getItemMeta() == null) {
+                if (r.getItem().getItem() == null || r.getItem().getItem().getItemMeta() == null) {
                     Bukkit.getConsoleSender().sendMessage("§cReward §l" + rStr + "§c could not be loaded!");
                 } else {
                     list.add(r);
@@ -343,7 +343,6 @@ public class CrateConfig extends Config {
                 Bukkit.getConsoleSender().sendMessage("The reward " + path + " could not be loaded, because the item is null!");
             return null;
         }
-        CustomItem previewItem = loadItem(path + ".preview-item");
         double chance = getConfiguration().getDouble(path + ".chance");
         String permission = getConfiguration().getString(path + ".permission");
         String model = getConfiguration().getString(path + ".model");
@@ -361,17 +360,19 @@ public class CrateConfig extends Config {
             }));
         }
 
+        var displayName = getConfiguration().getString(path + ".display-name");
+
         var section = getConfiguration().getConfigurationSection(path);
+
         if (section != null) {
             actions = PlayerActionSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(section, "actions"));
         }
         return new Reward(
                 id,
+                displayName,
                 item,
-                previewItem,
                 chance,
                 actions,
-                permission,
                 giveItem,
                 loadHologram(path + ".hologram"),
                 getConfiguration().getDouble(path + ".hologram-y-offset", 0),
