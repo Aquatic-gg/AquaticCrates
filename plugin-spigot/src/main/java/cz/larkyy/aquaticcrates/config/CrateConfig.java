@@ -17,14 +17,10 @@ import cz.larkyy.aquaticcrates.crate.model.ModelAnimations;
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
 import cz.larkyy.aquaticcrates.crate.price.*;
 import cz.larkyy.aquaticcrates.crate.reroll.RerollManager;
-import cz.larkyy.aquaticcrates.crate.reward.ConfiguredRewardAction;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.crate.reward.RewardActions;
 import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
 import cz.larkyy.aquaticcrates.menu.Menu;
 import cz.larkyy.aquaticcrates.menu.MenuItem;
-import cz.larkyy.aquaticcrates.placeholders.Placeholder;
-import cz.larkyy.aquaticcrates.placeholders.Placeholders;
 import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
 import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
@@ -34,8 +30,6 @@ import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.block.AquaticBlock;
 import gg.aquatic.aquaticseries.lib.block.AquaticMultiBlock;
 import gg.aquatic.aquaticseries.lib.block.BlockShape;
-import gg.aquatic.aquaticseries.lib.block.impl.ItemsAdderBlock;
-import gg.aquatic.aquaticseries.lib.block.impl.OraxenBlock;
 import gg.aquatic.aquaticseries.lib.block.impl.VanillaBlock;
 import gg.aquatic.aquaticseries.lib.chance.IChance;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
@@ -50,6 +44,8 @@ import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
 import gg.aquatic.aquaticseries.lib.util.AquaticBlockSerializer;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -388,20 +384,6 @@ public class CrateConfig extends Config {
         );
     }
 
-    private List<ConfiguredRewardAction> loadRewardActions(String path) {
-        List<ConfiguredRewardAction> list = new ArrayList<>();
-        for (String aStr : getConfiguration().getStringList(path)) {
-            for (String k : RewardActions.inst().getActionTypes().keySet()) {
-                if (aStr.startsWith("[" + k + "]")) {
-                    String args = aStr.substring(k.length() + 2).trim();
-                    list.add(new ConfiguredRewardAction(RewardActions.inst().getAction(k), args));
-                    break;
-                }
-            }
-        }
-        return list;
-    }
-
     private List<String> loadHologram(String path) {
         if (!getConfiguration().contains(path)) {
             return new ArrayList<>();
@@ -551,13 +533,16 @@ public class CrateConfig extends Config {
         } else {
             slots = getConfiguration().getIntegerList(path + ".slots");
         }
-        var clickActions = loadRewardActions(path + ".click-actions");
+
+        var clickActions = PlayerActionSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(getConfiguration(), path + ".click-actions"));
 
         return MenuItem.builder(identifier, item.getItem())
                 .slots(slots)
                 .action(a -> {
+                    var placeholders = new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders();
+                    placeholders.addPlaceholder(new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder("%player%", a.getWhoClicked().getName()));
                     clickActions.forEach(action -> {
-                        action.run((Player) a.getWhoClicked(), new Placeholders(new Placeholder("%player%", a.getWhoClicked().getName())));
+                        action.run((Player) a.getWhoClicked(), placeholders);
                     });
                 })
                 .build();

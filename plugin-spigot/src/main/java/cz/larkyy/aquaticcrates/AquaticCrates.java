@@ -6,12 +6,10 @@ import cz.larkyy.aquaticcrates.config.Config;
 import cz.larkyy.aquaticcrates.crate.CrateHandler;
 import cz.larkyy.aquaticcrates.crate.CrateListener;
 import cz.larkyy.aquaticcrates.crate.price.OpenPrices;
-import cz.larkyy.aquaticcrates.crate.reward.RewardActions;
 import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
 import cz.larkyy.aquaticcrates.dabatase.DatabaseManager;
 import cz.larkyy.aquaticcrates.editor.EditingHandler;
 import cz.larkyy.aquaticcrates.item.ItemHandler;
-import cz.larkyy.aquaticcrates.loader.LoaderManager;
 import cz.larkyy.aquaticcrates.messages.MessageHandler;
 import cz.larkyy.aquaticcrates.nms.ModelEngineAdapter;
 import cz.larkyy.aquaticcrates.player.PlayerHandler;
@@ -25,7 +23,6 @@ import gg.aquatic.aquaticseries.lib.format.Format;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
 import gg.aquatic.aquaticseries.lib.interactable2.InteractableHandler;
 import gg.aquatic.aquaticseries.lib.inventory.lib.InventoryHandler;
-import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.packet.PacketHandler;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
@@ -33,7 +30,6 @@ import gg.aquatic.aquaticseries.lib.worldobject.WorldObjectHandler;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import xyz.larkyy.aquaticcrates.meg3hook.AdaptedMEG3;
 import xyz.larkyy.aquaticcrates.meg4hook.AdaptedMEG4;
 
@@ -46,7 +42,6 @@ public final class AquaticCrates extends JavaPlugin {
 
     private static PlayerHandler playerHandler;
     private static Tasks tasks;
-    private static RewardActions rewardActions;
     private static CrateHandler crateHandler;
     private static DatabaseManager databaseManager;
     //private static NMSHandler nmsHandler;
@@ -137,7 +132,6 @@ public final class AquaticCrates extends JavaPlugin {
         tasks = new Tasks();
         openPrices = new OpenPrices();
         //rewardConditions = new RewardConditions();
-        rewardActions = new RewardActions();
         itemHandler = new ItemHandler();
         crateHandler = new CrateHandler();
         playerHandler = new PlayerHandler();
@@ -276,10 +270,6 @@ public final class AquaticCrates extends JavaPlugin {
 
     public static Tasks getTasks() {
         return tasks;
-    }
-
-    public static RewardActions getRewardActions() {
-        return rewardActions;
     }
 
     public static OpenPrices getOpenPrices() {
