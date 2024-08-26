@@ -2,7 +2,6 @@ package cz.larkyy.aquaticcrates.hologram.impl;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.hologram.Hologram;
-import cz.larkyy.aquaticcrates.nms.NMSHandler;
 import cz.larkyy.aquaticcrates.utils.Utils;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;

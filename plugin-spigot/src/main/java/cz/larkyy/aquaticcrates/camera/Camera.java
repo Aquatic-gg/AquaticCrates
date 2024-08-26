@@ -1,7 +1,6 @@
 package cz.larkyy.aquaticcrates.camera;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
-import cz.larkyy.aquaticcrates.nms.NMSHandler;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.util.AbstractAudience;
 import org.bukkit.GameMode;
@@ -11,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Camera {

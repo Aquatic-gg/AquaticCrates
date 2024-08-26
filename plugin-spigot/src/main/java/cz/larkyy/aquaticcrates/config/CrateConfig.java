@@ -47,7 +47,7 @@ import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.MegInteractable;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
-import io.lumine.mythic.bukkit.entities.BukkitRabbit;
+import gg.aquatic.aquaticseries.lib.util.AquaticBlockSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,7 +56,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import xyz.larkyy.colorutils.Colors;
 import xyz.larkyy.itemlibrary.CustomItem;
 
@@ -65,7 +64,6 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class CrateConfig extends Config {
 
@@ -118,7 +116,7 @@ public class CrateConfig extends Config {
     }
 
     private AbstractInteractable<?> loadInteractable(String crateId) {
-        var type = getConfiguration().getString("interactable.type", "block").toLowerCase();
+        var type = getConfiguration().getString("visual.type", "block").toLowerCase();
 
         BiConsumer<SpawnedInteractable<?>, InteractableInteractEvent> consumer = (spawned, event) -> {
             event.setCancelled(true);
@@ -135,7 +133,7 @@ public class CrateConfig extends Config {
         };
 
         if (type.equals("modelengine")) {
-            new MegInteractable<>(
+            return new MegInteractable<>(
                     new TempInteractableBase(),
                     "aquaticcrates_" + crateId,
                     new AquaticMultiBlock(
@@ -156,20 +154,45 @@ public class CrateConfig extends Config {
                                     }
                             )
                     ),
-                    getConfiguration().getString("interactable.model", ""),
+                    getConfiguration().getString("visual.model", ""),
                     consumer
             );
         }
-        var material = getConfiguration().getString("interactable.block-type", "STONE").toUpperCase();
-        AquaticBlock block;
-        if (material.startsWith("ORAXEN:")) {
-            block = new OraxenBlock(material.replace("ORAXEN:", ""));
-        } else if (material.startsWith("IA:")) {
-            block = new ItemsAdderBlock(material.replace("IA:", ""));
-        } else {
-            block = new VanillaBlock(Material.valueOf(material).createBlockData());
-        }
+        if (type.equals("multiblock")) {
+            var blockSection = getConfiguration().getConfigurationSection("visual.blocks");
+            if (blockSection == null) return null;
+            var ingredients = new HashMap<Character,AquaticBlock>();
+            blockSection.getKeys(false).forEach(key -> {
+                var block = AquaticBlockSerializer.INSTANCE.load(Objects.requireNonNull(blockSection.getConfigurationSection(key)));
+                ingredients.put(key.charAt(0), block);
+            });
+            var shapeSection = getConfiguration().getConfigurationSection("visual.layers");
+            if (shapeSection == null) return null;
+            var layers = new HashMap<Integer,Map<Integer,String>>();
+            shapeSection.getKeys(false).forEach(key -> {
+                var layer = shapeSection.getConfigurationSection(key);
+                var layerMap = new HashMap<Integer,String>();
+                layer.getKeys(false).forEach(layerKey -> {
+                    var line = layer.getString(layerKey);
+                    layerMap.put(Integer.parseInt(layerKey), line);
+                });
+                layers.put(Integer.parseInt(key), layerMap);
+            });
+            var shape = new BlockShape(
+                    layers,
+                    ingredients
+            );
 
+            return new BlockInteractable<>(
+                    new TempInteractableBase(),
+                    "aquaticcrates_" + crateId,
+                    new AquaticMultiBlock(
+                            shape
+                    ),
+                    consumer
+            );
+        }
+        var block = AquaticBlockSerializer.INSTANCE.load(getConfiguration().getConfigurationSection("visual"));
         return new BlockInteractable<>(
                 new TempInteractableBase(),
                 "aquaticcrates_" + crateId,
@@ -192,16 +215,6 @@ public class CrateConfig extends Config {
                         )
                 ),
                 consumer
-                /*
-                onBreak -> {
-                    PlacedCrate pc = PlacedCrate.get(onBreak.getOriginalEvent().getBlock().getLocation());
-                    if (pc == null) return;
-                    Player p = onBreak.getOriginalEvent().getPlayer();
-                    onBreak.getOriginalEvent().setCancelled(true);
-                    Bukkit.getPluginManager().callEvent(new CrateInteractEvent(p, pc, Action.LEFT_CLICK_BLOCK, onBreak.getOriginalEvent().getBlock().getLocation()));
-                },
-
-                 */
         );
     }
 

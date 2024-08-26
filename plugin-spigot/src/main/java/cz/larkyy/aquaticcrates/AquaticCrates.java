@@ -18,6 +18,9 @@ import cz.larkyy.aquaticcrates.player.PlayerHandler;
 import cz.larkyy.aquaticcrates.player.PlayerListener;
 import cz.larkyy.aquaticcrates.hooks.PAPIHook;
 import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
+import gg.aquatic.aquaticseries.lib.awaiters.AbstractAwaiter;
+import gg.aquatic.aquaticseries.lib.awaiters.IAAwaiter;
+import gg.aquatic.aquaticseries.lib.awaiters.MEGAwaiter;
 import gg.aquatic.aquaticseries.lib.format.Format;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
 import gg.aquatic.aquaticseries.lib.interactable2.InteractableHandler;
@@ -36,6 +39,7 @@ import xyz.larkyy.aquaticcrates.meg4hook.AdaptedMEG4;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class AquaticCrates extends JavaPlugin {
@@ -143,16 +147,6 @@ public final class AquaticCrates extends JavaPlugin {
 
         new Metrics(this, 19254);
 
-        var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
-        if (megPlugin != null) {
-            var megVersion = megPlugin.getDescription().getVersion();
-            if (megVersion.contains("R3.")) {
-                modelEngineAdapter = new AdaptedMEG3();
-            } else {
-                modelEngineAdapter = new AdaptedMEG4();
-            }
-        }
-
         var cmds = new Commands();
         getCommand("aquaticcrates").setExecutor(cmds);
         getCommand("aquaticcrates").setTabCompleter(cmds);
@@ -166,28 +160,47 @@ public final class AquaticCrates extends JavaPlugin {
             new PAPIHook().register();
         }
         Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Database&f!"));
+
+        var awaiters = new ArrayList<AbstractAwaiter>();
+        var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
+
+        if (Bukkit.getPluginManager().getPlugin("ModelEngine") != null) {
+            var awaiter = new MEGAwaiter(aquaticSeriesLib);
+            awaiters.add(awaiter);
+            Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7ModelEngine Hook&f!"));
+            awaiter.getFuture().thenRun(() -> {
+                if (awaiters.stream().allMatch(AbstractAwaiter::getLoaded)) {
+                    Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &7ModelEngine Hook&f initialized!"));
+                    load();
+                }
+            });
+        }
+        if (Bukkit.getPluginManager().getPlugin("ItemsAdder") != null) {
+            var awaiter = new IAAwaiter(aquaticSeriesLib);
+            awaiters.add(awaiter);
+            awaiter.getFuture().thenRun(() -> {
+                if (awaiters.stream().allMatch(AbstractAwaiter::getLoaded)) {
+                    load();
+                }
+            });
+        }
+        if (awaiters.stream().allMatch(AbstractAwaiter::getLoaded)) {
+            load();
+        }
+        if (megPlugin != null) {
+            var megVersion = megPlugin.getDescription().getVersion();
+            if (megVersion.contains("R3.")) {
+                modelEngineAdapter = new AdaptedMEG3();
+            } else {
+                modelEngineAdapter = new AdaptedMEG4();
+            }
+        }
+
         try {
             databaseManager.setup();
         } catch (SQLException | IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        new LoaderManager(
-                () -> new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (loaded) {
-                            unload();
-                        }
-                        new BukkitRunnable() {
-                            @Override
-                            public void run() {
-                                load();
-                                loaded = true;
-                            }
-                        }.runTaskLater(instance(),1);
-                    }
-                }.runTask(this)
-        );
     }
 
     public void load() {
