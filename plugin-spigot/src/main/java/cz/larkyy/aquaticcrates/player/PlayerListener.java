@@ -3,6 +3,7 @@ package cz.larkyy.aquaticcrates.player;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.animation.Animation;
 import cz.larkyy.aquaticcrates.crate.reroll.Reroll;
+import gg.aquatic.aquaticseries.lib.interactable2.AbstractSpawnedPacketInteractable;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,12 @@ public class PlayerListener implements Listener {
         AquaticCrates.getPlayerHandler().loadPlayer(p, player -> {});
         AquaticCrates.getCrateHandler().getLocations().values().forEach(v -> {
             v.getHologram().spawn(Arrays.asList(p), list -> {});
+            var interactable = v.getSpawnedInteractable();
+            if (interactable != null) {
+                if (interactable instanceof AbstractSpawnedPacketInteractable<?> packetInteractable) {
+                    packetInteractable.show(p);
+                }
+            }
         });
 
         if (p.getPersistentDataContainer().has(Animation.KEY, PersistentDataType.INTEGER)) {

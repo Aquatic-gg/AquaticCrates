@@ -32,17 +32,22 @@ import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.block.AquaticBlock;
+import gg.aquatic.aquaticseries.lib.block.AquaticMultiBlock;
+import gg.aquatic.aquaticseries.lib.block.BlockShape;
 import gg.aquatic.aquaticseries.lib.block.impl.ItemsAdderBlock;
 import gg.aquatic.aquaticseries.lib.block.impl.OraxenBlock;
 import gg.aquatic.aquaticseries.lib.block.impl.VanillaBlock;
 import gg.aquatic.aquaticseries.lib.chance.IChance;
-import gg.aquatic.aquaticseries.lib.interactable.AbstractInteractable;
-import gg.aquatic.aquaticseries.lib.interactable.impl.block.BlockInteractable;
-import gg.aquatic.aquaticseries.lib.interactable.impl.block.BlockShape;
-import gg.aquatic.aquaticseries.lib.interactable.impl.meg.MEGInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.AbstractInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.InteractableInteractEvent;
+import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.base.TempInteractableBase;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.block.BlockInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.MegInteractable;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
+import io.lumine.mythic.bukkit.entities.BukkitRabbit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -51,6 +56,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import xyz.larkyy.colorutils.Colors;
 import xyz.larkyy.itemlibrary.CustomItem;
 
@@ -58,6 +64,7 @@ import java.io.File;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class CrateConfig extends Config {
@@ -110,33 +117,54 @@ public class CrateConfig extends Config {
         return c;
     }
 
-    private AbstractInteractable loadInteractable(String crateId) {
+    private AbstractInteractable<?> loadInteractable(String crateId) {
         var type = getConfiguration().getString("interactable.type", "block").toLowerCase();
 
+        BiConsumer<SpawnedInteractable<?>, InteractableInteractEvent> consumer = (spawned, event) -> {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage("You have interacted crate " + crateId);
+
+            var loc = event.getInteractable().getLocation();
+            Action action = event.getAction();
+            if (action == Action.LEFT_CLICK_AIR) {
+                action = Action.LEFT_CLICK_BLOCK;
+            }
+
+            PlacedCrate placedCrate = PlacedCrate.get(loc);
+            if (placedCrate != null) {
+                Bukkit.broadcastMessage("Crate is not null!");
+                Bukkit.getPluginManager().callEvent(new CrateInteractEvent(event.getPlayer(), placedCrate, action, loc));
+            } else {
+                Bukkit.broadcastMessage("Crate is null!");
+            }
+
+
+        };
+
         if (type.equals("modelengine")) {
-            return new MEGInteractable(
+            new MegInteractable<>(
+                    new TempInteractableBase(),
                     "aquaticcrates_" + crateId,
-                    new BlockShape(
-                            new HashMap<>() {
-                                {
-                                    put(0, new HashMap<>() {
+                    new AquaticMultiBlock(
+                            new BlockShape(
+                                    new HashMap<>() {
                                         {
-                                            put(0, "X");
+                                            put(0, new HashMap<>() {
+                                                {
+                                                    put(0, "X");
+                                                }
+                                            });
                                         }
-                                    });
-                                }
-                            },
-                            new HashMap<>() {
-                                {
-                                    put('X', new VanillaBlock(Material.AIR.createBlockData()));
-                                }
-                            }
+                                    },
+                                    new HashMap<>() {
+                                        {
+                                            put('X', new VanillaBlock(Material.AIR.createBlockData()));
+                                        }
+                                    }
+                            )
                     ),
                     getConfiguration().getString("interactable.model", ""),
-                    onInteract -> {
-
-                    },
-                    false
+                    consumer
             );
         }
         var material = getConfiguration().getString("interactable.block-type", "STONE").toUpperCase();
@@ -149,17 +177,29 @@ public class CrateConfig extends Config {
             block = new VanillaBlock(Material.valueOf(material).createBlockData());
         }
 
-        return new BlockInteractable(
+        return new BlockInteractable<>(
+                new TempInteractableBase(),
                 "aquaticcrates_" + crateId,
-                onInteract -> {
-                    Action action = onInteract.getOriginalEvent().getAction();
-                    var loc = onInteract.getOriginalEvent().getClickedBlock().getLocation();
-                    PlacedCrate placedCrate = PlacedCrate.get(loc);
-                    if (placedCrate != null) {
-                        onInteract.getOriginalEvent().setCancelled(true);
-                        Bukkit.getPluginManager().callEvent(new CrateInteractEvent(onInteract.getOriginalEvent().getPlayer(), placedCrate, action, loc));
-                    }
-                },
+                new AquaticMultiBlock(
+                        new BlockShape(
+                                new HashMap<>() {
+                                    {
+                                        put(0, new HashMap<>() {
+                                            {
+                                                put(0, "X");
+                                            }
+                                        });
+                                    }
+                                },
+                                new HashMap<>() {
+                                    {
+                                        put('X', block);
+                                    }
+                                }
+                        )
+                ),
+                consumer
+                /*
                 onBreak -> {
                     PlacedCrate pc = PlacedCrate.get(onBreak.getOriginalEvent().getBlock().getLocation());
                     if (pc == null) return;
@@ -167,24 +207,8 @@ public class CrateConfig extends Config {
                     onBreak.getOriginalEvent().setCancelled(true);
                     Bukkit.getPluginManager().callEvent(new CrateInteractEvent(p, pc, Action.LEFT_CLICK_BLOCK, onBreak.getOriginalEvent().getBlock().getLocation()));
                 },
-                new BlockShape(
-                        new HashMap<>() {
-                            {
-                                put(0, new HashMap<>() {
-                                    {
-                                        put(0, "X");
-                                    }
-                                });
-                            }
-                        },
-                        new HashMap<>() {
-                            {
-                                put('X', block);
-                            }
-                        }
-                )
-                ,
-                false
+
+                 */
         );
     }
 

@@ -5,6 +5,9 @@ import cz.larkyy.aquaticcrates.hologram.Hologram;
 import cz.larkyy.aquaticcrates.hologram.impl.AquaticHologram;
 import cz.larkyy.aquaticcrates.model.Model;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
+import gg.aquatic.aquaticseries.lib.interactable2.AbstractSpawnedPacketInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.block.SpawnedPacketBlockInteractable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,7 +21,7 @@ public class PlacedMultiCrate {
     private final MultiCrate multiCrate;
     private final Location location;
     private final Map<String,PlacedCrate> placedCrates;
-    private final Model model;
+    private final SpawnedInteractable<?> spawnedInteractable;
     private final Hologram hologram;
     private final ModelAnimationHandler modelAnimationHandler;
 
@@ -27,10 +30,11 @@ public class PlacedMultiCrate {
         this.multiCrate = multiCrate;
         this.hologram = new AquaticHologram(location.clone().add(0,multiCrate.getHologramYOffset(),0),multiCrate.getHologram());
         hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()), list -> {});
-        this.model = Model.create(multiCrate.getModel(), location,null,null);
+        spawnedInteractable = multiCrate.getInteractable().spawn(location, false);
+        //this.model = Model.create(multiCrate.getModel(), location,null,null);
 
         placedCrates = createPlacedCrates();
-        this.modelAnimationHandler = new ModelAnimationHandler(model,multiCrate);
+        this.modelAnimationHandler = new ModelAnimationHandler(spawnedInteractable,multiCrate);
     }
 
     private Map<String,PlacedCrate> createPlacedCrates() {
@@ -38,7 +42,7 @@ public class PlacedMultiCrate {
         for (String id : multiCrate.getCrates()) {
             Crate c = Crate.get(id);
             if (c == null) continue;
-            map.put(id,new PlacedCrate(c,location,model,hologram));
+            map.put(id,new PlacedCrate(c,location,spawnedInteractable,hologram));
         }
         return map;
     }
@@ -59,13 +63,13 @@ public class PlacedMultiCrate {
         return location;
     }
 
-    public Model getModel() {
-        return model;
+    public SpawnedInteractable<?> getModel() {
+        return spawnedInteractable;
     }
 
     public void destroy() {
         modelAnimationHandler.setCancelled(true);
-        model.remove();
+        spawnedInteractable.despawn();
         location.getBlock().setType(Material.AIR);
         hologram.despawn();
     }

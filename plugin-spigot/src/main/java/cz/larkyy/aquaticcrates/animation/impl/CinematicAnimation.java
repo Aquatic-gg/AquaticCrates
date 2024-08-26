@@ -6,9 +6,10 @@ import cz.larkyy.aquaticcrates.animation.AnimationManager;
 import cz.larkyy.aquaticcrates.animation.RewardItem;
 import cz.larkyy.aquaticcrates.camera.Camera;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.model.Model;
-import gg.aquatic.aquaticseries.lib.interactable.AbstractSpawnedInteractable;
-import gg.aquatic.aquaticseries.lib.interactable.impl.meg.SpawnedMegInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.AbstractSpawnedPacketInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.AudienceList;
+import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.SpawnedPacketMegInteractable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,12 +18,13 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class CinematicAnimation extends Animation {
 
-    private final AbstractSpawnedInteractable spawnedInteractable;
+    private final AbstractSpawnedPacketInteractable<?> spawnedInteractable;
     private final Camera camera;
     private int i;
     private BukkitRunnable runnable;
@@ -65,7 +67,8 @@ public class CinematicAnimation extends Animation {
             public void run() {
                 getPlayer().setInvisible(true);
                 camera.attachPlayer(() -> {
-                    model.show(getPlayer());
+
+                    spawnedInteractable.show(getPlayer());
                     start();
                 });
             }
@@ -99,7 +102,7 @@ public class CinematicAnimation extends Animation {
             openAnimation = getReward().get().getModelAnimation();
             if (openAnimation == null) openAnimation = "open";
         }
-        model.playAnimation(openAnimation);
+        playAnimation(openAnimation);
         i = 0;
         if (runnable != null && !runnable.isCancelled()) {
             runnable.cancel();
@@ -140,9 +143,9 @@ public class CinematicAnimation extends Animation {
             rewardItem = null;
         }
         getAnimationManager().hideTitle(getPlayer());
-        if (model != null) {
-            model.hide(getPlayer());
-            model.remove();
+        if (spawnedInteractable != null) {
+            spawnedInteractable.hide(getPlayer());
+            spawnedInteractable.despawn();
         }
         //Bukkit.broadcastMessage("Detaching & removing");
         if (camera != null) {
@@ -164,8 +167,12 @@ public class CinematicAnimation extends Animation {
         rewardItem.spawn();
     }
 
-    private AbstractSpawnedInteractable spawnModel() {
-        return getAnimationManager().getCrate().getInteractable().spawn(getAnimationManager().getModelLocation());
+    private AbstractSpawnedPacketInteractable<?> spawnModel() {
+        return getAnimationManager().getCrate().getInteractable().spawnPacket(
+                getAnimationManager().getModelLocation(),
+                new AudienceList(List.of(getPlayer().getUniqueId()), AudienceList.Mode.WHITELIST),
+                false
+        );
     }
 
     private Camera spawnCamera() {
@@ -183,15 +190,9 @@ public class CinematicAnimation extends Animation {
 
         camera.teleport(location);
     }
-    private void playAnimation(String animation) {
-        var model = getModel();
-        if (model instanceof SpawnedMegInteractable megInteractable) {
-            megInteractable.getActiveModel().getAnimationHandler().playAnimation(animation, 0d, 0d, 1.0, true);
-        }
-    }
 
     @Override
-    public AbstractSpawnedInteractable getModel() {
+    public SpawnedInteractable<?> getModel() {
         return spawnedInteractable;
     }
 }

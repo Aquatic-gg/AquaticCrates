@@ -2,7 +2,7 @@ package cz.larkyy.aquaticcrates.crate;
 
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
-import gg.aquatic.aquaticseries.lib.interactable.AbstractInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.AbstractInteractable;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -16,9 +16,9 @@ public class CrateBase {
     private final int hitboxHeight;
     private final int hitboxWidth;
     private final ModelSettings modelSettings;
-    private final AbstractInteractable interactable;
+    private final AbstractInteractable<?> interactable;
 
-    public CrateBase(String identifier, AquaticString displayName, ModelSettings modelSettings, List<String> hologram, double hologramYOffset, int hitboxHeight, int hitboxWidth, AbstractInteractable interactable) {
+    public CrateBase(String identifier, AquaticString displayName, ModelSettings modelSettings, List<String> hologram, double hologramYOffset, int hitboxHeight, int hitboxWidth, AbstractInteractable<?> interactable) {
         this.identifier = identifier;
         this.displayName = displayName;
         this.modelSettings = modelSettings;
@@ -69,7 +69,7 @@ public class CrateBase {
         return hitboxWidth;
     }
 
-    public AbstractInteractable getInteractable() {
+    public AbstractInteractable<?> getInteractable() {
         return interactable;
     }
 }

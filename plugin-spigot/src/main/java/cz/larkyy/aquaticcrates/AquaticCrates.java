@@ -20,11 +20,13 @@ import cz.larkyy.aquaticcrates.hooks.PAPIHook;
 import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.format.Format;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
-import gg.aquatic.aquaticseries.lib.interactable.InteractableHandler;
+import gg.aquatic.aquaticseries.lib.interactable2.InteractableHandler;
 import gg.aquatic.aquaticseries.lib.inventory.lib.InventoryHandler;
+import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.packet.PacketHandler;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
+import gg.aquatic.aquaticseries.lib.worldobject.WorldObjectHandler;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -123,8 +125,9 @@ public final class AquaticCrates extends JavaPlugin {
     @Override
     public void onEnable() {
         aquaticSeriesLib = AquaticSeriesLib.Companion.init(this, List.of(
-                InventoryHandler.INSTANCE, new InteractableHandler(10), PacketHandler.INSTANCE
+                InventoryHandler.INSTANCE, InteractableHandler.INSTANCE, PacketHandler.INSTANCE, WorldObjectHandler.INSTANCE
         ));
+        //CustomItem.Companion.getCustomItemHandler().getItemRegistry();
         aquaticSeriesLib.setMessageFormatting(messageFormat);
 
         tasks = new Tasks();

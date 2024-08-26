@@ -65,6 +65,7 @@ public class CrateHandler {
         CratePlaceEvent event = new CratePlaceEvent(pc);
         Bukkit.getServer().getPluginManager().callEvent(event);
 
+        locations.put(pc.getSpawnedInteractable().getLocation(),pc);
         /*
         Location loc = location.clone().getBlock().getLocation();
 

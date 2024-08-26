@@ -6,18 +6,22 @@ import cz.larkyy.aquaticcrates.animation.AnimationManager;
 import cz.larkyy.aquaticcrates.animation.RewardItem;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.model.Model;
+import gg.aquatic.aquaticseries.lib.interactable2.AbstractSpawnedPacketInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.AudienceList;
+import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.SpawnedMegInteractable;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 public class PlacedCratePersonalisedAnimation extends Animation {
 
-    private final Model model;
+    private final AbstractSpawnedPacketInteractable<?> spawnedInteractable;
     private final PlacedCrate placedCrate;
     private int i;
     private BukkitRunnable runnable;
@@ -27,11 +31,14 @@ public class PlacedCratePersonalisedAnimation extends Animation {
         super(animationManager, player, reward, callback);
         this.placedCrate = placedCrate;
         if (placedCrate == null) {
-            this.model = null;
+            this.spawnedInteractable = null;
             reroll();
         } else {
-            placedCrate.getModel().hide(player);
-            this.model = Model.create(placedCrate.getCrate().getModel(), placedCrate.getLocation(), player, player);
+            var placedCrateInteractable = placedCrate.getSpawnedInteractable();
+            if (placedCrateInteractable instanceof AbstractSpawnedPacketInteractable<?> abstractSpawnedPacketInteractable) {
+                abstractSpawnedPacketInteractable.hide(player);
+            }
+            this.spawnedInteractable = placedCrateInteractable.getBase().spawnPacket(placedCrate.getLocation(), new AudienceList(List.of(player.getUniqueId()),AudienceList.Mode.WHITELIST), false);
             begin();
         }
     }
@@ -50,7 +57,7 @@ public class PlacedCratePersonalisedAnimation extends Animation {
             rewardItem.despawn();
             rewardItem = null;
         }
-        if (model == null) {
+        if (spawnedInteractable == null) {
             reroll();
             return;
         }
@@ -61,7 +68,7 @@ public class PlacedCratePersonalisedAnimation extends Animation {
             openAnimation = getReward().get().getModelAnimation();
             if (openAnimation == null) openAnimation = "open";
         }
-        model.playAnimation(openAnimation);
+        playAnimation(openAnimation);
         i = 0;
         if (runnable != null && !runnable.isCancelled()) {
             runnable.cancel();
@@ -98,11 +105,14 @@ public class PlacedCratePersonalisedAnimation extends Animation {
             rewardItem = null;
         }
         getAnimationManager().hideTitle(getPlayer());
-        if (model != null) {
-            model.remove();
+        if (spawnedInteractable != null) {
+            spawnedInteractable.despawn();
         }
         if (placedCrate != null) {
-            placedCrate.getModel().show(getPlayer());
+            var placedCrateInteractable = placedCrate.getSpawnedInteractable();
+            if (placedCrateInteractable instanceof AbstractSpawnedPacketInteractable<?> abstractSpawnedPacketInteractable) {
+                abstractSpawnedPacketInteractable.hide(getPlayer());
+            }
         }
         getPlayer().getPersistentDataContainer().remove(KEY);
     }
@@ -117,7 +127,7 @@ public class PlacedCratePersonalisedAnimation extends Animation {
     }
 
     @Override
-    public Model getModel() {
-        return model;
+    public SpawnedInteractable<?> getModel() {
+        return spawnedInteractable;
     }
 }

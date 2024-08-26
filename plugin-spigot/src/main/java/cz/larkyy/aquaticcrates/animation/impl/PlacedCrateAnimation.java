@@ -6,9 +6,8 @@ import cz.larkyy.aquaticcrates.animation.AnimationManager;
 import cz.larkyy.aquaticcrates.animation.RewardItem;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.model.Model;
-import gg.aquatic.aquaticseries.lib.interactable.AbstractSpawnedInteractable;
-import gg.aquatic.aquaticseries.lib.interactable.impl.meg.SpawnedMegInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.SpawnedMegInteractable;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -108,15 +107,8 @@ public class PlacedCrateAnimation extends Animation {
         rewardItem.spawn();
     }
 
-    private void playAnimation(String animation) {
-        var model = getModel();
-        if (model instanceof SpawnedMegInteractable megInteractable) {
-            megInteractable.getActiveModel().getAnimationHandler().playAnimation(animation, 0d, 0d, 1.0, true);
-        }
-    }
-
     @Override
-    public AbstractSpawnedInteractable getModel() {
+    public SpawnedInteractable<?> getModel() {
         return placedCrate.getSpawnedInteractable();
     }
 }

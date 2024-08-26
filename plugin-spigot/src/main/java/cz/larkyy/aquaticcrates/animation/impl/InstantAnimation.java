@@ -4,6 +4,7 @@ import cz.larkyy.aquaticcrates.animation.Animation;
 import cz.larkyy.aquaticcrates.animation.AnimationManager;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.model.Model;
+import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -41,7 +42,7 @@ public class InstantAnimation extends Animation {
     }
 
     @Override
-    public Model getModel() {
+    public SpawnedInteractable<?> getModel() {
         return null;
     }
 }

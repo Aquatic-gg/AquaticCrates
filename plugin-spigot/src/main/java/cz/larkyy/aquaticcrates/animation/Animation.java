@@ -2,8 +2,9 @@ package cz.larkyy.aquaticcrates.animation;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.model.Model;
-import gg.aquatic.aquaticseries.lib.interactable.AbstractSpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.ISpawnedMegInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.SpawnedMegInteractable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -65,7 +66,7 @@ public abstract class Animation {
             Vector offset,
             Boolean easeOut
     );
-    public abstract AbstractSpawnedInteractable getModel();
+    public abstract SpawnedInteractable<?> getModel();
     public AnimationManager getAnimationManager() {
         return animationManager;
     }
@@ -76,5 +77,11 @@ public abstract class Animation {
 
     public void setStarted(boolean started) {
         this.started = started;
+    }
+
+    public void playAnimation(String animation) {
+        if (getModel() instanceof ISpawnedMegInteractable megInteractable) {
+            megInteractable.getActiveModel().getAnimationHandler().playAnimation(animation, 0d, 0d, 1.0, true);
+        }
     }
 }

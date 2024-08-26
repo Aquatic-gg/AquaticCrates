@@ -1,14 +1,10 @@
 package cz.larkyy.aquaticcrates.crate;
 
 import cz.larkyy.aquaticcrates.api.AquaticCratesAPI;
-import cz.larkyy.aquaticcrates.crate.model.ModelAnimationHandler;
 import cz.larkyy.aquaticcrates.hologram.Hologram;
 import cz.larkyy.aquaticcrates.hologram.impl.AquaticHologram;
-import cz.larkyy.aquaticcrates.model.Model;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
-import gg.aquatic.aquaticseries.lib.interactable.AbstractInteractable;
-import gg.aquatic.aquaticseries.lib.interactable.AbstractSpawnedInteractable;
-import gg.aquatic.aquaticseries.lib.interactable.impl.meg.SpawnedMegInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,7 +19,7 @@ public class PlacedCrate {
     //private final Model model;
     private final Hologram hologram;
     //private final ModelAnimationHandler modelAnimationHandler;
-    private final AbstractSpawnedInteractable spawnedInteractable;
+    private final SpawnedInteractable<?> spawnedInteractable;
 
     public PlacedCrate(Crate crate, Location location) {
         this.location = location;
@@ -32,9 +28,9 @@ public class PlacedCrate {
         hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()), list -> {});
         //this.model = Model.create(crate.getModel(), location,null,null);
         //this.modelAnimationHandler = new ModelAnimationHandler(model,crate);
-        spawnedInteractable = crate.getInteractable().spawn(location);
+        spawnedInteractable = crate.getInteractable().spawn(location, false);
     }
-    public PlacedCrate(Crate crate, Location location, AbstractSpawnedInteractable spawnedInteractable, Hologram hologram) {
+    public PlacedCrate(Crate crate, Location location, SpawnedInteractable<?> spawnedInteractable, Hologram hologram) {
         this.location = location;
         this.crate = crate;
         this.hologram = hologram;
@@ -97,7 +93,7 @@ public class PlacedCrate {
         return hologram;
     }
 
-    public AbstractSpawnedInteractable getSpawnedInteractable() {
+    public SpawnedInteractable<?> getSpawnedInteractable() {
         return spawnedInteractable;
     }
 }
