@@ -29,7 +29,6 @@ public class CameraMoveTask extends AnimationTask {
     @Override
     public List<AquaticObjectArgument<?>> arguments() {
         return List.of(
-                new PrimitiveObjectArgument("delay",0,false),
                 new PrimitiveObjectArgument("duration",100,true),
                 new PrimitiveObjectArgument("offset","0;0;0",true),
                 new PrimitiveObjectArgument("rotate-head-yaw",0,false),

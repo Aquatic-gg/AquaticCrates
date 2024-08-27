@@ -30,7 +30,6 @@ public class SpawnParticleTask extends AnimationTask {
     @Override
     public List<AquaticObjectArgument<?>> arguments() {
         return List.of(
-                new PrimitiveObjectArgument("delay",0,false),
                 new PrimitiveObjectArgument("offset","0;0;0",false),
                 new PrimitiveObjectArgument("offset-x",0,false),
                 new PrimitiveObjectArgument("offset-y",0,false),

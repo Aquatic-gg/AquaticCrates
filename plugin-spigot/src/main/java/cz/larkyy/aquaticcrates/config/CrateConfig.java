@@ -119,6 +119,8 @@ public class CrateConfig extends Config {
             Action action = event.getAction();
             if (action == Action.LEFT_CLICK_AIR) {
                 action = Action.LEFT_CLICK_BLOCK;
+            } else if (action == Action.RIGHT_CLICK_AIR) {
+                action = Action.RIGHT_CLICK_BLOCK;
             }
 
             PlacedCrate placedCrate = PlacedCrate.get(loc);
@@ -574,9 +576,10 @@ public class CrateConfig extends Config {
     private void loadAnimationManager(Crate c, AtomicReference<AnimationManager> atomicReference) {
         AnimationManager.Type type = AnimationManager.Type.valueOf(getConfiguration().getString("animation.type", "INSTANT").toUpperCase());
         var tasks = new TreeMap<Integer,List<ConfiguredAction<Animation>>>();
-        if (getConfiguration().contains("animation.tasks")) {
-            tasks = TaskSerializer.load(getConfiguration().getConfigurationSection("animation.tasks"));
+        if (getConfiguration().contains("animation.actions")) {
+            tasks = TaskSerializer.load(getConfiguration().getConfigurationSection("animation.actions"));
         }
+        Bukkit.getConsoleSender().sendMessage("Loaded animation tasks: " + tasks.size());
 
         atomicReference.set(new AnimationManager(
                 c,

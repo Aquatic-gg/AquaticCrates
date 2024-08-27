@@ -1,5 +1,7 @@
 package cz.larkyy.aquaticcrates;
 
+import cz.larkyy.aquaticcrates.animation.task.TaskSerializer;
+import cz.larkyy.aquaticcrates.animation.task.impl.*;
 import cz.larkyy.aquaticcrates.commands.Commands;
 import cz.larkyy.aquaticcrates.config.Config;
 import cz.larkyy.aquaticcrates.crate.CrateHandler;
@@ -155,13 +157,13 @@ public final class AquaticCrates extends JavaPlugin {
     }
 
     private void setupAnimationTasks() {
-        ActionTypes.INSTANCE.getActions().put("spawnreward", new cz.larkyy.aquaticcrates.animation.task.impl.SpawnRewardTask());
-        ActionTypes.INSTANCE.getActions().put("playsound", new cz.larkyy.aquaticcrates.animation.task.impl.PlaySoundTask());
-        ActionTypes.INSTANCE.getActions().put("command", new cz.larkyy.aquaticcrates.animation.task.impl.CommandTask());
-        ActionTypes.INSTANCE.getActions().put("spawnparticle", new cz.larkyy.aquaticcrates.animation.task.impl.SpawnParticleTask());
-        ActionTypes.INSTANCE.getActions().put("sendtitle", new cz.larkyy.aquaticcrates.animation.task.impl.SendTitleTask());
-        ActionTypes.INSTANCE.getActions().put("movecamera", new cz.larkyy.aquaticcrates.animation.task.impl.CameraMoveTask());
-        ActionTypes.INSTANCE.getActions().put("teleportcamera", new cz.larkyy.aquaticcrates.animation.task.impl.CameraTeleportTask());
+        TaskSerializer.tasks.put("spawnreward", new SpawnRewardTask());
+        TaskSerializer.tasks.put("playsound", new PlaySoundTask());
+        TaskSerializer.tasks.put("command", new CommandTask());
+        TaskSerializer.tasks.put("spawnparticle", new SpawnParticleTask());
+        TaskSerializer.tasks.put("sendtitle", new SendTitleTask());
+        TaskSerializer.tasks.put("movecamera", new CameraMoveTask());
+        TaskSerializer.tasks.put("teleportcamera", new CameraTeleportTask());
     }
 
     public void load() {

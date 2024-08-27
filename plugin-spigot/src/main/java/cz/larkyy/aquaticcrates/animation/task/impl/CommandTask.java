@@ -33,7 +33,6 @@ public class CommandTask extends AnimationTask {
     @Override
     public List<AquaticObjectArgument<?>> arguments() {
         return List.of(
-                new PrimitiveObjectArgument("delay",0,false),
                 new PrimitiveObjectArgument("command",null,false),
                 new PrimitiveObjectArgument("commands",new ArrayList<>(),false)
         );

@@ -18,6 +18,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -168,11 +169,13 @@ public class CinematicAnimation extends Animation {
     }
 
     private AbstractSpawnedPacketInteractable<?> spawnModel() {
-        return getAnimationManager().getCrate().getInteractable().spawnPacket(
+        var spawned = getAnimationManager().getCrate().getInteractable().spawnPacket(
                 getAnimationManager().getModelLocation(),
-                new AudienceList(List.of(getPlayer().getUniqueId()), AudienceList.Mode.WHITELIST),
+                new AudienceList(new ArrayList<>(), AudienceList.Mode.WHITELIST),
                 false
         );
+        spawned.show(getPlayer());
+        return spawned;
     }
 
     private Camera spawnCamera() {

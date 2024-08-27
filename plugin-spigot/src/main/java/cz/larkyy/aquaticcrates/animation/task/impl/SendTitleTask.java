@@ -29,7 +29,6 @@ public class SendTitleTask extends AnimationTask {
     @Override
     public List<AquaticObjectArgument<?>> arguments() {
         return List.of(
-                new PrimitiveObjectArgument("delay",0,false),
                 new PrimitiveObjectArgument("in",0,false),
                 new PrimitiveObjectArgument("out",0,false),
                 new PrimitiveObjectArgument("stay",0,false),

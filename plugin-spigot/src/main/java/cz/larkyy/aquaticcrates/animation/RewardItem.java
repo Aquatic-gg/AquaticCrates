@@ -147,7 +147,6 @@ public class RewardItem {
     private void startRumbling() {
         rumbleRunnable = new BukkitRunnable() {
             int tick = 0;
-            double easingThreshold = 0.8;
             @Override
             public void run() {
                 if (tick >= rumblingLength) {
@@ -156,7 +155,16 @@ public class RewardItem {
                     return;
                 }
 
-                if (!easeOut || shouldPerformAction(tick, rumblingPeriod, rumblingLength)) {
+                var update = false;
+                if (!easeOut) {
+                    if (tick % rumblingPeriod == 0) {
+                        update = true;
+                    }
+                } else if (shouldPerformAction(tick, rumblingPeriod, rumblingLength)) {
+                    update = true;
+                }
+
+                if (update) {
                     var rewards = RewardUtils
                             .getPossibleRewards(animation.getPlayer(),animation.getAnimationManager().getCrate().getRewards());
 

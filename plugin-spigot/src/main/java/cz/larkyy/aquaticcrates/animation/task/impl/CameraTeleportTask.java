@@ -28,7 +28,6 @@ public class CameraTeleportTask extends AnimationTask {
     @Override
     public List<AquaticObjectArgument<?>> arguments() {
         return List.of(
-                new PrimitiveObjectArgument("delay",0,false),
                 new PrimitiveObjectArgument("offset","0;0;0", true),
                 new PrimitiveObjectArgument("pitch",0,true),
                 new PrimitiveObjectArgument("yaw",0,true)

@@ -34,7 +34,6 @@ public class PlaySoundTask extends AnimationTask {
     @Override
     public List<AquaticObjectArgument<?>> arguments() {
         return List.of(
-                new PrimitiveObjectArgument("delay",0,false),
                 new PrimitiveObjectArgument("sound","minecraft:block.note_block.bell",true),
                 new PrimitiveObjectArgument("pitch",1d,false),
                 new PrimitiveObjectArgument("volume",100f,false),

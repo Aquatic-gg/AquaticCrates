@@ -15,8 +15,8 @@ public class SpawnRewardTask extends AnimationTask {
     @Override
     public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull Placeholders placeholders) {
         animation.spawnReward(
-                (Integer) arguments.get("rumblingLength"),
-                (Integer) arguments.get("rumblingPeriod"),
+                (Integer) arguments.get("rumbling-length"),
+                (Integer) arguments.get("rumbling-period"),
                 (Integer) arguments.get("length"),
                 readVector(arguments.get("velocity").toString()),
                 Boolean.parseBoolean(arguments.get("gravity").toString()),
@@ -29,7 +29,6 @@ public class SpawnRewardTask extends AnimationTask {
     @Override
     public List<AquaticObjectArgument<?>> arguments() {
         return List.of(
-                new PrimitiveObjectArgument("delay",0,false),
                 new PrimitiveObjectArgument("length",10000,false),
                 new PrimitiveObjectArgument("gravity",true,false),
                 new PrimitiveObjectArgument("velocity","0;0;0",false),
