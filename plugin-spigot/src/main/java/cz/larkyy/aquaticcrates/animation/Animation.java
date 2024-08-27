@@ -4,7 +4,6 @@ import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.ISpawnedMegInteractable;
-import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.SpawnedMegInteractable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
