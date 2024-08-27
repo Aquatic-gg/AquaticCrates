@@ -9,7 +9,7 @@ import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import gg.aquatic.aquaticseries.lib.interactable2.AbstractSpawnedPacketInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.AudienceList;
 import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
-import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.SpawnedMegInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.ISpawnedMegInteractable;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,6 +37,8 @@ public class PlacedCratePersonalisedAnimation extends Animation {
             var placedCrateInteractable = placedCrate.getSpawnedInteractable();
             if (placedCrateInteractable instanceof AbstractSpawnedPacketInteractable<?> abstractSpawnedPacketInteractable) {
                 abstractSpawnedPacketInteractable.hide(player);
+            } else if (placedCrateInteractable instanceof ISpawnedMegInteractable megInteractable) {
+                megInteractable.getDummy().setForceHidden(player,true);
             }
             this.spawnedInteractable = placedCrateInteractable.getBase().spawnPacket(placedCrate.getLocation(), new AudienceList(List.of(player.getUniqueId()),AudienceList.Mode.WHITELIST), false);
             begin();
@@ -111,7 +113,9 @@ public class PlacedCratePersonalisedAnimation extends Animation {
         if (placedCrate != null) {
             var placedCrateInteractable = placedCrate.getSpawnedInteractable();
             if (placedCrateInteractable instanceof AbstractSpawnedPacketInteractable<?> abstractSpawnedPacketInteractable) {
-                abstractSpawnedPacketInteractable.hide(getPlayer());
+                abstractSpawnedPacketInteractable.show(getPlayer());
+            } else if (placedCrateInteractable instanceof ISpawnedMegInteractable megInteractable) {
+                megInteractable.getDummy().setForceHidden(getPlayer(),false);
             }
         }
         getPlayer().getPersistentDataContainer().remove(KEY);

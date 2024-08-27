@@ -5,8 +5,10 @@ import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import cz.larkyy.aquaticcrates.utils.Utils;
+import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.ItemStackExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.inventory.lib.SlotSelection;
 import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.inventory.lib.event.ComponentClickEvent;
@@ -232,16 +234,13 @@ public class PreviewGUI extends PersonalizedInventory {
             Reward r = rewards.get(i);
             ItemStack is = r.getItem().getItem();
             ItemMeta im = is.getItemMeta();
-            List<String> lore = new ArrayList<>();
-            if (im.getLore() != null) {
-                lore.addAll(im.getLore());
-            }
+            List<AquaticString> lore = new ArrayList<>(AquaticSeriesLib.Companion.getINSTANCE().getAdapter().getItemStackAdapter().getAquaticLore(im));
 
-            lore.addAll(rewardLore);
+            lore.addAll(StringExtKt.toAquatic(rewardLore));
             lore.replaceAll(s ->
                     s.replace("%chance%", r.chance() + "")
             );
-            ItemStackExtKt.lore(im, StringExtKt.toAquatic(lore));
+            ItemStackExtKt.lore(im, lore);
             is.setItemMeta(im);
 
             var newButton = new Button(
