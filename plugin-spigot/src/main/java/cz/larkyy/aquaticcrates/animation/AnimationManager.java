@@ -12,6 +12,7 @@ import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.messages.Messages;
 import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
+import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -89,8 +90,10 @@ public class AnimationManager {
     public void playTask(int i, Animation animation) {
         var list = tasks.get(i);
         if (list == null) return;
+        var placeholders = new Placeholders();
+        placeholders.addPlaceholder(new Placeholder("%player%",animation.getPlayer().getName()));
         for (ConfiguredAction<Animation> animationConfiguredAction : list) {
-            animationConfiguredAction.run(animation, new Placeholders());
+            animationConfiguredAction.run(animation, placeholders);
         }
     }
 

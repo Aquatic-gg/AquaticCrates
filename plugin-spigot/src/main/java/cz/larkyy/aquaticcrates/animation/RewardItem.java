@@ -134,6 +134,9 @@ public class RewardItem {
 
     private void startHologramMoving() {
 
+        if (cachedReward == null) {
+            return;
+        }
         var settings = cachedReward.getHologram();
         hologramRunnable = new BukkitRunnable() {
             @Override

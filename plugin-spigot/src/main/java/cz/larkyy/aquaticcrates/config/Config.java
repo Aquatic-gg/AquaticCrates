@@ -66,7 +66,7 @@ public class Config {
     ////////////////////////////////////////////////////////////////////////////
 
     protected HologramSettings loadHologram(String path) {
-        if (!getConfiguration().contains(path)) {
+        if (!getConfiguration().isConfigurationSection(path)) {
             return new EmptyHologramSettings();
         }
         var section = getConfiguration().getConfigurationSection(path);
@@ -82,7 +82,7 @@ public class Config {
     }
 
     protected AquaticHologramSettings loadAquaticHologram(String path) {
-        if (!getConfiguration().contains(path)) return new AquaticHologramSettings(
+        if (!getConfiguration().isConfigurationSection(path)) return new AquaticHologramSettings(
                 new ArrayList<>(),
                 new Vector(0, 0, 0)
         );
