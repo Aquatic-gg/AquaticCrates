@@ -1,6 +1,7 @@
 package cz.larkyy.aquaticcrates.camera;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
+import gg.aquatic.aquaticseries.lib.audience.WhitelistAudience;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.util.AbstractAudience;
 import org.bukkit.GameMode;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Camera {
@@ -22,20 +24,22 @@ public class Camera {
 
     public Camera(Location location, Player player) {
         this.player = player;
-        this.id = spawnEntity(location.clone().add(0,1.8,0));
+        this.id = spawnEntity(location.clone().add(0, 1.8, 0));
     }
 
     private int spawnEntity(Location location) {
         var id = nmsHandler().spawnEntity(location,
                 "armor_stand",
-                new AbstractAudience.SinglePlayerAudience(player),
+                new WhitelistAudience(new ArrayList<>() {{
+                    add(player.getUniqueId());
+                }}),
                 e -> {
                     ArmorStand as = (ArmorStand) e;
                     as.setInvisible(true);
                     as.setMarker(true);
                     as.setPersistent(false);
                 }
-                );
+        );
         move(location);
         return id;
     }
@@ -48,11 +52,15 @@ public class Camera {
         if (cameraMovement != null) {
             cameraMovement.stop();
         }
-        nmsHandler().teleportEntity(id,location, new AbstractAudience.SinglePlayerAudience(player));
+        nmsHandler().teleportEntity(id, location, new WhitelistAudience(new ArrayList<>() {{
+            add(player.getUniqueId());
+        }}));
     }
 
     public void move(Location location) {
-        nmsHandler().moveEntity(id,location, new AbstractAudience.SinglePlayerAudience(player));
+        nmsHandler().moveEntity(id, location, new WhitelistAudience(new ArrayList<>() {{
+            add(player.getUniqueId());
+        }}));
     }
 
     public void setMovement(Vector offSet, int tickDuration, float yawOffset, float pitchOffset) {
@@ -61,10 +69,10 @@ public class Camera {
         }
 
         Location l = location().clone().add(offSet);
-        l.setYaw(l.getYaw()+yawOffset);
-        l.setPitch(l.getPitch()+pitchOffset);
+        l.setYaw(l.getYaw() + yawOffset);
+        l.setPitch(l.getPitch() + pitchOffset);
 
-        cameraMovement = new CameraMovement(this,l,tickDuration);
+        cameraMovement = new CameraMovement(this, l, tickDuration);
         cameraMovement.start();
     }
 
@@ -76,23 +84,27 @@ public class Camera {
         if (!player.getLocation().getWorld().equals(location().getWorld())) {
             delay = 5;
         }
-        player.teleport(location().clone().add(0,2,0));
+        player.teleport(location().clone().add(0, 2, 0));
         new BukkitRunnable() {
             @Override
             public void run() {
                 id = spawnEntity(location());
                 player.setGameMode(GameMode.SPECTATOR);
                 nmsHandler().setPlayerInfoGamemode(GameMode.CREATIVE, player);
-                nmsHandler().setGamemode(GameMode.SPECTATOR,player);
-                nmsHandler().setSpectatorTarget(id,new AbstractAudience.SinglePlayerAudience(player));
+                nmsHandler().setGamemode(GameMode.SPECTATOR, player);
+                nmsHandler().setSpectatorTarget(id, new WhitelistAudience(new ArrayList<>() {{
+                    add(player.getUniqueId());
+                }}));
                 runnable.run();
             }
-        }.runTaskLater(AquaticCrates.instance(),delay);
+        }.runTaskLater(AquaticCrates.instance(), delay);
     }
 
     public void detachPlayer() {
-        nmsHandler().setSpectatorTarget(0,new AbstractAudience.SinglePlayerAudience(player));
-        nmsHandler().setGamemode(prevMode,player);
+        nmsHandler().setSpectatorTarget(0, new WhitelistAudience(new ArrayList<>() {{
+            add(player.getUniqueId());
+        }}));
+        nmsHandler().setGamemode(prevMode, player);
         player.setGameMode(prevMode);
         player.teleport(prevLocation);
     }
@@ -106,9 +118,11 @@ public class Camera {
         new BukkitRunnable() {
             @Override
             public void run() {
-                nmsHandler().despawnEntity(List.of(id),new AbstractAudience.SinglePlayerAudience(player));
+                nmsHandler().despawnEntity(List.of(id), new WhitelistAudience(new ArrayList<>() {{
+                    add(player.getUniqueId());
+                }}));
             }
-        }.runTaskLaterAsynchronously(AquaticCrates.instance(),1);
+        }.runTaskLaterAsynchronously(AquaticCrates.instance(), 1);
     }
 
     private NMSAdapter nmsHandler() {

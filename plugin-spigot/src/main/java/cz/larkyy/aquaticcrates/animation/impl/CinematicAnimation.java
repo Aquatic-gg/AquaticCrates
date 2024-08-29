@@ -6,10 +6,9 @@ import cz.larkyy.aquaticcrates.animation.AnimationManager;
 import cz.larkyy.aquaticcrates.animation.RewardItem;
 import cz.larkyy.aquaticcrates.camera.Camera;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
+import gg.aquatic.aquaticseries.lib.audience.WhitelistAudience;
 import gg.aquatic.aquaticseries.lib.interactable2.AbstractSpawnedPacketInteractable;
-import gg.aquatic.aquaticseries.lib.interactable2.AudienceList;
 import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
-import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.SpawnedPacketMegInteractable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -171,7 +170,7 @@ public class CinematicAnimation extends Animation {
     private AbstractSpawnedPacketInteractable<?> spawnModel() {
         var spawned = getAnimationManager().getCrate().getInteractable().spawnPacket(
                 getAnimationManager().getModelLocation(),
-                new AudienceList(new ArrayList<>(), AudienceList.Mode.WHITELIST),
+                new WhitelistAudience(new ArrayList<>() { { add(getPlayer().getUniqueId()); } }),
                 false
         );
         spawned.show(getPlayer());

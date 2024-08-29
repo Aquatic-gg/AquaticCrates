@@ -4,6 +4,7 @@ import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.hologram.Hologram;
 import cz.larkyy.aquaticcrates.utils.Utils;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.audience.WhitelistAudience;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.util.AbstractAudience;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -36,9 +37,9 @@ public class AquaticHologram extends Hologram {
         new BukkitRunnable() {
             @Override
             public void run() {
-                var audience = new AbstractAudience.PrivateAudience();
+                var audience = new WhitelistAudience(new ArrayList<>());
                 for (Player visitor : visitors) {
-                    audience.getCurrentlyViewing().add(visitor.getUniqueId());
+                    audience.add(visitor);
                 }
                 int i = getLines().size();
                 for (Integer id : ids) {
@@ -58,9 +59,9 @@ public class AquaticHologram extends Hologram {
         new BukkitRunnable() {
             @Override
             public void run() {
-                var audience = new AbstractAudience.PrivateAudience();
+                var audience = new WhitelistAudience(new ArrayList<>());
                 for (Player visitor : visitors) {
-                    audience.getCurrentlyViewing().add(visitor.getUniqueId());
+                    audience.add(visitor);
                 }
                 int i = getLines().size();
                 for (Integer id : ids) {
@@ -73,9 +74,9 @@ public class AquaticHologram extends Hologram {
 
     @Override
     public void despawn() {
-        var audience = new AbstractAudience.PrivateAudience();
+        var audience = new WhitelistAudience(new ArrayList<>());
         for (Player visitor : visitors) {
-            audience.getCurrentlyViewing().add(visitor.getUniqueId());
+            audience.add(visitor);
         }
         nmsHandler().despawnEntity(ids, audience);
         visitors.clear();
@@ -117,9 +118,9 @@ public class AquaticHologram extends Hologram {
     @Override
     public void hide() {
         hidden = true;
-        var audience = new AbstractAudience.PrivateAudience();
+        var audience = new WhitelistAudience(new ArrayList<>());
         for (Player visitor : visitors) {
-            audience.getCurrentlyViewing().add(visitor.getUniqueId());
+            audience.add(visitor);
         }
         nmsHandler().despawnEntity(ids, audience);
         ids.clear();
@@ -137,9 +138,9 @@ public class AquaticHologram extends Hologram {
 
     @Override
     public void update(Consumer<List<String>> consumer) {
-        var audience = new AbstractAudience.PrivateAudience();
+        var audience = new WhitelistAudience(new ArrayList<>());
         for (Player visitor : visitors) {
-            audience.getCurrentlyViewing().add(visitor.getUniqueId());
+            audience.add(visitor);
         }
         if (getLines() == null || getLines().isEmpty()) {
             nmsHandler().despawnEntity(ids, audience);
@@ -186,9 +187,9 @@ public class AquaticHologram extends Hologram {
     private int spawnLine(Location location, String text) {
         final String formattedLine = visitors.isEmpty() ? text : PlaceholderAPI.setPlaceholders(visitors.get(0), text);
 
-        var audience = new AbstractAudience.PrivateAudience();
+        var audience = new WhitelistAudience(new ArrayList<>());
         for (Player visitor : visitors) {
-            audience.getCurrentlyViewing().add(visitor.getUniqueId());
+            audience.add(visitor);
         }
 
         return nmsHandler().spawnEntity(

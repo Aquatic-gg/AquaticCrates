@@ -6,8 +6,8 @@ import cz.larkyy.aquaticcrates.animation.AnimationManager;
 import cz.larkyy.aquaticcrates.animation.RewardItem;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
+import gg.aquatic.aquaticseries.lib.audience.WhitelistAudience;
 import gg.aquatic.aquaticseries.lib.interactable2.AbstractSpawnedPacketInteractable;
-import gg.aquatic.aquaticseries.lib.interactable2.AudienceList;
 import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.ISpawnedMegInteractable;
 import org.bukkit.entity.Player;
@@ -15,6 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -40,7 +41,7 @@ public class PlacedCratePersonalisedAnimation extends Animation {
             } else if (placedCrateInteractable instanceof ISpawnedMegInteractable megInteractable) {
                 megInteractable.getDummy().setForceHidden(player,true);
             }
-            this.spawnedInteractable = placedCrateInteractable.getBase().spawnPacket(placedCrate.getLocation(), new AudienceList(List.of(player.getUniqueId()),AudienceList.Mode.WHITELIST), false);
+            this.spawnedInteractable = placedCrateInteractable.getBase().spawnPacket(placedCrate.getLocation(), new WhitelistAudience(new ArrayList<>() {{ add(player.getUniqueId()); }}), false);
             begin();
         }
     }

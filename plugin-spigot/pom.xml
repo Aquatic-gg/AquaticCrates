@@ -5,7 +5,7 @@
     <parent>
         <artifactId>AquaticCratesTesting</artifactId>
         <groupId>cz.larkyy</groupId>
-        <version>2.6.5</version>
+        <version>2.7.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -103,7 +103,7 @@
             <groupId>gg.aquatic.aquaticseries</groupId>
             <artifactId>aquaticlib-17</artifactId>
             <classifier>all</classifier>
-            <version>1.0.3.15</version>
+            <version>1.0.3.50</version>
             <exclusions>
                 <exclusion>
                     <groupId>gg.aquatic.aquaticseries</groupId>
