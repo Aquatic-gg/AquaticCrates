@@ -3,7 +3,9 @@ package cz.larkyy.aquaticcrates.config;
 import cz.larkyy.aquaticcrates.hologram.settings.AquaticHologramSettings;
 import cz.larkyy.aquaticcrates.hologram.settings.EmptyHologramSettings;
 import cz.larkyy.aquaticcrates.hologram.settings.HologramSettings;
+import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
+import gg.aquatic.aquaticseries.lib.betterhologram.HologramSerializer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -93,8 +95,7 @@ public class Config {
                 Double.parseDouble(offset[1]),
                 Double.parseDouble(offset[2])
         );
-        var lines = new ArrayList<AquaticHologram.Line>();
-        // TODO: Line serialization
+        var lines = new ArrayList<>(HologramSerializer.INSTANCE.load(ConfigExtKt.getSectionList(getConfiguration(), path)));
 
         return new AquaticHologramSettings(lines, vector);
     }
