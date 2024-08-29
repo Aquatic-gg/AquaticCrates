@@ -322,4 +322,7 @@ public class RewardItem {
         rewardShowcase = null;
     }
 
+    public AHologram getHologram() {
+        return hologram;
+    }
 }

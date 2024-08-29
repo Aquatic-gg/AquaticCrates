@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcrates.crate.CrateListener;
 import cz.larkyy.aquaticcrates.crate.price.OpenPrices;
 import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
 import cz.larkyy.aquaticcrates.dabatase.DatabaseManager;
+import cz.larkyy.aquaticcrates.hologram.HologramHandler;
 import cz.larkyy.aquaticcrates.item.ItemHandler;
 import cz.larkyy.aquaticcrates.messages.MessageHandler;
 import cz.larkyy.aquaticcrates.nms.ModelEngineAdapter;
@@ -52,6 +53,7 @@ public final class AquaticCrates extends JavaPlugin {
     private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean configDebug = true;
     public static AquaticSeriesLib aquaticSeriesLib;
+    public static HologramHandler hologramHandler;
 
     public static Format messageFormat;
 
@@ -84,6 +86,7 @@ public final class AquaticCrates extends JavaPlugin {
         playerHandler = new PlayerHandler();
         databaseManager = new DatabaseManager();
         messageHandler = new MessageHandler();
+        hologramHandler = new HologramHandler();
 
         new Metrics(this, 19254);
 
@@ -245,5 +248,9 @@ public final class AquaticCrates extends JavaPlugin {
 
     public static ModelEngineAdapter getModelEngineAdapter() {
         return modelEngineAdapter;
+    }
+
+    public static HologramHandler getHologramHandler() {
+        return hologramHandler;
     }
 }

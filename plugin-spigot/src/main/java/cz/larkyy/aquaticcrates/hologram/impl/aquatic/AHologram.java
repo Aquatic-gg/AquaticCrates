@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcrates.hologram.impl.aquatic;
 
+import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.hologram.Hologram;
 import gg.aquatic.aquaticseries.lib.audience.AquaticAudience;
 import gg.aquatic.aquaticseries.lib.audience.GlobalAudience;
@@ -39,6 +40,7 @@ public class AHologram extends Hologram {
                 getLocation(),
                 50.0
         );
+        AquaticCrates.getHologramHandler().addHologram(hologram);
     }
 
     @Override
@@ -51,6 +53,7 @@ public class AHologram extends Hologram {
     @Override
     public void despawn() {
         hologram.despawn();
+        AquaticCrates.getHologramHandler().removeHologram(hologram);
         hologram = null;
     }
 
