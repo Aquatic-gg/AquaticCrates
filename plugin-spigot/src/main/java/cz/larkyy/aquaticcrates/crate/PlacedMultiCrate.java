@@ -2,17 +2,12 @@ package cz.larkyy.aquaticcrates.crate;
 
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimationHandler;
 import cz.larkyy.aquaticcrates.hologram.Hologram;
-import cz.larkyy.aquaticcrates.hologram.impl.AquaticHologram;
-import cz.larkyy.aquaticcrates.model.Model;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
-import gg.aquatic.aquaticseries.lib.interactable2.AbstractSpawnedPacketInteractable;
+import gg.aquatic.aquaticseries.lib.audience.GlobalAudience;
 import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
-import gg.aquatic.aquaticseries.lib.interactable2.impl.block.SpawnedPacketBlockInteractable;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,11 +23,9 @@ public class PlacedMultiCrate {
     public PlacedMultiCrate(MultiCrate multiCrate, Location location) {
         this.location = location;
         this.multiCrate = multiCrate;
-        this.hologram = new AquaticHologram(location.clone().add(0,multiCrate.getHologramYOffset(),0),multiCrate.getHologram());
-        hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()), list -> {});
+        this.hologram = multiCrate.getHologram().create(location);
+        hologram.spawn(new GlobalAudience(), list -> {});
         spawnedInteractable = multiCrate.getInteractable().spawn(location, false);
-        //this.model = Model.create(multiCrate.getModel(), location,null,null);
-
         placedCrates = createPlacedCrates();
         this.modelAnimationHandler = new ModelAnimationHandler(spawnedInteractable,multiCrate);
     }

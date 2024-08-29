@@ -5,12 +5,11 @@ import cz.larkyy.aquaticcrates.animation.showcase.ItemRewardShowcase;
 import cz.larkyy.aquaticcrates.animation.showcase.ModelRewardShowcase;
 import cz.larkyy.aquaticcrates.animation.showcase.RewardShowcase;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
-import cz.larkyy.aquaticcrates.hologram.Hologram;
-import cz.larkyy.aquaticcrates.hologram.impl.AquaticHologram;
+import cz.larkyy.aquaticcrates.hologram.impl.aquatic.AHologram;
 import cz.larkyy.aquaticcrates.model.Model;
 import cz.larkyy.aquaticcrates.utils.RewardUtils;
+import gg.aquatic.aquaticseries.lib.audience.GlobalAudience;
 import gg.aquatic.aquaticseries.lib.audience.WhitelistAudience;
-import gg.aquatic.aquaticseries.lib.util.AbstractAudience;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +36,7 @@ public class RewardItem {
     private final int rumblingPeriod;
     private final int aliveLength;
 
-    private Hologram hologram;
+    private AHologram hologram;
     private Reward cachedReward;
     private final Vector offset;
     private RewardShowcase rewardShowcase;
@@ -82,18 +81,19 @@ public class RewardItem {
         despawnHologram();
 
         cachedReward = reward;
-        Location loc = rewardShowcase.getLocation().clone().add(0,reward.getHologramYOffset(),0);
-        hologram = new AquaticHologram(loc, reward.getHologram());
+        var settings =  reward.getHologram();
+        Location loc = rewardShowcase.getLocation().clone().add(settings.getOffset());
+        hologram = new AHologram(loc,settings.getLines());
         if (p == null) {
             hologram.spawn(
-                    new ArrayList<>(Bukkit.getOnlinePlayers()),
+                    new GlobalAudience(),
                     list -> {
                         list.replaceAll(s ->
                                 s.replace("%reward-name%",reward.getItem().getItem().getItemMeta().getDisplayName()));
                     });
         } else {
             hologram.spawn(
-                    Arrays.asList(p),
+                    new WhitelistAudience(new ArrayList<>() {{ add(p.getUniqueId()); }}),
                     list -> {
                         list.replaceAll(s ->
                                 s.replace("%reward-name%",reward.getItem().getItem().getItemMeta().getDisplayName()));
@@ -111,13 +111,10 @@ public class RewardItem {
         }
         cachedReward = reward;
 
-        Location loc = rewardShowcase.getLocation().clone().add(0,reward.getHologramYOffset(),0);
-        hologram.setLocation(loc);
-        hologram.setLines(reward.getHologram());
-        hologram.update(list -> {
-            list.replaceAll(s ->
-                    s.replace("%reward-name%",reward.getItem().getItem().getItemMeta().getDisplayName()));
-        });
+        var settings =  reward.getHologram();
+        Location loc = rewardShowcase.getLocation().clone().add(settings.getOffset());
+        hologram.move(loc);
+        hologram.setLines(settings.getLines());
         /*
         if (p == null) {
             hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()));
@@ -136,10 +133,12 @@ public class RewardItem {
     }
 
     private void startHologramMoving() {
+
+        var settings = cachedReward.getHologram();
         hologramRunnable = new BukkitRunnable() {
             @Override
             public void run() {
-                hologram.move(rewardShowcase.getLocation().clone().add(0,cachedReward.getHologramYOffset(),0));
+                hologram.move(rewardShowcase.getLocation().clone().add(settings.getOffset()));
             }
         };
         hologramRunnable.runTaskTimer(AquaticCrates.instance(),0,1);

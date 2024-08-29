@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcrates.hologram;
 
+import gg.aquatic.aquaticseries.lib.audience.AquaticAudience;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -9,22 +10,16 @@ import java.util.function.Consumer;
 public abstract class Hologram {
 
     private Location location;
-    private List<String> lines;
 
-    public Hologram(Location location, List<String> lines) {
+    public Hologram(Location location) {
         this.location = location;
-        this.lines = lines;
     }
 
-    public abstract void teleport(Location location);
     public abstract void move(Location location);
 
     public abstract void despawn();
 
-    public abstract void spawn(List<Player> visitors, Consumer<List<String>> consumer);
-
-    public abstract void hide();
-    public abstract void show();
+    public abstract void spawn(AquaticAudience audience, Consumer<List<String>> consumer);
 
     public abstract void update(Consumer<List<String>> consumer);
 
@@ -35,13 +30,5 @@ public abstract class Hologram {
 
     public void setLocation(Location location) {
         this.location = location;
-    }
-
-    public List<String> getLines() {
-        return lines;
-    }
-
-    public void setLines(List<String> lines) {
-        this.lines = lines;
     }
 }

@@ -1,6 +1,8 @@
 package cz.larkyy.aquaticcrates.crate.reward;
 
+import cz.larkyy.aquaticcrates.hologram.settings.AquaticHologramSettings;
 import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
+import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
 import gg.aquatic.aquaticseries.lib.chance.IChance;
 import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
@@ -21,11 +23,10 @@ public class Reward implements IChance {
     private final boolean giveItem;
     private final String modelAnimation;
     private final List<ConfiguredRequirement<Player>> winConditions;
-    private final List<String> hologram;
-    private final double hologramYOffset;
+    private final AquaticHologramSettings hologram;
     private final String displayName;
 
-    public Reward(String identifier, String displayName, CustomItem item, double chance, List<ConfiguredAction<Player>> actions, boolean giveItem, List<String> hologram, double hologramYOffset, String modelAnimation,
+    public Reward(String identifier, String displayName, CustomItem item, double chance, List<ConfiguredAction<Player>> actions, boolean giveItem, AquaticHologramSettings hologram, String modelAnimation,
                   List<ConfiguredRequirement<Player>> winConditions, String model, float modelYaw) {
         this.identifier = identifier;
         this.item = item;
@@ -39,7 +40,6 @@ public class Reward implements IChance {
         this.giveItem = giveItem;
         this.modelAnimation = modelAnimation;
         this.hologram = hologram;
-        this.hologramYOffset = hologramYOffset;
         this.winConditions = winConditions;
         this.model = model;
         this.modelYaw = modelYaw;
@@ -68,12 +68,8 @@ public class Reward implements IChance {
         return model;
     }
 
-    public List<String> getHologram() {
+    public AquaticHologramSettings getHologram() {
         return hologram;
-    }
-
-    public double getHologramYOffset() {
-        return hologramYOffset;
     }
 
     public String getIdentifier() {

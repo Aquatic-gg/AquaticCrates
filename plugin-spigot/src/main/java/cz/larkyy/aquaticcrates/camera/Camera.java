@@ -4,6 +4,7 @@ import cz.larkyy.aquaticcrates.AquaticCrates;
 import gg.aquatic.aquaticseries.lib.audience.WhitelistAudience;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.util.AbstractAudience;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -52,15 +53,19 @@ public class Camera {
         if (cameraMovement != null) {
             cameraMovement.stop();
         }
-        nmsHandler().teleportEntity(id, location, new WhitelistAudience(new ArrayList<>() {{
-            add(player.getUniqueId());
-        }}));
+        Bukkit.getScheduler().runTask(AquaticCrates.instance(), () -> {
+            nmsHandler().teleportEntity(id, location, new WhitelistAudience(new ArrayList<>() {{
+                add(player.getUniqueId());
+            }}));
+        });
     }
 
     public void move(Location location) {
-        nmsHandler().moveEntity(id, location, new WhitelistAudience(new ArrayList<>() {{
-            add(player.getUniqueId());
-        }}));
+        Bukkit.getScheduler().runTask(AquaticCrates.instance(), () -> {
+            nmsHandler().moveEntity(id, location, new WhitelistAudience(new ArrayList<>() {{
+                add(player.getUniqueId());
+            }}));
+        });
     }
 
     public void setMovement(Vector offSet, int tickDuration, float yawOffset, float pitchOffset) {

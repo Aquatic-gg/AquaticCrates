@@ -1,39 +1,32 @@
 package cz.larkyy.aquaticcrates.crate;
 
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
+import cz.larkyy.aquaticcrates.hologram.settings.HologramSettings;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.interactable2.AbstractInteractable;
 import org.bukkit.Material;
 
-import java.util.List;
-
 public class CrateBase {
     private final String identifier;
     private final AquaticString displayName;
-    private final List<String> hologram;
-    private final double hologramYOffset;
+    private final HologramSettings hologram;
     private Material blockType = Material.BARRIER;
     private final int hitboxHeight;
     private final int hitboxWidth;
     private final ModelSettings modelSettings;
     private final AbstractInteractable<?> interactable;
 
-    public CrateBase(String identifier, AquaticString displayName, ModelSettings modelSettings, List<String> hologram, double hologramYOffset, int hitboxHeight, int hitboxWidth, AbstractInteractable<?> interactable) {
+    public CrateBase(String identifier, AquaticString displayName, ModelSettings modelSettings, HologramSettings hologram, int hitboxHeight, int hitboxWidth, AbstractInteractable<?> interactable) {
         this.identifier = identifier;
         this.displayName = displayName;
         this.modelSettings = modelSettings;
         this.hologram = hologram;
-        this.hologramYOffset = hologramYOffset;
         this.hitboxHeight = hitboxHeight;
         this.hitboxWidth = hitboxWidth;
         this.interactable = interactable;
     }
 
-    public double getHologramYOffset() {
-        return hologramYOffset;
-    }
-
-    public List<String> getHologram() {
+    public HologramSettings getHologram() {
         return hologram;
     }
 

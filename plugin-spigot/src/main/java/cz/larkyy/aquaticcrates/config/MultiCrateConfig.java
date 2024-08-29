@@ -33,7 +33,6 @@ public class MultiCrateConfig extends Config {
                 StringExtKt.toAquatic(getConfiguration().getString("display-name",identifier)),
                 loadModelSettings(),
                 loadHologram("hologram"),
-                getConfiguration().getDouble("hologram-y-offset",0),
                 getConfiguration().getStringList("crates"),
                 getConfiguration().getInt("hitbox-height",1),
                 getConfiguration().getInt("hitbox-width",1),
@@ -60,13 +59,6 @@ public class MultiCrateConfig extends Config {
             animations.add(new ModelAnimation(animationId,animationLength));
         }
         return new ModelSettings(modelId,new ModelAnimations(animations,period));
-    }
-
-    private List<String> loadHologram(String path) {
-        if (!getConfiguration().contains(path)) {
-            return new ArrayList<>();
-        }
-        return getConfiguration().getStringList(path);
     }
 
     private MultiPreviewGUISettings loadMultiPreviewGUI(String crateId) {

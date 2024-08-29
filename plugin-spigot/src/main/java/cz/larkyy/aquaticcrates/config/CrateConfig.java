@@ -20,6 +20,12 @@ import cz.larkyy.aquaticcrates.crate.price.*;
 import cz.larkyy.aquaticcrates.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
+import cz.larkyy.aquaticcrates.hologram.CrateHologram;
+import cz.larkyy.aquaticcrates.hologram.impl.EmptyHologram;
+import cz.larkyy.aquaticcrates.hologram.impl.aquatic.AHologram;
+import cz.larkyy.aquaticcrates.hologram.settings.AquaticHologramSettings;
+import cz.larkyy.aquaticcrates.hologram.settings.EmptyHologramSettings;
+import cz.larkyy.aquaticcrates.hologram.settings.HologramSettings;
 import cz.larkyy.aquaticcrates.menu.Menu;
 import cz.larkyy.aquaticcrates.menu.MenuItem;
 import gg.aquatic.aquaticseries.lib.ConfigExtKt;
@@ -28,6 +34,7 @@ import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
 import gg.aquatic.aquaticseries.lib.block.AquaticBlock;
 import gg.aquatic.aquaticseries.lib.block.AquaticMultiBlock;
 import gg.aquatic.aquaticseries.lib.block.BlockShape;
@@ -53,6 +60,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.util.*;
@@ -90,7 +98,6 @@ public class CrateConfig extends Config {
                 rerollManagerAtomicReference,
                 animationAtomicReference,
                 loadHologram("hologram"),
-                getConfiguration().getDouble("hologram-y-offset", 0),
                 getConfiguration().getString("open-permission"),
                 getConfiguration().getBoolean("instant-open-while-sneaking", true),
                 loadPriceHandler(),
@@ -158,17 +165,17 @@ public class CrateConfig extends Config {
         if (type.equals("multiblock")) {
             var blockSection = getConfiguration().getConfigurationSection("visual.blocks");
             if (blockSection == null) return null;
-            var ingredients = new HashMap<Character,AquaticBlock>();
+            var ingredients = new HashMap<Character, AquaticBlock>();
             blockSection.getKeys(false).forEach(key -> {
                 var block = AquaticBlockSerializer.INSTANCE.load(Objects.requireNonNull(blockSection.getConfigurationSection(key)));
                 ingredients.put(key.charAt(0), block);
             });
             var shapeSection = getConfiguration().getConfigurationSection("visual.layers");
             if (shapeSection == null) return null;
-            var layers = new HashMap<Integer,Map<Integer,String>>();
+            var layers = new HashMap<Integer, Map<Integer, String>>();
             shapeSection.getKeys(false).forEach(key -> {
                 var layer = shapeSection.getConfigurationSection(key);
-                var layerMap = new HashMap<Integer,String>();
+                var layerMap = new HashMap<Integer, String>();
                 layer.getKeys(false).forEach(layerKey -> {
                     var line = layer.getString(layerKey);
                     layerMap.put(Integer.parseInt(layerKey), line);
@@ -377,20 +384,12 @@ public class CrateConfig extends Config {
                 chance,
                 actions,
                 giveItem,
-                loadHologram(path + ".hologram"),
-                getConfiguration().getDouble(path + ".hologram-y-offset", 0),
+                loadAquaticHologram(path + ".hologram"),
                 modelAnimation,
                 conditions,
                 model,
                 modelYaw
         );
-    }
-
-    private List<String> loadHologram(String path) {
-        if (!getConfiguration().contains(path)) {
-            return new ArrayList<>();
-        }
-        return getConfiguration().getStringList(path);
     }
 
     private PreviewGUISettings loadPreviewGUI(String crateId) {
@@ -575,7 +574,7 @@ public class CrateConfig extends Config {
 
     private void loadAnimationManager(Crate c, AtomicReference<AnimationManager> atomicReference) {
         AnimationManager.Type type = AnimationManager.Type.valueOf(getConfiguration().getString("animation.type", "INSTANT").toUpperCase());
-        var tasks = new TreeMap<Integer,List<ConfiguredAction<Animation>>>();
+        var tasks = new TreeMap<Integer, List<ConfiguredAction<Animation>>>();
         if (getConfiguration().contains("animation.actions")) {
             tasks = TaskSerializer.load(getConfiguration().getConfigurationSection("animation.actions"));
         }

@@ -17,6 +17,7 @@ import cz.larkyy.aquaticcrates.crate.price.PriceHandler;
 import cz.larkyy.aquaticcrates.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcrates.crate.reroll.impl.MenuReroll;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
+import cz.larkyy.aquaticcrates.hologram.settings.HologramSettings;
 import cz.larkyy.aquaticcrates.messages.Messages;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import cz.larkyy.aquaticcrates.utils.RewardUtils;
@@ -56,13 +57,13 @@ public class Crate extends CrateBase {
                  AtomicReference<RerollGUI> rerollGUI,
                  AtomicReference<RerollManager> rerollManager,
                  AtomicReference<AnimationManager> animationManager,
-                 List<String> hologram,
-                 double hologramYOffset, String permission, boolean instantWhileSneaking,
+                 HologramSettings hologram,
+                 String permission, boolean instantWhileSneaking,
                  PriceHandler priceHandler, TreeMap<Integer, Milestone> milestones,
                  HashMap<Integer,Milestone> repeatableMilestones, int hitboxHeight,
                  int hitboxWidth, PreviewGUISettings previewGUISettings,
                  AbstractInteractable<?> interactable) {
-        super(identifier,displayName,modelSettings,hologram,hologramYOffset,hitboxHeight,hitboxWidth, interactable);
+        super(identifier,displayName,modelSettings,hologram,hitboxHeight,hitboxWidth, interactable);
         this.previewGUISettings = previewGUISettings;
         this.key = new Key(key,this,requiresCrateToOpen, mustBeHeld);
         this.rewards = rewards;
