@@ -20,12 +20,6 @@ import cz.larkyy.aquaticcrates.crate.price.*;
 import cz.larkyy.aquaticcrates.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
-import cz.larkyy.aquaticcrates.hologram.CrateHologram;
-import cz.larkyy.aquaticcrates.hologram.impl.EmptyHologram;
-import cz.larkyy.aquaticcrates.hologram.impl.aquatic.AHologram;
-import cz.larkyy.aquaticcrates.hologram.settings.AquaticHologramSettings;
-import cz.larkyy.aquaticcrates.hologram.settings.EmptyHologramSettings;
-import cz.larkyy.aquaticcrates.hologram.settings.HologramSettings;
 import cz.larkyy.aquaticcrates.menu.Menu;
 import cz.larkyy.aquaticcrates.menu.MenuItem;
 import gg.aquatic.aquaticseries.lib.ConfigExtKt;
@@ -196,7 +190,13 @@ public class CrateConfig extends Config {
                     consumer
             );
         }
-        var block = AquaticBlockSerializer.INSTANCE.load(getConfiguration().getConfigurationSection("visual"));
+        var section = getConfiguration().getConfigurationSection("visual");
+        AquaticBlock block;
+        if (section != null) {
+            block = AquaticBlockSerializer.INSTANCE.load(getConfiguration().getConfigurationSection("visual"));
+        } else {
+            block = new VanillaBlock(Material.STONE.createBlockData());
+        }
         return new BlockInteractable<>(
                 new TempInteractableBase(),
                 "aquaticcrates_" + crateId,
