@@ -17,6 +17,7 @@ import gg.aquatic.aquaticseries.lib.inventory.lib.title.TitleHolder;
 import gg.aquatic.aquaticseries.lib.inventory.lib.title.component.BasicTitleComponent;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
 import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -44,29 +45,74 @@ public class PreviewGUI extends PersonalizedInventory {
             var button = entry.getValue();
             switch (id.toLowerCase()) {
                 case "next-page" -> {
-                    addActionToButton(button, e -> {
-                        openNextPage(getPlayer(), placedCrate, page);
-                        e.getOriginalEvent().setCancelled(true);
-                    });
+                    var newButton = new Button(
+                            button.getItemStack(),
+                            button.getSlotSelection(),
+                            onClick -> {
+                                var previousAction = button.getOnClick();
+                                if (previousAction != null) {
+                                    previousAction.accept(onClick);
+                                }
+                                openNextPage(getPlayer(), placedCrate, page);
+                                onClick.getOriginalEvent().setCancelled(true);
+                            },
+                            button.getPriority()
+                    );
+                    this.getComponentHandler().getComponents().put(id, newButton);
+                    continue;
                 }
                 case "prev-page" -> {
-                    addActionToButton(button, e -> {
-                        openPrevPage(getPlayer(), placedCrate, page);
-                        e.getOriginalEvent().setCancelled(true);
-                    });
+                    var newButton = new Button(
+                            button.getItemStack(),
+                            button.getSlotSelection(),
+                            onClick -> {
+                                var previousAction = button.getOnClick();
+                                if (previousAction != null) {
+                                    previousAction.accept(onClick);
+                                }
+                                openPrevPage(getPlayer(), placedCrate, page);
+                                onClick.getOriginalEvent().setCancelled(true);
+                            },
+                            button.getPriority()
+                    );
+                    this.getComponentHandler().getComponents().put(id, newButton);
+                    continue;
                 }
                 case "open-button" -> {
-                    addActionToButton(button, e -> {
-                        getPlayer().closeInventory();
-                        crate.open(CratePlayer.get(getPlayer()), placedCrate, false);
-                        e.getOriginalEvent().setCancelled(true);
-                    });
+                    Bukkit.broadcastMessage("loading open button...");
+                    var newButton = new Button(
+                            button.getItemStack(),
+                            button.getSlotSelection(),
+                            onClick -> {
+                                var previousAction = button.getOnClick();
+                                if (previousAction != null) {
+                                    previousAction.accept(onClick);
+                                }
+                                getPlayer().closeInventory();
+                                crate.open(CratePlayer.get(getPlayer()), placedCrate, false);
+                                onClick.getOriginalEvent().setCancelled(true);
+                            },
+                            button.getPriority()
+                    );
+                    this.getComponentHandler().getComponents().put(id, newButton);
+                    continue;
                 }
                 case "close-button" -> {
-                    addActionToButton(button, e -> {
-                        getPlayer().closeInventory();
-                        e.getOriginalEvent().setCancelled(true);
-                    });
+                    var newButton = new Button(
+                            button.getItemStack(),
+                            button.getSlotSelection(),
+                            onClick -> {
+                                var previousAction = button.getOnClick();
+                                if (previousAction != null) {
+                                    previousAction.accept(onClick);
+                                }
+                                getPlayer().closeInventory();
+                                onClick.getOriginalEvent().setCancelled(true);
+                            },
+                            button.getPriority()
+                    );
+                    this.getComponentHandler().getComponents().put(id, newButton);
+                    continue;
                 }
                 default -> {
 

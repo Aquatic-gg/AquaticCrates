@@ -24,7 +24,6 @@ public class AHologram extends Hologram {
     private AquaticHologram hologram = null;
 
     public void setLines(List<AquaticHologram.Line> lines) {
-        if (hologram == null) return;
         despawn();
         this.lines = new ArrayList<>(lines);
         createHologram();
@@ -32,11 +31,15 @@ public class AHologram extends Hologram {
     }
 
     private void createHologram() {
+        var lines = new ArrayList<AquaticHologram.Line>();
+        for (AquaticHologram.Line line : this.lines) {
+            lines.add(line.clone());
+        }
         hologram = new AquaticHologram(
                 player -> audience.canBeApplied(player),
                 null,
                 lines,
-                AquaticHologram.Anchor.BOTTOM,
+                AquaticHologram.Anchor.MIDDLE,
                 getLocation(),
                 50.0
         );
@@ -52,14 +55,15 @@ public class AHologram extends Hologram {
 
     @Override
     public void despawn() {
-        hologram.despawn();
+        if (hologram == null) return;
         AquaticCrates.getHologramHandler().removeHologram(hologram);
+        hologram.despawn();
         hologram = null;
     }
 
     @Override
     public void spawn(AquaticAudience audience, Consumer<List<String>> consumer) {
-        if (hologram != null) despawn();
+        despawn();
         this.audience = audience;
         createHologram();
         hologram.update();

@@ -6,6 +6,7 @@ import cz.larkyy.aquaticcrates.hologram.settings.HologramSettings;
 import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
 import gg.aquatic.aquaticseries.lib.betterhologram.HologramSerializer;
+import gg.aquatic.aquaticseries.lib.betterhologram.impl.TextDisplayLine;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -97,6 +98,11 @@ public class Config {
                 Double.parseDouble(offset[2])
         );
         var lines = new ArrayList<>(HologramSerializer.INSTANCE.load(ConfigExtKt.getSectionList(section, "lines")));
+        for (AquaticHologram.Line line : lines) {
+            if (line instanceof TextDisplayLine textDisplayLine) {
+                Bukkit.getConsoleSender().sendMessage("Loaded TextDisplay line: "+textDisplayLine.getCurrentKeyframe().getText().getString());
+            }
+        }
         Bukkit.getConsoleSender().sendMessage("Hologram has been loaded with "+lines.size()+" lines");
 
         return new AquaticHologramSettings(lines, vector);
