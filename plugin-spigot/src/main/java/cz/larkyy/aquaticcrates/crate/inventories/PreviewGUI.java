@@ -79,7 +79,6 @@ public class PreviewGUI extends PersonalizedInventory {
                     continue;
                 }
                 case "open-button" -> {
-                    Bukkit.broadcastMessage("loading open button...");
                     var newButton = new Button(
                             button.getItemStack(),
                             button.getSlotSelection(),
