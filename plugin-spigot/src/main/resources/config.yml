@@ -1,2 +1,2 @@
 config-debug-messages: true
-message-format: LEGACY
+message-format: MINIMESSAGE
