@@ -40,7 +40,7 @@ public class PlacedCratePersonalisedAnimation extends Animation {
             } else if (placedCrateInteractable instanceof ISpawnedMegInteractable megInteractable) {
                 megInteractable.getDummy().setForceHidden(player,true);
             }
-            this.spawnedInteractable = placedCrateInteractable.getBase().spawnPacket(placedCrate.getLocation(), new WhitelistAudience(new ArrayList<>() {{ add(player.getUniqueId()); }}), false);
+            this.spawnedInteractable = placedCrateInteractable.getBase().spawnPacket(placedCrate.getLocation(), new WhitelistAudience(new ArrayList<>() {{ add(player.getUniqueId()); }}), false, false);
             begin();
         }
     }

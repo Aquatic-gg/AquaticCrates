@@ -171,6 +171,7 @@ public class CinematicAnimation extends Animation {
         var spawned = getAnimationManager().getCrate().getInteractable().spawnPacket(
                 getAnimationManager().getModelLocation(),
                 new WhitelistAudience(new ArrayList<>() { { add(getPlayer().getUniqueId()); } }),
+                false,
                 false
         );
         spawned.show(getPlayer());

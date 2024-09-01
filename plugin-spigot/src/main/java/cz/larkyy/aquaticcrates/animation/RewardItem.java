@@ -42,7 +42,7 @@ public class RewardItem {
     private RewardShowcase rewardShowcase;
     private final boolean easeOut;
 
-    public static final NamespacedKey REWARD_ITEM_KEY = new NamespacedKey(AquaticCrates.instance(),"AQUATICCRATES_REWARD_ITEM");
+    public static final NamespacedKey REWARD_ITEM_KEY = new NamespacedKey(AquaticCrates.instance(), "AQUATICCRATES_REWARD_ITEM");
     private final Player p;
 
     public RewardItem(
@@ -81,22 +81,25 @@ public class RewardItem {
         despawnHologram();
 
         cachedReward = reward;
-        var settings =  reward.getHologram();
+        var settings = reward.getHologram();
         Location loc = rewardShowcase.getLocation().clone().add(settings.getOffset());
-        hologram = new AHologram(loc,settings.getLines());
+        Bukkit.broadcastMessage("Spawning hologram with "+settings.getLines().size()+" lines");
+        hologram = new AHologram(loc, settings.getLines());
         if (p == null) {
             hologram.spawn(
                     new GlobalAudience(),
                     list -> {
                         list.replaceAll(s ->
-                                s.replace("%reward-name%",reward.getItem().getItem().getItemMeta().getDisplayName()));
+                                s.replace("%reward-name%", reward.getItem().getItem().getItemMeta().getDisplayName()));
                     });
         } else {
             hologram.spawn(
-                    new WhitelistAudience(new ArrayList<>() {{ add(p.getUniqueId()); }}),
+                    new WhitelistAudience(new ArrayList<>() {{
+                        add(p.getUniqueId());
+                    }}),
                     list -> {
                         list.replaceAll(s ->
-                                s.replace("%reward-name%",reward.getItem().getItem().getItemMeta().getDisplayName()));
+                                s.replace("%reward-name%", reward.getItem().getItem().getItemMeta().getDisplayName()));
                     });
         }
     }
@@ -111,10 +114,11 @@ public class RewardItem {
         }
         cachedReward = reward;
 
-        var settings =  reward.getHologram();
+        var settings = reward.getHologram();
         Location loc = rewardShowcase.getLocation().clone().add(settings.getOffset());
         hologram.move(loc);
         hologram.setLines(settings.getLines());
+        Bukkit.broadcastMessage("Updating hologram with "+settings.getLines().size()+" lines");
         /*
         if (p == null) {
             hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()));
@@ -144,12 +148,13 @@ public class RewardItem {
                 hologram.move(rewardShowcase.getLocation().clone().add(settings.getOffset()));
             }
         };
-        hologramRunnable.runTaskTimer(AquaticCrates.instance(),0,1);
+        hologramRunnable.runTaskTimer(AquaticCrates.instance(), 0, 1);
     }
 
     private void startRumbling() {
         rumbleRunnable = new BukkitRunnable() {
             int tick = 0;
+
             @Override
             public void run() {
                 if (tick >= rumblingLength) {
@@ -169,7 +174,7 @@ public class RewardItem {
 
                 if (update) {
                     var rewards = RewardUtils
-                            .getPossibleRewards(animation.getPlayer(),animation.getAnimationManager().getCrate().getRewards());
+                            .getPossibleRewards(animation.getPlayer(), animation.getAnimationManager().getCrate().getRewards());
 
                     Reward r = (Reward) RewardUtils.getRandomReward(
                             rewards,
@@ -181,7 +186,7 @@ public class RewardItem {
                 tick++;
             }
         };
-        rumbleRunnable.runTaskTimer(AquaticCrates.instance(),0,1);
+        rumbleRunnable.runTaskTimer(AquaticCrates.instance(), 0, 1);
     }
 
     private boolean shouldPerformAction(int tick, int period, int duration) {
@@ -208,17 +213,18 @@ public class RewardItem {
     private void updateItem(Reward reward) {
         if (rewardShowcase == null) {
             spawnItem(reward);
+
         }
 
         var loc = rewardShowcase.getLocation().clone();
         if (rewardShowcase instanceof ItemRewardShowcase itemRewardShowcase) {
             if (reward.getModel() != null) {
-                String model = PlaceholderAPI.setPlaceholders(p,reward.getModel());
+                String model = PlaceholderAPI.setPlaceholders(p, reward.getModel());
                 rewardShowcase.destroy();
                 rewardShowcase = null;
                 var l = loc.clone();
                 l.setYaw(reward.getModelYaw());
-                rewardShowcase = new ModelRewardShowcase(Model.create(model,l,p,p));
+                rewardShowcase = new ModelRewardShowcase(Model.create(model, l, p, p));
                 //spawnItem(reward);
             } else {
                 itemRewardShowcase.getItem().setItemStack(reward.getItem().getItem());
@@ -228,7 +234,7 @@ public class RewardItem {
             if (reward.getModel() != null) {
                 rewardShowcase = null;
                 {
-                    var item = loc.getWorld().dropItem(loc,reward.getItem().getItem());
+                    var item = loc.getWorld().dropItem(loc, reward.getItem().getItem());
                     item.setItemStack(reward.getItem().getItem().clone());
                     item.setPickupDelay(Integer.MAX_VALUE);
                     item.setGravity(gravity);
@@ -243,15 +249,15 @@ public class RewardItem {
                         for (Player player : players) {
                             audience.add(player);
                         }
-                        AquaticCrates.getNmsHandler().despawnEntity(List.of(item.getEntityId()),audience);
+                        AquaticCrates.getNmsHandler().despawnEntity(List.of(item.getEntityId()), audience);
                     }
                     rewardShowcase = new ItemRewardShowcase(item);
                 }
             } else {
                 var l = loc.clone();
                 l.setYaw(reward.getModelYaw());
-                String model = PlaceholderAPI.setPlaceholders(p,reward.getModel());
-                rewardShowcase = new ModelRewardShowcase(Model.create(model,l,p,p));
+                String model = PlaceholderAPI.setPlaceholders(p, reward.getModel());
+                rewardShowcase = new ModelRewardShowcase(Model.create(model, l, p, p));
             }
         }
         updateHologram(reward);
@@ -264,11 +270,11 @@ public class RewardItem {
                 despawn();
             }
         };
-        aliveRunnable.runTaskLater(AquaticCrates.instance(),aliveLength);
+        aliveRunnable.runTaskLater(AquaticCrates.instance(), aliveLength);
     }
 
     private void spawnItem(Reward reward) {
-        Location location = animation.getModel().getLocation().clone().add(0,1,0).add(offset);
+        Location location = animation.getModel().getLocation().clone().add(0, 1, 0).add(offset);
         if (location.getChunk().isLoaded()) {
             location.getChunk().load();
         }
@@ -276,10 +282,10 @@ public class RewardItem {
         if (reward.getModel() != null) {
             var l = location.clone();
             l.setYaw(reward.getModelYaw());
-            String model = PlaceholderAPI.setPlaceholders(p,reward.getModel());
-            rewardShowcase = new ModelRewardShowcase(Model.create(model,l,p,p));
+            String model = PlaceholderAPI.setPlaceholders(p, reward.getModel());
+            rewardShowcase = new ModelRewardShowcase(Model.create(model, l, p, p));
         } else {
-            var item = location.getWorld().dropItem(location,reward.getItem().getItem());
+            var item = location.getWorld().dropItem(location, reward.getItem().getItem());
             item.setItemStack(reward.getItem().getItem().clone());
             item.setPickupDelay(Integer.MAX_VALUE);
             item.setGravity(gravity);
@@ -294,7 +300,7 @@ public class RewardItem {
                 for (Player player : players) {
                     audience.add(player);
                 }
-                AquaticCrates.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()),audience);
+                AquaticCrates.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()), audience);
             }
             rewardShowcase = new ItemRewardShowcase(item);
         }

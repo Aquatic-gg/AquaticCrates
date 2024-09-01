@@ -25,7 +25,7 @@ public class PlacedMultiCrate {
         this.multiCrate = multiCrate;
         this.hologram = multiCrate.getHologram().create(location);
         hologram.spawn(new GlobalAudience(), list -> {});
-        spawnedInteractable = multiCrate.getInteractable().spawn(location, false);
+        spawnedInteractable = multiCrate.getInteractable().spawn(location, false, true);
         placedCrates = createPlacedCrates();
         this.modelAnimationHandler = new ModelAnimationHandler(spawnedInteractable,multiCrate);
     }

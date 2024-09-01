@@ -25,7 +25,7 @@ public class PlacedCrate {
         this.crate = crate;
         this.hologram = crate.getHologram().create(location);
         hologram.spawn(new GlobalAudience(), list -> {});
-        spawnedInteractable = crate.getInteractable().spawn(location, false);
+        spawnedInteractable = crate.getInteractable().spawn(location, false, true);
     }
     public PlacedCrate(Crate crate, Location location, SpawnedInteractable<?> spawnedInteractable, Hologram hologram) {
         this.location = location;
