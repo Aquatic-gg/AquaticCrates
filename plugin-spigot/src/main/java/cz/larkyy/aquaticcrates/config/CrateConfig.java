@@ -9,6 +9,7 @@ import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.animation.AnimationManager;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.inventories.RerollGUI;
+import cz.larkyy.aquaticcrates.crate.inventories.settings.CustomButtonSettings;
 import cz.larkyy.aquaticcrates.crate.inventories.settings.CustomInventorySettings;
 import cz.larkyy.aquaticcrates.crate.inventories.settings.PreviewGUISettings;
 import cz.larkyy.aquaticcrates.crate.milestone.Milestone;
@@ -28,7 +29,6 @@ import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
-import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
 import gg.aquatic.aquaticseries.lib.block.AquaticBlock;
 import gg.aquatic.aquaticseries.lib.block.AquaticMultiBlock;
 import gg.aquatic.aquaticseries.lib.block.BlockShape;
@@ -41,7 +41,6 @@ import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.base.TempInteractableBase;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.block.BlockInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.MegInteractable;
-import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
 import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
@@ -50,11 +49,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.util.*;
@@ -419,13 +416,13 @@ public class CrateConfig extends Config {
         List<String> rewardLore = getConfiguration().getStringList("preview.reward-lore");
         List<Integer> rewardSlots = getConfiguration().getIntegerList("preview.reward-slots");
 
-        var milestonesItem = loadButton("preview.milestones");
+        var milestonesItem = loadButton("preview.milestones", "milestones");
         String milestoneFormat = getConfiguration().getString("preview.milestones.format", "&7 - &f%milestone% &7(%remains%/%required%)");
         String milestoneFormatReached = getConfiguration().getString("preview.milestones.reached-format", "&7 - &a%milestone% &7(Reached)");
         var openableUsingKey = getConfiguration().getBoolean("preview.openable-using-key", false);
         var clearBottomInventory = getConfiguration().getBoolean("preview.clear-bottom-inventory", false);
 
-        var repeatableMilestonesItem = getConfiguration().contains("repeatable-milestones") ? loadButton("preview.repeatable-milestones") : null;
+        var repeatableMilestonesItem = getConfiguration().contains("repeatable-milestones") ? loadButton("preview.repeatable-milestones", "repeatable-milestones") : null;
         String repeatableMilestoneFormat = getConfiguration().getString("preview.repeatable-milestones.format", "&7 - &f%milestone% &7(%remains%/%required%)");
 
         var buttons = loadInventoryButtons(getConfiguration().getConfigurationSection("preview.items"));
@@ -442,48 +439,6 @@ public class CrateConfig extends Config {
                 clearBottomInventory
         );
     }
-
-    private Map<String, Button> loadInventoryButtons(ConfigurationSection section) {
-        Map<String, Button> buttons = new HashMap<>();
-        if (section == null) return buttons;
-        for (String key : section.getKeys(false)) {
-            var buttonSection = section.getConfigurationSection(key);
-            assert buttonSection != null;
-            var button = loadButton(buttonSection);
-            buttons.put(key, button);
-        }
-        return buttons;
-    }
-
-    private Button loadButton(String path) {
-        if (!getConfiguration().contains(path)) {
-            return null;
-        }
-        return loadButton(getConfiguration().getConfigurationSection(path));
-    }
-
-    private Button loadButton(ConfigurationSection section) {
-        if (section == null) {
-            return null;
-        }
-        var button = Button.Companion.fromConfig(section);
-        var sections = ConfigExtKt.getSectionList(section, "click-actions");
-        var actions = PlayerActionSerializer.INSTANCE.fromSections(sections);
-
-        button.setOnClick(e -> {
-            e.getOriginalEvent().setCancelled(true);
-            var placeholders = new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders();
-            placeholders.addPlaceholder(new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder("%player%", e.getOriginalEvent().getWhoClicked().getName()));
-            actions.forEach(action -> {
-                action.run((Player) e.getOriginalEvent().getWhoClicked(), placeholders);
-            });
-        });
-
-        button.setPriority(1);
-
-        return button;
-    }
-
 
     private void loadRerollGUI(Crate crate, AtomicReference<RerollGUI> atomicReference) {
         if ((!getConfiguration().contains("reroll") || !getConfiguration().getBoolean("reroll.enabled", true))

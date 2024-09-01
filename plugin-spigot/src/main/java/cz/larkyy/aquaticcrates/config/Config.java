@@ -1,13 +1,18 @@
 package cz.larkyy.aquaticcrates.config;
 
+import cz.larkyy.aquaticcrates.crate.inventories.settings.CustomButtonSettings;
 import cz.larkyy.aquaticcrates.hologram.settings.AquaticHologramSettings;
 import cz.larkyy.aquaticcrates.hologram.settings.EmptyHologramSettings;
 import cz.larkyy.aquaticcrates.hologram.settings.HologramSettings;
 import gg.aquatic.aquaticseries.lib.ConfigExtKt;
+import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
 import gg.aquatic.aquaticseries.lib.betterhologram.HologramSerializer;
 import gg.aquatic.aquaticseries.lib.betterhologram.impl.TextDisplayLine;
+import gg.aquatic.aquaticseries.lib.betterinventory2.SlotSelection;
+import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -16,6 +21,8 @@ import org.bukkit.util.Vector;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Config {
     private final File file;
@@ -106,5 +113,49 @@ public class Config {
         Bukkit.getConsoleSender().sendMessage("Hologram has been loaded with "+lines.size()+" lines");
 
         return new AquaticHologramSettings(lines, vector);
+    }
+
+    protected Map<String, CustomButtonSettings> loadInventoryButtons(ConfigurationSection section) {
+        Map<String, CustomButtonSettings> buttons = new HashMap<>();
+        if (section == null) return buttons;
+        for (String key : section.getKeys(false)) {
+            var buttonSection = section.getConfigurationSection(key);
+            assert buttonSection != null;
+            var button = loadButton(buttonSection, key);
+            buttons.put(key, button);
+        }
+        return buttons;
+    }
+
+    protected CustomButtonSettings loadButton(String path, String id) {
+        if (!getConfiguration().contains(path)) {
+            return null;
+        }
+        return loadButton(getConfiguration().getConfigurationSection(path), id);
+    }
+
+    protected CustomButtonSettings loadButton(ConfigurationSection section, String id) {
+        if (section == null) {
+            return null;
+        }
+        //var button = Button.Companion.fromConfig(section);
+        var sections = ConfigExtKt.getSectionList(section, "click-actions");
+        var actions = PlayerActionSerializer.INSTANCE.fromSections(sections);
+        var item = CustomItem.Companion.loadFromYaml(section);
+        var slots = section.getIntegerList("slots");
+        var slot = section.getInt("slot");
+        SlotSelection slotSelection;
+        if (slots.isEmpty()) {
+            slotSelection = SlotSelection.Companion.of(slot);
+        } else {
+            slotSelection = SlotSelection.Companion.of(slots);
+        }
+
+        return new CustomButtonSettings(
+                id,
+                item,
+                actions,
+                slotSelection
+        );
     }
 }

@@ -82,46 +82,6 @@ public class MultiCrateConfig extends Config {
         );
     }
 
-    private Map<String, Button> loadInventoryButtons(ConfigurationSection section) {
-        Map<String, Button> buttons = new HashMap<>();
-        if (section == null) return buttons;
-        for (String key : section.getKeys(false)) {
-            var buttonSection = section.getConfigurationSection(key);
-            assert buttonSection != null;
-            var button = loadButton(buttonSection);
-            buttons.put(key, button);
-        }
-        return buttons;
-    }
-
-    private Button loadButton(String path) {
-        if (!getConfiguration().contains(path)) {
-            return null;
-        }
-        return loadButton(getConfiguration().getConfigurationSection(path));
-    }
-
-    private Button loadButton(ConfigurationSection section) {
-        if (section == null) {
-            return null;
-        }
-        var button = Button.Companion.fromConfig(section);
-        var sections = ConfigExtKt.getSectionList(section, "click-actions");
-        var actions = PlayerActionSerializer.INSTANCE.fromSections(sections);
-
-        button.setOnClick(e -> {
-            e.getOriginalEvent().setCancelled(true);
-            var placeholders = new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders();
-            placeholders.addPlaceholder(new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder("%player%",e.getOriginalEvent().getWhoClicked().getName()));
-            actions.forEach(action -> {
-                action.run((Player) e.getOriginalEvent().getWhoClicked(),placeholders);
-            });
-        });
-
-        button.setPriority(1);
-
-        return button;
-    }
     private CustomItem loadItem(String path) {
         return CustomItem.Companion.loadFromYaml(getConfiguration().getConfigurationSection(path));
     }

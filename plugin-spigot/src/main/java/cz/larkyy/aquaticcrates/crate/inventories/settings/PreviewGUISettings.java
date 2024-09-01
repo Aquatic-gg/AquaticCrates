@@ -8,16 +8,16 @@ public class PreviewGUISettings {
 
     private final CustomInventorySettings settings;
     private final List<Integer> rewardSlots;
-    private final Button milestoneItem;
+    private final CustomButtonSettings milestoneItem;
     private final String milestoneFormat;
     private final String milestoneReachedFormat;
-    private final Button repeatableMilestoneItem;
+    private final CustomButtonSettings repeatableMilestoneItem;
     private final String repeatableMilestoneFormat;
     private final List<String> rewardLore;
     private final boolean openableByKey;
     private final boolean clearBottomInventory;
 
-    public PreviewGUISettings(CustomInventorySettings settings, List<Integer> rewardSlots, Button milestoneItem, String milestoneFormat, String milestoneReachedFormat, Button repeatableMilestoneItem, String repeatableMilestoneFormat, List<String> rewardLore, boolean openableByKey, boolean clearBottomInventory) {
+    public PreviewGUISettings(CustomInventorySettings settings, List<Integer> rewardSlots, CustomButtonSettings milestoneItem, String milestoneFormat, String milestoneReachedFormat, CustomButtonSettings repeatableMilestoneItem, String repeatableMilestoneFormat, List<String> rewardLore, boolean openableByKey, boolean clearBottomInventory) {
         this.settings = settings;
         this.rewardSlots = rewardSlots;
         this.milestoneItem = milestoneItem;
@@ -30,7 +30,7 @@ public class PreviewGUISettings {
         this.clearBottomInventory = clearBottomInventory;
     }
 
-    public Button getMilestoneItem() {
+    public CustomButtonSettings getMilestoneItem() {
         return milestoneItem;
     }
 
@@ -42,7 +42,7 @@ public class PreviewGUISettings {
         return settings;
     }
 
-    public Button getRepeatableMilestoneItem() {
+    public CustomButtonSettings getRepeatableMilestoneItem() {
         return repeatableMilestoneItem;
     }
 

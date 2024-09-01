@@ -32,6 +32,7 @@ public class MultiPreviewGUI extends PersonalizedInventory {
     }
 
     private void addItems() {
+        /*
         for (var entry : multiCrate.getMultiCrate().getPreviewSettings().getSettings().getButtons().entrySet()) {
             var id = entry.getKey();
             var button = entry.getValue();
@@ -80,6 +81,8 @@ public class MultiPreviewGUI extends PersonalizedInventory {
         }
 
         redrawComponents();
+
+         */
     }
 
     private void addActionToButton(Button button, Consumer<ComponentClickEvent> consumer) {
