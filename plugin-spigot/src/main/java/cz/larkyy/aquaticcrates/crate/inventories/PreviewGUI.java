@@ -66,7 +66,7 @@ public class PreviewGUI {
                                 onClick.setCancelled(true);
                             },
                             5,
-                            (p, str) -> str,
+                            (p, str) -> PlaceholderAPI.setPlaceholders(player,str),
                             button.getItem().getItem()
                     );
                     inventory.addComponent(newButton);
@@ -89,7 +89,7 @@ public class PreviewGUI {
                                 onClick.setCancelled(true);
                             },
                             5,
-                            (p, str) -> str,
+                            (p, str) -> PlaceholderAPI.setPlaceholders(player,str),
                             button.getItem().getItem()
                     );
                     inventory.addComponent(newButton);
@@ -111,7 +111,7 @@ public class PreviewGUI {
                                 onClick.setCancelled(true);
                             },
                             5,
-                            (p, str) -> str,
+                            (p, str) -> PlaceholderAPI.setPlaceholders(player,str),
                             button.getItem().getItem()
                     );
                     inventory.addComponent(newButton);
@@ -132,7 +132,7 @@ public class PreviewGUI {
                                 onClick.setCancelled(true);
                             },
                             5,
-                            (p, str) -> str,
+                            (p, str) -> PlaceholderAPI.setPlaceholders(player,str),
                             button.getItem().getItem()
                     );
                     inventory.addComponent(newButton);
@@ -275,7 +275,7 @@ public class PreviewGUI {
                     onClick.setCancelled(true);
                 },
                 10000,
-                ((player1, s) -> s),
+                (player1, str) -> PlaceholderAPI.setPlaceholders(player,str),
                 is
         );
         inventory.addComponent(newButton);
@@ -328,7 +328,7 @@ public class PreviewGUI {
                     onClick.setCancelled(true);
                 },
                 10000,
-                ((player1, s) -> s),
+                (player1, str) -> PlaceholderAPI.setPlaceholders(player,str),
                 is
         );
         inventory.addComponent(newButton);
@@ -372,7 +372,7 @@ public class PreviewGUI {
                         }
                     },
                     10000,
-                    ((player1, s) -> s),
+                    (player1, str) -> PlaceholderAPI.setPlaceholders(player,str),
                     is
             );
             inventory.addComponent(newButton);
