@@ -24,7 +24,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class PreviewGUI {
 
@@ -61,7 +60,9 @@ public class PreviewGUI {
                                 for (ConfiguredAction<Player> configuredAction : button.getConfiguredActions()) {
                                     configuredAction.run(player, new Placeholders());
                                 }
-                                openNextPage(player, placedCrate, page);
+                                if (hasNextPage(player, page)) {
+                                    openNextPage(player, placedCrate, page);
+                                }
                                 onClick.setCancelled(true);
                             },
                             5,
@@ -82,7 +83,9 @@ public class PreviewGUI {
                                 for (ConfiguredAction<Player> configuredAction : button.getConfiguredActions()) {
                                     configuredAction.run(player, new Placeholders());
                                 }
-                                openPrevPage(player, placedCrate, page);
+                                if (page != 0) {
+                                    openPrevPage(player, placedCrate, page);
+                                }
                                 onClick.setCancelled(true);
                             },
                             5,
