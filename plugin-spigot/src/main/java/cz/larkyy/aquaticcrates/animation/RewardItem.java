@@ -118,7 +118,6 @@ public class RewardItem {
         Location loc = rewardShowcase.getLocation().clone().add(settings.getOffset());
         hologram.move(loc);
         hologram.setLines(settings.getLines());
-        Bukkit.broadcastMessage("Updating hologram with "+settings.getLines().size()+" lines");
         /*
         if (p == null) {
             hologram.spawn(new ArrayList<>(Bukkit.getOnlinePlayers()));
