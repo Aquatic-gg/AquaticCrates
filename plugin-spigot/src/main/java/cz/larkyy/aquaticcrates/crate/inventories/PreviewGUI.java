@@ -371,7 +371,7 @@ public class PreviewGUI {
                             r.give(player);
                         }
                     },
-                    10000,
+                    5,
                     (player1, str) -> PlaceholderAPI.setPlaceholders(player,str),
                     is
             );
