@@ -10,6 +10,8 @@ import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
 import gg.aquatic.aquaticseries.lib.betterhologram.HologramSerializer;
 import gg.aquatic.aquaticseries.lib.betterhologram.impl.TextDisplayLine;
 import gg.aquatic.aquaticseries.lib.betterinventory2.SlotSelection;
+import gg.aquatic.aquaticseries.lib.betterinventory2.serialize.ButtonSettings;
+import gg.aquatic.aquaticseries.lib.betterinventory2.serialize.InventorySerializer;
 import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -34,7 +36,7 @@ public class Config {
         this.file = new File(main.getDataFolder(), path);
     }
 
-    public Config(JavaPlugin main,File file) {
+    public Config(JavaPlugin main, File file) {
         this.main = main;
         this.file = file;
     }
@@ -107,14 +109,15 @@ public class Config {
         var lines = new ArrayList<>(HologramSerializer.INSTANCE.load(ConfigExtKt.getSectionList(section, "lines")));
         for (AquaticHologram.Line line : lines) {
             if (line instanceof TextDisplayLine textDisplayLine) {
-                Bukkit.getConsoleSender().sendMessage("Loaded TextDisplay line: "+textDisplayLine.getCurrentKeyframe().getText().getString());
+                Bukkit.getConsoleSender().sendMessage("Loaded TextDisplay line: " + textDisplayLine.getCurrentKeyframe().getText().getString());
             }
         }
-        Bukkit.getConsoleSender().sendMessage("Hologram has been loaded with "+lines.size()+" lines");
+        Bukkit.getConsoleSender().sendMessage("Hologram has been loaded with " + lines.size() + " lines");
 
         return new AquaticHologramSettings(lines, vector);
     }
 
+    /*
     protected Map<String, CustomButtonSettings> loadInventoryButtons(ConfigurationSection section) {
         Map<String, CustomButtonSettings> buttons = new HashMap<>();
         if (section == null) return buttons;
@@ -122,40 +125,25 @@ public class Config {
             var buttonSection = section.getConfigurationSection(key);
             assert buttonSection != null;
             var button = loadButton(buttonSection, key);
-            buttons.put(key, button);
+            //buttons.put(key, button);
         }
         return buttons;
     }
+     */
 
-    protected CustomButtonSettings loadButton(String path, String id) {
+    protected ButtonSettings loadButton(String path, String id) {
         if (!getConfiguration().contains(path)) {
             return null;
         }
         return loadButton(getConfiguration().getConfigurationSection(path), id);
     }
 
-    protected CustomButtonSettings loadButton(ConfigurationSection section, String id) {
+    protected ButtonSettings loadButton(ConfigurationSection section, String id) {
         if (section == null) {
             return null;
         }
-        //var button = Button.Companion.fromConfig(section);
-        var sections = ConfigExtKt.getSectionList(section, "click-actions");
-        var actions = PlayerActionSerializer.INSTANCE.fromSections(sections);
-        var item = CustomItem.Companion.loadFromYaml(section);
-        var slots = section.getIntegerList("slots");
-        var slot = section.getInt("slot");
-        SlotSelection slotSelection;
-        if (slots.isEmpty()) {
-            slotSelection = SlotSelection.Companion.of(slot);
-        } else {
-            slotSelection = SlotSelection.Companion.of(slots);
-        }
 
-        return new CustomButtonSettings(
-                id,
-                item,
-                actions,
-                slotSelection
-        );
+        var button = InventorySerializer.INSTANCE.loadButton(section, id);
+        return button;
     }
 }

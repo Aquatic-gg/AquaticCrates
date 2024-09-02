@@ -25,137 +25,73 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class PreviewGUI {
+public class PreviewGUI extends AquaticInventory {
 
     private final Crate crate;
-    private final AquaticInventory inventory;
     private final Player player;
 
     public PreviewGUI(Crate crate, Player player) {
+        super(
+                crate.getPreviewGUISettings().getSettings().getTitle(),
+                crate.getPreviewGUISettings().getSettings().getSize(),
+                crate.getPreviewGUISettings().getSettings().getInventoryType(),
+                (player1, aquaticInventory) -> {},
+                (player1, aquaticInventory) -> {},
+                (inventoryInteractEvent, aquaticInventory) -> {
+
+                }
+        );
         this.crate = crate;
         this.player = player;
-        inventory = new AquaticInventory(
-                StringExtKt.toAquatic(Utils.updatePlaceholders(crate.getPreviewGUISettings().getSettings().getTitle(), player)),
-                crate.getPreviewGUISettings().getSettings().getSize(),
-                null,
-                (pl,inv) -> {},
-                (pl,inv) -> {},
-                (pl,inv) -> {}
-        );
     }
 
     private void addItems(Integer page, PlacedCrate placedCrate) {
-        for (var entry : crate.getPreviewGUISettings().getSettings().getButtons().entrySet()) {
-            var id = entry.getKey();
-            var button = entry.getValue();
+        for (var buttonSettings : crate.getPreviewGUISettings().getSettings().getButtons()) {
+            var id = buttonSettings.getId();
+            var button = buttonSettings.create((p, str) -> PlaceholderAPI.setPlaceholders(player,str));
             switch (id.toLowerCase()) {
                 case "next-page" -> {
-                    var newButton = new ButtonComponent(
-                            id,
-                            1,
-                            button.getSlots(),
-                            new HashMap<>(),
-                            null,
-                            onClick -> {
-                                for (ConfiguredAction<Player> configuredAction : button.getConfiguredActions()) {
-                                    configuredAction.run(player, new Placeholders());
-                                }
-                                if (hasNextPage(player, page)) {
-                                    openNextPage(player, placedCrate, page);
-                                }
-                                onClick.setCancelled(true);
-                            },
-                            5,
-                            (p, str) -> PlaceholderAPI.setPlaceholders(player,str),
-                            button.getItem().getItem()
-                    );
-                    inventory.addComponent(newButton);
+                    button.getOnClick().andThen(e -> {
+                        if (hasNextPage(player, page)) {
+                            openNextPage(player, placedCrate, page);
+                        }
+                        e.setCancelled(true);
+                    });
+                    addComponent(button);
                     continue;
                 }
                 case "prev-page" -> {
-                    var newButton = new ButtonComponent(
-                            id,
-                            1,
-                            button.getSlots(),
-                            new HashMap<>(),
-                            null,
-                            onClick -> {
-                                for (ConfiguredAction<Player> configuredAction : button.getConfiguredActions()) {
-                                    configuredAction.run(player, new Placeholders());
-                                }
-                                if (page != 0) {
-                                    openPrevPage(player, placedCrate, page);
-                                }
-                                onClick.setCancelled(true);
-                            },
-                            5,
-                            (p, str) -> PlaceholderAPI.setPlaceholders(player,str),
-                            button.getItem().getItem()
-                    );
-                    inventory.addComponent(newButton);
+                    button.getOnClick().andThen(e -> {
+                        if (page != 0) {
+                            openPrevPage(player, placedCrate, page);
+                        }
+                        e.setCancelled(true);
+                    });
+                    addComponent(button);
                     continue;
                 }
                 case "open-button" -> {
-                    var newButton = new ButtonComponent(
-                            id,
-                            1,
-                            button.getSlots(),
-                            new HashMap<>(),
-                            null,
-                            onClick -> {
-                                for (ConfiguredAction<Player> configuredAction : button.getConfiguredActions()) {
-                                    configuredAction.run(player, new Placeholders());
-                                }
-                                player.closeInventory();
-                                crate.open(CratePlayer.get(player), placedCrate, false);
-                                onClick.setCancelled(true);
-                            },
-                            5,
-                            (p, str) -> PlaceholderAPI.setPlaceholders(player,str),
-                            button.getItem().getItem()
-                    );
-                    inventory.addComponent(newButton);
+                    button.getOnClick().andThen(e -> {
+                        player.closeInventory();
+                        crate.open(CratePlayer.get(player), placedCrate, false);
+                        e.setCancelled(true);
+                    });
+                    addComponent(button);
                     continue;
                 }
                 case "close-button" -> {
-                    var newButton = new ButtonComponent(
-                            id,
-                            1,
-                            button.getSlots(),
-                            new HashMap<>(),
-                            null,
-                            onClick -> {
-                                for (ConfiguredAction<Player> configuredAction : button.getConfiguredActions()) {
-                                    configuredAction.run(player, new Placeholders());
-                                }
-                                player.closeInventory();
-                                onClick.setCancelled(true);
-                            },
-                            5,
-                            (p, str) -> PlaceholderAPI.setPlaceholders(player,str),
-                            button.getItem().getItem()
-                    );
-                    inventory.addComponent(newButton);
+                    button.getOnClick().andThen(e -> {
+                        player.closeInventory();
+                        e.setCancelled(true);
+                    });
+                    addComponent(button);
                     continue;
                 }
                 default -> {
-                    var newButton = new ButtonComponent(
-                            id,
-                            1,
-                            button.getSlots(),
-                            new HashMap<>(),
-                            null,
-                            onClick -> {
-                                for (ConfiguredAction<Player> configuredAction : button.getConfiguredActions()) {
-                                    configuredAction.run(player, new Placeholders());
-                                }
-                                onClick.setCancelled(true);
-                            },
-                            5,
-                            (p, str) -> PlaceholderAPI.setPlaceholders(player,str),
-                            button.getItem().getItem()
-                    );
-                    inventory.addComponent(newButton);
+                    button.getOnClick().andThen(e -> {
+                        e.setCancelled(true);
+                    });
+                    addComponent(button);
                     continue;
                 }
             }
@@ -174,7 +110,7 @@ public class PreviewGUI {
                     (p, str) -> str,
                     new ItemStack(Material.AIR)
             );
-            inventory.addComponent(button);
+            addComponent(button);
         }
     }
 
@@ -191,16 +127,16 @@ public class PreviewGUI {
 
     public void open(Player p, PlacedCrate placedCrate) {
         openPage(p, placedCrate, 0);
-        inventory.open(p);
+        open(p);
     }
 
     public void openPage(Player p, PlacedCrate placedCrate, int page) {
-        inventory.clearComponents();
+        clearComponents();
         addItems(page, placedCrate);
         loadRewardItems(p, page);
         loadMilestoneItem(p);
         loadRepetableMilestoneItem(p);
-        inventory.updateComponents(player);
+        updateComponents(player);
         //inventory.getComponentHandler().redrawComponents();
     }
 
@@ -235,6 +171,7 @@ public class PreviewGUI {
             return;
         }
         var milestoneHandler = crate.getMilestoneHandler();
+        /*
         var is = milestoneItem.getItem().getItem().clone();
         var im = is.getItemMeta();
 
@@ -279,6 +216,10 @@ public class PreviewGUI {
                 is
         );
         inventory.addComponent(newButton);
+         */
+        addComponent(milestoneItem.create(
+                (player1, s) -> s
+        ));
     }
 
     private void loadRepetableMilestoneItem(Player p) {
@@ -287,6 +228,7 @@ public class PreviewGUI {
             return;
         }
         var milestoneHandler = crate.getMilestoneHandler();
+        /*
         var is = repeatableMilestoneItem.getItem().getItem().clone();
         var im = is.getItemMeta();
 
@@ -332,6 +274,11 @@ public class PreviewGUI {
                 is
         );
         inventory.addComponent(newButton);
+         */
+
+        addComponent(repeatableMilestoneItem.create(
+                (player1, s) -> s
+        ));
     }
 
     public void loadRewardItems(Player p, int page) {
@@ -375,7 +322,7 @@ public class PreviewGUI {
                     (player1, str) -> PlaceholderAPI.setPlaceholders(player,str),
                     is
             );
-            inventory.addComponent(newButton);
+            addComponent(newButton);
             i++;
         }
     }

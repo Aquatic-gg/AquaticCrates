@@ -29,6 +29,7 @@ import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticBossBar;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
+import gg.aquatic.aquaticseries.lib.betterinventory2.serialize.InventorySerializer;
 import gg.aquatic.aquaticseries.lib.block.AquaticBlock;
 import gg.aquatic.aquaticseries.lib.block.AquaticMultiBlock;
 import gg.aquatic.aquaticseries.lib.block.BlockShape;
@@ -144,7 +145,7 @@ public class CrateConfig extends Config {
                                     },
                                     new HashMap<>() {
                                         {
-                                            put('X', new VanillaBlock(Material.AIR.createBlockData()));
+                                            put('X', new VanillaBlock(Material.AIR.createBlockData(),null));
                                         }
                                     }
                             )
@@ -192,7 +193,7 @@ public class CrateConfig extends Config {
         if (section != null) {
             block = AquaticBlockSerializer.INSTANCE.load(getConfiguration().getConfigurationSection("visual"));
         } else {
-            block = new VanillaBlock(Material.STONE.createBlockData());
+            block = new VanillaBlock(Material.STONE.createBlockData(),null);
         }
         return new BlockInteractable<>(
                 new TempInteractableBase(),
@@ -425,9 +426,11 @@ public class CrateConfig extends Config {
         var repeatableMilestonesItem = getConfiguration().contains("repeatable-milestones") ? loadButton("preview.repeatable-milestones", "repeatable-milestones") : null;
         String repeatableMilestoneFormat = getConfiguration().getString("preview.repeatable-milestones.format", "&7 - &f%milestone% &7(%remains%/%required%)");
 
-        var buttons = loadInventoryButtons(getConfiguration().getConfigurationSection("preview.items"));
+        var inventorySettings = InventorySerializer.INSTANCE.loadInventory(getConfiguration().getConfigurationSection("preview"));
+
+        //var buttons = loadInventoryButtons(getConfiguration().getConfigurationSection("preview.items"));
         return new PreviewGUISettings(
-                new CustomInventorySettings(title, getConfiguration().getInt("preview.size", 54), buttons),
+                inventorySettings,
                 rewardSlots,
                 milestonesItem,
                 milestoneFormat,
