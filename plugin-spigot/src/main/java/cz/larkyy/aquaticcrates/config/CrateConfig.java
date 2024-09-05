@@ -9,8 +9,6 @@ import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.animation.AnimationManager;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.inventories.RerollGUI;
-import cz.larkyy.aquaticcrates.crate.inventories.settings.CustomButtonSettings;
-import cz.larkyy.aquaticcrates.crate.inventories.settings.CustomInventorySettings;
 import cz.larkyy.aquaticcrates.crate.inventories.settings.PreviewGUISettings;
 import cz.larkyy.aquaticcrates.crate.milestone.Milestone;
 import cz.larkyy.aquaticcrates.crate.milestone.MilestoneReward;
@@ -145,7 +143,7 @@ public class CrateConfig extends Config {
                                     },
                                     new HashMap<>() {
                                         {
-                                            put('X', new VanillaBlock(Material.AIR.createBlockData(),null));
+                                            put('X', new VanillaBlock(Material.AIR.createBlockData(), null));
                                         }
                                     }
                             )
@@ -193,7 +191,7 @@ public class CrateConfig extends Config {
         if (section != null) {
             block = AquaticBlockSerializer.INSTANCE.load(getConfiguration().getConfigurationSection("visual"));
         } else {
-            block = new VanillaBlock(Material.STONE.createBlockData(),null);
+            block = new VanillaBlock(Material.STONE.createBlockData(), null);
         }
         return new BlockInteractable<>(
                 new TempInteractableBase(),
@@ -415,7 +413,7 @@ public class CrateConfig extends Config {
             }
         }
         List<String> rewardLore = getConfiguration().getStringList("preview.reward-lore");
-        List<Integer> rewardSlots = getConfiguration().getIntegerList("preview.reward-slots");
+        List<Integer> rewardSlots = InventorySerializer.INSTANCE.loadSlotSelection(getConfiguration().getStringList("preview.reward-slots")).getSlots().stream().toList();
 
         var milestonesItem = loadButton("preview.milestones", "milestones");
         String milestoneFormat = getConfiguration().getString("preview.milestones.format", "&7 - &f%milestone% &7(%remains%/%required%)");
@@ -498,10 +496,8 @@ public class CrateConfig extends Config {
         return MenuItem.builder(identifier, item.getItem())
                 .slots(slots)
                 .action(a -> {
-                    var placeholders = new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders();
-                    placeholders.addPlaceholder(new gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder("%player%", a.getWhoClicked().getName()));
                     clickActions.forEach(action -> {
-                        action.run((Player) a.getWhoClicked(), placeholders);
+                        action.run((Player) a.getWhoClicked(), (p, s) -> s.replace("%player%",a.getWhoClicked().getName()));
                     });
                 })
                 .build();

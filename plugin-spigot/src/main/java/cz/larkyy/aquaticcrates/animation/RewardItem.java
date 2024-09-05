@@ -83,7 +83,6 @@ public class RewardItem {
         cachedReward = reward;
         var settings = reward.getHologram();
         Location loc = rewardShowcase.getLocation().clone().add(settings.getOffset());
-        Bukkit.broadcastMessage("Spawning hologram with "+settings.getLines().size()+" lines");
         hologram = new AHologram(loc, settings.getLines());
         if (p == null) {
             hologram.spawn(

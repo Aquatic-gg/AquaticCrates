@@ -90,10 +90,8 @@ public class AnimationManager {
     public void playTask(int i, Animation animation) {
         var list = tasks.get(i);
         if (list == null) return;
-        var placeholders = new Placeholders();
-        placeholders.addPlaceholder(new Placeholder("%player%",animation.getPlayer().getName()));
         for (ConfiguredAction<Animation> animationConfiguredAction : list) {
-            animationConfiguredAction.run(animation, placeholders);
+            animationConfiguredAction.run(animation, (p, s) -> s.replace("%player%", animation.getPlayer().getName()));
         }
     }
 

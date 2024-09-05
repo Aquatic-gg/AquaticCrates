@@ -11,20 +11,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 public class CommandTask extends AnimationTask {
     @Override
-    public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull Placeholders placeholders) {
+    public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull BiFunction<Animation, String, String> biFunction) {
         var command = arguments.get("command");
         var commands = arguments.get("commands");
         if (command != null) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), placeholders.replace(command.toString()));
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), biFunction.apply(animation, command.toString()));
             return;
         }
         if (commands != null) {
             var cmds = (List<String>)commands;
             for (String cmd : cmds) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), placeholders.replace(cmd));
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), biFunction.apply(animation, cmd));
             }
         }
     }

@@ -46,7 +46,7 @@ public class Key {
         ItemStack is = getItem(amount);
 
         players.forEach(p->{
-            var map = p.getInventory().addItem(is);
+            var map = p.getInventory().addItem(is.clone());
             map.forEach((i,item) -> {
                 p.getLocation().getWorld().dropItem(p.getLocation(),item);
             });

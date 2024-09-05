@@ -4,17 +4,13 @@ import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
-import cz.larkyy.aquaticcrates.utils.Utils;
 import gg.aquatic.aquaticseries.lib.AquaticSeriesLib;
 import gg.aquatic.aquaticseries.lib.ItemStackExtKt;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
-import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
 import gg.aquatic.aquaticseries.lib.adapt.AquaticString;
 import gg.aquatic.aquaticseries.lib.betterinventory2.AquaticInventory;
 import gg.aquatic.aquaticseries.lib.betterinventory2.SlotSelection;
 import gg.aquatic.aquaticseries.lib.betterinventory2.component.ButtonComponent;
-import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
-import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,53 +44,35 @@ public class PreviewGUI extends AquaticInventory {
     private void addItems(Integer page, PlacedCrate placedCrate) {
         for (var buttonSettings : crate.getPreviewGUISettings().getSettings().getButtons()) {
             var id = buttonSettings.getId();
-            var button = buttonSettings.create((p, str) -> PlaceholderAPI.setPlaceholders(player,str));
-            switch (id.toLowerCase()) {
-                case "next-page" -> {
-                    button.getOnClick().andThen(e -> {
+            var button = buttonSettings.create((p, str) -> PlaceholderAPI.setPlaceholders(player,str), e -> {
+                switch (id.toLowerCase()) {
+                    case "next-page" -> {
                         if (hasNextPage(player, page)) {
                             openNextPage(player, placedCrate, page);
                         }
                         e.setCancelled(true);
-                    });
-                    addComponent(button);
-                    continue;
-                }
-                case "prev-page" -> {
-                    button.getOnClick().andThen(e -> {
+                    }
+                    case "prev-page" -> {
                         if (page != 0) {
                             openPrevPage(player, placedCrate, page);
                         }
                         e.setCancelled(true);
-                    });
-                    addComponent(button);
-                    continue;
-                }
-                case "open-button" -> {
-                    button.getOnClick().andThen(e -> {
+                    }
+                    case "open-button" -> {
                         player.closeInventory();
                         crate.open(CratePlayer.get(player), placedCrate, false);
                         e.setCancelled(true);
-                    });
-                    addComponent(button);
-                    continue;
-                }
-                case "close-button" -> {
-                    button.getOnClick().andThen(e -> {
+                    }
+                    case "close-button" -> {
                         player.closeInventory();
                         e.setCancelled(true);
-                    });
-                    addComponent(button);
-                    continue;
-                }
-                default -> {
-                    button.getOnClick().andThen(e -> {
+                    }
+                    default -> {
                         e.setCancelled(true);
-                    });
-                    addComponent(button);
-                    continue;
+                    }
                 }
-            }
+            });
+            addComponent(button);
         }
         if (crate.getPreviewGUISettings().isClearBottomInventory()) {
             var button = new ButtonComponent(
@@ -113,17 +91,6 @@ public class PreviewGUI extends AquaticInventory {
             addComponent(button);
         }
     }
-
-    /*
-    private void addActionToButton(Button button, Consumer<ComponentClickEvent> consumer) {
-        if (button.getOnClick() != null) {
-            button.getOnClick().andThen(consumer);
-        } else {
-            button.setOnClick(consumer);
-        }
-    }
-
-     */
 
     public void open(Player p, PlacedCrate placedCrate) {
         openPage(p, placedCrate, 0);
@@ -218,7 +185,7 @@ public class PreviewGUI extends AquaticInventory {
         inventory.addComponent(newButton);
          */
         addComponent(milestoneItem.create(
-                (player1, s) -> s
+                (player1, s) -> s, e -> e.setCancelled(true)
         ));
     }
 
@@ -277,7 +244,7 @@ public class PreviewGUI extends AquaticInventory {
          */
 
         addComponent(repeatableMilestoneItem.create(
-                (player1, s) -> s
+                (player1, s) -> s, e -> e.setCancelled(true)
         ));
     }
 
@@ -297,9 +264,6 @@ public class PreviewGUI extends AquaticInventory {
             List<AquaticString> lore = new ArrayList<>(AquaticSeriesLib.Companion.getINSTANCE().getAdapter().getItemStackAdapter().getAquaticLore(im));
 
             lore.addAll(StringExtKt.toAquatic(rewardLore));
-            lore.replaceAll(s ->
-                    s.replace("%chance%", r.chance() + "")
-            );
             ItemStackExtKt.lore(im, lore);
             is.setItemMeta(im);
 
@@ -319,7 +283,10 @@ public class PreviewGUI extends AquaticInventory {
                         }
                     },
                     5,
-                    (player1, str) -> PlaceholderAPI.setPlaceholders(player,str),
+                    (player1, str) ->
+                            PlaceholderAPI.setPlaceholders(player,str)
+                                    .replace("%chance%", r.chance() + "")
+                    ,
                     is
             );
             addComponent(newButton);

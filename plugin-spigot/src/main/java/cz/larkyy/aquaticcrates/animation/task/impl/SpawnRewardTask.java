@@ -10,10 +10,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 public class SpawnRewardTask extends AnimationTask {
     @Override
-    public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull Placeholders placeholders) {
+    public void run(Animation animation, @NotNull Map<String, ?> arguments, @NotNull BiFunction<Animation, String, String> biFunction) {
         animation.spawnReward(
                 (Integer) arguments.get("rumbling-length"),
                 (Integer) arguments.get("rumbling-period"),

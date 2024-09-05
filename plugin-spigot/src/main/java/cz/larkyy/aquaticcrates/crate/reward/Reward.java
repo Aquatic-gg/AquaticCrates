@@ -57,11 +57,9 @@ public class Reward implements IChance {
                 player.getLocation().getWorld().dropItem(player.getLocation(), is2);
             });
         }
-        Placeholders placeholders = new Placeholders();
-        placeholders.plusAssign(new Placeholder("%player%", player.getName()));
-        placeholders.plusAssign(new Placeholder("%reward%", displayName));
-        placeholders.plusAssign(new Placeholder("%chance%", chance + ""));
-        actions.forEach(a -> a.run(player, placeholders));
+        actions.forEach(a -> a.run(player, ((player1, s) -> s.replace("%player%", player.getName())
+                .replace("%reward%", displayName)
+                .replace("%chance%", chance + ""))));
     }
 
     public String getModel() {
