@@ -7,6 +7,7 @@ import cz.larkyy.aquaticcrates.config.Config;
 import cz.larkyy.aquaticcrates.crate.CrateHandler;
 import cz.larkyy.aquaticcrates.crate.CrateListener;
 import cz.larkyy.aquaticcrates.crate.price.OpenPrices;
+import cz.larkyy.aquaticcrates.crate.reward.condition.KeyCondition;
 import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
 import cz.larkyy.aquaticcrates.dabatase.DatabaseManager;
 import cz.larkyy.aquaticcrates.hologram.HologramHandler;
@@ -60,6 +61,7 @@ public final class AquaticCrates extends JavaPlugin {
     public void onLoad() {
         Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading the plugin..."));
         RequirementTypes.INSTANCE.register("permission", new PermissionCondition());
+        RequirementTypes.INSTANCE.register("hascratekey", new KeyCondition());
         setupAnimationTasks();
 
         var config = new Config(this,"config.yml");
