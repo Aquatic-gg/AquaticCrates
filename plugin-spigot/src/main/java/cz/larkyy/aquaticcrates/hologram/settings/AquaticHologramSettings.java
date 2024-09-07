@@ -12,17 +12,19 @@ public class AquaticHologramSettings implements HologramSettings {
 
     private final List<AquaticHologram.Line> lines;
     private final Vector offset;
+    private final AquaticHologram.Billboard billboard;
 
-    public AquaticHologramSettings(List<AquaticHologram.Line> lines, Vector offset) {
+    public AquaticHologramSettings(List<AquaticHologram.Line> lines, Vector offset, AquaticHologram.Billboard billboard) {
         this.lines = lines;
         this.offset = offset;
+        this.billboard = billboard;
     }
 
     @Override
     public Hologram create(Location location) {
         var hologram = new AHologram(
                 location.clone().add(offset),
-                lines
+                this
         );
         return hologram;
     }
@@ -33,5 +35,9 @@ public class AquaticHologramSettings implements HologramSettings {
 
     public Vector getOffset() {
         return offset;
+    }
+
+    public AquaticHologram.Billboard getBillboard() {
+        return billboard;
     }
 }

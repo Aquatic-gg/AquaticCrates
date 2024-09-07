@@ -2,6 +2,7 @@ package cz.larkyy.aquaticcrates.hologram.impl.aquatic;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.hologram.Hologram;
+import cz.larkyy.aquaticcrates.hologram.settings.AquaticHologramSettings;
 import gg.aquatic.aquaticseries.lib.audience.AquaticAudience;
 import gg.aquatic.aquaticseries.lib.audience.GlobalAudience;
 import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
@@ -14,9 +15,11 @@ import java.util.function.Consumer;
 public class AHologram extends Hologram {
 
     private ArrayList<AquaticHologram.Line> lines;
-    public AHologram(Location location, List<AquaticHologram.Line> lines) {
+    private AquaticHologramSettings settings;
+    public AHologram(Location location, AquaticHologramSettings settings) {
         super(location);
-        this.lines = new ArrayList<>(lines);
+        this.settings = settings;
+        this.lines = new ArrayList<>(settings.getLines());
     }
 
     private AquaticAudience audience = new GlobalAudience();
@@ -40,6 +43,7 @@ public class AHologram extends Hologram {
                 null,
                 lines,
                 AquaticHologram.Anchor.MIDDLE,
+                settings.getBillboard(),
                 getLocation(),
                 50.0
         );

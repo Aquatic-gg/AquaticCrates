@@ -97,10 +97,12 @@ public class Config {
     protected AquaticHologramSettings loadAquaticHologram(String path) {
         if (!getConfiguration().isConfigurationSection(path)) return new AquaticHologramSettings(
                 new ArrayList<>(),
-                new Vector(0, 0, 0)
+                new Vector(0, 0, 0),
+                AquaticHologram.Billboard.LOOK_AT_PLAYER
         );
         var section = getConfiguration().getConfigurationSection(path);
         var offset = section.getString("offset", "0;0;0").split(";");
+        var billboard = AquaticHologram.Billboard.valueOf(section.getString("billboard","LOOK_AT_PLAYER").toUpperCase());
         var vector = new Vector(
                 Double.parseDouble(offset[0]),
                 Double.parseDouble(offset[1]),
@@ -112,9 +114,7 @@ public class Config {
                 Bukkit.getConsoleSender().sendMessage("Loaded TextDisplay line: " + textDisplayLine.getCurrentKeyframe().getText().getString());
             }
         }
-        Bukkit.getConsoleSender().sendMessage("Hologram has been loaded with " + lines.size() + " lines");
-
-        return new AquaticHologramSettings(lines, vector);
+        return new AquaticHologramSettings(lines, vector, billboard);
     }
 
     /*

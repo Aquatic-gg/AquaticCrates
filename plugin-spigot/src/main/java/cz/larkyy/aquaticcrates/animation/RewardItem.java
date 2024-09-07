@@ -83,7 +83,7 @@ public class RewardItem {
         cachedReward = reward;
         var settings = reward.getHologram();
         Location loc = rewardShowcase.getLocation().clone().add(settings.getOffset());
-        hologram = new AHologram(loc, settings.getLines());
+        hologram = new AHologram(loc, settings);
         if (p == null) {
             hologram.spawn(
                     new GlobalAudience(),
