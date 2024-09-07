@@ -1,28 +1,30 @@
 package cz.larkyy.aquaticcrates.crate.price;
 
-import cz.larkyy.aquaticcrates.crate.Crate;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
 public class PriceGroup {
 
-    private final List<ConfiguredPrice> prices;
+    private final List<OpenPrice> prices;
 
-    public PriceGroup(List<ConfiguredPrice> prices) {
+    public PriceGroup(List<OpenPrice> prices) {
         this.prices = prices;
     }
 
-    public boolean has(Player player, Crate crate) {
-        for (ConfiguredPrice price : prices) {
-            if (!price.check(player,crate)) return false;
+    public boolean has(Player player) {
+        for (OpenPrice price : prices) {
+            if (!price.has(player)) {
+
+                return false;
+            }
         }
         return true;
     }
 
-    public void take(Player player, Crate crate) {
-        for (ConfiguredPrice price : prices) {
-            price.take(player, crate);
+    public void take(Player player) {
+        for (OpenPrice price : prices) {
+            price.take(player);
         }
     }
 }

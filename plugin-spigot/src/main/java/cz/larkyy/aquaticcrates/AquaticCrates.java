@@ -6,7 +6,7 @@ import cz.larkyy.aquaticcrates.commands.Commands;
 import cz.larkyy.aquaticcrates.config.Config;
 import cz.larkyy.aquaticcrates.crate.CrateHandler;
 import cz.larkyy.aquaticcrates.crate.CrateListener;
-import cz.larkyy.aquaticcrates.crate.price.OpenPrices;
+import cz.larkyy.aquaticcrates.crate.price.types.KeyPrice;
 import cz.larkyy.aquaticcrates.crate.reward.condition.KeyCondition;
 import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
 import cz.larkyy.aquaticcrates.dabatase.DatabaseManager;
@@ -25,8 +25,11 @@ import gg.aquatic.aquaticseries.lib.betterinventory2.InventoryHandler;
 import gg.aquatic.aquaticseries.lib.format.Format;
 import gg.aquatic.aquaticseries.lib.format.color.ColorUtils;
 import gg.aquatic.aquaticseries.lib.interactable2.InteractableHandler;
+import gg.aquatic.aquaticseries.lib.logger.type.InfoLogger;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.packet.PacketHandler;
+import gg.aquatic.aquaticseries.lib.price.PriceTypes;
+import gg.aquatic.aquaticseries.lib.requirement.RequirementSerializer;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
 import gg.aquatic.aquaticseries.lib.worldobject.WorldObjectHandler;
 import org.bstats.bukkit.Metrics;
@@ -49,7 +52,6 @@ public final class AquaticCrates extends JavaPlugin {
     private static MessageHandler messageHandler;
 
     private static ItemHandler itemHandler;
-    private static OpenPrices openPrices;
     private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean configDebug = true;
     public static AquaticSeriesLib aquaticSeriesLib;
@@ -59,7 +61,7 @@ public final class AquaticCrates extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading the plugin..."));
+        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&fLoading the plugin..."));
         RequirementTypes.INSTANCE.register("permission", new PermissionCondition());
         RequirementTypes.INSTANCE.register("hascratekey", new KeyCondition());
         setupAnimationTasks();
@@ -79,8 +81,6 @@ public final class AquaticCrates extends JavaPlugin {
         ));
         //CustomItem.Companion.getCustomItemHandler().getItemRegistry();
         aquaticSeriesLib.setMessageFormatting(messageFormat);
-
-        openPrices = new OpenPrices();
         //rewardConditions = new RewardConditions();
         itemHandler = new ItemHandler();
         crateHandler = new CrateHandler();
@@ -98,11 +98,10 @@ public final class AquaticCrates extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CrateListener(),this);
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-
-            Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7PlaceholderAPI Hook&f!"));
+            InfoLogger.INSTANCE.send("&fLoading &7PlaceholderAPI Hook&f!");
             new PAPIHook().register();
         }
-        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Database&f!"));
+        InfoLogger.INSTANCE.send("&fLoading &7Database&f!");
 
         var awaiters = new ArrayList<AbstractAwaiter>();
         var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
@@ -110,11 +109,11 @@ public final class AquaticCrates extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("ModelEngine") != null) {
             var awaiter = new MEGAwaiter(aquaticSeriesLib);
             awaiters.add(awaiter);
-            Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7ModelEngine Hook&f!"));
+            InfoLogger.INSTANCE.send("&fLoading &7ModelEngine Hook&f!");
             awaiter.getFuture().thenRun(() -> {
                 awaiters.remove(awaiter);
                 if (awaiters.isEmpty()) {
-                    Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &7ModelEngine Hook&f initialized!"));
+                    InfoLogger.INSTANCE.send("&7ModelEngine Hook&f initialized!");
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -127,11 +126,11 @@ public final class AquaticCrates extends JavaPlugin {
         if (Bukkit.getPluginManager().getPlugin("ItemsAdder") != null) {
             var awaiter = new IAAwaiter(aquaticSeriesLib);
             awaiters.add(awaiter);
-            Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7ItemsAdder Hook&f!"));
+            InfoLogger.INSTANCE.send("&fLoading &7ItemsAdder Hook&f!");
             awaiter.getFuture().thenRun(() -> {
                 awaiters.remove(awaiter);
                 if (awaiters.isEmpty()) {
-                    Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &7ItemsAdder Hook&f initialized!"));
+                    InfoLogger.INSTANCE.send("&7ItemsAdder Hook&f initialized!");
                     new BukkitRunnable() {
                         @Override
                         public void run() {
@@ -161,6 +160,8 @@ public final class AquaticCrates extends JavaPlugin {
     }
 
     private void setupAnimationTasks() {
+        PriceTypes.INSTANCE.getTypes().put("cratekey", new KeyPrice());
+
         TaskSerializer.tasks.put("spawnreward", new SpawnRewardTask());
         TaskSerializer.tasks.put("playsound", new PlaySoundTask());
         TaskSerializer.tasks.put("command", new CommandTask());
@@ -171,17 +172,38 @@ public final class AquaticCrates extends JavaPlugin {
     }
 
     public void load() {
-        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Item Database&f!"));
+        InfoLogger.INSTANCE.send("&fLoading &7Item &7Database&f!");
         itemHandler.load();
-        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Crates&f!"));
+        InfoLogger.INSTANCE.send("&fLoading &7Crates&f!");
         crateHandler.load();
-        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Players&f!"));
+        InfoLogger.INSTANCE.send("&fLoading &7Players&f!");
         playerHandler.loadPlayers(() -> {
             getServer().getPluginManager().registerEvents(new PlayerListener(),this);
         });
-        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fLoading &7Messages!"));
+        InfoLogger.INSTANCE.send("&fLoading &7Messages&f!");
         messageHandler.load();
-        Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format("&bAquaticCrates &8| &fPlugin &aLoaded&f!"));
+        InfoLogger.INSTANCE.send("&fPlugin &aLoaded&f!");
+
+        List<String> lines = List.of(
+                "&b                                _   _       _____           _                 ",
+                "&b         /\\                    | | (_)     / ____|         | |                ",
+                "&b        /  \\   __ _ _   _  __ _| |_ _  ___| |     _ __ __ _| |_ ___  ___      ",
+                "&b       / /\\ \\ / _` | | | |/ _` | __| |/ __| |    | '__/ _` | __/ _ \\/ __|     ",
+                "&b      / ____ \\ (_| | |_| | (_| | |_| | (__| |____| | | (_| | ||  __/\\__ \\     ",
+                "&b     /_/    \\_\\__, |\\__,_|\\__,_|\\__|_|\\___|\\_____|_|  \\__,_|\\__\\___||___/     ",
+                "&b                 | |                                                          ",
+                "&b                 |_|                                                          ",
+                "",
+                "  &7Created by &3Aquatic Creations",
+                "  &7Discord: &3&o&nhttp://discord.aquatic.gg",
+                ""
+        );
+
+        for (String line : lines) {
+            Bukkit.getConsoleSender().sendMessage(ColorUtils.Companion.format(line));
+        }
+
+
 
         //AquaticModelEngine.getInstance().getModelGenerator().generateModels();
     }
@@ -236,10 +258,6 @@ public final class AquaticCrates extends JavaPlugin {
 
     public static MessageHandler getMessageHandler() {
         return messageHandler;
-    }
-
-    public static OpenPrices getOpenPrices() {
-        return openPrices;
     }
 
     /*public static RewardConditions getRewardConditions() {

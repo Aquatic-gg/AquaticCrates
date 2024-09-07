@@ -1,6 +1,5 @@
 package cz.larkyy.aquaticcrates.crate.price;
 
-import cz.larkyy.aquaticcrates.crate.Crate;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -13,9 +12,9 @@ public class PriceHandler {
         this.priceGroups = priceGroups;
     }
 
-    public PriceGroup chooseGroup(Player player, Crate crate) {
+    public PriceGroup chooseGroup(Player player) {
         for (PriceGroup priceGroup : priceGroups) {
-            if (priceGroup.has(player,crate)) return priceGroup;
+            if (priceGroup.has(player)) return priceGroup;
         }
         return null;
     }

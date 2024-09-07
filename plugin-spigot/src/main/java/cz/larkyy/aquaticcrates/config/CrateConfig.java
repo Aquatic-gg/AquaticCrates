@@ -16,6 +16,7 @@ import cz.larkyy.aquaticcrates.crate.model.ModelAnimation;
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimations;
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
 import cz.larkyy.aquaticcrates.crate.price.*;
+import cz.larkyy.aquaticcrates.crate.price.types.KeyPrice;
 import cz.larkyy.aquaticcrates.crate.reroll.RerollManager;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.crate.reward.condition.PermissionCondition;
@@ -41,6 +42,9 @@ import gg.aquatic.aquaticseries.lib.interactable2.base.TempInteractableBase;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.block.BlockInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.MegInteractable;
 import gg.aquatic.aquaticseries.lib.item.CustomItem;
+import gg.aquatic.aquaticseries.lib.price.ConfiguredPrice;
+import gg.aquatic.aquaticseries.lib.price.PriceSerializer;
+import gg.aquatic.aquaticseries.lib.price.player.PlayerPriceSerializer;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
 import gg.aquatic.aquaticseries.lib.util.AquaticBlockSerializer;
@@ -48,6 +52,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -240,9 +245,9 @@ public class CrateConfig extends Config {
             args.put("crate", null);
             args.put("amount", 1);
             return new PriceHandler(List.of(new PriceGroup(List.of(
-                    new ConfiguredPrice(
-                            OpenPrices.inst().getPriceType("key"),
-                            args
+                    new OpenPrice(
+                            new ConfiguredPrice<>(new KeyPrice(), args),
+                            new ArrayList<>()
                     )
             ))));
         }
@@ -258,18 +263,14 @@ public class CrateConfig extends Config {
     }
 
     private PriceGroup loadPriceGroup(String path) {
-        List<ConfiguredPrice> prices = new ArrayList<>();
-        for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
-            String p = path + "." + key;
-            OpenPrice type = OpenPrices.inst().getPriceType(getConfiguration().getString(p + ".type"));
-            if (type == null) {
-                continue;
-            }
-            prices.add(new ConfiguredPrice(type, loadArguments(p, type.getArgs())));
+        List<OpenPrice> prices = new ArrayList<>();
+        for (ConfigurationSection configurationSection : ConfigExtKt.getSectionList(getConfiguration(), path)) {
+            var price = PlayerPriceSerializer.INSTANCE.fromSection(configurationSection);
+            if (price == null) continue;
+            var failActions = PlayerActionSerializer.INSTANCE.fromSections(ConfigExtKt.getSectionList(configurationSection, "fail"));
+            prices.add(new OpenPrice(price, failActions));
         }
-
-        PriceGroup group = new PriceGroup(prices);
-        return group;
+        return new PriceGroup(prices);
     }
 
     private CustomItem loadKey() {

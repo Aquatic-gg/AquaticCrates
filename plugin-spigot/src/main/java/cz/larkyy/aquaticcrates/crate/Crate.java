@@ -159,12 +159,12 @@ public class Crate extends CrateBase {
         }
         AtomicReference<Reward> reward;
         if (takeKey) {
-            PriceGroup pg = priceHandler.chooseGroup(player.getPlayer(),this);
+            PriceGroup pg = priceHandler.chooseGroup(player.getPlayer());
             if (pg == null) {
                 Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
                 return;
             }
-            if (!pg.has(player.getPlayer(),this)) {
+            if (!pg.has(player.getPlayer())) {
                 Messages.DO_NOT_HAVE_KEY.send(player.getPlayer());
                 return;
             }
@@ -174,7 +174,7 @@ public class Crate extends CrateBase {
                 return;
             }
 
-            pg.take(player.getPlayer(),this);
+            pg.take(player.getPlayer());
         }
         else {
             var event = new KeyUseEvent(player.getPlayer(),this, KeyUseEvent.KeyType.NONE,null);
