@@ -95,7 +95,7 @@ public class CrateConfig extends Config {
                 loadHologram("hologram"),
                 getConfiguration().getString("open-permission"),
                 getConfiguration().getBoolean("instant-open-while-sneaking", true),
-                loadPriceHandler(),
+                loadPriceHandler(identifier),
                 loadMilestones(),
                 loadRepeatableMilestones(),
                 getConfiguration().getInt("hitbox-height", 1),
@@ -238,11 +238,11 @@ public class CrateConfig extends Config {
         return new ModelSettings(modelId, new ModelAnimations(animations, period));
     }
 
-    private PriceHandler loadPriceHandler() {
+    private PriceHandler loadPriceHandler(String crateId) {
         List<PriceGroup> priceGroups = new ArrayList<>();
         if (!getConfiguration().contains("open-prices")) {
             Map<String, Object> args = new HashMap<>();
-            args.put("crate", null);
+            args.put("crate", crateId);
             args.put("amount", 1);
             return new PriceHandler(List.of(new PriceGroup(List.of(
                     new OpenPrice(

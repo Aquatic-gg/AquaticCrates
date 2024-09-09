@@ -59,9 +59,9 @@ public class PreviewGUI extends AquaticInventory {
                         e.setCancelled(true);
                     }
                     case "open-button" -> {
+                        e.setCancelled(true);
                         player.closeInventory();
                         crate.open(CratePlayer.get(player), placedCrate, false);
-                        e.setCancelled(true);
                     }
                     case "close-button" -> {
                         player.closeInventory();

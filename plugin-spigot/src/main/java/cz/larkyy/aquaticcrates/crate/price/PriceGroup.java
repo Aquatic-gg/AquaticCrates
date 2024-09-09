@@ -15,7 +15,6 @@ public class PriceGroup {
     public boolean has(Player player) {
         for (OpenPrice price : prices) {
             if (!price.has(player)) {
-
                 return false;
             }
         }
