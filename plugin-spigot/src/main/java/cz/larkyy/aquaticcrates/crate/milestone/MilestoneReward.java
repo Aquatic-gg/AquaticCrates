@@ -17,7 +17,8 @@ public class MilestoneReward implements IChance {
         return reward;
     }
 
-    public double chance() {
+    @Override
+    public double getChance() {
         return chance;
     }
 }

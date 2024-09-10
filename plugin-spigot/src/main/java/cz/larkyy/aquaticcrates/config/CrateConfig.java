@@ -332,7 +332,7 @@ public class CrateConfig extends Config {
         for (String key : getConfiguration().getConfigurationSection(path).getKeys(false)) {
             var reward = loadReward(path + "." + key, key);
             if (reward == null) continue;
-            rewards.add(new MilestoneReward(reward, reward.chance()));
+            rewards.add(new MilestoneReward(reward, reward.getChance()));
         }
         return rewards;
     }

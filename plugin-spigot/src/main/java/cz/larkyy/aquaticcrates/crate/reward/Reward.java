@@ -82,15 +82,16 @@ public class Reward implements IChance {
         return modelAnimation;
     }
 
-    public double chance() {
-        return chance;
-    }
-
     public List<ConfiguredRequirement<Player>> getWinConditions() {
         return winConditions;
     }
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    @Override
+    public double getChance() {
+        return chance;
     }
 }

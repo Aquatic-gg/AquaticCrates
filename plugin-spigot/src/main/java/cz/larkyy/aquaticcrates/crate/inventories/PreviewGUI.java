@@ -285,7 +285,7 @@ public class PreviewGUI extends AquaticInventory {
                     5,
                     (player1, str) ->
                             PlaceholderAPI.setPlaceholders(player,str)
-                                    .replace("%chance%", r.chance() + "")
+                                    .replace("%chance%", r.getChance() + "")
                     ,
                     is
             );

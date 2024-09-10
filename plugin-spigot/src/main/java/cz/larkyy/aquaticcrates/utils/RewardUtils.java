@@ -25,14 +25,14 @@ public class RewardUtils {
             // Compute the total weight of all items together
             double totalWeight = 0.0d;
             for (var winning1 : rs) {
-                totalWeight += winning1.chance();
+                totalWeight += winning1.getChance();
             }
 
             // Now choose a random item
             int randomIndex = -1;
             double random = Math.random() * totalWeight;
             for (int i = 0; i < rs.size(); ++i) {
-                random -= rs.get(i).chance();
+                random -= rs.get(i).getChance();
                 if (random <= 0.0d) {
                     randomIndex = i;
                     break;
@@ -56,7 +56,7 @@ public class RewardUtils {
     }
 
     private static double getTotalPercentage(List<IChance> rs) {
-        return rs.stream().mapToDouble(IChance::chance).sum();
+        return rs.stream().mapToDouble(IChance::getChance).sum();
     }
 
 }
