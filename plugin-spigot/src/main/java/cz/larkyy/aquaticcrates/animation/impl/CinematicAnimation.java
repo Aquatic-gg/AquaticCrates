@@ -1,5 +1,7 @@
 package cz.larkyy.aquaticcrates.animation.impl;
 
+import com.ticxo.modelengine.api.model.bone.BoneBehaviorTypes;
+import com.ticxo.modelengine.api.model.bone.type.PlayerLimb;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.animation.Animation;
 import cz.larkyy.aquaticcrates.animation.AnimationManager;
@@ -9,6 +11,9 @@ import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import gg.aquatic.aquaticseries.lib.audience.WhitelistAudience;
 import gg.aquatic.aquaticseries.lib.interactable2.AbstractSpawnedPacketInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.ISpawnedMegInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.MegInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.SpawnedPacketMegInteractable;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,6 +53,17 @@ public class CinematicAnimation extends Animation {
             reroll();
         } else {
             spawnedInteractable = spawnModel();
+            if (spawnedInteractable instanceof ISpawnedMegInteractable spawnedMegInteractable) {
+                var am = spawnedMegInteractable.getActiveModel();
+                if (am != null) {
+                    var bones = am.getBones().values();
+                    for (var bone : bones) {
+                        bone.getBoneBehavior(BoneBehaviorTypes.PLAYER_LIMB).ifPresent(a -> {
+                            a.setTexture(getPlayer());
+                        });
+                    }
+                }
+            }
             camera = spawnCamera();
             begin();
         }

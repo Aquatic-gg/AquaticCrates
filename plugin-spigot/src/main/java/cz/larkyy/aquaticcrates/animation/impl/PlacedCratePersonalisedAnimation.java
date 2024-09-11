@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcrates.animation.impl;
 
+import com.ticxo.modelengine.api.model.bone.BoneBehaviorTypes;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.animation.Animation;
 import cz.larkyy.aquaticcrates.animation.AnimationManager;
@@ -47,6 +48,17 @@ public class PlacedCratePersonalisedAnimation extends Animation {
 
     @Override
     public void begin() {
+        if (spawnedInteractable instanceof ISpawnedMegInteractable spawnedMegInteractable) {
+            var am = spawnedMegInteractable.getActiveModel();
+            if (am != null) {
+                var bones = am.getBones().values();
+                for (var bone : bones) {
+                    bone.getBoneBehavior(BoneBehaviorTypes.PLAYER_LIMB).ifPresent(a -> {
+                        a.setTexture(getPlayer());
+                    });
+                }
+            }
+        }
         getPlayer().getPersistentDataContainer().set(KEY, PersistentDataType.INTEGER, 1);
         start();
     }

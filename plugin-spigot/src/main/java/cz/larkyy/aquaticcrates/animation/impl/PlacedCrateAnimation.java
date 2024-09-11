@@ -1,5 +1,6 @@
 package cz.larkyy.aquaticcrates.animation.impl;
 
+import com.ticxo.modelengine.api.model.bone.BoneBehaviorTypes;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.animation.Animation;
 import cz.larkyy.aquaticcrates.animation.AnimationManager;
@@ -7,6 +8,7 @@ import cz.larkyy.aquaticcrates.animation.RewardItem;
 import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
+import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.ISpawnedMegInteractable;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -33,6 +35,19 @@ public class PlacedCrateAnimation extends Animation {
 
     @Override
     public void begin() {
+
+        if (placedCrate.getSpawnedInteractable() instanceof ISpawnedMegInteractable spawnedMegInteractable) {
+            var am = spawnedMegInteractable.getActiveModel();
+            if (am != null) {
+                var bones = am.getBones().values();
+                for (var bone : bones) {
+                    bone.getBoneBehavior(BoneBehaviorTypes.PLAYER_LIMB).ifPresent(a -> {
+                        a.setTexture(getPlayer());
+                    });
+                }
+            }
+        }
+
         start();
     }
 
