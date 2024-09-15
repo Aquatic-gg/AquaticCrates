@@ -1,31 +1,24 @@
 package cz.larkyy.aquaticcrates.crate.inventories;
 
-import cz.larkyy.aquaticcrates.crate.PlacedCrate;
 import cz.larkyy.aquaticcrates.crate.PlacedMultiCrate;
-import cz.larkyy.aquaticcrates.player.CratePlayer;
-import gg.aquatic.aquaticseries.lib.StringExtKt;
-import gg.aquatic.aquaticseries.lib.inventory.lib.SlotSelection;
-import gg.aquatic.aquaticseries.lib.inventory.lib.component.Button;
-import gg.aquatic.aquaticseries.lib.inventory.lib.event.ComponentClickEvent;
-import gg.aquatic.aquaticseries.lib.inventory.lib.inventory.PersonalizedInventory;
-import gg.aquatic.aquaticseries.lib.inventory.lib.title.TitleHolder;
-import gg.aquatic.aquaticseries.lib.inventory.lib.title.component.BasicTitleComponent;
-import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
-import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
-import org.bukkit.Material;
+import gg.aquatic.aquaticseries.lib.betterinventory2.AquaticInventory;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
-public class MultiPreviewGUI extends PersonalizedInventory {
+public class MultiPreviewGUI extends AquaticInventory {
     private final PlacedMultiCrate multiCrate;
 
     public MultiPreviewGUI(PlacedMultiCrate multiCrate, @NotNull Player player) {
-        super(TitleHolder.Companion.of(
-                new BasicTitleComponent(StringExtKt.toAquatic(multiCrate.getMultiCrate().getPreviewSettings().getSettings().getTitle()))
-        ), multiCrate.getMultiCrate().getPreviewSettings().getSettings().getSize(), player, factory -> {});
+        super(
+                multiCrate.getMultiCrate().getPreviewSettings().getSettings().getTitle(),
+                multiCrate.getMultiCrate().getPreviewSettings().getSettings().getSize(),
+                multiCrate.getMultiCrate().getPreviewSettings().getSettings().getInventoryType(),
+                (p,a) -> {},
+                (p,a) -> {},
+                (p,a) -> {}
+        );
         this.multiCrate = multiCrate;
 
         addItems();
@@ -83,13 +76,5 @@ public class MultiPreviewGUI extends PersonalizedInventory {
         redrawComponents();
 
          */
-    }
-
-    private void addActionToButton(Button button, Consumer<ComponentClickEvent> consumer) {
-        if (button.getOnClick() != null) {
-            button.getOnClick().andThen(consumer);
-        } else {
-            button.setOnClick(consumer);
-        }
     }
 }

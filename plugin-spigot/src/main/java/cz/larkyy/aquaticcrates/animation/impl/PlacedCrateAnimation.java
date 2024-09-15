@@ -37,6 +37,7 @@ public class PlacedCrateAnimation extends Animation {
     public void begin() {
 
         if (placedCrate.getSpawnedInteractable() instanceof ISpawnedMegInteractable spawnedMegInteractable) {
+            /*
             var am = spawnedMegInteractable.getActiveModel();
             if (am != null) {
                 var bones = am.getBones().values();
@@ -46,6 +47,8 @@ public class PlacedCrateAnimation extends Animation {
                     });
                 }
             }
+
+             */
         }
 
         start();

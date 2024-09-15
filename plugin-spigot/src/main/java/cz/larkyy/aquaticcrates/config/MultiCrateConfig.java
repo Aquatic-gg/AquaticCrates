@@ -7,6 +7,7 @@ import cz.larkyy.aquaticcrates.crate.model.ModelAnimation;
 import cz.larkyy.aquaticcrates.crate.model.ModelAnimations;
 import cz.larkyy.aquaticcrates.crate.model.ModelSettings;
 import gg.aquatic.aquaticseries.lib.StringExtKt;
+import gg.aquatic.aquaticseries.lib.betterinventory2.serialize.InventorySerializer;
 import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -61,18 +62,12 @@ public class MultiCrateConfig extends Config {
             return null;
         }
 
-        String title;
-        if (getConfiguration().contains("preview.title")) {
-            title = getConfiguration().getString("preview.title");
-        } else {
-            title = crateId+" Preview";
-        }
-
+        var inventorySettings = InventorySerializer.INSTANCE.loadInventory(getConfiguration().getConfigurationSection("preview"));
         var clearBottomInventory = getConfiguration().getBoolean("preview.clear-bottom-inventory", false);
         //var items = loadInventoryButtons(getConfiguration().getConfigurationSection("preview.items"));
 
         return new MultiPreviewGUISettings(
-                new CustomInventorySettings(title, getConfiguration().getInt("preview.size",54), new HashMap<>()),
+                inventorySettings,
                 clearBottomInventory
         );
     }

@@ -49,6 +49,7 @@ public class PlacedCratePersonalisedAnimation extends Animation {
     @Override
     public void begin() {
         if (spawnedInteractable instanceof ISpawnedMegInteractable spawnedMegInteractable) {
+            /*
             var am = spawnedMegInteractable.getActiveModel();
             if (am != null) {
                 var bones = am.getBones().values();
@@ -58,6 +59,8 @@ public class PlacedCratePersonalisedAnimation extends Animation {
                     });
                 }
             }
+
+             */
         }
         getPlayer().getPersistentDataContainer().set(KEY, PersistentDataType.INTEGER, 1);
         start();

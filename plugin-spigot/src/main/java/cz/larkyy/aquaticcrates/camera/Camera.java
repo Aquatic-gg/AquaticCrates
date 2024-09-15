@@ -3,7 +3,6 @@ package cz.larkyy.aquaticcrates.camera;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import gg.aquatic.aquaticseries.lib.audience.WhitelistAudience;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
-import gg.aquatic.aquaticseries.lib.util.AbstractAudience;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

@@ -54,6 +54,7 @@ public class CinematicAnimation extends Animation {
         } else {
             spawnedInteractable = spawnModel();
             if (spawnedInteractable instanceof ISpawnedMegInteractable spawnedMegInteractable) {
+                /*
                 var am = spawnedMegInteractable.getActiveModel();
                 if (am != null) {
                     var bones = am.getBones().values();
@@ -63,6 +64,8 @@ public class CinematicAnimation extends Animation {
                         });
                     }
                 }
+
+                 */
             }
             camera = spawnCamera();
             begin();

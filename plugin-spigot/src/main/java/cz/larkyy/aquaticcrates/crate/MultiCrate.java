@@ -39,7 +39,7 @@ public class MultiCrate extends CrateBase {
             return;
         }
         var gui = new MultiPreviewGUI(pc,p);
-        gui.open(true);
+        gui.open(p);
     }
 
     public void giveCrate(Player player) {
