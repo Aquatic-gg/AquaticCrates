@@ -13,7 +13,6 @@ import cz.larkyy.aquaticcrates.dabatase.DatabaseManager;
 import cz.larkyy.aquaticcrates.hologram.HologramHandler;
 import cz.larkyy.aquaticcrates.item.ItemHandler;
 import cz.larkyy.aquaticcrates.messages.MessageHandler;
-import cz.larkyy.aquaticcrates.nms.ModelEngineAdapter;
 import cz.larkyy.aquaticcrates.player.PlayerHandler;
 import cz.larkyy.aquaticcrates.player.PlayerListener;
 import cz.larkyy.aquaticcrates.hooks.PAPIHook;
@@ -29,16 +28,12 @@ import gg.aquatic.aquaticseries.lib.logger.type.InfoLogger;
 import gg.aquatic.aquaticseries.lib.nms.NMSAdapter;
 import gg.aquatic.aquaticseries.lib.packet.PacketHandler;
 import gg.aquatic.aquaticseries.lib.price.PriceTypes;
-import gg.aquatic.aquaticseries.lib.requirement.RequirementSerializer;
 import gg.aquatic.aquaticseries.lib.requirement.RequirementTypes;
-import gg.aquatic.aquaticseries.lib.util.CommandExtKt;
 import gg.aquatic.aquaticseries.lib.worldobject.WorldObjectHandler;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import xyz.larkyy.aquaticcrates.meg3hook.AdaptedMEG3;
-import xyz.larkyy.aquaticcrates.meg4hook.AdaptedMEG4;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -53,7 +48,6 @@ public final class AquaticCrates extends JavaPlugin {
     private static MessageHandler messageHandler;
 
     private static ItemHandler itemHandler;
-    private static ModelEngineAdapter modelEngineAdapter = null;
     public static boolean configDebug = true;
     public static AquaticSeriesLib aquaticSeriesLib;
     public static HologramHandler hologramHandler;
@@ -143,14 +137,6 @@ public final class AquaticCrates extends JavaPlugin {
         }
         if (awaiters.stream().allMatch(AbstractAwaiter::getLoaded)) {
             load();
-        }
-        if (megPlugin != null) {
-            var megVersion = megPlugin.getDescription().getVersion();
-            if (megVersion.contains("R3.")) {
-                modelEngineAdapter = new AdaptedMEG3();
-            } else {
-                modelEngineAdapter = new AdaptedMEG4();
-            }
         }
 
         try {
@@ -265,10 +251,6 @@ public final class AquaticCrates extends JavaPlugin {
         return rewardConditions;
     }
      */
-
-    public static ModelEngineAdapter getModelEngineAdapter() {
-        return modelEngineAdapter;
-    }
 
     public static HologramHandler getHologramHandler() {
         return hologramHandler;

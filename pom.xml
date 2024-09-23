@@ -9,9 +9,6 @@
     <version>2.7.3</version>
     <modules>
         <module>plugin-spigot</module>
-        <module>api</module>
-        <module>MEG3Hook</module>
-        <module>MEG4Hook</module>
     </modules>
     <packaging>pom</packaging>
 

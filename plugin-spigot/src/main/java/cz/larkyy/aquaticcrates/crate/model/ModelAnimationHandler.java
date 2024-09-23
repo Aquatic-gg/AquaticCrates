@@ -2,7 +2,6 @@ package cz.larkyy.aquaticcrates.crate.model;
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.crate.Crate;
 import cz.larkyy.aquaticcrates.crate.CrateBase;
-import cz.larkyy.aquaticcrates.model.Model;
 import gg.aquatic.aquaticseries.lib.interactable2.SpawnedInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.ISpawnedMegInteractable;
 import org.bukkit.scheduler.BukkitRunnable;

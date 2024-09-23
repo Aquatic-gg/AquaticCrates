@@ -130,11 +130,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>api</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.17.1-R0.1-SNAPSHOT</version>
@@ -168,16 +163,6 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>5.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>MEG4Hook</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>cz.larkyy</groupId>
-            <artifactId>MEG3Hook</artifactId>
-            <version>2.4.0</version>
         </dependency>
     </dependencies>
 </project>

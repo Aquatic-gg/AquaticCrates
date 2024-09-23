@@ -2,11 +2,9 @@ package cz.larkyy.aquaticcrates.animation;
 
 import cz.larkyy.aquaticcrates.AquaticCrates;
 import cz.larkyy.aquaticcrates.animation.showcase.ItemRewardShowcase;
-import cz.larkyy.aquaticcrates.animation.showcase.ModelRewardShowcase;
 import cz.larkyy.aquaticcrates.animation.showcase.RewardShowcase;
 import cz.larkyy.aquaticcrates.crate.reward.Reward;
 import cz.larkyy.aquaticcrates.hologram.impl.aquatic.AHologram;
-import cz.larkyy.aquaticcrates.model.Model;
 import cz.larkyy.aquaticcrates.utils.RewardUtils;
 import gg.aquatic.aquaticseries.lib.audience.GlobalAudience;
 import gg.aquatic.aquaticseries.lib.audience.WhitelistAudience;
@@ -214,50 +212,10 @@ public class RewardItem {
 
         }
 
-        var loc = rewardShowcase.getLocation().clone();
         if (rewardShowcase instanceof ItemRewardShowcase itemRewardShowcase) {
-            if (reward.getModel() != null) {
-                String model = PlaceholderAPI.setPlaceholders(p, reward.getModel());
-                rewardShowcase.destroy();
-                rewardShowcase = null;
-                var l = loc.clone();
-                l.setYaw(reward.getModelYaw());
-                rewardShowcase = new ModelRewardShowcase(Model.create(model, l, p, p));
-                //spawnItem(reward);
-            } else {
-                itemRewardShowcase.getItem().setItemStack(reward.getItem().getItem());
-            }
-        } else if (rewardShowcase instanceof ModelRewardShowcase modelRewardShowcase) {
-            rewardShowcase.destroy();
-            if (reward.getModel() != null) {
-                rewardShowcase = null;
-                {
-                    var item = loc.getWorld().dropItem(loc, reward.getItem().getItem());
-                    item.setItemStack(reward.getItem().getItem().clone());
-                    item.setPickupDelay(Integer.MAX_VALUE);
-                    item.setGravity(gravity);
-                    //item.setVelocity(vector);
-                    var pdc = item.getPersistentDataContainer();
-                    pdc.set(REWARD_ITEM_KEY, PersistentDataType.INTEGER, 1);
-
-                    if (p != null) {
-                        List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
-                        players.remove(p);
-                        var audience = new WhitelistAudience(new ArrayList<>());
-                        for (Player player : players) {
-                            audience.add(player);
-                        }
-                        AquaticCrates.getNmsHandler().despawnEntity(List.of(item.getEntityId()), audience);
-                    }
-                    rewardShowcase = new ItemRewardShowcase(item);
-                }
-            } else {
-                var l = loc.clone();
-                l.setYaw(reward.getModelYaw());
-                String model = PlaceholderAPI.setPlaceholders(p, reward.getModel());
-                rewardShowcase = new ModelRewardShowcase(Model.create(model, l, p, p));
-            }
+            itemRewardShowcase.getItem().setItemStack(reward.getItem().getItem());
         }
+
         updateHologram(reward);
     }
 
@@ -277,31 +235,24 @@ public class RewardItem {
             location.getChunk().load();
         }
 
-        if (reward.getModel() != null) {
-            var l = location.clone();
-            l.setYaw(reward.getModelYaw());
-            String model = PlaceholderAPI.setPlaceholders(p, reward.getModel());
-            rewardShowcase = new ModelRewardShowcase(Model.create(model, l, p, p));
-        } else {
-            var item = location.getWorld().dropItem(location, reward.getItem().getItem());
-            item.setItemStack(reward.getItem().getItem().clone());
-            item.setPickupDelay(Integer.MAX_VALUE);
-            item.setGravity(gravity);
-            item.setVelocity(vector);
-            var pdc = item.getPersistentDataContainer();
-            pdc.set(REWARD_ITEM_KEY, PersistentDataType.INTEGER, 1);
+        var item = location.getWorld().dropItem(location, reward.getItem().getItem());
+        item.setItemStack(reward.getItem().getItem().clone());
+        item.setPickupDelay(Integer.MAX_VALUE);
+        item.setGravity(gravity);
+        item.setVelocity(vector);
+        var pdc = item.getPersistentDataContainer();
+        pdc.set(REWARD_ITEM_KEY, PersistentDataType.INTEGER, 1);
 
-            if (p != null) {
-                List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
-                players.remove(p);
-                var audience = new WhitelistAudience(new ArrayList<>());
-                for (Player player : players) {
-                    audience.add(player);
-                }
-                AquaticCrates.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()), audience);
+        if (p != null) {
+            List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
+            players.remove(p);
+            var audience = new WhitelistAudience(new ArrayList<>());
+            for (Player player : players) {
+                audience.add(player);
             }
-            rewardShowcase = new ItemRewardShowcase(item);
+            AquaticCrates.getNmsHandler().despawnEntity(Arrays.asList(item.getEntityId()), audience);
         }
+        rewardShowcase = new ItemRewardShowcase(item);
 
     }
 

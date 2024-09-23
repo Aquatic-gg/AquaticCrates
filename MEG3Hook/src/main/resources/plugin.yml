@@ -1,4 +1,0 @@
-name: MEG3Hook
-version: '${project.version}'
-main: xyz.larkyy.aquaticemotes.meg3hook.MEG3Hook
-api-version: '1.20'
