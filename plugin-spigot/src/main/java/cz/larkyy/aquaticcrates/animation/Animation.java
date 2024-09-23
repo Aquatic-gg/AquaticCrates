@@ -83,4 +83,10 @@ public abstract class Animation {
             megInteractable.getActiveModel().getAnimationHandler().playAnimation(animation, 0d, 0d, 1.0, true);
         }
     }
+
+    public void stopAnimations() {
+        if (getModel() instanceof ISpawnedMegInteractable megInteractable) {
+            megInteractable.getActiveModel().getAnimationHandler().forceStopAllAnimations();
+        }
+    }
 }

@@ -111,6 +111,7 @@ public class PlacedCrateAnimation extends Animation {
         }
         getAnimationManager().hideTitle(getPlayer());
         if (placedCrate != null) {
+            stopAnimations();
             playAnimation("idle");
         }
     }

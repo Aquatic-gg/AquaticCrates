@@ -98,22 +98,17 @@ public class Config {
         if (!getConfiguration().isConfigurationSection(path)) return new AquaticHologramSettings(
                 new ArrayList<>(),
                 new Vector(0, 0, 0),
-                AquaticHologram.Billboard.LOOK_AT_PLAYER
+                AquaticHologram.Billboard.CENTER
         );
         var section = getConfiguration().getConfigurationSection(path);
         var offset = section.getString("offset", "0;0;0").split(";");
-        var billboard = AquaticHologram.Billboard.valueOf(section.getString("billboard","LOOK_AT_PLAYER").toUpperCase());
+        var billboard = AquaticHologram.Billboard.valueOf(section.getString("billboard","CENTER").toUpperCase());
         var vector = new Vector(
                 Double.parseDouble(offset[0]),
                 Double.parseDouble(offset[1]),
                 Double.parseDouble(offset[2])
         );
         var lines = new ArrayList<>(HologramSerializer.INSTANCE.load(ConfigExtKt.getSectionList(section, "lines")));
-        for (AquaticHologram.Line line : lines) {
-            if (line instanceof TextDisplayLine textDisplayLine) {
-                Bukkit.getConsoleSender().sendMessage("Loaded TextDisplay line: " + textDisplayLine.getCurrentKeyframe().getText().getString());
-            }
-        }
         return new AquaticHologramSettings(lines, vector, billboard);
     }
 
