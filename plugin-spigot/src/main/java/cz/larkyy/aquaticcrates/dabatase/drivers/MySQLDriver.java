@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.*;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class MySQLDriver implements Driver {
@@ -123,7 +124,7 @@ public class MySQLDriver implements Driver {
 
     @Override
     public void savePlayer(CratePlayer player, boolean async) {
-        Player p = player.getPlayer();
+        UUID uuid = player.getUUID();
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -134,7 +135,7 @@ public class MySQLDriver implements Driver {
                         try (PreparedStatement ps = connection.prepareStatement(
                                 "SELECT id FROM "+keysTableName+" WHERE UniqueID = ? AND Identifier = ?"
                         )) {
-                            ps.setString(1,p.getUniqueId().toString());
+                            ps.setString(1,uuid.toString());
                             ps.setString(2,id);
 
                             ResultSet rs = ps.executeQuery();
@@ -143,7 +144,7 @@ public class MySQLDriver implements Driver {
                                         "UPDATE "+keysTableName+" SET Amount = ? WHERE UniqueID = ? AND Identifier = ?"
                                 )) {
                                     ps2.setInt(1,i);
-                                    ps2.setString(2,p.getUniqueId().toString());
+                                    ps2.setString(2,uuid.toString());
                                     ps2.setString(3,id);
 
                                     ps2.execute();
@@ -152,7 +153,7 @@ public class MySQLDriver implements Driver {
                                 try(PreparedStatement ps2 = connection.prepareStatement(
                                         "REPLACE INTO "+keysTableName+" (UniqueID, Identifier, Amount) VALUES (?, ?, ?);"
                                 )) {
-                                    ps2.setString(1,p.getUniqueId().toString());
+                                    ps2.setString(1,uuid.toString());
                                     ps2.setString(2,id);
                                     ps2.setInt(3,i);
 

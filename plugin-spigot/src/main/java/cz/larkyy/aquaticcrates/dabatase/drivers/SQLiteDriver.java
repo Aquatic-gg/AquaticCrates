@@ -81,11 +81,12 @@ public class SQLiteDriver implements Driver {
             @Override
             public void run() {
                 try(Connection connection = getConnection()) {
+                    var uuid = player.getUUID();
                     player.getVirtualKeys().forEach((id,i) -> {
                         try (PreparedStatement ps = connection.prepareStatement(
                                 "SELECT id FROM aquaticcrates_keys WHERE UniqueID = ? AND Identifier = ?"
                         )) {
-                            ps.setString(1,player.getPlayer().getUniqueId().toString());
+                            ps.setString(1,uuid.toString());
                             ps.setString(2,id);
 
                             ResultSet rs = ps.executeQuery();
@@ -94,7 +95,7 @@ public class SQLiteDriver implements Driver {
                                         "UPDATE aquaticcrates_keys SET Amount = ? WHERE UniqueID = ? AND Identifier = ?"
                                 )) {
                                     ps2.setInt(1,i);
-                                    ps2.setString(2,player.getPlayer().getUniqueId().toString());
+                                    ps2.setString(2,uuid.toString());
                                     ps2.setString(3,id);
 
                                     ps2.execute();
@@ -103,7 +104,7 @@ public class SQLiteDriver implements Driver {
                                 try(PreparedStatement ps2 = connection.prepareStatement(
                                         "INSERT OR REPLACE INTO aquaticcrates_keys (UniqueID, Identifier, Amount) VALUES (?, ?, ?);"
                                 )) {
-                                    ps2.setString(1,player.getPlayer().getUniqueId().toString());
+                                    ps2.setString(1,uuid.toString());
                                     ps2.setString(2,id);
                                     ps2.setInt(3,i);
 
