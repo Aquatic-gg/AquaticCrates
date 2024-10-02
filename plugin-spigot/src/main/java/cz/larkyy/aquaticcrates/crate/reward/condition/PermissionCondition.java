@@ -13,14 +13,18 @@ import java.util.Map;
 public class PermissionCondition extends AbstractRequirement<Player> {
 
     public static final List<AquaticObjectArgument<?>> ARGUMENTS = new ArrayList<>();
+
     static {
-        ARGUMENTS.add(new PrimitiveObjectArgument("permission","acrates.reward.collect",true));
-        ARGUMENTS.add(new PrimitiveObjectArgument("negate",false,false));
+        ARGUMENTS.add(new PrimitiveObjectArgument("permission", "acrates.reward.collect", true));
+        ARGUMENTS.add(new PrimitiveObjectArgument("negate", false, false));
     }
 
     @Override
     public boolean check(Player player, @NotNull Map<String, ?> arguments) {
-        return player.hasPermission((String) arguments.get("permission"));
+        var negate = (boolean) arguments.get("negate");
+        var result = player.hasPermission((String) arguments.get("permission"));
+        if (negate) return !result;
+        else return result;
     }
 
     @NotNull

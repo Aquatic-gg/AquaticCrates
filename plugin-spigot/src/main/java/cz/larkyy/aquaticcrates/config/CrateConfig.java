@@ -43,7 +43,6 @@ import gg.aquatic.aquaticseries.lib.interactable2.impl.block.BlockInteractable;
 import gg.aquatic.aquaticseries.lib.interactable2.impl.meg.MegInteractable;
 import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.price.ConfiguredPrice;
-import gg.aquatic.aquaticseries.lib.price.PriceSerializer;
 import gg.aquatic.aquaticseries.lib.price.player.PlayerPriceSerializer;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
 import gg.aquatic.aquaticseries.lib.requirement.player.PlayerRequirementSerializer;
