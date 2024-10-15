@@ -34,7 +34,6 @@ public class PreviewGUI extends AquaticInventory {
                 (player1, aquaticInventory) -> {},
                 (player1, aquaticInventory) -> {},
                 (inventoryInteractEvent, aquaticInventory) -> {
-
                 }
         );
         this.crate = crate;

@@ -21,10 +21,8 @@ public class PermissionCondition extends AbstractRequirement<Player> {
 
     @Override
     public boolean check(Player player, @NotNull Map<String, ?> arguments) {
-        var negate = (boolean) arguments.get("negate");
-        var result = player.hasPermission((String) arguments.get("permission"));
-        if (negate) return !result;
-        else return result;
+        //var negate = (boolean) arguments.get("negate");
+        return player.hasPermission((String) arguments.get("permission"));
     }
 
     @NotNull

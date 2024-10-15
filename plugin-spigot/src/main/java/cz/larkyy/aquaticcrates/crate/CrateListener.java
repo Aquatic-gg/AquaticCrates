@@ -6,6 +6,8 @@ import cz.larkyy.aquaticcrates.api.AquaticCratesAPI;
 import cz.larkyy.aquaticcrates.api.events.CrateInteractEvent;
 import cz.larkyy.aquaticcrates.api.events.KeyInteractEvent;
 import cz.larkyy.aquaticcrates.api.events.MultiCrateInteractEvent;
+import cz.larkyy.aquaticcrates.crate.inventories.PreviewGUI;
+import cz.larkyy.aquaticcrates.crate.inventories.RerollGUI;
 import cz.larkyy.aquaticcrates.crate.reroll.Reroll;
 import cz.larkyy.aquaticcrates.player.CratePlayer;
 import org.bukkit.Bukkit;
@@ -19,6 +21,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -27,6 +30,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 public class CrateListener implements Listener {
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent e) {
+        var topInv = e.getView().getTopInventory();
+        if (topInv.getHolder() instanceof PreviewGUI) {
+            e.setCancelled(true);
+        }
+    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
