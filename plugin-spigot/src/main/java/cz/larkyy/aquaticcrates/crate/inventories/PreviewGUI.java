@@ -43,7 +43,7 @@ public class PreviewGUI extends AquaticInventory {
     private void addItems(Integer page, PlacedCrate placedCrate) {
         for (var buttonSettings : crate.getPreviewGUISettings().getSettings().getButtons()) {
             var id = buttonSettings.getId();
-            var button = buttonSettings.create((p, str) -> PlaceholderAPI.setPlaceholders(player,str), e -> {
+            var button = buttonSettings.create((p, str) -> StringExtKt.updatePAPIPlaceholders(str,player), e -> {
                 switch (id.toLowerCase()) {
                     case "next-page" -> {
                         if (hasNextPage(player, page)) {
@@ -283,7 +283,7 @@ public class PreviewGUI extends AquaticInventory {
                     },
                     5,
                     (player1, str) ->
-                            PlaceholderAPI.setPlaceholders(player,str)
+                            StringExtKt.updatePAPIPlaceholders(str,player)
                                     .replace("%chance%", r.getChance() + "")
                     ,
                     is
