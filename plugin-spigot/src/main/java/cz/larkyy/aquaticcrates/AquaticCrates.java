@@ -99,7 +99,7 @@ public final class AquaticCrates extends JavaPlugin {
         InfoLogger.INSTANCE.send("&fLoading &7Database&f!");
 
         var awaiters = new ArrayList<AbstractAwaiter>();
-        var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
+        //var megPlugin = this.getServer().getPluginManager().getPlugin("ModelEngine");
 
         if (Bukkit.getPluginManager().getPlugin("ModelEngine") != null) {
             var awaiter = new MEGAwaiter(aquaticSeriesLib);

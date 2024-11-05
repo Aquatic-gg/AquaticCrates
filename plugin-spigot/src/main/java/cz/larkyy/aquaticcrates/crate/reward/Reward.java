@@ -2,15 +2,13 @@ package cz.larkyy.aquaticcrates.crate.reward;
 
 import cz.larkyy.aquaticcrates.hologram.settings.AquaticHologramSettings;
 import gg.aquatic.aquaticseries.lib.action.ConfiguredAction;
-import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
 import gg.aquatic.aquaticseries.lib.chance.IChance;
 import gg.aquatic.aquaticseries.lib.item.CustomItem;
 import gg.aquatic.aquaticseries.lib.requirement.ConfiguredRequirement;
-import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholder;
-import gg.aquatic.aquaticseries.lib.util.placeholder.Placeholders;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Reward implements IChance {
 
@@ -30,11 +28,7 @@ public class Reward implements IChance {
                   List<ConfiguredRequirement<Player>> winConditions, String model, float modelYaw) {
         this.identifier = identifier;
         this.item = item;
-        if (displayName == null) {
-            this.displayName = item.getItem().getItemMeta().getDisplayName();
-        } else {
-            this.displayName = displayName;
-        }
+        this.displayName = Objects.requireNonNullElseGet(displayName, () -> item.getItem().getItemMeta().getDisplayName());
         this.chance = chance;
         this.actions = actions;
         this.giveItem = giveItem;
