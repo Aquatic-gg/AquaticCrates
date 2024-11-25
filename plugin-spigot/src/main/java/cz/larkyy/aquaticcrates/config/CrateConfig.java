@@ -254,7 +254,6 @@ public class CrateConfig extends Config {
 
         for (String key : getConfiguration().getConfigurationSection("open-prices").getKeys(false)) {
             PriceGroup group = loadPriceGroup("open-prices." + key);
-            if (group == null) continue;
             priceGroups.add(group);
         }
 

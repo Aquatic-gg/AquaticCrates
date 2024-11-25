@@ -8,11 +8,13 @@ import gg.aquatic.aquaticseries.lib.ConfigExtKt;
 import gg.aquatic.aquaticseries.lib.action.player.PlayerActionSerializer;
 import gg.aquatic.aquaticseries.lib.betterhologram.AquaticHologram;
 import gg.aquatic.aquaticseries.lib.betterhologram.HologramSerializer;
+import gg.aquatic.aquaticseries.lib.betterhologram.impl.ArmorstandLine;
 import gg.aquatic.aquaticseries.lib.betterhologram.impl.TextDisplayLine;
 import gg.aquatic.aquaticseries.lib.betterinventory2.SlotSelection;
 import gg.aquatic.aquaticseries.lib.betterinventory2.serialize.ButtonSettings;
 import gg.aquatic.aquaticseries.lib.betterinventory2.serialize.InventorySerializer;
 import gg.aquatic.aquaticseries.lib.item.CustomItem;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -102,13 +104,22 @@ public class Config {
         );
         var section = getConfiguration().getConfigurationSection(path);
         var offset = section.getString("offset", "0;0;0").split(";");
-        var billboard = AquaticHologram.Billboard.valueOf(section.getString("billboard","CENTER").toUpperCase());
+        var billboard = AquaticHologram.Billboard.valueOf(section.getString("billboard", "CENTER").toUpperCase());
         var vector = new Vector(
                 Double.parseDouble(offset[0]),
                 Double.parseDouble(offset[1]),
                 Double.parseDouble(offset[2])
         );
         var lines = new ArrayList<>(HologramSerializer.INSTANCE.load(ConfigExtKt.getSectionList(section, "lines")));
+        for (AquaticHologram.Line line : lines) {
+            if (line instanceof TextDisplayLine) {
+                ((TextDisplayLine) line).setTextUpdater((PlaceholderAPI::setPlaceholders
+                ));
+            } else if (line instanceof ArmorstandLine) {
+                ((ArmorstandLine) line).setTextUpdater((PlaceholderAPI::setPlaceholders
+                ));
+            }
+        }
         return new AquaticHologramSettings(lines, vector, billboard);
     }
 

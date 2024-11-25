@@ -19,6 +19,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -91,6 +92,16 @@ public class CrateListener implements Listener {
             e.setCancelled(true);
         }
     }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockPlace(BlockPlaceEvent e) {
+        var is = e.getItemInHand();
+        Key key = Key.get(is);
+        if (key != null) {
+            e.setCancelled(true);
+        }
+    }
+
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         if (e.getHand() == null) return;
@@ -138,7 +149,6 @@ public class CrateListener implements Listener {
 
         Key key = Key.get(is);
         if (key != null) {
-            e.setCancelled(true);
             Bukkit.getPluginManager().callEvent(new KeyInteractEvent(p,key,location,action));
             return;
         }
